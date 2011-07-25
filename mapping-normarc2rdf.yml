@@ -1,0 +1,397 @@
+---
+tag:
+  "001":
+    predicate: "rdf:type"
+    object: 
+      type: uri
+      prefix: "http://redstore.deichman.no/resource/" 
+    relation: 
+      class: "frbr:Manifestation" 
+
+
+  "008":
+    predicate: "http://purl.org/dc/terms/language"
+    object:
+      type: uri
+      regex: "[34,3]"
+    relation:
+      class: "lvont:Language" 
+
+  "010":
+    subfield: 
+      a:  
+        predicate: "http://purl.org/ontology/bibo/lccn"
+        object:
+          type: literal
+          regex: strip_trailing_punct
+      
+  "019": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/audience"
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/audience/"    
+      b:
+        predicate: "http://purl.org/dc/terms/format"
+        object:
+          type: uri
+      d:
+        predicate: "http://bibpode.no/terms/literaryFormat"
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/literaryFormat/" 
+        
+  "020":
+    subfield:
+      a:
+        conditions: 
+          isbn10:
+            regex: "if isbn.length == 10"
+            predicate: "http://purl.org/ontology/bibo/isbn10" 
+            object:
+              type: literal
+          isbn13:
+            regex: "if isbn.length == 13"
+            predicate: "http://purl.org/ontology/bibo/isbn13" 
+            object:
+              type: literal 
+              regex: strip_trailing_punct
+  "022": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/ontology/bibo/issn" 
+        object: 
+          type: literal 
+          
+  "035": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/ontology/bibo/oclcnum" 
+        object: 
+          type: literal 
+          regex: "/^\(OcoLC\)//"
+                    
+  "041": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/language" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/language/" 
+        relation: 
+          class: "lvont:Language"
+
+  "082": 
+    subfield: 
+      a:
+        predicate: "http://bibpode.no/terms/ddk" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/ddk/" 
+        relation: 
+          class: "http://bibpode.no/terms/DDKCode"
+
+  "090": 
+    subfield: 
+      "[bcd]":
+        predicate: "http://bibpode.no/terms/location" 
+        object: 
+          type: literal 
+
+  "(100|400|700|790|796|800|896)": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/creator" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/person/" 
+          regex: "/[^\w\s\-]//"
+        relation: 
+          class: "http://xmlns.com/foaf/0.1/Person"
+          subfield:
+            a:
+              predicate: "http://xmlns.com/foaf/0.1/name"
+              object:
+                type: literal
+            b:
+              predicate: "http://purl.org/ontology/bibo/suffixName"
+              object:
+                type: literal                
+            c:
+              predicate: "http://xmlns.com/foaf/0.1/title"
+              object:
+                type: literal
+            d:
+              predicate: "http://bibpode.no/terms/lifespan"
+              object:
+                type: literal
+            j:
+              predicate: "http://www.foafrealm.org/xfoaf/0.1/nationality"
+              object:
+                type: uri
+                prefix: "http://redstore.deichman.no/nationality/"
+                regex: strip_trailing_punct
+            t:
+              predicate: "http://purl.org/dc/terms/title"
+              object:
+                type: literal
+                regex: strip_trailing_punct
+      e:
+        conditions:
+          "http://bibpode.no/terms/reader":
+            regex: "/innl./"
+            object: 
+              type: uri
+              prefix: "http://redstore.deichman.no/person/"
+              regex: "/[^\w\s\-]//"            
+          "http://purl.org/ontology/bibo/translator": 
+            regex: "/over.*/"
+            object: 
+              type: uri
+              prefix: "http://redstore.deichman.no/person/"
+              regex: "/[^\w\s\-]//" 
+          "http://purl.org/dc/terms/creator":
+            regex: "/medforf./"
+            object: 
+              type: uri
+              prefix: "http://redstore.deichman.no/person/"
+              regex: "/[^\w\s\-]//" 
+          "http://bibpode.no/terms/actor": 
+            regex: "/skuesp./"
+            object: 
+              type: uri
+              prefix: "http://redstore.deichman.no/person/"
+              regex: "/[^\w\s\-]//" 
+          "http://bibpode.no/terms/actor": 
+            regex: "/reg./"
+            object: 
+              type: uri
+              prefix: "http://redstore.deichman.no/person/"
+              regex: "/[^\w\s\-]//"  
+
+  "110": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/creator" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/organization/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "http://xmlns.com/foaf/0.1/Organization"
+          subfield:
+            a:
+              predicate: "http://xmlns.com/foaf/0.1/name"
+              object:
+                type: literal
+                                              
+  "240": 
+    subfield: 
+      "[ab]":
+        predicate: "http://purl.org/dc/terms/alternative" 
+        object: 
+          type: literal
+          regex: strip_trailing_punct
+
+  "245": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/title"
+        object:
+          type: literal
+          regex: strip_trailing_punct
+      b:
+        predicate: "http://rdvocab.info/Elements/variantTitleForTheWork" 
+        object: 
+          type: literal
+          regex: strip_trailing_punct
+      c:
+        predicate: "http://RDVocab.info/Elements/statementOfResponsibility" 
+        object: 
+          type: literal
+          regex: strip_trailing_punct
+      n:
+        predicate: "http://purl.org/ontology/bibo/number" 
+        object: 
+          type: integer
+          regex: "/[^\d]//"       
+                
+  "(246|767)": 
+    subfield: 
+      "[abcet]":
+        predicate: "http://RDVocab.info/Elements/parallelTitleProper" 
+        object: 
+          type: literal
+          regex: strip_trailing_punct
+          
+  "250": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/ontology/bibo/edition" 
+        object: 
+          type: integer
+          regex: "/[^\d]//"
+          
+  "260": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/publicationPlace" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/publicationPlace/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "geo:Feature"
+      b:
+        predicate: "http://purl.org/dc/terms/publisher" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/organization/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "http://xmlns.com/foaf/0.1/Organization"
+      c:
+        predicate: "http://purl.org/dc/terms/issued"
+        object: 
+          type: integer
+          regex: "/[^\d]//"
+
+  "300": 
+    subfield:               
+       a:
+         predicate: "http://purl.org/ontology/bibo/pages"
+         object: 
+           type: integer
+           regex: "/[^\d]//"
+       "[bce]":
+         predicate: "http://bibpode.no/terms/physicalDescription"
+         object: 
+           type: literal
+           regex: strip_trailing_punct           
+
+  "440": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/isPartOf" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/resource/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "http://purl.org/ontology/bibo/Series"
+      v:
+        predicate: "http://purl.org/ontology/bibo/pages"
+        object: 
+          type: integer
+          regex: "/[^\d]//"         
+      x:
+        predicate: "http://purl.org/ontology/bibo/issn"
+        object: 
+          type: literal
+
+  "^5(?!71)": 
+    subfield:               
+       a:
+         predicate: "http://purl.org/dc/terms/description"
+         object: 
+           type: literal
+           regex: strip_trailing_punct
+
+  "571": 
+    subfield:               
+       a:
+         predicate: "http://purl.org/ontology/bibo/identifier"
+         object: 
+           type: literal
+           regex: strip_trailing_punct
+  "600": 
+    subfield: 
+      "[adj]":
+        predicate: "http://purl.org/dc/terms/subject" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/subject/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "skos:Concept"
+ 
+  "(650|690|693|699)": 
+    subfield: 
+      "[adj]":
+        predicate: "http://purl.org/dc/terms/subject" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/subject/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "skos:Concept"         
+          subfield:
+            x: 
+              predicate: "http://purl.org/dc/terms/subject"
+              object:
+                type: literal
+            1:
+              predicate: "sub:classification"
+              object: 
+                type: uri
+                prefix: "http://redstore.deichman.no/classification/"
+                regex: "/[^\w\s\-]//"
+              relation:
+                class: "http://bibpode.no/terms/DDKCode"
+                object: 
+                  type: uri
+                  prefix: "http://redstore.deichman.no/ddk/"
+                  regex: "/[^\w\s\-]//"
+
+  "652": 
+    subfield: 
+      a:
+        predicate: "mo:genre" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/mogenre/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "mo:Genre"         
+          
+  "655": 
+    subfield: 
+      a:
+        predicate: "movie:genre" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/mvgenre/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "mo:Genre"    
+
+  "710": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/creator" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/organization/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "http://xmlns.com/foaf/0.1/Organization"
+
+  "730": 
+    subfield:               
+       a:
+         predicate: "http://purl.org/dc/terms/alternative"
+         object: 
+           type: literal
+           regex: strip_trailing_punct
+ 
+  "760": 
+    subfield: 
+      a:
+        predicate: "http://purl.org/dc/terms/isPartOf" 
+        object: 
+          type: uri
+          prefix: "http://redstore.deichman.no/resource/"
+          regex: "/[^\w\s\-]//"
+        relation:
+          class: "http://purl.org/ontology/bibo/Series"

@@ -1,0 +1,14 @@
+### MARC bibliographic record to RDF converter
+# Ruby script using YAML mapping
+
+# Purpose: Convert binary marc to semantic markup using yaml mapping file
+# Creator: Benjamin Rokseth
+# Date: 10.07.2011
+
+# Files:
+normarc2rdf.rb -- ruby script convert NORMARC file to RDF
+mapping-normarc2rdf-yml -- marc tags to rdf mapping
+
+# Prerequisites:
+gem install yaml rdf rdf-rdfxml rdf-n3
+Usage: ruby normarc2rdf.rb InputFile.mrc OutputFile.rdf

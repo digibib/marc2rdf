@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns0="http://purl.org/ontology/bibo/" xmlns:ns1="http://RDVocab.info/Elements/" xmlns:ns2="http://bibpode.no/terms/" xmlns:ns3="http://purl.org/dc/terms/" xmlns:ns4="http://www.foafrealm.org/xfoaf/0.1/" xmlns:ns5="http://xmlns.com/foaf/0.1/" xmlns:ns6="lvont:" xmlns:ns7="geo:" xmlns:ns8="skos:" xmlns:ns9="http://rdvocab.info/Elements/" xmlns:nt0="mo:">
+  <ns0:Document rdf:about="http://redstore.deichman.no/resource/0396243">
+    <ns1:statementOfResponsibility>Harald Bache-Wiig og Astrid Sæther (red.)</ns1:statementOfResponsibility>
+    <ns2:ddk>
+      <ns2:DDKCode rdf:about="http://redstore.deichman.no/relation/839.8209"/>
+    </ns2:ddk>
+    <ns2:literaryFormat rdf:resource=""/>
+    <ns2:location></ns2:location>
+    <ns2:physicalDescription></ns2:physicalDescription>
+    <ns3:audience rdf:resource=""/>
+    <ns3:creator>
+      <rdf:Description rdf:about="http://redstore.deichman.no/relation/Bache-Wiig, Harald">
+        <ns2:lifespan rdf:resource="1946-"/>
+        <ns4:nationality rdf:resource="n."/>
+        <ns5:name rdf:resource="Bache-Wiig, Harald"/>
+      </rdf:Description>
+    </ns3:creator>
+    <ns3:creator>
+      <rdf:Description rdf:about="http://redstore.deichman.no/relation/Sæther, Astrid">
+        <ns2:lifespan rdf:resource="1945-"/>
+        <ns4:nationality rdf:resource="n."/>
+        <ns5:name rdf:resource="Sæther, Astrid"/>
+      </rdf:Description>
+    </ns3:creator>
+    <ns3:description>Bortsett fra artiklene om de enkelte forfattere inneholder samlingen bl.a. følgende bidrag: Haslund, F.J.: Det seksuelle gjennombrudd i 1880- og 1890-årene. - Bache-Wiig, H.: Den farlige kjærligheten. Mannlighet og kvinneangst i 1890-åra. - Lombnæs, A.G.: Det modernes gjennombrudd - om kvinner og litterær stil på 1890-tallet. -- Øvrige bidragsytere: R.N. Nettum. A. Sæther. G. Bø. U. Gunsilius. E. Beyer. A. Lorenz. A. Taube.</ns3:description>
+    <ns3:description>Har bibliografi og opplysninger om bidragsyterne.</ns3:description>
+    <ns3:description>a93-7</ns3:description>
+    <ns3:description>xal0430</ns3:description>
+    <ns3:format rdf:resource="l"/>
+    <ns3:isPartOf>
+      <ns0:Series rdf:about="http://redstore.deichman.no/relation/Meta"/>
+    </ns3:isPartOf>
+    <ns3:language>
+      <ns6:Language rdf:about="http://redstore.deichman.no/relation/swenob"/>
+    </ns3:language>
+    <ns3:publicationPlace>
+      <ns7:Feature rdf:about="http://redstore.deichman.no/relation/[Oslo]"/>
+    </ns3:publicationPlace>
+    <ns3:publisher>
+      <ns5:Organization rdf:about="http://redstore.deichman.no/relation/Aschehoug"/>
+    </ns3:publisher>
+    <ns3:subject>
+      <ns8:Concept rdf:about="http://redstore.deichman.no/relation/">
+        <ns3:subject rdf:resource="Essay"/>
+        <ns3:subject rdf:resource="Historie og kritikk"/>
+        <ns3:subject rdf:resource="Litteratur"/>
+      </ns8:Concept>
+    </ns3:subject>
+    <ns3:title>100 år etter</ns3:title>
+    <ns0:issn></ns0:issn>
+    <ns9:variantTitleForTheWork>om det litterære livet i Norge i 1890-åra</ns9:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://redstore.deichman.no/resource/0205997">
+    <ns1:statementOfResponsibility>Carl Angell-Petersen ; tegninger ved Haakon Fjelddalen</ns1:statementOfResponsibility>
+    <ns2:ddk>
+      <ns2:DDKCode rdf:about="http://redstore.deichman.no/relation/839.82"/>
+    </ns2:ddk>
+    <ns2:literaryFormat rdf:resource=""/>
+    <ns2:location></ns2:location>
+    <ns2:physicalDescription></ns2:physicalDescription>
+    <ns3:audience rdf:resource=""/>
+    <ns3:creator>
+      <rdf:Description rdf:about="http://redstore.deichman.no/relation/Angell-Petersen, Carl">
+        <ns4:nationality rdf:resource="n."/>
+        <ns5:name rdf:resource="Angell-Petersen, Carl"/>
+      </rdf:Description>
+    </ns3:creator>
+    <ns3:description>Omhandler Sult, Mysterier, Pan, Victoria, Sværmere, Markens grøde, Landstrykere, Ringen sluttet</ns3:description>
+    <ns3:description>uke27 alø0627</ns3:description>
+    <ns3:format rdf:resource="l"/>
+    <ns3:publicationPlace>
+      <ns7:Feature rdf:about="http://redstore.deichman.no/relation/[Eidanger]"/>
+    </ns3:publicationPlace>
+    <ns3:publisher>
+      <ns5:Organization rdf:about="http://redstore.deichman.no/relation/C. Angell-Petersen"/>
+    </ns3:publisher>
+    <ns3:subject rdf:resource="http://redstore.deichman.no/relation/"/>
+    <ns3:title>Hamsun og Eros</ns3:title>
+    <ns9:variantTitleForTheWork>om kjærligheten i Knut Hamsuns diktning</ns9:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://redstore.deichman.no/resource/0371661">
+    <ns1:statementOfResponsibility>dikt av Knut Hamsun</ns1:statementOfResponsibility>
+    <ns2:ddk>
+      <ns2:DDKCode rdf:about="http://redstore.deichman.no/relation/784.1"/>
+    </ns2:ddk>
+    <ns2:literaryFormat rdf:resource=""/>
+    <ns2:location></ns2:location>
+    <ns2:physicalDescription></ns2:physicalDescription>
+    <ns3:audience rdf:resource=""/>
+    <ns3:creator>
+      <rdf:Description rdf:about="http://redstore.deichman.no/relation/Anderssen, Fridthjov">
+        <ns2:lifespan rdf:resource="1876-1937"/>
+        <ns4:nationality rdf:resource="n."/>
+        <ns5:name rdf:resource="Anderssen, Fridthjov"/>
+      </rdf:Description>
+    </ns3:creator>
+    <ns3:creator>
+      <rdf:Description rdf:about="http://redstore.deichman.no/relation/Hamsun, Knut">
+        <ns2:lifespan rdf:resource="1859-1952"/>
+        <ns4:nationality rdf:resource="n."/>
+        <ns5:name rdf:resource="Hamsun, Knut"/>
+      </rdf:Description>
+    </ns3:creator>
+    <ns3:description>For sang og klaver</ns3:description>
+    <ns3:description>r92 xxtk0729</ns3:description>
+    <ns3:format rdf:resource="c"/>
+    <ns3:publicationPlace>
+      <ns7:Feature rdf:about="http://redstore.deichman.no/relation/Bodø"/>
+    </ns3:publicationPlace>
+    <ns3:publisher>
+      <ns5:Organization rdf:about="http://redstore.deichman.no/relation/Eget forl."/>
+    </ns3:publisher>
+    <ns3:title>Der er noget jeg sidder og ei kan forstå</ns3:title>
+    <ns9:variantTitleForTheWork></ns9:variantTitleForTheWork>
+    <nt0:genre>
+      <nt0:Genre rdf:about="http://redstore.deichman.no/relation/Viser og sanger"/>
+    </nt0:genre>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://redstore.deichman.no/resource/0498555">
+    <ns1:statementOfResponsibility>Per Thomas Andersen</ns1:statementOfResponsibility>
+    <ns2:ddk rdf:resource="http://redstore.deichman.no/relation/839.8209"/>
+    <ns2:literaryFormat rdf:resource=""/>
+    <ns2:location></ns2:location>
+    <ns2:physicalDescription></ns2:physicalDescription>
+    <ns3:audience rdf:resource=""/>
+    <ns3:creator>
+      <rdf:Description rdf:about="http://redstore.deichman.no/relation/Andersen, Per Thomas">
+        <ns2:lifespan rdf:resource="1954-"/>
+        <ns4:nationality rdf:resource="n."/>
+        <ns5:name rdf:resource="Andersen, Per Thomas"/>
+      </rdf:Description>
+    </ns3:creator>
+    <ns3:description>Av innholdet: En kamp mellom guder : intertekstuelt blikk på Petter Dass' vise "Om Jephte Løfte" s.12-44 ; Komponisten Henrik Wergeland : komposisjonsanalyse av to Wergelands-dikt s.44-72 ; Om å være i sannhet og i språket samtidig : Bjørnstjerne Bjørnsons sakprosa s.141-166 ; Den poetiske samtale : to nedslag i Rolf Jacobsens senere lyrikk s.258-310</ns3:description>
+    <ns3:description>a98-4 98x0227abo</ns3:description>
+    <ns3:format rdf:resource="l"/>
+    <ns3:isPartOf>
+      <ns0:Series rdf:about="http://redstore.deichman.no/relation/LNUs skriftserie"/>
+    </ns3:isPartOf>
+    <ns3:publicationPlace>
+      <ns7:Feature rdf:about="http://redstore.deichman.no/relation/Oslo"/>
+    </ns3:publicationPlace>
+    <ns3:publisher>
+      <ns5:Organization rdf:about="http://redstore.deichman.no/relation/Landslaget for norskundervisning"/>
+    </ns3:publisher>
+    <ns3:subject rdf:resource="http://redstore.deichman.no/relation/"/>
+    <ns3:title>Fra Petter Dass til Jan Kjærstad</ns3:title>
+    <ns0:issn></ns0:issn>
+    <ns9:variantTitleForTheWork>studier i diktekunst og komposisjon</ns9:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://redstore.deichman.no/resource/0709549">
+    <ns1:statementOfResponsibility>Per Thomas Andersen</ns1:statementOfResponsibility>
+    <ns2:ddk>
+      <ns2:DDKCode rdf:about="http://redstore.deichman.no/relation/809.933"/>
+    </ns2:ddk>
+    <ns2:literaryFormat rdf:resource=""/>
+    <ns2:location></ns2:location>
+    <ns2:physicalDescription></ns2:physicalDescription>
+    <ns3:audience rdf:resource=""/>
+    <ns3:creator rdf:resource="http://redstore.deichman.no/relation/Andersen, Per Thomas"/>
+    <ns3:description>06-uke26a</ns3:description>
+    <ns3:description>06x0705gq 07xkr</ns3:description>
+    <ns3:description>Bibliografi: s. [195]-200</ns3:description>
+    <ns3:format rdf:resource="l"/>
+    <ns3:publicationPlace rdf:resource="http://redstore.deichman.no/relation/Oslo"/>
+    <ns3:publisher>
+      <ns5:Organization rdf:about="http://redstore.deichman.no/relation/Universitetsforl."/>
+    </ns3:publisher>
+    <ns3:subject rdf:resource="http://redstore.deichman.no/relation/"/>
+    <ns3:title>Identitetens geografi</ns3:title>
+    <ns9:variantTitleForTheWork>steder i litteraturen fra Hamsun til Naipaul</ns9:variantTitleForTheWork>
+  </ns0:Document>
+</rdf:RDF>
