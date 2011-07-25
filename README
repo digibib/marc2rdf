@@ -10,5 +10,11 @@ normarc2rdf.rb -- ruby script convert NORMARC file to RDF
 mapping-normarc2rdf-yml -- marc tags to rdf mapping
 
 # Prerequisites:
+ruby >= 1.8.7
+rdf.rb (Arto Bendikens RDF library for ruby)
+
+# install:
 gem install yaml rdf rdf-rdfxml rdf-n3
-Usage: ruby normarc2rdf.rb InputFile.mrc OutputFile.rdf
+
+# Usage: 
+ruby normarc2rdf.rb [inputfile.mrc] [outputfile.rdf]
