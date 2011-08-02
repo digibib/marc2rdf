@@ -28,7 +28,7 @@ output_file = ARGV[1]
 # files
 mappingfile = YAML::load_file('mapping-normarc2rdf.yml')
 reader = MARC::ForgivingReader.new(input_file)
-writer = RDF::Writer.new(output_file)
+#writer = RDF::Writer.new(output_file)
 
 # reading records from a batch file
 
@@ -47,11 +47,18 @@ graph = RDF::Graph.new
 yamltags = mappingfile['tag']
 i = 0
 
-#record = reader.first
+# start writer handle
+RDF::Writer.open("output.rdf") do | writer |
+
+#start reading MARC records
 reader.each do | record |
+
+# start graph handle, one graph per record, else graph will grow too large to parse
+writer << RDF::Graph.new do | graph |
 
   record.each do | field | 
   # do controlfields first, they don't have subfields
+    # start parsing MARC tags
     field.tag = case
     when field.tag == "001"
     @id = field.value.strip
@@ -64,7 +71,8 @@ reader.each do | record |
     graph << statement
   # end controlfield
     when field.tag == "007"
-    when field.tag == "008"
+    when field.tag == "008" # language, to be done
+    
     # parse the datafields agains yaml file
     else
       yamltags.each do | yamltag, yamlsubfield |
@@ -75,7 +83,9 @@ reader.each do | record |
             yamlvalue = case
           # conditionals?
             when yamlvalue['conditions']
+          # to be done ...
           #    puts "condition: #{yamlvalue["conditions"]}"
+          
           # generate relations if they exist
             when yamlvalue['relation']
               @relation_uri = RDF::URI.new("http://redstore.deichman.no/relation/#{field[yamlkey]}")
@@ -133,28 +143,20 @@ reader.each do | record |
               end
 
              # end match marc vs yaml subfield
-              #p field[yamlkey]
-            end # end case ... when
+              # p field[yamlkey]
+            end # end case yamlvalue ... when
           end
         end
       end
       
-    end 
-#      RDF::Writer.for(:ntriples).new($stdout) do  |writer|
-      RDF::Writer.open("output.rdf") do | writer |
-           writer << graph
-      end
+    end # end case field.tag 
     
- #     RDF::RDFXML::Writer.open("output.rdf", :max_depth => 1, :prefixes => {
- #     nil => "http://example.com/ns#",
- #     :xfoaf => "http://www.foafrealm.org/xfoaf/0.1/",
- #     :foaf => "http://xmlns.com/foaf/0.1/",
- #     :dc => "http://purl.org/dc/terms/",
- #     :bibo => "http://bibpode.no/terms/" }) do |writer|
- #       writer << graph
- #     end
-  end
-i += 1
-break if i == 5
-end
+  end # end match field.tag vs yamltag
 
+end # end graph loop
+
+# do only certain number of records for testing
+i += 1
+break if i == 100
+end # end record loop
+end # end writer loop
