@@ -1,0 +1,14 @@
+mapping:
+    file: config/mapping-normarc2rdf.yml
+uri:
+    base: http://redstore.deichman.no
+    resource_path: /resource/
+    resource_prefix: tnr_
+    resource_identifier_field: '001'
+    
+database:
+    :adapter: sqlite
+    :database: db/storage.db
+    #:host:
+    #:user:
+    #:password:

@@ -1,0 +1,14 @@
+mapping:
+    file: 'config/example-mappingfile.yml'
+uri:
+    base: http://example.org
+    resource_path: /collections/
+    resource_prefix: id_
+    resource_identifier_field: '001'
+    
+database:
+    :adapter: sqlite
+    :database: db/storage.db
+    #:host:
+    #:user:
+    #:password:
