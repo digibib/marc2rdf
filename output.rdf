@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rdf:RDF xmlns:ns8="skos:" xmlns:ns3="http://purl.org/dc/terms/" xmlns:ns9="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://www.foafrealm.org/xfoaf/0.1/" xmlns:nt0="http://rdvocab.info/Elements/" xmlns:ns5="http://xmlns.com/foaf/0.1/" xmlns:nt1="mo:" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns6="lvont:" xmlns:ns0="http://purl.org/ontology/bibo/" xmlns:nt2="movie:" xmlns:ns1="http://RDVocab.info/Elements/" xmlns:ns7="geo:" xmlns:ns2="http://bibpode.no/terms/">
+<rdf:RDF xmlns:ns3="http://purl.org/dc/terms/" xmlns:ns9="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://www.foafrealm.org/xfoaf/0.1/" xmlns:nt0="http://rdvocab.info/Elements/" xmlns:ns5="http://xmlns.com/foaf/0.1/" xmlns:nt1="mo:" xmlns:ns6="lvont:" xmlns:ns0="http://purl.org/ontology/bibo/" xmlns:nt2="movie:" xmlns:ns1="http://RDVocab.info/Elements/" xmlns:ns7="geo:" xmlns:ns2="http://bibpode.no/terms/" xmlns:ns8="skos:" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <ns0:Document rdf:about="http://redstore.deichman.no/resource/0487900">
     <ns1:statementOfResponsibility>Nils M. Knutsen (red.)</ns1:statementOfResponsibility>
     <ns2:ddk>

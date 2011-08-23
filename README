@@ -1,22 +1,68 @@
 ### MARC bibliographic record to RDF converter
-# Ruby script using YAML mapping
+### Ruby script using YAML mapping
 
 # Purpose: Convert binary marc to semantic markup using yaml mapping file
 # Creator: Benjamin Rokseth
 # Date: 10.07.2011
 
-# Files:
-normarc2rdf.rb -- ruby script to convert NORMARC file to RDF
-mapping-normarc2rdf-yml -- NORMARC tags to rdf mapping
-hamsun_fikset.mrc -- test NORMARC file
-output.rdf -- test output RDF
+## FILES
+normarc2rdf.rb                 -- main ruby script to convert NORMARC file to RDF
+config/config-dist.yml         -- config file
+config/mapping-normarc2rdf.yml -- example mapping file: NORMARC tags to rdf mapping
+hamsun_fikset.mrc              -- test NORMARC file
+output.rdf                     -- test output RDF with -r 50 (50 records)
+output.nt                      -- test output NTRIPLES with -r 50 (50 records)
 
-# Prerequisites:
+## MAPPING ##
+uses yaml hashes mapping
+excerpt:
+-----
+tag:
+  "(650|690|693|699)": 
+    subfield: 
+      ?
+        - a
+        - d
+        - j
+      : 
+        predicate: http://purl.org/dc/terms/subject
+        object: 
+          regex: !ruby/regexp /[^A-z0-9\-]/
+          prefix: http://redstore.deichman.no/subject/
+          type: uri
+        relation: 
+          class: http://www.w3.org/2004/02/skos/core#Concept
+          subfield: 
+            x: 
+              predicate: http://purl.org/dc/terms/subject
+              relation: 
+                class: http://bibpode.no/terms/DDKCode
+              object: 
+                regex: !ruby/regexp /[^A-z0-9\-]/
+                prefix: http://redstore.deichman.no/classification/
+                type: uri  
+------
+tag numbers can be regex
+all uris are exploded
+subfields can be arrays
+relations can have subfields
+
+## TODO ##
+relation subfield relations should accept different classes
+conditionals in yaml file
+
+## REQUIREMENTS ##
 ruby >= 1.8.7
-rdf.rb (Arto Bendikens RDF library for ruby)
+ruby-marc (thanks to Ross Singer et.al.)
+rdf.rb (thanks to Arto Bendikens et.al. for the brilliant RDF library for ruby)
+rdfxml.rb (requires development libraries libxml2 and libxslt1)
 
-# install:
-gem install yaml rdf rdf-rdfxml
+## UBUNTU INSTALL ##
+sudo apt-get install libxml2-dev libxslt1-dev
+gem install marc rdf rdf-rdfxml
 
-# Usage: 
-ruby normarc2rdf.rb [inputfile.mrc] [outputfile.rdf]
+## USAGE ##
+normarc2rdf.rb -i input_file -o output_file [-r recordlimit]
+  -i input_file must be marc binary
+  -o output_file extension can be either .rdf (slooow) or .nt (very fast)
+  -r [number] stops processing after given number of records

@@ -6,157 +6,227 @@ require 'yaml'
 require 'rdf'
 require 'rdf/rdfxml'
 #require 'rdf/n3'
-#require 'rdf/ntriples'
-#require 'linkeddata' # sudo gem install linkeddata
+require 'rdf/ntriples'
 
-include RDF
+CONFIG = YAML.load_file('config/config.yml')
+MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
 
-# quit unless our script gets two command line arguments
-unless ARGV.length == 2
-  puts "normarc2rdf.rb -- convert NORMARC file to RDF"
-  puts "Missing input or output file!"
-  puts "Usage: ruby normarc2rdf.rb InputFile.mrc OutputFile.rdf\n"
-  exit
+def usage(s)
+    $stderr.puts(s)
+    $stderr.puts("Usage: \n")
+    $stderr.puts("#{File.basename($0)} -i input_file -o output_file [-r recordlimit]\n")
+    $stderr.puts("  -i input_file must be marc binary\n")
+    $stderr.puts("  -o output_file extension can be either .rdf (slooow) or .nt (very fast)\n")
+    $stderr.puts("  -r [number] stops processing after given number of records\n")
+    exit(2)
 end
 
-# our input file should be the first command line arg
-input_file = ARGV[0]
-
-# our output file should be the second command line arg
-output_file = ARGV[1]
-
-# files
-mappingfile = YAML::load_file('mapping-normarc2rdf.yml')
-reader = MARC::ForgivingReader.new(input_file)
-#writer = RDF::Writer.new(output_file)
-
-# reading records from a batch file
-
+loop { case ARGV[0]
+    when '-i':  ARGV.shift; $input_file = ARGV.shift
+    when '-o':  ARGV.shift; $output_file = ARGV.shift
+    when '-r':  ARGV.shift; $recordlimit = ARGV.shift.to_i
+    when /^-/:  usage("Unknown option: #{ARGV[0].inspect}")
+    else 
+      if !$input_file || !$output_file then usage("Missing argument!\n") end
+    break
+end; }
 
 # Initialize additional vocabularies we will be drawing from
 module RDF
   class BIBO < RDF::Vocabulary("http://purl.org/ontology/bibo/");end
-  class RDA < RDF::Vocabulary("http://RDVocab.info/Elements/");end
-  class FRBR < RDF::Vocabulary("http://purl.org/vocab/frbr/core#");end
-  class OV < RDF::Vocabulary("http://open.vocab.org/terms/");end
-  class PODE < RDF::Vocabulary("http://bibpode.no/terms/");end
-  class XFOAF < RDF::Vocabulary("http://www.foafrealm.org/xfoaf/0.1/");end
 end
 
-graph = RDF::Graph.new
-yamltags = mappingfile['tag']
+class RDFModeler
+  attr_reader :record, :statements, :uri
+  def initialize(record)
+    @record = record
+    construct_uri
+    @statements = []
+  end
+    
+  def construct_uri
+    @uri = RDF::URI.intern(CONFIG['uri']['base'] + CONFIG['uri']['resource_path'] + CONFIG['uri']['resource_prefix'])
+    id = @record[CONFIG['uri']['resource_identifier_field']]
+    @uri += id.value.strip
+  end
+
+  def set_type(t)
+    @statements << RDF::Statement.new(@uri, RDF.type, t)
+  end
+  
+  def generate_uri(s, regex=nil, prefix=nil)
+    if !regex.nil?
+      s.gsub!(/#{regex}/, '') 
+      u = RDF::URI("#{prefix}#{s}")
+    else
+      u = RDF::URI("#{s}")
+    end
+  end
+  
+  def assert(p, o)
+    @statements << RDF::Statement.new(@uri, RDF::URI(p), o)
+  end
+  
+  def relate(s, p, o)
+    @statements << RDF::Statement.new(RDF::URI(s), p, o)
+  end
+
+  def write_record
+      @statements.each do | statement |
+      #p statement
+        @@writer << statement
+      end
+  end
+end
+
+=begin
+  Start processing
+  - load mappingfile tags into object 'yamltags'
+  - iterate outputfile into RDF::Writer
+  - iterate MARC records
+  - model record tag by tag, match yaml file containing RDF mappings, iterate subfields either as array or one by one
+  - write processed record according to output given on command line
+=end
+
+yamltags = MAPPINGFILE['tag']
+reader = MARC::ForgivingReader.new($input_file)
 i = 0
 
 # start writer handle
-RDF::Writer.open("output.rdf") do | writer |
+RDF::Writer.open($output_file) do | writer |
+# insert writer block into class variable @@writer for processing records real time
+# could be formal argument in ruby < 1.9 
+@@writer = writer
 
 #start reading MARC records
 reader.each do | record |
 
-# start graph handle, one graph per record, else graph will grow too large to parse
-writer << RDF::Graph.new do | graph |
-
-  record.each do | field | 
-  # do controlfields first, they don't have subfields
-    # start parsing MARC tags
-    field.tag = case
-    when field.tag == "001"
-    @id = field.value.strip
-    @resource = RDF::URI.new("http://redstore.deichman.no/resource/#{@id}")
-    statement = RDF::Statement.new({
-    :subject   => @resource,
-    :predicate => RDF.type,
-    :object    => RDF::BIBO.Document,
-    })
-    graph << statement
-  # end controlfield
-    when field.tag == "007"
-    when field.tag == "008" # language, to be done
-    
-    # parse the datafields agains yaml file
-    else
-      yamltags.each do | yamltag, yamlsubfield |
-        # do marc vs yaml tag match with regex
-        if field.tag =~ /#{yamltag}/ 
-          yamlsubfield['subfield'].each do | yamlkey, yamlvalue |
-          ### here comes the mapping ###
-            yamlvalue = case
-          # conditionals?
-            when yamlvalue['conditions']
-          # to be done ...
-          #    puts "condition: #{yamlvalue["conditions"]}"
-          
-          # generate relations if they exist
-            when yamlvalue['relation']
-              @relation_uri = RDF::URI.new("http://redstore.deichman.no/relation/#{field[yamlkey]}")
-              # add relation to document graph first, then add relations to graph
-                statement = RDF::Statement.new({
-                :subject   => @resource,
-                :predicate => RDF::URI(yamlvalue['predicate']),
-                :object    => @relation_uri,
-                })
-                graph << statement       
-              # more than one subfields in relation?
-              if yamlvalue['relation']['subfield']
-                yamlvalue['relation']['subfield'].each do | relationkey, relationvalue |
-                  if field[relationkey]
-                    statement = RDF::Statement.new({
-                    :subject   => @relation_uri,
-                    :predicate => RDF::URI(relationvalue['predicate']),
-                    :object    => RDF::URI(field[relationkey]),
-                    })
-                    graph << statement
-                  end
-                end
-              elsif yamlvalue['relation']['object'] && yamlvalue['relation']['object']['type'] == "uri"
-                statement = RDF::Statement.new({
-                :subject   => @relation_uri,
-                :predicate => RDF.type,
-                :object    => RDF::URI(yamlvalue['relation']['class']),
-                })
-                graph << statement
-              elsif 
-                statement = RDF::Statement.new({
-                :subject   => @relation_uri,
-                :predicate => RDF.type,
-                :object    => RDF::URI(yamlvalue['relation']['class']),
-                })
-                graph << statement
-              end
-          # generate statements if yaml and marc subfields coexist
-            else
-            #p yamlvalue
-              if yamlvalue['object']['type'] == "uri"
-                statement = RDF::Statement.new({
-                :subject   => @resource,
-                :predicate => RDF::URI(yamlvalue['predicate']),
-                :object    => RDF::URI(field[yamlkey]),
-                })
-                graph << statement
-              elsif yamlvalue['object']['type'] == "literal"
-                statement = RDF::Statement.new({
-                :subject   => @resource,
-                :predicate => RDF::URI(yamlvalue['predicate']),
-                :object    => "#{field[yamlkey]}",
-                })
-                graph << statement
-              end
-
-             # end match marc vs yaml subfield
-              # p field[yamlkey]
-            end # end case yamlvalue ... when
-          end
-        end
-      end
-      
-    end # end case field.tag 
-    
-  end # end match field.tag vs yamltag
-
-end # end graph loop
-
-# do only certain number of records for testing
+# limit number of records for testing purpose
 i += 1
-break if i == 100
+if $recordlimit then break if i > $recordlimit end
+
+  # initiate record and set type
+  rdfrecord = RDFModeler.new(record)
+  rdfrecord.set_type(RDF::BIBO.Book)
+
+# start graph handle, one graph per record, else graph will grow too large to parse
+  record.tags.each do | marctag | 
+    # put all marc tag fields into array object 'marcfields' for later use
+    marcfields = record.find_all { |field| field.tag == marctag }
+    # start matching MARC tags against yamltags, put results in match array
+    match = yamltags.select { |k,v| marctag  =~ /#{k}/ }
+    # remove empty arrays - spare time parsing?
+#    if !match.empty?
+    
+      match.each do |yamlkey,yamlvalue|
+
+       # iterate each marc tag array object to catch multiple marc fields 
+       marcfields.each do | marcfield | 
+        # controlfields 001-008 don't have subfields
+        unless yamlvalue['subfield']
+          # do controlfields here ... to be done
+        else
+          
+          yamlvalue['subfield'].each do | subfields | 
+=begin
+  here comes mapping of MARC datafields, subfield by subfield 
+  subfields[0] contains subfield key
+  subfields[1] contains hash of rdf mapping values from yamlfile
+=end
+            ## Conditions? ... to be done
+            if subfields[1].has_key?('conditions')
+                #p subfields[1]['conditions']
+            ## Relations?
+            elsif subfields[1].has_key?('relation')
+               ## Multiple subfields from array? eg. ["a", "b", "c"]
+               ## share same relations, but needs to be iterated for fetching right marcfield
+               if subfields[0].kind_of?(Array)
+                 subfields[0].each do | subfield |
+                   object = "#{marcfield[subfield]}"
+                   unless object.empty?
+                     object_uri = rdfrecord.generate_uri(object, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                     # first create assertion triple
+                     rdfrecord.assert(subfields[1]['predicate'], object_uri)
+
+                     ## create relation class
+                     relatorclass = "#{subfields[1]['relation']['class']}"
+                     rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
+                     
+                     # do relations have subfields? parse them too ...
+                     relationsubfields = subfields[1]['relation']['subfield']
+                     if relationsubfields 
+
+                       relationsubfields.each do | relsub |
+                         relobject = "#{marcfield[relsub[0]]}"
+                         unless relobject.empty?
+                           if relsub[1]['object']['type'] == "uri"
+
+                             relobject_uri = rdfrecord.generate_uri(relobject, relsub[1]['object']['regex'], "#{relsub[1]['object']['prefix']}")
+                             rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
+                           else
+                             rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject)
+                           end
+                         end # end unless empty relobject
+                       end # end relationsubfields.each
+                     end # end if relationsubfields
+                     
+                   end
+                 end # end subfields[0].each
+               else # no subfield arrays?
+                 
+                 object = "#{marcfield[subfields[0]]}"
+                 unless object.empty?
+                   object_uri = rdfrecord.generate_uri(object, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                   # first create assertion triple
+                   rdfrecord.assert(subfields[1]['predicate'], object_uri)
+
+                   ## create relation class
+                   relatorclass = "#{subfields[1]['relation']['class']}"
+                   rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
+                    
+                   # do relations have subfields? parse them too ...
+                   relationsubfields = subfields[1]['relation']['subfield']
+                   if relationsubfields 
+                     relationsubfields.each do | relsub |
+                       relobject = "#{marcfield[relsub[0]]}"
+                       unless relobject.empty?
+                         if relsub[1]['object']['type'] == "uri"
+                           relobject_uri = rdfrecord.generate_uri(relobject, relsub[1]['object']['regex'], "#{relsub[1]['object']['prefix']}")
+
+                           rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
+                         else
+                           rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject)
+                         end
+                       end # end unless empty relobject
+                     end # end relationsubfields.each
+                   end # end if relationsubfields
+                     
+                 end # end unless object.empty?
+               end
+            ## Straight triples
+            else
+              if subfields[1]['object']['type'] == "uri"
+                object = "#{marcfield[subfields[0]]}"
+                unless object.empty?
+                  object_uri = rdfrecord.generate_uri(object, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                  rdfrecord.assert("#{subfields[1]['predicate']}", object_uri)
+                end
+              else
+                object = "#{marcfield[subfields[0]]}"
+                unless object.empty?
+                  rdfrecord.assert("#{subfields[1]['predicate']}", object)
+                end
+              end
+            end
+          end
+        end # end unless yamlvalue['subfield']
+       end # end marcfields.each
+      end # end match.each
+#    end # end if !match.empty?
+  end # end record.tags.each
+
+## finally ... write processed record 
+rdfrecord.write_record
+
 end # end record loop
 end # end writer loop
