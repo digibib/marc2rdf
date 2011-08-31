@@ -40,6 +40,7 @@ tag:
         object:
           prefix: http://purl.org/dc/terms/format/
           regex: !ruby/regexp /[^A-z0-9\-]/
+          split: !ruby/regexp /, */
           type: uri
       d: 
         predicate: http://bibpode.no/terms/literaryFormat
@@ -88,7 +89,9 @@ tag:
         object: 
           prefix: http://redstore.deichman.no/language/
           regex: !ruby/regexp /[^A-z0-9\-]/
+          split: !ruby/regexp /(\w{3})/
           type: uri 
+
   "082": 
     subfield: 
       a: 

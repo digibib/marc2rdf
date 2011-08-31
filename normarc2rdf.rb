@@ -143,25 +143,81 @@ if $recordlimit then break if i > $recordlimit end
                if subfields[0].kind_of?(Array)
                  subfields[0].each do | subfield |
                    object = "#{marcfield[subfield]}"
+ 
                    unless object.empty?
-                     object_uri = rdfrecord.generate_uri(object, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                     objects = []
+                     if subfields[1]['object'].has_key?('split')
+                       ary = object.split(subfields[1]['object']['split'])
+                       ary.delete_if {|c| c.empty? }
+                       ary.each { | a | objects << a }
+                     else
+                       objects << object
+                     end
+                     
+                     # iterate over objects
+                     objects.each do | o |
+                       object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                       # first create assertion triple
+                       rdfrecord.assert(subfields[1]['predicate'], object_uri)
+
+                       ## create relation class
+                       relatorclass = "#{subfields[1]['relation']['class']}"
+                       rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
+                     
+                       # do relations have subfields? parse them too ...
+                       relationsubfields = subfields[1]['relation']['subfield']
+                       if relationsubfields 
+
+                         relationsubfields.each do | relsub |
+                           relobject = "#{marcfield[relsub[0]]}"
+                           unless relobject.empty?
+                             if relsub[1]['object']['type'] == "uri"
+  
+                               relobject_uri = rdfrecord.generate_uri(relobject, relsub[1]['object']['regex'], "#{relsub[1]['object']['prefix']}")
+                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
+                             else
+                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject)
+                             end
+                           end # end unless empty relobject
+                         end # end relationsubfields.each
+                       end # end if relationsubfields
+                     end # end objects.each
+                   end # end unless object.empty?
+                 end # end subfields[0].each
+=begin
+  single subfields from yaml
+=end               
+               else # no subfield arrays?
+                 
+                 object = "#{marcfield[subfields[0]]}"
+                 unless object.empty?
+                   objects = []
+				   if subfields[1]['object'].has_key?('split')
+                     ary = object.split(subfields[1]['object']['split'])
+                     ary.delete_if {|c| c.empty? }
+                     ary.each { | a | objects << a }
+                   else
+                     objects << object
+                   end
+                   
+                   objects.each do | o |
+                     object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
                      # first create assertion triple
                      rdfrecord.assert(subfields[1]['predicate'], object_uri)
 
                      ## create relation class
                      relatorclass = "#{subfields[1]['relation']['class']}"
                      rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
-                     
+                                       
                      # do relations have subfields? parse them too ...
                      relationsubfields = subfields[1]['relation']['subfield']
                      if relationsubfields 
-
                        relationsubfields.each do | relsub |
                          relobject = "#{marcfield[relsub[0]]}"
                          unless relobject.empty?
                            if relsub[1]['object']['type'] == "uri"
-
                              relobject_uri = rdfrecord.generate_uri(relobject, relsub[1]['object']['regex'], "#{relsub[1]['object']['prefix']}")
+
                              rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
                            else
                              rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject)
@@ -169,38 +225,7 @@ if $recordlimit then break if i > $recordlimit end
                          end # end unless empty relobject
                        end # end relationsubfields.each
                      end # end if relationsubfields
-                     
-                   end
-                 end # end subfields[0].each
-               else # no subfield arrays?
-                 
-                 object = "#{marcfield[subfields[0]]}"
-                 unless object.empty?
-                   object_uri = rdfrecord.generate_uri(object, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
-                   # first create assertion triple
-                   rdfrecord.assert(subfields[1]['predicate'], object_uri)
-
-                   ## create relation class
-                   relatorclass = "#{subfields[1]['relation']['class']}"
-                   rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
-                    
-                   # do relations have subfields? parse them too ...
-                   relationsubfields = subfields[1]['relation']['subfield']
-                   if relationsubfields 
-                     relationsubfields.each do | relsub |
-                       relobject = "#{marcfield[relsub[0]]}"
-                       unless relobject.empty?
-                         if relsub[1]['object']['type'] == "uri"
-                           relobject_uri = rdfrecord.generate_uri(relobject, relsub[1]['object']['regex'], "#{relsub[1]['object']['prefix']}")
-
-                           rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
-                         else
-                           rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject)
-                         end
-                       end # end unless empty relobject
-                     end # end relationsubfields.each
-                   end # end if relationsubfields
-                     
+                   end # objects.each
                  end # end unless object.empty?
                end
             ## Straight triples
@@ -208,8 +233,18 @@ if $recordlimit then break if i > $recordlimit end
               if subfields[1]['object']['type'] == "uri"
                 object = "#{marcfield[subfields[0]]}"
                 unless object.empty?
-                  object_uri = rdfrecord.generate_uri(object, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
-                  rdfrecord.assert("#{subfields[1]['predicate']}", object_uri)
+                  objects = []
+				  if subfields[1]['object'].has_key?('split')
+                    ary = object.split(subfields[1]['object']['split'])
+                    ary.delete_if {|c| c.empty? }
+                    ary.each { | a | objects << a }
+                  else
+                    objects << object
+                  end                
+                  objects.each do | o |
+                    object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                    rdfrecord.assert("#{subfields[1]['predicate']}", object_uri)
+                  end # end objects.each
                 end
               else
                 object = "#{marcfield[subfields[0]]}"

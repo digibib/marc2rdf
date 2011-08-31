@@ -28,6 +28,7 @@ tag:
         predicate: http://purl.org/dc/terms/subject
         object: 
           regex: !ruby/regexp /[^A-z0-9\-]/
+          split: !ruby/regexp /, */               # split by comma
           prefix: http://redstore.deichman.no/subject/
           type: uri
         relation: 
@@ -38,7 +39,7 @@ tag:
               relation: 
                 class: http://bibpode.no/terms/DDKCode
               object: 
-                regex: !ruby/regexp /[^A-z0-9\-]/
+                regex: !ruby/regexp /[^A-z0-9\-]/        # remove non-ascii characters
                 prefix: http://redstore.deichman.no/classification/
                 type: uri  
 ------
@@ -50,6 +51,7 @@ relations can have subfields
 ## TODO ##
 relation subfield relations should accept different classes
 conditionals in yaml file
+streamline string management
 
 ## REQUIREMENTS ##
 ruby >= 1.8.7
