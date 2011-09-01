@@ -24,7 +24,7 @@ end
 loop { case ARGV[0]
     when '-i':  ARGV.shift; $input_file = ARGV.shift
     when '-o':  ARGV.shift; $output_file = ARGV.shift
-    when '-r':  ARGV.shift; $recordlimit = ARGV.shift.to_i
+    when '-r':  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when /^-/:  usage("Unknown option: #{ARGV[0].inspect}")
     else 
       if !$input_file || !$output_file then usage("Missing argument!\n") end
@@ -63,6 +63,17 @@ class RDFModeler
     end
   end
   
+  def generate_objects(o, split=nil)
+  objects = []
+    if !split.nil?
+      ary = o.split(split)
+      ary.delete_if {|c| c.empty? }
+      ary.each { | a | objects << a }
+    else
+      objects << o
+    end
+  end
+  
   def assert(p, o)
     @statements << RDF::Statement.new(@uri, RDF::URI(p), o)
   end
@@ -94,8 +105,11 @@ i = 0
 
 # start writer handle
 RDF::Writer.open($output_file) do | writer |
-# insert writer block into class variable @@writer for processing records real time
-# could be formal argument in ruby < 1.9 
+=begin main block
+ iterate and open writer
+ insert writer block into class variable @@writer for processing records real time
+ could be formal argument in ruby < 1.9 
+=end
 @@writer = writer
 
 #start reading MARC records
@@ -145,15 +159,8 @@ if $recordlimit then break if i > $recordlimit end
                    object = "#{marcfield[subfield]}"
  
                    unless object.empty?
-                     objects = []
-                     if subfields[1]['object'].has_key?('split')
-                       ary = object.split(subfields[1]['object']['split'])
-                       ary.delete_if {|c| c.empty? }
-                       ary.each { | a | objects << a }
-                     else
-                       objects << object
-                     end
-                     
+                     objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'])
+
                      # iterate over objects
                      objects.each do | o |
                        object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
@@ -185,20 +192,15 @@ if $recordlimit then break if i > $recordlimit end
                    end # end unless object.empty?
                  end # end subfields[0].each
 =begin
-  single subfields from yaml
+  parse single subfields from yaml
 =end               
                else # no subfield arrays?
                  
                  object = "#{marcfield[subfields[0]]}"
+                 
                  unless object.empty?
-                   objects = []
-				   if subfields[1]['object'].has_key?('split')
-                     ary = object.split(subfields[1]['object']['split'])
-                     ary.delete_if {|c| c.empty? }
-                     ary.each { | a | objects << a }
-                   else
-                     objects << object
-                   end
+                   
+                   objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'])
                    
                    objects.each do | o |
                      object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
@@ -228,19 +230,15 @@ if $recordlimit then break if i > $recordlimit end
                    end # objects.each
                  end # end unless object.empty?
                end
-            ## Straight triples
+=begin
+ parse straight triples
+=end
             else
               if subfields[1]['object']['type'] == "uri"
                 object = "#{marcfield[subfields[0]]}"
                 unless object.empty?
-                  objects = []
-				  if subfields[1]['object'].has_key?('split')
-                    ary = object.split(subfields[1]['object']['split'])
-                    ary.delete_if {|c| c.empty? }
-                    ary.each { | a | objects << a }
-                  else
-                    objects << object
-                  end                
+                  objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'])
+
                   objects.each do | o |
                     object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
                     rdfrecord.assert("#{subfields[1]['predicate']}", object_uri)
