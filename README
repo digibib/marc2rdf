@@ -5,13 +5,14 @@
 # Creator: Benjamin Rokseth
 # Date: 10.07.2011
 
-## FILES
-normarc2rdf.rb                 -- main ruby script to convert NORMARC file to RDF
-config/config-dist.yml         -- config file
-config/mapping-normarc2rdf.yml -- example mapping file: NORMARC tags to rdf mapping
-hamsun_fikset.mrc              -- test NORMARC file
-output.rdf                     -- test output RDF with -r 50 (50 records)
-output.nt                      -- test output NTRIPLES with -r 50 (50 records)
+## FILES ##
+normarc2rdf.rb                            -- main ruby script to convert NORMARC file to RDF
+config/config-dist.yml                    -- config file
+config/mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
+config/mapping-normarc2rdf_bildebaser.yml -- example mapping file: image base in NORMARC
+hamsun_fikset.mrc                         -- test NORMARC file
+output.rdf                                -- test output RDF with -r 50 (50 records)
+output.nt                                 -- test output NTRIPLES with -r 50 (50 records)
 
 ## MAPPING ##
 uses yaml hashes mapping
@@ -27,22 +28,29 @@ tag:
       : 
         predicate: http://purl.org/dc/terms/subject
         object: 
-          regex: !ruby/regexp /[^A-z0-9\-]/
-          split: !ruby/regexp /, */               # split by comma
-          prefix: http://redstore.deichman.no/subject/
-          type: uri
+          regex: !ruby/regexp /[^\w\-ÆØÅæøå]/     # remove non-ascii characters
+          split: !ruby/regexp /, */               # split objects by comma
+          prefix: http://4store.deichman.no/subject/
+          datatype: uri
         relation: 
           class: http://www.w3.org/2004/02/skos/core#Concept
-          subfield: 
+          subfield:
+            a: 
+              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              object: 
+                datatype: literal
+                lang: :no
             x: 
               predicate: http://purl.org/dc/terms/subject
+              object: 
+                regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
+                prefix: http://4store.deichman.no/classification/
+                datatype: uri
               relation: 
                 class: http://bibpode.no/terms/DDKCode
-              object: 
-                regex: !ruby/regexp /[^A-z0-9\-]/        # remove non-ascii characters
-                prefix: http://redstore.deichman.no/classification/
-                type: uri  
+ 
 ------
+## FEATURES ##
 tag numbers can be regex
 all uris are exploded
 subfields can be arrays
