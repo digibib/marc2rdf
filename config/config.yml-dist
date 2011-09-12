@@ -5,6 +5,8 @@ uri:
     resource_path: /collections/
     resource_prefix: id_
     resource_identifier_field: '001'
+    resource_type: http://example.com/type
+
     
 database:
     :adapter: sqlite
