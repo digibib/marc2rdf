@@ -267,3 +267,4 @@ rdfrecord.write_record
 
 end # end record loop
 end # end writer loop
+puts "converted records: #{i}"
