@@ -143,19 +143,16 @@ tag:
         object: 
           regex: !ruby/regexp /[\.:,;\/\s]\s*$/
           datatype: literal
-          lang: :no
       b: 
         predicate: http://rdvocab.info/Elements/variantTitleForTheWork
         object: 
           regex: !ruby/regexp /[\.:,;\/\s]\s*$/
           datatype: literal
-          lang: :no
       c: 
         predicate: http://RDVocab.info/Elements/statementOfResponsibility
         object: 
           regex: !ruby/regexp /[\.:,;\/\s]\s*$/
           datatype: literal
-          lang: :no
       n: 
         predicate: http://purl.org/ontology/bibo/number
         object: 
@@ -376,9 +373,9 @@ tag:
         - j
       : 
         predicate: http://purl.org/dc/terms/subject
-        object: 
-          regex: !ruby/regexp /[^\w\-ÆØÅæøå]/     # remove non-ascii characters
-          split: !ruby/regexp /, */               # split objects by comma
+        object:
+          regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
+          split: !ruby/regexp /, */
           prefix: http://4store.deichman.no/subject/
           datatype: uri
         relation: 

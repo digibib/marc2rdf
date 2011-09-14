@@ -21,7 +21,7 @@ excerpt:
 tag:
   "(650|690|693|699)": 
     subfield: 
-      ?
+      ? # initiates array
         - a
         - d
         - j
@@ -33,10 +33,10 @@ tag:
           prefix: http://4store.deichman.no/subject/
           datatype: uri
         relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
+          class: "http://www.w3.org/2004/02/skos/core#Concept"
           subfield:
             a: 
-              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              predicate: "http://www.w3.org/2004/02/skos/core#prefLabel"
               object: 
                 datatype: literal
                 lang: :no
@@ -51,23 +51,25 @@ tag:
  
 ------
 ## FEATURES ##
-tag numbers can be regex
-all uris are exploded
+tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
+all uris are exploded, and objects need prefix 
 subfields can be arrays
 relations can have subfields
+objects can have language tags given as symbols (:se :en_UK etc)
 
 ## TODO ##
 relation subfield relations should accept different classes
-conditionals in yaml file
-streamline string management
+conditionals in yaml file? if/else
+camelcase or underscored objects (requires extra string replace, will affect performance)
 
 ## REQUIREMENTS ##
 ruby >= 1.8.7
 ruby-marc (thanks to Ross Singer et.al.)
-rdf.rb (thanks to Arto Bendikens et.al. for the brilliant RDF library for ruby)
-rdfxml.rb (requires development libraries libxml2 and libxslt1)
+rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
+rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
 
 ## UBUNTU INSTALL ##
+(for rdf-xml support)
 sudo apt-get install libxml2-dev libxslt1-dev
 gem install marc rdf rdf-rdfxml
 

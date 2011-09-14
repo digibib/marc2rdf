@@ -22,7 +22,7 @@ def usage(s)
 end
 
 loop { case ARGV[0]
-    when '-i':  ARGV.shift; $input_file = ARGV.shift
+    when '-i':  ARGV.shift; $input_file  = ARGV.shift
     when '-o':  ARGV.shift; $output_file = ARGV.shift
     when '-r':  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when /^-/:  usage("Unknown option: #{ARGV[0].inspect}")
@@ -54,23 +54,29 @@ class RDFModeler
     @statements << RDF::Statement.new(@uri, RDF.type, t)
   end
   
-  def generate_uri(s, regex=nil, prefix=nil)
-    if !regex.nil?
-      s.gsub!(/#{regex}/, '') 
-      u = RDF::URI("#{prefix}#{s}")
-    else
-      u = RDF::URI("#{s}")
-    end
+  def generate_uri(s, prefix=nil)
+    u = RDF::URI("#{prefix}#{s}")
   end
   
-  def generate_objects(o, split=nil)
+  def generate_objects(o, split=nil, regex=nil)
+  # function to split and clean object(s) by regex
+  # split takes precedence
   objects = []
-    if !split.nil?
-      ary = o.split(split)
-      ary.delete_if {|c| c.empty? }
-      ary.each { | a | objects << a }
-    else
+    unless split or regex
       objects << o
+    else
+      if split
+        ary = o.split(split)
+        ary.delete_if {|c| c.empty? }
+        if regex
+          ary.each { |a| objects << a.gsub!(/#{regex}/, '') }
+        else
+          ary.each { |a| objects << a }
+        end
+      else # regex
+        o.gsub!(/#{regex}/, '') 
+        objects << o
+      end
     end
   end
   
@@ -159,11 +165,10 @@ if $recordlimit then break if i > $recordlimit end
                    object = "#{marcfield[subfield]}"
  
                    unless object.empty?
-                     objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'])
-
+                     objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'], subfields[1]['object']['regex'])
                      # iterate over objects
                      objects.each do | o |
-                       object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                       object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
                        # first create assertion triple
                        rdfrecord.assert(subfields[1]['predicate'], object_uri)
 
@@ -178,13 +183,16 @@ if $recordlimit then break if i > $recordlimit end
                          relationsubfields.each do | relsub |
                            relobject = "#{marcfield[relsub[0]]}"
                            unless relobject.empty?
-                             if relsub[1]['object']['datatype'] == "uri"
+                             relobjects = rdfrecord.generate_objects(relobject, relsub[1]['object']['split'], relsub[1]['object']['regex'])
+                             relobjects.each do | ro |
+                               if relsub[1]['object']['datatype'] == "uri"
   
-                               relobject_uri = rdfrecord.generate_uri(relobject, relsub[1]['object']['regex'], "#{relsub[1]['object']['prefix']}")
-                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
-                             else
-                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), RDF::Literal("#{relobject}", :language => relsub[1]['object']['lang']))
-                             end
+                                 relobject_uri = rdfrecord.generate_uri(ro, "#{relsub[1]['object']['prefix']}")
+                                 rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
+                               else
+                                 rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), RDF::Literal("#{ro}", :language => relsub[1]['object']['lang']))
+                               end
+                             end # end relobjects.each
                            end # end unless empty relobject
                          end # end relationsubfields.each
                        end # end if relationsubfields
@@ -199,11 +207,10 @@ if $recordlimit then break if i > $recordlimit end
                  object = "#{marcfield[subfields[0]]}"
                  
                  unless object.empty?
-                   
-                   objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'])
+                   objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'], subfields[1]['object']['regex'])
                    
                    objects.each do | o |
-                     object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
+                     object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
                      # first create assertion triple
                      rdfrecord.assert(subfields[1]['predicate'], object_uri)
 
@@ -217,13 +224,16 @@ if $recordlimit then break if i > $recordlimit end
                        relationsubfields.each do | relsub |
                          relobject = "#{marcfield[relsub[0]]}"
                          unless relobject.empty?
-                           if relsub[1]['object']['datatype'] == "uri"
-                             relobject_uri = rdfrecord.generate_uri(relobject, relsub[1]['object']['regex'], "#{relsub[1]['object']['prefix']}")
+                           relobjects = rdfrecord.generate_objects(relobject, relsub[1]['object']['split'], relsub[1]['object']['regex'])
+                           relobjects.each do | ro |
+                             if relsub[1]['object']['datatype'] == "uri"
+                               relobject_uri = rdfrecord.generate_uri(ro, "#{relsub[1]['object']['prefix']}")
 
-                             rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
-                           else
-                             rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), RDF::Literal("#{relobject}", :language => relsub[1]['object']['lang']))
-                           end
+                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), relobject_uri)
+                             else
+                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), RDF::Literal("#{ro}", :language => relsub[1]['object']['lang']))
+                             end
+                           end # relobjects.each
                          end # end unless empty relobject
                        end # end relationsubfields.each
                      end # end if relationsubfields
@@ -235,24 +245,18 @@ if $recordlimit then break if i > $recordlimit end
 =end
             else
                 object = "#{marcfield[subfields[0]]}"
-            
-              if subfields[1]['object']['datatype'] == "uri"
                 unless object.empty?
-                  objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'])
-
-                  objects.each do | o |
-                    object_uri = rdfrecord.generate_uri(o, subfields[1]['object']['regex'], "#{subfields[1]['object']['prefix']}")
-                    rdfrecord.assert("#{subfields[1]['predicate']}", object_uri)
-                  end # end objects.each
-                end
-              elsif subfields[1]['object']['datatype'] == "integer"
-                unless object.empty?
-                    rdfrecord.assert("#{subfields[1]['predicate']}", RDF::Literal("#{object}", :datatype => RDF::XSD.integer))
-                end               
-              else # literal
-                unless object.empty?
-                  rdfrecord.assert("#{subfields[1]['predicate']}", RDF::Literal("#{object}", :language => subfields[1]['object']['lang']))
-                end
+                  objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'], subfields[1]['object']['regex'])
+                  objects.each do | o |            
+                    if subfields[1]['object']['datatype'] == "uri"
+                      object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
+                      rdfrecord.assert("#{subfields[1]['predicate']}", object_uri)
+                    elsif subfields[1]['object']['datatype'] == "integer"
+                      rdfrecord.assert("#{subfields[1]['predicate']}", RDF::Literal("#{object}", :datatype => RDF::XSD.integer))
+                    else # literal
+                      rdfrecord.assert("#{subfields[1]['predicate']}", RDF::Literal("#{object}", :language => subfields[1]['object']['lang']))
+                  end # end objects.each do | o |
+                end # end unless object.empty?           
               end
             end
           end
