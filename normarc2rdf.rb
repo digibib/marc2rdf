@@ -253,6 +253,8 @@ if $recordlimit then break if i > $recordlimit end
                       rdfrecord.assert("#{subfields[1]['predicate']}", object_uri)
                     elsif subfields[1]['object']['datatype'] == "integer"
                       rdfrecord.assert("#{subfields[1]['predicate']}", RDF::Literal("#{object}", :datatype => RDF::XSD.integer))
+                    elsif subfields[1]['object']['datatype'] == "float"
+                      rdfrecord.assert("#{subfields[1]['predicate']}", RDF::Literal("#{object}", :datatype => RDF::XSD.float))
                     else # literal
                       rdfrecord.assert("#{subfields[1]['predicate']}", RDF::Literal("#{object}", :language => subfields[1]['object']['lang']))
                   end # end objects.each do | o |
@@ -271,4 +273,4 @@ rdfrecord.write_record
 
 end # end record loop
 end # end writer loop
-puts "converted records: #{i}"
+puts "converted records: #{i-1}"

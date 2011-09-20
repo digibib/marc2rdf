@@ -4,7 +4,7 @@ tag:
     predicate: http://www.w3.org/1999/02/22-rdf-syntax-ns#type
     object:
       regex: !ruby/regexp /[^\d]/
-      prefix: http://4store.deichman.no/resource/
+      prefix: http://rdf.deichman.no/resource/
       datatype: uri
     relation: 
       class: http://purl.org/vocab/frbr/core#Manifestation
@@ -13,7 +13,7 @@ tag:
     predicate: http://purl.org/dc/terms/language
     object: 
       regex: !ruby/regexp /[34,3]/
-      prefix: http://purl.org/dc/terms/language/
+      prefix: http://rdf.deichman.no/language/
       datatype: uri
     relation: 
       class: http://lexvo.org/ontology#Language
@@ -24,7 +24,7 @@ tag:
         predicate: http://purl.org/ontology/bibo/lccn
         object: 
           regex: !ruby/regexp /[\.:,;\/\s]\s*$/
-          prefix: http://purl.org/ontology/bibo/lccn
+          prefix: http://rdf.deichman.no/bibo/lccn/
           datatype: literal
 
   "019": 
@@ -32,20 +32,20 @@ tag:
       a: 
         predicate: http://purl.org/dc/terms/audience
         object: 
-          prefix: http://4store.deichman.no/audience/
+          prefix: http://rdf.deichman.no/audience/
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
           datatype: uri
       b: 
         predicate: http://purl.org/dc/terms/format
         object:
-          prefix: http://purl.org/dc/terms/format/
+          prefix: http://rdf.deichman.no/format/
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
           split: !ruby/regexp /, */
           datatype: uri
       d: 
         predicate: http://bibpode.no/terms/literaryFormat
         object: 
-          prefix: http://4store.deichman.no/literaryFormat/
+          prefix: http://rdf.deichman.no/literaryFormat/
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
           datatype: uri
 
@@ -55,7 +55,7 @@ tag:
         predicate: http://purl.org/ontology/bibo/isbn10
         object: 
           regex: !ruby/regexp /[^\d]/
-          datatype: integer
+          datatype: float
 
   "022": 
     subfield: 
@@ -63,7 +63,7 @@ tag:
         predicate: http://purl.org/ontology/bibo/issn
         object:
           regex: !ruby/regexp /[^\d]/
-          datatype: integer
+          datatype: float
 
   "035": 
     subfield: 
@@ -78,7 +78,7 @@ tag:
       a: 
         predicate: http://purl.org/dc/terms/language
         object: 
-          prefix: http://4store.deichman.no/language/
+          prefix: http://rdf.deichman.no/language/
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
           split: !ruby/regexp /(\w{3})/
           datatype: uri 
@@ -90,7 +90,7 @@ tag:
       a: 
         predicate: http://bibpode.no/terms/ddk
         object: 
-          prefix: http://4store.deichman.no/ddk/
+          prefix: http://rdf.deichman.no/ddk/
           regex: !ruby/regexp /[^\S]/
           datatype: uri
         relation: 
@@ -114,7 +114,7 @@ tag:
         predicate: http://purl.org/dc/terms/creator
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/organization/
+          prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
           class: http://xmlns.com/foaf/0.1/Organization
@@ -173,7 +173,7 @@ tag:
         predicate: http://purl.org/dc/terms/publicationPlace
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/publicationPlace/
+          prefix: http://rdf.deichman.no/publicationPlace/
           datatype: uri
         relation: 
           class: "http://www.geonames.org/ontology#Feature"
@@ -187,7 +187,7 @@ tag:
         predicate: http://purl.org/dc/terms/publisher
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/organization/
+          prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
           class: http://xmlns.com/foaf/0.1/Organization
@@ -259,7 +259,7 @@ tag:
         predicate: "http://purl.org/dc/terms/creator" 
         object: 
           datatype: uri
-          prefix: "http://4store.deichman.no/person/" 
+          prefix: "http://rdf.deichman.no/person/" 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
         relation: 
           class: "http://xmlns.com/foaf/0.1/Person"
@@ -285,7 +285,7 @@ tag:
               predicate: "http://www.foafrealm.org/xfoaf/0.1/nationality"
               object:
                 datatype: uri
-                prefix: "http://4store.deichman.no/nationality/"
+                prefix: "http://rdf.deichman.no/nationality/"
                 regex: !ruby/regexp /[\.:,;\/\s]\s*$/
             t:
               predicate: "http://purl.org/dc/terms/title"
@@ -299,28 +299,28 @@ tag:
             predicate: http://bibpode.no/terms/reader
             object: 
               regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-              prefix: http://4store.deichman.no/person/
+              prefix: http://rdf.deichman.no/person/
               datatype: uri
           creator:
             regex: /medforf.*/
             predicate: http://purl.org/dc/terms/creator 
             object: 
               regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-              prefix: http://4store.deichman.no/person/
+              prefix: http://rdf.deichman.no/person/
               datatype: uri
           actor:
             regex: /reg.*/
             predicate: http://bibpode.no/terms/actor
             object: 
               regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-              prefix: http://4store.deichman.no/person/
+              prefix: http://rdf.deichman.no/person/
               datatype: uri
           translator:
             regex: /over.*/
             predicate: http://purl.org/ontology/bibo/translator
             object: 
               regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-              prefix: http://4store.deichman.no/person/
+              prefix: http://rdf.deichman.no/person/
               datatype: uri
        
   "440": 
@@ -329,7 +329,7 @@ tag:
         predicate: http://purl.org/dc/terms/isPartOf
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/resource/
+          prefix: http://rdf.deichman.no/resource/
           datatype: uri
         relation: 
           class: http://purl.org/ontology/bibo/Series
@@ -354,7 +354,7 @@ tag:
         predicate: http://purl.org/dc/terms/subject
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/subject/
+          prefix: http://rdf.deichman.no/subject/
           datatype: uri
         relation: 
           class: http://www.w3.org/2004/02/skos/core#Concept
@@ -376,7 +376,7 @@ tag:
         object:
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
           split: !ruby/regexp /, */
-          prefix: http://4store.deichman.no/subject/
+          prefix: http://rdf.deichman.no/subject/
           datatype: uri
         relation: 
           class: http://www.w3.org/2004/02/skos/core#Concept
@@ -390,15 +390,15 @@ tag:
               predicate: http://purl.org/dc/terms/subject
               object: 
                 regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-                prefix: http://4store.deichman.no/classification/
+                prefix: http://rdf.deichman.no/classification/
                 datatype: uri
               relation: 
                 class: http://bibpode.no/terms/DDKCode
             1: 
-              predicate: http://4store.deichman.no/classification
+              predicate: http://rdf.deichman.no/classification
               object: 
                 regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-                prefix: http://4store.deichman.no/ddk/
+                prefix: http://rdf.deichman.no/ddk/
                 datatype: uri
               relation: 
                 class: http://bibpode.no/terms/DDKCode
@@ -409,7 +409,7 @@ tag:
         predicate: http://purl.org/ontology/mo/genre
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/mogenre/
+          prefix: http://rdf.deichman.no/mogenre/
           datatype: uri
         relation: 
           class: http://purl.org/ontology/mo/Genre
@@ -426,7 +426,7 @@ tag:
         predicate: http://purl.org/ontology/mv/genre
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/mvgenre/
+          prefix: http://rdf.deichman.no/mvgenre/
           datatype: uri
         relation: 
           class: http://purl.org/ontology/mo/Genre
@@ -443,7 +443,7 @@ tag:
         predicate: http://purl.org/dc/terms/creator
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/organization/
+          prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
           class: http://xmlns.com/foaf/0.1/Organization
@@ -463,7 +463,7 @@ tag:
           class: http://purl.org/ontology/bibo/Series
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://4store.deichman.no/resource/
+          prefix: http://rdf.deichman.no/resource/
           datatype: uri
 
   "730": 
