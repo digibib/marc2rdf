@@ -423,10 +423,10 @@ tag:
   "655": 
     subfield: 
       a: 
-        predicate: http://purl.org/ontology/mv/genre
+        predicate: http://purl.org/ontology/mo/genre
         object: 
           regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-          prefix: http://rdf.deichman.no/mvgenre/
+          prefix: http://rdf.deichman.no/mogenre/
           datatype: uri
         relation: 
           class: http://purl.org/ontology/mo/Genre
