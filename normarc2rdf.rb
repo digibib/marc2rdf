@@ -22,10 +22,10 @@ def usage(s)
 end
 
 loop { case ARGV[0]
-    when '-i':  ARGV.shift; $input_file  = ARGV.shift
-    when '-o':  ARGV.shift; $output_file = ARGV.shift
-    when '-r':  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
-    when /^-/:  usage("Unknown option: #{ARGV[0].inspect}")
+    when '-i' then  ARGV.shift; $input_file  = ARGV.shift
+    when '-o' then  ARGV.shift; $output_file = ARGV.shift
+    when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
+    when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
       if !$input_file || !$output_file then usage("Missing argument!\n") end
     break
