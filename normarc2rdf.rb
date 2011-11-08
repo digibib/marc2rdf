@@ -59,13 +59,13 @@ class RDFModeler
     u = RDF::URI("#{prefix}#{s}")
   end
   
-  def generate_objects(o, split=nil, regex_replace=nil, regex_strip=nil)
+  def generate_objects(o, regex_split=nil, regex_replace=nil, regex_strip=nil)
   # function to split and clean object(s) by regex
-  # split takes precedence, then regex_replace and finally regex_strip to remove disallowed characters
+  # regex_split takes precedence, then regex_replace and finally regex_strip to remove disallowed characters
   objects = []
   subs = {'Æ' => 'Ae', 'Ø' => 'Oe', 'Å' => 'Aa', 'æ' => 'ae', 'ø' => 'oe', 'å' => 'aa', 'Ä' => 'Ae', 'Ö' => 'Oe', 'ä' => 'ae', 'ö' => 'oe'}
-    if split 
-      ary = o.split(split)
+    if regex_split 
+      ary = o.split(/#{regex_split}/)
       ary.delete_if {|c| c.empty? }
       if regex_replace
         ary_replaced = []
@@ -179,7 +179,7 @@ if $recordlimit then break if i > $recordlimit end
                    object = "#{marcfield[subfield]}"
  
                    unless object.empty?
-                     objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'], subfields[1]['object']['regex_replace'], subfields[1]['object']['regex_strip'])
+                     objects = rdfrecord.generate_objects(object, subfields[1]['object']['regex_split'], subfields[1]['object']['regex_replace'], subfields[1]['object']['regex_strip'])
                      # iterate over objects
                      objects.each do | o |
                        object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
@@ -196,7 +196,7 @@ if $recordlimit then break if i > $recordlimit end
                          relationsubfields.each do | relsub |
                            relobject = "#{marcfield[relsub[0]]}"
                            unless relobject.empty?
-                             relobjects = rdfrecord.generate_objects(relobject, relsub[1]['object']['split'], relsub[1]['object']['regex_replace'], relsub[1]['object']['regex_strip'])
+                             relobjects = rdfrecord.generate_objects(relobject, relsub[1]['object']['regex_split'], relsub[1]['object']['regex_replace'], relsub[1]['object']['regex_strip'])
                              
                              relobjects.each do | ro |
                                if relsub[1]['object']['datatype'] == "uri"
@@ -221,7 +221,7 @@ if $recordlimit then break if i > $recordlimit end
                  object = "#{marcfield[subfields[0]]}"
                  
                  unless object.empty?
-                   objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'], subfields[1]['object']['regex_replace'], subfields[1]['object']['regex_strip'])
+                   objects = rdfrecord.generate_objects(object, subfields[1]['object']['regex_split'], subfields[1]['object']['regex_replace'], subfields[1]['object']['regex_strip'])
                    
                    objects.each do | o |
                      object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
@@ -238,7 +238,7 @@ if $recordlimit then break if i > $recordlimit end
                        relationsubfields.each do | relsub |
                          relobject = "#{marcfield[relsub[0]]}"
                          unless relobject.empty?
-                           relobjects = rdfrecord.generate_objects(relobject, relsub[1]['object']['split'], relsub[1]['object']['regex_replace'], relsub[1]['object']['regex_strip'])
+                           relobjects = rdfrecord.generate_objects(relobject, relsub[1]['object']['regex_split'], relsub[1]['object']['regex_replace'], relsub[1]['object']['regex_strip'])
                            relobjects.each do | ro |
                              if relsub[1]['object']['datatype'] == "uri"
                                relobject_uri = rdfrecord.generate_uri(ro, "#{relsub[1]['object']['prefix']}")
@@ -261,7 +261,7 @@ if $recordlimit then break if i > $recordlimit end
             else
               object = "#{marcfield[subfields[0]]}"
               unless object.empty?
-                objects = rdfrecord.generate_objects(object, subfields[1]['object']['split'], subfields[1]['object']['regex_replace'], subfields[1]['object']['regex_strip'])
+                objects = rdfrecord.generate_objects(object, subfields[1]['object']['regex_split'], subfields[1]['object']['regex_replace'], subfields[1]['object']['regex_strip'])
                 objects.each do | o |            
                   if subfields[1]['object']['datatype'] == "uri"
                     object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")

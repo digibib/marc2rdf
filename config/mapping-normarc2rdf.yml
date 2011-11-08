@@ -3,7 +3,7 @@ tag:
   "001": 
     predicate: http://www.w3.org/1999/02/22-rdf-syntax-ns#type
     object:
-      regex_strip: !ruby/regexp /[\D]+/
+      regex_strip: "[\D]+"
       prefix: http://rdf.deichman.no/resource/
       datatype: uri
     relation: 
@@ -12,7 +12,7 @@ tag:
   "008": 
     predicate: http://purl.org/dc/terms/language
     object: 
-      regex_strip: !ruby/regexp /^{34}{3}/
+      regex_strip: "^{34}{3}"
       prefix: http://lexvo.org/id/iso639-3/
       datatype: uri
     relation: 
@@ -23,7 +23,7 @@ tag:
       a: 
         predicate: http://purl.org/ontology/bibo/lccn
         object: 
-          regex_strip: !ruby/regexp /[\.:,;\/\s]\s*$/
+          regex_strip: "[\.:,;\/\s]\s*$"
           prefix: http://rdf.deichman.no/bibo/lccn/
           datatype: literal
 
@@ -33,20 +33,20 @@ tag:
         predicate: http://purl.org/dc/terms/audience
         object: 
           prefix: http://rdf.deichman.no/audience/
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
           datatype: uri
       b: 
         predicate: http://purl.org/dc/terms/format
         object:
           prefix: http://rdf.deichman.no/format/
-          regex_strip: !ruby/regexp /[\W]+/
-          split: !ruby/regexp /, */
+          regex_strip: "[\W]+"
+          regex_split: ", *"
           datatype: uri
       d: 
         predicate: http://bibpode.no/terms/literaryFormat
         object: 
           prefix: http://rdf.deichman.no/literaryFormat/
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
           datatype: uri
 
   "020": 
@@ -54,7 +54,7 @@ tag:
       a: 
         predicate: http://purl.org/ontology/bibo/isbn
         object: 
-          regex_strip: !ruby/regexp /[\D]+/
+          regex_strip: "[\D]+"
           datatype: literal
 
   "022": 
@@ -62,7 +62,7 @@ tag:
       a: 
         predicate: http://purl.org/ontology/bibo/issn
         object:
-          regex_strip: !ruby/regexp /[\D]+/
+          regex_strip: "[\D]+"
           datatype: literal
 
   "035": 
@@ -70,7 +70,7 @@ tag:
       a: 
         predicate: http://purl.org/ontology/bibo/oclcnum
         object: 
-          regex_strip: !ruby/regexp /^\(OcoLC\)/
+          regex_strip: "^\(OcoLC\)"
           datatype: literal
 
   "041": 
@@ -79,8 +79,8 @@ tag:
         predicate: http://lexvo.org/ontology#marcCode
         object: 
           prefix: http://lexvo.org/id/iso639-3/
-          regex_strip: !ruby/regexp /[\W]+/
-          split: !ruby/regexp /(\w{3})/
+          regex_strip: "[\W]+"
+          regex_split: "(\w{3})"
           datatype: uri 
         relation: 
           class: http://lexvo.org/ontology#Language
@@ -91,7 +91,7 @@ tag:
         predicate: http://bibpode.no/terms/ddk
         object: 
           prefix: http://rdf.deichman.no/ddk/
-          regex_strip: !ruby/regexp /[\W\.]+/
+          regex_strip: "[\W\.]+"
           datatype: uri
         relation: 
           class: http://bibpode.no/terms/DDKCode
@@ -114,7 +114,7 @@ tag:
         predicate: http://purl.org/dc/terms/creator
         object:
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö" 
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
@@ -134,7 +134,7 @@ tag:
       : 
         predicate: http://purl.org/dc/terms/alternative
         object: 
-          regex_strip: !ruby/regexp /[\.:,;\/\s]\s*$/
+          regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
 
   "245": 
@@ -142,22 +142,22 @@ tag:
       a: 
         predicate: http://purl.org/dc/terms/title
         object: 
-          regex_strip: !ruby/regexp /[\.:,;\/\s]\s*$/
+          regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
       b: 
         predicate: http://rdvocab.info/Elements/variantTitleForTheWork
         object: 
-          regex_strip: !ruby/regexp /[\.:,;\/\s]\s*$/
+          regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
       c: 
         predicate: http://RDVocab.info/Elements/statementOfResponsibility
         object: 
-          regex_strip: !ruby/regexp /[\.:,;\/\s]\s*$/
+          regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
       n: 
         predicate: http://purl.org/ontology/bibo/number
         object: 
-          regex_strip: !ruby/regexp /[\D]+/
+          regex_strip: "[\D]+"
           datatype: integer
 
   "250": 
@@ -165,7 +165,7 @@ tag:
       a: 
         predicate: http://purl.org/ontology/bibo/edition
         object: 
-          regex_strip: !ruby/regexp /[\D]+/
+          regex_strip: "[\D]+"
           datatype: integer
 
   "260": 
@@ -174,7 +174,7 @@ tag:
         predicate: http://purl.org/dc/terms/publicationPlace
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/publicationPlace/
           datatype: uri
         relation: 
@@ -189,7 +189,7 @@ tag:
         predicate: http://purl.org/dc/terms/publisher
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
@@ -203,7 +203,7 @@ tag:
       c: 
         predicate: http://purl.org/dc/terms/issued
         object: 
-          regex_strip: !ruby/regexp /[\D]+/
+          regex_strip: "[\D]+"
           datatype: integer
           
   "300": 
@@ -211,7 +211,7 @@ tag:
       a: 
         predicate: http://purl.org/ontology/bibo/numPages
         object: 
-          regex_strip: !ruby/regexp /[\D]+/
+          regex_strip: "[\D]+"
           datatype: integer
       ?
         - b
@@ -220,7 +220,7 @@ tag:
       : 
         predicate: http://bibpode.no/terms/physicalDescription
         object: 
-          regex_strip: !ruby/regexp /^[\W]+[\W]+$/
+          regex_strip: "^[\W]+[\W]+$"
           datatype: literal
           lang: :no
 
@@ -235,7 +235,7 @@ tag:
       : 
         predicate: http://RDVocab.info/Elements/parallelTitleProper
         object: 
-          regex_strip: !ruby/regexp /^[\W]+[\W]+$/
+          regex_strip: "^[\W]+[\W]+$"
           datatype: literal
           lang: :no
 
@@ -244,7 +244,7 @@ tag:
       a: 
         predicate: http://purl.org/dc/terms/description
         object: 
-          regex_strip: !ruby/regexp /^[\W]+[\W]+$/
+          regex_strip: "^[\W]+[\W]+$"
           datatype: literal
           lang: :no
 
@@ -253,7 +253,7 @@ tag:
       a: 
         predicate: http://purl.org/ontology/bibo/identifier
         object: 
-          regex_strip: !ruby/regexp /^[\W]+[\W]+$/
+          regex_strip: "^[\W]+[\W]+$"
           datatype: literal
 
   "(100|400|700|790|796|800|896)": 
@@ -264,7 +264,7 @@ tag:
           datatype: uri
           prefix: "http://rdf.deichman.no/person/" 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
         relation: 
           class: "http://xmlns.com/foaf/0.1/Person"
           subfield:
@@ -290,7 +290,7 @@ tag:
               object:
                 datatype: uri
                 prefix: "http://rdf.deichman.no/nationality/"
-                regex_strip: !ruby/regexp /[\W]+/
+                regex_strip: "[\W]+"
             t:
               predicate: "http://purl.org/dc/terms/title"
               object:
@@ -299,31 +299,31 @@ tag:
       e:
         conditions: 
           reader:
-            regex_strip: /innl.*/
+            regex_strip: "innl.*"
             predicate: http://bibpode.no/terms/reader
             object: 
-              regex_strip: !ruby/regexp /[\W]+/
+              regex_strip: "[\W]+"
               prefix: http://rdf.deichman.no/person/
               datatype: uri
           creator:
-            regex_strip: /medforf.*/
+            regex_strip: "medforf.*"
             predicate: http://purl.org/dc/terms/creator 
             object: 
-              regex_strip: !ruby/regexp /[\W]+/
+              regex_strip: "[\W]+"
               prefix: http://rdf.deichman.no/person/
               datatype: uri
           actor:
-            regex_strip: /reg.*/
+            regex_strip: "reg.*"
             predicate: http://bibpode.no/terms/actor
             object: 
-              regex_strip: !ruby/regexp /[\W]+/
+              regex_strip: "[\W]+"
               prefix: http://rdf.deichman.no/person/
               datatype: uri
           translator:
-            regex_strip: /over.*/
+            regex_strip: "over.*"
             predicate: http://purl.org/ontology/bibo/translator
             object: 
-              regex_strip: !ruby/regexp /[\W]+/
+              regex_strip: "[\W]+"
               prefix: http://rdf.deichman.no/person/
               datatype: uri
        
@@ -332,7 +332,7 @@ tag:
       a: 
         predicate: http://purl.org/dc/terms/isPartOf
         object: 
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/resource/
           datatype: uri
         relation: 
@@ -340,7 +340,7 @@ tag:
       v: 
         predicate: http://purl.org/ontology/bibo/numPages
         object: 
-          regex_strip: !ruby/regexp /[\D]+/
+          regex_strip: "[\D]+"
           datatype: integer
       x: 
         predicate: http://purl.org/ontology/bibo/issn
@@ -358,7 +358,7 @@ tag:
         predicate: http://purl.org/dc/terms/subject
         object:
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö" 
-          regex_strip: !ruby/regexp /[^A-z_0-9\-]+/
+          regex_strip: "[^A-z_0-9\-]+"
           prefix: http://rdf.deichman.no/subject/
           datatype: uri
         relation: 
@@ -375,8 +375,8 @@ tag:
         predicate: http://purl.org/dc/terms/subject
         object:
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-          regex_strip: !ruby/regexp /[\W\-]+/
-          split: !ruby/regexp /, */
+          regex_strip: "[\W\-]+"
+          regex_split: ", *"
           prefix: http://rdf.deichman.no/subject/
           datatype: uri
         relation: 
@@ -391,7 +391,7 @@ tag:
               predicate: http://purl.org/dc/terms/subject
               object: 
                 regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-                regex_strip: !ruby/regexp /[\W\-\.]+/
+                regex_strip: "[\W\-\.]+"
                 prefix: http://rdf.deichman.no/classification/
                 datatype: uri
               relation: 
@@ -400,7 +400,7 @@ tag:
               predicate: http://rdf.deichman.no/classification
               object: 
                 regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-                regex_strip: !ruby/regexp /[\W\-\.]+/
+                regex_strip: "[\W\-\.]+"
                 prefix: http://rdf.deichman.no/ddk/
                 datatype: uri
               relation: 
@@ -412,7 +412,7 @@ tag:
         predicate: http://purl.org/ontology/mo/genre
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-          regex_strip: !ruby/regexp /[\W]+/
+          regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/mogenre/
           datatype: uri
         relation: 
@@ -430,7 +430,7 @@ tag:
         predicate: http://purl.org/ontology/mo/genre
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-          regex_strip: !ruby/regexp /[\W\-]+/
+          regex_strip: "[\W\-]+"
           prefix: http://rdf.deichman.no/mogenre/
           datatype: uri
         relation: 
@@ -448,7 +448,7 @@ tag:
         predicate: http://purl.org/dc/terms/creator
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
-          regex_strip: !ruby/regexp /[\W\-]+/
+          regex_strip: "[\W\-]+"
           prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
@@ -466,7 +466,7 @@ tag:
       a: 
         predicate: http://purl.org/dc/terms/isPartOf
         object:
-          regex_strip: !ruby/regexp /[\W\-]+/
+          regex_strip: "[\W\-]+"
           prefix: http://rdf.deichman.no/resource/
           datatype: uri
         relation: 
@@ -482,6 +482,6 @@ tag:
       a: 
         predicate: http://purl.org/dc/terms/alternative
         object: 
-          regex_strip: !ruby/regexp /^[\W]+[\W]+$/
+          regex_strip: "^[\W]+[\W]+$"
           datatype: literal
  
