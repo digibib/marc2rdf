@@ -28,9 +28,10 @@ tag:
       : 
         predicate: http://purl.org/dc/terms/subject
         object: 
-          regex: !ruby/regexp /[^\w\-ÆØÅæøå]/     # remove non-ascii characters
           split: !ruby/regexp /, */               # split objects by comma
-          prefix: http://4store.deichman.no/subject/
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"    # characters to replace, hash array given in script
+          regex_strip: !ruby/regexp /[\W\-]+/     # characters to remove
+          prefix: http://rdf.deichman.no/subject/
           datatype: uri
         relation: 
           class: "http://www.w3.org/2004/02/skos/core#Concept"
@@ -43,8 +44,9 @@ tag:
             x: 
               predicate: http://purl.org/dc/terms/subject
               object: 
-                regex: !ruby/regexp /[^\w\-ÆØÅæøå]/
-                prefix: http://4store.deichman.no/classification/
+                regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö"
+                regex_strip: !ruby/regexp /[\W\-]+/
+                prefix: http://rdf.deichman.no/classification/
                 datatype: uri
               relation: 
                 class: http://bibpode.no/terms/DDKCode
@@ -60,7 +62,7 @@ objects can have language tags given as symbols (:se :en_UK etc)
 ## TODO ##
 relation subfield relations should accept different classes
 conditionals in yaml file? if/else
-camelcase or underscored objects (requires extra string replace, will affect performance)
+camelcase or underscored objects 
 
 ## REQUIREMENTS ##
 ruby >= 1.8.7
