@@ -52,15 +52,16 @@ tag:
 ------
 ## FEATURES ##
 tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
-all uris are exploded, and objects need prefix 
+all uris are exploded in yaml file, and objects need full prefix 
 subfields can be arrays
 relations can have subfields
 objects can have language tags given as symbols (:se :en_UK etc)
+string replacement characters can be given individually in yaml objects 
+  main list under substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa, ... }
 
 ## TODO ##
 relation subfield relations should accept different classes
 conditionals in yaml file? if/else
-camelcase or underscored objects (requires extra string replace, will affect performance)
 
 ## REQUIREMENTS ##
 ruby >= 1.8.7
