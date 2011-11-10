@@ -432,7 +432,6 @@ tag:
         predicate: http://purl.org/ontology/mo/genre
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
-          regex_strip: "[\W\-]+"
           prefix: http://rdf.deichman.no/mogenre/
           datatype: uri
         relation: 
