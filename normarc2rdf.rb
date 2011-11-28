@@ -60,16 +60,16 @@ class RDFModeler
   end
   
   def generate_objects(o, options={})
-  defaults = {
-    :regex_split => nil,
-    :regex_replace => nil,
-    :regex_strip => nil,
-    :substring => nil,
-    }
-  options = defaults.merge(options)
-  # function to split and clean object(s) by regex
-  # regex_split takes precedence, then regex_replace and finally regex_strip to remove disallowed characters
-  # TODO: function to combine fields
+=begin
+ function to split and clean object(s) by optional parameters fed from yaml file
+   :regex_split => regex split condition, eg. ", *" - split by comma and space
+   :regex_replace => regex characters to replace, eg. "Å|Ø|Æ|\ |" mapped against hash substitutes in yaml file
+   :regex_strip => regex match to strip away
+   :substr_offset => string slice by position, eg. - substr_offset: 34 - get string from position 34
+   :substr_length => string slice length
+   regex_split takes precedence, then regex_replace and finally regex_strip to remove disallowed characters
+   TODO: function to combine fields
+=end
   objects = []
   subs = MAPPINGFILE['substitutes']
     if options[:regex_split]
@@ -95,8 +95,11 @@ class RDFModeler
         o.gsub!(/#{options[:regex_strip]}/, '')
       end
       objects << o
+      
     elsif options[:regex_strip]
       objects << o.gsub(/#{options[:regex_strip]}/, '')
+    elsif options[:substr_offset]
+      objects << o.slice(options[:substr_offset],options[:substr_length])
     else
       objects << o
     end
@@ -167,20 +170,26 @@ if $recordlimit then break if i > $recordlimit end
         # controlfields 001-009 don't have subfields
         unless yamlvalue.has_key?('subfield')
           # do controlfields here ... to be done
-#         object = "#{marcfield.value}"
-#            unless object.empty?
-#              objects = rdfrecord.generate_objects(object, yamlvalue['object']['regex_split'], yamlvalue['object']['regex_replace'], yamlvalue['object']['regex_strip'])
-#              p objects
-#              objects.each do | o |
-#                object_uri = rdfrecord.generate_uri(o, "#{yamlvalue['object']['prefix']}")
-#                # first create assertion triple
-#                rdfrecord.assert(yamlvalue['predicate'], object_uri)
-
-                ## create relation class
-#                relatorclass = "#{yamlvalue['relation']['class']}"
-#                rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
-#               end # end objects.each    
-#             end # end unless object.empty?
+          object = "#{marcfield.value}"
+          unless object.empty?
+            yamlvalue.each do | key,value |
+              objects = rdfrecord.generate_objects(object, :regex_split => value['object']['regex_split'], :regex_replace => value['object']['regex_replace'], :regex_strip => value['object']['regex_strip'], :substr_offset => value['object']['substr_offset'], :substr_length => value['object']['substr_length'])
+              objects.each do | o |
+                unless value['object']['datatype'] == "literal"
+                  object_uri = rdfrecord.generate_uri(o, "#{value['object']['prefix']}")
+                  # first create assertion triple
+                  rdfrecord.assert(value['predicate'], object_uri)
+                  if value.has_key?('relation')
+                    ## create relation class
+                    relatorclass = "#{value['relation']['class']}"
+                    rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
+                  end # end if relation
+                else # literal
+                  rdfrecord.assert(value['predicate'], RDF::Literal("#{o}"))
+                end
+              end # end objects.each
+            end # end yamlvalue.each    
+          end # end unless object.empty?
 
         else
           
@@ -220,7 +229,7 @@ if $recordlimit then break if i > $recordlimit end
                  subfields[0].each do | subfield |
                    object = "#{marcfield[subfield]}"
                    unless object.empty?
-                     objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'])
+                     objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'])
                      # iterate over objects
                      objects.each do | o |
                        object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
@@ -237,7 +246,7 @@ if $recordlimit then break if i > $recordlimit end
                          relationsubfields.each do | relsub |
                            relobject = "#{marcfield[relsub[0]]}"
                            unless relobject.empty?
-                             relobjects = rdfrecord.generate_objects(relobject, :regex_split => relsub[1]['object']['regex_split'], :regex_replace => relsub[1]['object']['regex_replace'], :regex_strip => relsub[1]['object']['regex_strip'])
+                             relobjects = rdfrecord.generate_objects(relobject, :regex_split => relsub[1]['object']['regex_split'], :regex_replace => relsub[1]['object']['regex_replace'], :regex_strip => relsub[1]['object']['regex_strip'], :substr_offset => relsub[1]['object']['substr_offset'], :substr_length => relsub[1]['object']['substr_length'])
                              
                              relobjects.each do | ro |
                                if relsub[1]['object']['datatype'] == "uri"
@@ -260,7 +269,7 @@ if $recordlimit then break if i > $recordlimit end
                else # no subfield arrays?
                  object = "#{marcfield[subfields[0]]}"
                  unless object.empty?
-                   objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'])
+                   objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'])
                    objects.each do | o |
                      object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
                      # first create assertion triple
@@ -276,7 +285,7 @@ if $recordlimit then break if i > $recordlimit end
                        relationsubfields.each do | relsub |
                          relobject = "#{marcfield[relsub[0]]}"
                          unless relobject.empty?
-                           relobjects = rdfrecord.generate_objects(relobject, :regex_split => relsub[1]['object']['regex_split'], :regex_replace => relsub[1]['object']['regex_replace'], :regex_strip => relsub[1]['object']['regex_strip'])
+                           relobjects = rdfrecord.generate_objects(relobject, :regex_split => relsub[1]['object']['regex_split'], :regex_replace => relsub[1]['object']['regex_replace'], :regex_strip => relsub[1]['object']['regex_strip'], :substr_offset => relsub[1]['object']['substr_offset'], :substr_length => relsub[1]['object']['substr_length'])
                            relobjects.each do | ro |
                              if relsub[1]['object']['datatype'] == "uri"
                                relobject_uri = rdfrecord.generate_uri(ro, "#{relsub[1]['object']['prefix']}")
@@ -301,7 +310,7 @@ if $recordlimit then break if i > $recordlimit end
                 subfields[0].each do | subfield |
                   object = "#{marcfield[subfield]}"
                   unless object.empty?
-                    objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'])
+                    objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'])
                     objects.each do | o |  
                       if subfields[1]['object']['datatype'] == "uri"
                         object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
@@ -319,7 +328,7 @@ if $recordlimit then break if i > $recordlimit end
               else
                 object = "#{marcfield[subfields[0]]}"
                 unless object.empty?
-                  objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'])
+                  objects = rdfrecord.generate_objects(object, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'])
                   objects.each do | o |            
                     if subfields[1]['object']['datatype'] == "uri"
                       object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
