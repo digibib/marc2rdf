@@ -1,0 +1,3698 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns0="http://purl.org/ontology/bibo/" xmlns:ns1="http://RDVocab.info/Elements/" xmlns:ns2="http://purl.org/dc/term/" xmlns:ns3="http://lexvo.org/ontology#" xmlns:ns4="http://purl.org/dc/terms/" xmlns:ns5="http://www.geonames.org/ontology#" xmlns:ns6="http://xmlns.com/foaf/0.1/" xmlns:ns7="http://www.w3.org/2004/02/skos/core#" xmlns:ns8="http://rdf.deichman.no/" xmlns:ns9="http://www.foafrealm.org/xfoaf/0.1/" xmlns:nt0="http://rdvocab.info/Elements/" xmlns:nt1="http://bibpode.no/terms/" xmlns:nt2="http://purl.org/ontology/mo/">
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0396243">
+    <ns1:statementOfResponsibility>Harald Bache-Wiig og Astrid Sæther (red.)</ns1:statementOfResponsibility>
+    <ns2:language>
+      <ns3:Language rdf:about="http://lexvo.org/id/iso639-3/nob">
+        <ns3:iso639P3Code>dan</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nno</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nob</ns3:iso639P3Code>
+        <ns3:iso639P3Code>swe</ns3:iso639P3Code>
+      </ns3:Language>
+    </ns2:language>
+    <ns2:language>
+      <ns3:Language rdf:about="http://lexvo.org/id/iso639-3/swe">
+        <ns3:iso639P3Code>dan</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nno</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nob</ns3:iso639P3Code>
+        <ns3:iso639P3Code>swe</ns3:iso639P3Code>
+      </ns3:Language>
+    </ns2:language>
+    <ns4:description xml:lang="no">Bortsett fra artiklene om de enkelte forfattere inneholder samlingen bl.a. følgende bidrag: Haslund, F.J.: Det seksuelle gjennombrudd i 1880- og 1890-årene. - Bache-Wiig, H.: Den farlige kjærligheten. Mannlighet og kvinneangst i 1890-åra. - Lombnæs, A.G.: Det modernes gjennombrudd - om kvinner og litterær stil på 1890-tallet. -- Øvrige bidragsytere: R.N. Nettum. A. Sæther. G. Bø. U. Gunsilius. E. Beyer. A. Lorenz. A. Taube.</ns4:description>
+    <ns4:description xml:lang="no">Har bibliografi og opplysninger om bidragsyterne.</ns4:description>
+    <ns4:description xml:lang="no">a93-7</ns4:description>
+    <ns4:description xml:lang="no">xal0430</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Meta"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1993</ns4:issued>
+    <ns4:location>+r</ns4:location>
+    <ns4:location>100</ns4:location>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Oslo">
+        <ns5:name xml:lang="no">Oslo</ns5:name>
+        <ns5:name xml:lang="no">[Oslo]</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Aschehoug">
+        <ns6:name xml:lang="no">Aschehoug</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18281906">
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18491912">
+        <ns7:prefLabel xml:lang="no">Strindberg, August</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18511924">
+        <ns7:prefLabel xml:lang="no">Garborg, Arne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18591952">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18651926">
+        <ns7:prefLabel xml:lang="no">Kinck, Hans Ernst</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18661900">
+        <ns7:prefLabel xml:lang="no">Obstfelder, Sigbjørn</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18751908">
+        <ns7:prefLabel xml:lang="no">Jølsen, Ragnhild</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Erotikk">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Litteratur"/>
+        <ns7:prefLabel xml:lang="no">Erotikk</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Garborg_Arne">
+        <ns7:prefLabel xml:lang="no">Garborg, Arne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Hamsun_Knut">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Ibsen_Henrik">
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Joelsen_Ragnhild">
+        <ns7:prefLabel xml:lang="no">Jølsen, Ragnhild</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/John_Gabriel_Borkman">
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kinck_Hans_Ernst">
+        <ns7:prefLabel xml:lang="no">Kinck, Hans Ernst</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kvinner">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Litteratur"/>
+        <ns7:prefLabel xml:lang="no">Kvinner</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Norsk_litteratur">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/AustAgder"/>
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Essays"/>
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Historie_og_kritikk"/>
+        <ns7:prefLabel xml:lang="no">Norsk litteratur</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Obstfelder_Sigbjoern">
+        <ns7:prefLabel xml:lang="no">Obstfelder, Sigbjørn</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Strindberg_August">
+        <ns7:prefLabel xml:lang="no">Strindberg, August</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Traette_maend">
+        <ns7:prefLabel xml:lang="no">Garborg, Arne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/n">
+        <ns7:prefLabel xml:lang="no">Aasen, Ivar</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Andersen, Tryggve</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Astrup, Hans Rasmus</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Bjørnson, Bjørnstjerne</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Brun, Johan Nordahl</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Brynildsen, Aasmund</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Bull, Ole</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Collett, Camilla</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Dass, Petter</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Faldbakken, Knut</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Garborg, Arne</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Gran, Gerhard</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Grieg, Harald</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Hansen, Hans Olav</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Heiberg, Gunnar</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Hoel, Sigurd</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Jacobsen, Rolf</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Jølsen, Ragnhild</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Kielland, Alexander Lange</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Kinck, Hans Ernst</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Kjær, Nils</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Kjærstad, Jan</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Mehren, Stein</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Midttun, Olav</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Obstfelder, Sigbjørn</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Paasche, Fredrik</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Quisling, Vidkun</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Richter, Ole Jørgensen</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Rolfsen, Nordahl</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Sandel, Cora</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Thesen, Rolv</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Thoresen, Magdalene</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Undset, Sigrid</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Vogt, Nils Collett</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Wergeland, Henrik</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Wildenvey, Herman</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Øverland, Arnulf</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/sv">
+        <ns7:prefLabel xml:lang="no">Lindegren, Erik</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Strindberg, August</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>100 år etter</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/BacheWiig_Harald">
+        <ns8:lifespan>1946-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bache-Wiig, Harald</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Saether_Astrid">
+        <ns8:lifespan>1945-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Sæther, Astrid</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:isbn>8203173020</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">207</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>839.8209</ns8:dewey>
+    <ns8:priceInfo>Nkr228.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>om det litterære livet i Norge i 1890-åra</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0325261">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Elster_Kristian">
+        <ns8:lifespan>1881-1947</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Elster, Kristian</ns6:name>
+        <ns6:title>d.y.</ns6:title>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Innhold: Ibsens digte ; Magdalene Thoresen ; Mennesket og digteren ; Knut Hamsun: om hovedmotivet i hans digtning ; Gunnar Heiberg ; Nils Collett Vogt ; Sigrid Undset</ns4:description>
+    <ns4:description xml:lang="no">r92 xos0130</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1920</ns4:issued>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:location>Els</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Kra">
+        <ns5:name xml:lang="no">Kra.</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Aschehoug"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18191903">
+        <ns7:prefLabel xml:lang="no">Thoresen, Magdalene</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18281906"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18571929">
+        <ns7:prefLabel xml:lang="no">Heiberg, Gunnar</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18641937">
+        <ns7:prefLabel xml:lang="no">Vogt, Nils Collett</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18821949">
+        <ns7:prefLabel xml:lang="no">Undset, Sigrid</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Heiberg_Gunnar">
+        <ns7:prefLabel xml:lang="no">Heiberg, Gunnar</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Ibsen_Henrik"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Thoresen_Magdalene">
+        <ns7:prefLabel xml:lang="no">Thoresen, Magdalene</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Undset_Sigrid">
+        <ns7:prefLabel xml:lang="no">Undset, Sigrid</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Vogt_Nils_Collett">
+        <ns7:prefLabel xml:lang="no">Vogt, Nils Collett</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Fra tid til anden</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">189</ns0:numPages>
+    <ns8:dewey>839.8209</ns8:dewey>
+    <nt0:variantTitleForTheWork>bøker og digtere</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0857854">
+    <ns1:statementOfResponsibility>Torbjørn Lysebo Ekelund</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill., port.</nt1:physicalDescription>
+    <ns4:audience rdf:resource="http://rdf.deichman.no/audience/buumu"/>
+    <ns4:audience rdf:resource="http://rdf.deichman.no/audience/td"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Ekelund_Torbjoern_Lysebo">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Ekelund, Torbjørn Lysebo</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">09-uke21j</ns4:description>
+    <ns4:description xml:lang="no">09x0527arj</ns4:description>
+    <ns4:description xml:lang="no">Har bibliografi, innholdsfortegnelse, kronologisk oversikt over livsløpet</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Fortellingenom"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2009</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:location>u</ns4:location>
+    <ns4:location>u BI</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Kagge">
+        <ns6:name xml:lang="no">Kagge</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/1859-1952">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Biografier">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Barneavdelingen"/>
+        <ns7:prefLabel xml:lang="no">Biografier</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Hamsun">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Knut">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/n.">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>Fortellingen om Knut Hamsun</ns4:title>
+    <ns0:isbn>9788248908654</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">79</ns0:numPages>
+    <nt2:genre>
+      <nt2:Genre rdf:about="http://rdf.deichman.no/mogenre/Biografier">
+        <ns7:prefLabel xml:lang="no">Biografier</ns7:prefLabel>
+      </nt2:Genre>
+    </nt2:genre>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:bsID>0245365</ns8:bsID>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 148.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>fattiggutten som ble verdensberømt forfatter</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0377821">
+    <ns1:statementOfResponsibility>Gunvor Egge</ns1:statementOfResponsibility>
+    <ns4:alternative>Sanger, op. 1 - 2</ns4:alternative>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bjoernson_Bjoernstjerne">
+        <ns4:title xml:lang="no">Blakken</ns4:title>
+        <ns8:lifespan>1832-1910</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bjørnson, Bjørnstjerne</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Egge_Gunvor">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Egge, Gunvor</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hamsun_Knut">
+        <ns4:title xml:lang="no">Af Sult</ns4:title>
+        <ns4:title xml:lang="no">Das Gespenst</ns4:title>
+        <ns4:title xml:lang="no">Den gaadefulde</ns4:title>
+        <ns4:title xml:lang="no">Et spøkelse</ns4:title>
+        <ns4:title xml:lang="no">Livets røst</ns4:title>
+        <ns4:title xml:lang="no">Luffardagar</ns4:title>
+        <ns4:title xml:lang="no">Småbyliv</ns4:title>
+        <ns8:lifespan>1859-1952</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Hamsun, Knut</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Holm_Hans_Henrik">
+        <ns8:lifespan>1896-1980</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Holm, Hans Henrik</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Moren_Sven">
+        <ns8:lifespan>1871-1938</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Moren, Sven</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Vinje_Aasmund_Olavsson">
+        <ns8:lifespan>1818-1870</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Vinje, Aasmund Olavsson</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">For sang og klaver</ns4:description>
+    <ns4:description xml:lang="no">Innhold: Toner: Bjølleblom / tekst: Hans Henrik Holm. I ventetiden / tekst: Knut Hamsum. Tonen / Bj. Bjørnson. Tri songar: Etter solefall / tekst: Sven Moren. Den dag kjem aldri / tekst: A.O. Vinje. Undring / tekst: Sven Moren</ns4:description>
+    <ns4:description xml:lang="no">r92 xxtk0907</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/c"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">19</ns4:issued>
+    <ns4:location>784.1</ns4:location>
+    <ns4:location>Egg(Eg32to)</ns4:location>
+    <ns4:location>a</ns4:location>
+    <ns4:location>q</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Norsk_musikforl">
+        <ns6:name xml:lang="no">Norsk musikforl.</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:title>Toner : op. 1 ; tri songar : op. 2</ns4:title>
+    <ns0:identifier>Platenummer: N.71, N.72</ns0:identifier>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">155</ns0:numPages>
+    <nt2:genre>
+      <nt2:Genre rdf:about="http://rdf.deichman.no/mogenre/Viser_og_sanger">
+        <ns7:prefLabel xml:lang="no">Viser og sanger</ns7:prefLabel>
+      </nt2:Genre>
+    </nt2:genre>
+    <ns8:dewey>784.1</ns8:dewey>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0328479">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Edschmid_Kasimir">
+        <ns8:lifespan>1890-1966</ns8:lifespan>
+        <ns6:name>Edschmid, Kasimir</ns6:name>
+        <ns6:title>psevd for Eduard Schmid</ns6:title>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">r92 xTS0207</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1922</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Hannover">
+        <ns5:name xml:lang="no">Hannover</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Adam">
+        <ns6:name xml:lang="no">Adam</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18211880">
+        <ns7:prefLabel xml:lang="no">Flaubert, Gustave</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Flaubert_Gustave">
+        <ns7:prefLabel xml:lang="no">Flaubert, Gustave</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/fr">
+        <ns7:prefLabel xml:lang="no">Darlan, Francois</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Flaubert, Gustave</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Laval, Pierre</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Petain, Philippe</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Sade, marquis de</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Teilhard de Chardin, Pierre</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Hamsun Flaubert</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">70</ns0:numPages>
+    <ns8:dewey>839.82</ns8:dewey>
+    <nt0:variantTitleForTheWork>zwei reden</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0192575">
+    <ns1:statementOfResponsibility>utvalgt og presentert av André Bjerke ; illustrasjoner: Beth Toming</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill.</nt1:physicalDescription>
+    <ns2:language>
+      <ns3:Language rdf:about="http://lexvo.org/id/iso639-3/nno">
+        <ns3:iso639P3Code>dan</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nno</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nob</ns3:iso639P3Code>
+        <ns3:iso639P3Code>swe</ns3:iso639P3Code>
+      </ns3:Language>
+    </ns2:language>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nob"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Aanrud_Hans">
+        <ns4:title xml:lang="no">En vinternatt</ns4:title>
+        <ns8:lifespan>1863-1953</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Aanrud, Hans</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Andersen_Tryggve">
+        <ns4:title xml:lang="no">Den døde mand</ns4:title>
+        <ns8:lifespan>1866-1920</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Andersen, Tryggve</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Asbjoernsen_Peter_Christen">
+        <ns4:title xml:lang="no">En gammeldags juleaften</ns4:title>
+        <ns8:lifespan>1812-1885</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Asbjørnsen, Peter Christen</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bjerke_Andre">
+        <ns4:title xml:lang="no">Hvordan en skrekknovelle ble til</ns4:title>
+        <ns4:title xml:lang="no">Skrittene</ns4:title>
+        <ns8:lifespan>1918-1985</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bjerke, André</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bjerke_Ejlert">
+        <ns4:title xml:lang="no">Bulo Matari</ns4:title>
+        <ns4:title xml:lang="no">Det usynlige</ns4:title>
+        <ns8:lifespan>1887-1963</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bjerke, Ejlert</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bjoerneboe_Jens">
+        <ns4:title xml:lang="no">Havmannen</ns4:title>
+        <ns8:lifespan>1920-1976</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bjørneboe, Jens</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Brochmann_Georg">
+        <ns4:title xml:lang="no">Tre til bords</ns4:title>
+        <ns8:lifespan>1894-1952</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Brochmann, Georg</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Dahl_Roald">
+        <ns4:title xml:lang="no">William og Mary</ns4:title>
+        <ns8:lifespan>1916-1990</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/eng"/>
+        <ns6:name>Dahl, Roald</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Elster_Torolf">
+        <ns4:title xml:lang="no">Veggen</ns4:title>
+        <ns8:lifespan>1911-2006</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Elster, Torolf</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Elvestad_Sven">
+        <ns4:title xml:lang="no">Er det dig Valentiner?</ns4:title>
+        <ns4:title xml:lang="no">Mordet og huset</ns4:title>
+        <ns8:lifespan>1884-1934</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Elvestad, Sven</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Eriksen_Andreas">
+        <ns4:title xml:lang="no">Skriket</ns4:title>
+        <ns8:lifespan>1915-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Eriksen, Andreas</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hauge_Eivind_Hiis">
+        <ns4:title xml:lang="no">Vaktmesteren</ns4:title>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Hauge, Eivind Hiis</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Kjaer_Nils">
+        <ns4:title xml:lang="no">Brev om vind og vær</ns4:title>
+        <ns4:title xml:lang="no">Skumringsmuligheder</ns4:title>
+        <ns8:lifespan>1870-1924</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Kjær, Nils</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Lie_Jonas">
+        <ns4:title xml:lang="no">Duvan</ns4:title>
+        <ns4:title xml:lang="no">Jorden drar</ns4:title>
+        <ns8:lifespan>1833-1908</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Lie, Jonas</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Mathiesen_Sigurd">
+        <ns8:lifespan>1871-1958</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Mathiesen, Sigurd</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Normann_Regine">
+        <ns4:title xml:lang="no">Makt mot makt</ns4:title>
+        <ns8:lifespan>1867-1939</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Normann, Regine</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Oeverland_Arnulf">
+        <ns4:title xml:lang="no">Den evige gjenkomst</ns4:title>
+        <ns4:title xml:lang="no">Den saknade</ns4:title>
+        <ns4:title xml:lang="no">En merkelig oplevelse</ns4:title>
+        <ns8:lifespan>1889-1968</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Øverland, Arnulf</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Spalder_Frithjof">
+        <ns4:title xml:lang="no">Den hvite skarven</ns4:title>
+        <ns8:lifespan>1933-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Spalder, Frithjof</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Stigen_Terje">
+        <ns4:title xml:lang="no">Historien om presten Bartholin</ns4:title>
+        <ns8:lifespan>1922-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Stigen, Terje</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Stokkelien_Vigdis">
+        <ns4:title xml:lang="no">Kvinnen på heden</ns4:title>
+        <ns8:lifespan>1934-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Stokkelien, Vigdis</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Vendel_Erik">
+        <ns4:title xml:lang="no">To selsomme historier</ns4:title>
+        <ns8:lifespan>1919-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Vendel, Erik</ns6:name>
+        <ns6:title xml:lang="no">psevd. for Bjørn Carling</ns6:title>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Vislie_Vetle">
+        <ns4:title xml:lang="no">Gasten</ns4:title>
+        <ns8:lifespan>1858-1933</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Vislie, Vetle</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/zzz">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>zzz</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Også noveller på nynorsk.</ns4:description>
+    <ns4:description xml:lang="no">xje1212</ns4:description>
+    <ns4:description xml:lang="no">zretting</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1978</ns4:issued>
+    <ns4:location>A</ns4:location>
+    <ns4:location>Drø</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Stabekk">
+        <ns5:name xml:lang="no">[Stabekk]</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Norske_bokklubben">
+        <ns6:name xml:lang="no">Norske bokklubben</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Noveller">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Samlinger"/>
+        <ns7:prefLabel xml:lang="no">Noveller, norske</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/norske">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Samlinger"/>
+        <ns7:prefLabel xml:lang="no">Noveller, norske</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Romaner, norske</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>Drømmen, draugen og dauingen</ns4:title>
+    <ns0:editor rdf:resource="http://rdf.deichman.no/person/Bjerke_Andre"/>
+    <ns0:illustrator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Toming_Beth">
+        <ns6:name>Toming, Beth</ns6:name>
+      </ns6:Person>
+    </ns0:illustrator>
+    <ns0:isbn>8252509843</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">169</ns0:numPages>
+    <nt2:genre>
+      <nt2:Genre rdf:about="http://rdf.deichman.no/mogenre/Spoekelsesfortellinger">
+        <ns7:prefLabel xml:lang="no">Spøkelsesfortellinger</ns7:prefLabel>
+      </nt2:Genre>
+    </nt2:genre>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>839.93</ns8:dewey>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/AN"/>
+    <ns8:priceInfo>n.kr.81,50</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>grøssere og selsomme historier i norsk prosa</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0608428">
+    <nt1:physicalDescription xml:lang="no">digital</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Draugedalen_Gunstein">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Draugedalen, Gunstein</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:description xml:lang="no">Tekster i omslaget</ns4:description>
+    <ns4:description xml:lang="no">Tilvekstnummer: t04-506</ns4:description>
+    <ns4:description xml:lang="no">ga04-6</ns4:description>
+    <ns4:description xml:lang="no">xtas040303</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/dc"/>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/dg"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2003</ns4:issued>
+    <ns4:location>Dra</ns4:location>
+    <ns4:location>F</ns4:location>
+    <ns4:location>dc</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Tylden">
+        <ns6:name xml:lang="no">Tylden</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:title>Om hundrede år er alting glemt</ns4:title>
+    <ns0:identifier>Tylden: GTACD 8221</ns0:identifier>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">134</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Viser_og_sanger"/>
+    <ns8:dewey>F</ns8:dewey>
+    <nt0:variantTitleForTheWork>sanger med tekst av Knut Hamsun</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0762327">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Dossiers_Les">
+        <ns6:name>Dossiers, Les</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">a07-gave</ns4:description>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2002</ns4:issued>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Lausanne">
+        <ns5:name xml:lang="no">Lausanne</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Lage_Dhomme">
+        <ns6:name xml:lang="no">L'age D'homme</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:title>Knut Hamsun</ns4:title>
+    <ns0:isbn>2825114421</ns0:isbn>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0583366">
+    <ns1:statementOfResponsibility>Ståle Dingstad</ns1:statementOfResponsibility>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Dingstad_Staale">
+        <ns8:lifespan>1965-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Dingstad, Ståle</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">03x0305jgs a03-6</ns4:description>
+    <ns4:description xml:lang="no">Bibliografi: s. 300-[309]</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Pegasus"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2003</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Gyldendal">
+        <ns6:name xml:lang="no">Gyldendal</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/1859-1952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n."/>
+    <ns4:title>Hamsuns strategier</ns4:title>
+    <ns0:isbn>8205311757</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">308</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:bsID>0134498</ns8:bsID>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 349.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>realisme, humor og kynisme</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0699139">
+    <ns1:statementOfResponsibility>[utgitt av forlaget]</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill.</nt1:physicalDescription>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Bjerke_Andre"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Grieg_Nordahl">
+        <ns8:lifespan>1902-1943</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Grieg, Nordahl</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hagerup_Inger">
+        <ns8:lifespan>1905-1985</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Hagerup, Inger</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Ibsen_Henrik">
+        <ns8:lifespan>1828-1906</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Ibsen, Henrik</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Jacobsen_Rolf">
+        <ns8:lifespan>1907-1994</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Jacobsen, Rolf</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Loeveid_Cecilie">
+        <ns8:lifespan>1951-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Løveid, Cecilie</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Munch_Edvard">
+        <ns8:lifespan>1863-1944</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Munch, Edvard</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Obstfelder_Sigbjoern">
+        <ns8:lifespan>1866-1900</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Obstfelder, Sigbjørn</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Oekland_Einar">
+        <ns8:lifespan>1940-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Økland, Einar</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Oeverland_Arnulf"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Omre_Arthur">
+        <ns4:title xml:lang="no">Hard luck story</ns4:title>
+        <ns8:lifespan>1887-1967</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Omre, Arthur</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Vesaas_Tarjei">
+        <ns4:title xml:lang="no">Nils Fêt</ns4:title>
+        <ns8:lifespan>1897-1970</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Vesaas, Tarjei</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Særnummer av litterært tidsskrift. - Inneholder samling av dikt og prosa av norske forfattere som bla. Knut Hamsun, André Bjerke, Nordahl Grieg og Tarjei Vesaas. - Inneholder også trykk og tegninger av Edvard Munch</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1985</ns4:issued>
+    <ns4:location>A</ns4:location>
+    <ns4:location>DUT</ns4:location>
+    <ns4:location>De t</ns4:location>
+    <ns4:location>START</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Amsterdam">
+        <ns5:name xml:lang="no">Amsterdam</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Bert_Bakker">
+        <ns6:name xml:lang="no">Bert Bakker</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Norvegica">
+        <ns7:prefLabel xml:lang="no">Norvegica</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>De tweede ronde</ns4:title>
+    <ns0:isbn>9035103157</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">159</ns0:numPages>
+    <ns8:dewey>dut.</ns8:dewey>
+    <ns8:dewey>dut.839.82</ns8:dewey>
+    <ns8:listCode>xdutv062 xstart084</ns8:listCode>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/A"/>
+    <nt0:variantTitleForTheWork>tijdschrift voor literatuur : herfts 1985</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0249160">
+    <ns1:statementOfResponsibility>redigert av Simen Skjønsberg</ns1:statementOfResponsibility>
+    <ns4:description xml:lang="no">Data om bidragsyterne</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1979</ns4:issued>
+    <ns4:location>+r</ns4:location>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>BI</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Gyldendal"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Det uskyldige geni?</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Skjoensberg_Simen">
+        <ns8:lifespan>1920-1993</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Skjønsberg, Simen</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:isbn>8205119708</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2881</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Biografier"/>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/A"/>
+    <nt0:variantTitleForTheWork>fra debatten om "Prosessen mot Hamsun"</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0533013">
+    <ns1:statementOfResponsibility>i urval av Ole Storm ; till svenska av Pelle Fritz-Crone</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill., port.</nt1:physicalDescription>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Bjoernson_Bjoernstjerne"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Borgen_Johan">
+        <ns4:title xml:lang="no">En gammeldags julaften</ns4:title>
+        <ns4:title xml:lang="no">Pet och Lise</ns4:title>
+        <ns8:lifespan>1902-1979</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Borgen, Johan</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Falkberget_Johan">
+        <ns4:title xml:lang="no">Hytten ved Vesle-Klætten</ns4:title>
+        <ns4:title xml:lang="no">Pålsmässonatt</ns4:title>
+        <ns8:lifespan>1879-1967</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Falkberget, Johan</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hoel_Sigurd">
+        <ns4:title xml:lang="no">Et ord til Knut Hamsun</ns4:title>
+        <ns4:title xml:lang="no">Mördaren</ns4:title>
+        <ns8:lifespan>1890-1960</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Hoel, Sigurd</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Kielland_Alexander_Lange">
+        <ns4:title xml:lang="no">Else</ns4:title>
+        <ns8:lifespan>1849-1906</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Kielland, Alexander Lange</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Lie_Jonas"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Mykle_Agnar">
+        <ns4:title xml:lang="no">Lyckan mellan två män</ns4:title>
+        <ns8:lifespan>1915-1994</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Mykle, Agnar</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Oeverland_Arnulf"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Sandel_Cora">
+        <ns4:title xml:lang="no">Kring en död</ns4:title>
+        <ns8:lifespan>1880-1974</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Sandel, Cora</ns6:name>
+        <ns6:title xml:lang="no">psevd. for Sara Fabricius</ns6:title>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Sandemose_Aksel">
+        <ns4:title xml:lang="no">Det stod en bänk i trädgården</ns4:title>
+        <ns8:lifespan>1899-1965</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/dn"/>
+        <ns6:name>Sandemose, Aksel</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Undset_Sigrid">
+        <ns4:title xml:lang="no">Sedlighetsbalen</ns4:title>
+        <ns8:lifespan>1882-1949</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Undset, Sigrid</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Vesaas_Tarjei"/>
+    <ns4:description xml:lang="no">Forfatterpresentasjoner: s. [237-242]</ns4:description>
+    <ns4:description xml:lang="no">a00-gave 00x0215s</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1979</ns4:issued>
+    <ns4:location>A</ns4:location>
+    <ns4:location>Det</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Hoeganaes">
+        <ns5:name xml:lang="no">Höganäs</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Bokfoerlaget_Bra_Boecker">
+        <ns6:name xml:lang="no">Bokförlaget Bra Böcker</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:title>Det stod en bänk i trädgården och andra norska mästarberättelser</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Storm_Ole">
+        <ns8:lifespan>1918-1988</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Storm, Ole</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2366</ns0:numPages>
+    <nt2:genre>
+      <nt2:Genre rdf:about="http://rdf.deichman.no/mogenre/Noveller_Norske">
+        <ns7:prefLabel xml:lang="no">Noveller, Norske</ns7:prefLabel>
+      </nt2:Genre>
+    </nt2:genre>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/NA"/>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0419099">
+    <ns1:statementOfResponsibility>redaksjon: Lise Ettrup ... [et al.] ; [billedredaksjon: Jorunn Veiteberg]</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill. (noen kol.)</nt1:physicalDescription>
+    <ns2:language>
+      <ns3:Language rdf:about="http://lexvo.org/id/iso639-3/dan">
+        <ns3:iso639P3Code>dan</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nno</ns3:iso639P3Code>
+        <ns3:iso639P3Code>nob</ns3:iso639P3Code>
+        <ns3:iso639P3Code>swe</ns3:iso639P3Code>
+      </ns3:Language>
+    </ns2:language>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nno"/>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nob"/>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/swe"/>
+    <ns4:creator>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Landslaget_for_norskundervisning">
+        <ns6:name xml:lang="no">Landslaget for norskundervisning</ns6:name>
+      </ns6:Organization>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Aho_Juhani">
+        <ns4:title xml:lang="no">Den gamla båthamnen</ns4:title>
+        <ns8:lifespan>1861-1921</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/fi"/>
+        <ns6:name>Aho, Juhani</ns6:name>
+        <ns6:title xml:lang="no">psevd. for Johan Brofeldt</ns6:title>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Ahrenberg_Jac">
+        <ns4:title xml:lang="no">Huru man reste fordomtima</ns4:title>
+        <ns8:lifespan>1847-1914</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/fi"/>
+        <ns6:name>Ahrenberg, Jac.</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bang_Herman">
+        <ns4:title xml:lang="no">Af Ved Vejen</ns4:title>
+        <ns4:title xml:lang="no">Frøkenen</ns4:title>
+        <ns8:lifespan>1857-1912</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Bang, Herman</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Canth_Minna">
+        <ns4:title xml:lang="no">Barnflickan</ns4:title>
+        <ns8:lifespan>1844-1897</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/fi"/>
+        <ns6:name>Canth, Minna</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hulda_Unnur_Benediktsdottir_Bjarklind">
+        <ns4:title xml:lang="no">Fågeln på stranden</ns4:title>
+        <ns8:lifespan>1881-1946</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/isl"/>
+        <ns6:name>Hulda Unnur Benediktsdóttir Bjarklind</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Jon_Thoroddsen">
+        <ns4:title xml:lang="no">Et ekteskap</ns4:title>
+        <ns8:lifespan>1898-1924</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/isl"/>
+        <ns6:name>Jón Thoroddsen</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/JuelHansen_Erna">
+        <ns4:title xml:lang="no">Kærlighed og geografi</ns4:title>
+        <ns8:lifespan>1845-1922</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Juel-Hansen, Erna</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Lagerloef_Selma">
+        <ns4:title xml:lang="no">Gravskriften</ns4:title>
+        <ns8:lifespan>1858-1940</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/sv"/>
+        <ns6:name>Lagerlöf, Selma</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Levison_Olivia">
+        <ns4:title xml:lang="no">Støv</ns4:title>
+        <ns8:lifespan>1847-1894</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Levison, Olivia</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Lie_Jonas"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Lindh_Theodor">
+        <ns4:title xml:lang="no">Sauna-Maja</ns4:title>
+        <ns8:lifespan>1833-1904</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/sv"/>
+        <ns6:name>Lindh, Theodor</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Nansen_Peter">
+        <ns4:title xml:lang="no">Aftenvisiter</ns4:title>
+        <ns8:lifespan>1861-1918</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Nansen, Peter</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Skram_Amalie">
+        <ns4:title xml:lang="no">En rose</ns4:title>
+        <ns8:lifespan>1846-1905</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Skram, Amalie</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Strindberg_August">
+        <ns4:title xml:lang="no">Onaturligt urval eller, Rasens uppkomst</ns4:title>
+        <ns4:title xml:lang="no">Rasens uppkomst</ns4:title>
+        <ns8:lifespan>1849-1912</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/sv"/>
+        <ns6:name>Strindberg, August</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/orgils_gjallandi">
+        <ns4:title xml:lang="no">Leidd til kyrkje</ns4:title>
+        <ns8:lifespan>1851-1915</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/isl"/>
+        <ns6:name>Þorgils gjallandi</ns6:name>
+        <ns6:title xml:lang="no">psevd. for Jón Stefánsson</ns6:title>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">a94-4</ns4:description>
+    <ns4:description xml:lang="no">xal940224</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/LNUsskriftserie"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1993</ns4:issued>
+    <ns4:location>A</ns4:location>
+    <ns4:location>Mod</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Cappelen">
+        <ns6:name xml:lang="no">Cappelen</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Litteratur">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Essay"/>
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Forskning"/>
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Historie_og_kritikk"/>
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Samlinger"/>
+        <ns7:prefLabel xml:lang="no">Litteratur</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>Det modernes gjennombrudd i Norden</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Ettrup_Lise">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Ettrup, Lise</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:isbn>8202140242</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">264</ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">76</ns0:numPages>
+    <nt2:genre>
+      <nt2:Genre rdf:about="http://rdf.deichman.no/mogenre/Nordisk_litteratur">
+        <ns7:prefLabel xml:lang="no">Nordisk litteratur</ns7:prefLabel>
+      </nt2:Genre>
+    </nt2:genre>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>808.8</ns8:dewey>
+    <ns8:dewey>839.50408</ns8:dewey>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/ADN"/>
+    <ns8:priceInfo>Nkr 160.00</ns8:priceInfo>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0288435">
+    <ns1:statementOfResponsibility>under red. av Eli Krog</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill., (port.)</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Boe_Finn">
+        <ns4:title xml:lang="no">Verdens undergang</ns4:title>
+        <ns8:lifespan>1893-1962</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bø, Finn</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Boo_Sigrid_Maren">
+        <ns4:title xml:lang="no">Gry</ns4:title>
+        <ns8:lifespan>1898-1953</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Boo, Sigrid Maren</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Borgen_Johan"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Christensen_Halfdan">
+        <ns4:title xml:lang="no">Spindelvæv</ns4:title>
+        <ns8:lifespan>1873-</ns8:lifespan>
+        <ns6:name>Christensen, Halfdan</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Egge_Peter">
+        <ns4:title xml:lang="no">Da nattmannen døde</ns4:title>
+        <ns8:lifespan>1869-1959</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Egge, Peter</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Evensmo_Sigurd">
+        <ns4:title xml:lang="no">Den rare natten</ns4:title>
+        <ns8:lifespan>1912-1978</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Evensmo, Sigurd</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Falkberget_Johan"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Foenhus_Mikkjel">
+        <ns4:title xml:lang="no">Bjørneskytterens fortællinger</ns4:title>
+        <ns8:lifespan>1894-1973</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Fønhus, Mikkjel</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Geelmuyden_Hans">
+        <ns4:title xml:lang="no">Inspirasjon</ns4:title>
+        <ns8:lifespan>1906-1969</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Geelmuyden, Hans</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Gjesdahl_Paul_Dessen">
+        <ns4:title xml:lang="no">Statsministeren</ns4:title>
+        <ns8:lifespan>1893-1969</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Gjesdahl, Paul Dessen</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Haalke_Magnhild">
+        <ns4:title xml:lang="no">Ante konge</ns4:title>
+        <ns8:lifespan>1885-1984</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Haalke, Magnhild</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hambro_Carl_Joachim">
+        <ns4:title xml:lang="no">Et blad af omsvøbsdepartementets saga</ns4:title>
+        <ns8:lifespan>1885-1964</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Hambro, Carl Joachim</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Havrevold_Finn">
+        <ns4:title xml:lang="no">Sigbjørn Obstfelder</ns4:title>
+        <ns8:lifespan>1905-1988</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Havrevold, Finn</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hoel_Sigurd"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hopp_Zinken">
+        <ns4:title xml:lang="no">Ridder Davids gavebrev</ns4:title>
+        <ns8:lifespan>1905-1987</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Hopp, Zinken</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Krog_Helge">
+        <ns4:title xml:lang="no">Sen sommer</ns4:title>
+        <ns8:lifespan>1889-1962</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Krog, Helge</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Krokann_Inge">
+        <ns4:title xml:lang="no">En riartur</ns4:title>
+        <ns8:lifespan>1893-1962</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Krokann, Inge</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Markusson_Andreas">
+        <ns4:title xml:lang="no">Dauings-Hans</ns4:title>
+        <ns8:lifespan>1893-1952</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Markusson, Andreas</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Moen_Arve">
+        <ns4:title xml:lang="no">Kampen mot åndsfriheten for 50 år siden - og idag</ns4:title>
+        <ns8:lifespan>1912-1976</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Moen, Arve</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Nedreaas_Torborg">
+        <ns4:title xml:lang="no">Okseslepp på Haugastøl</ns4:title>
+        <ns8:lifespan>1906-1987</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Nedreaas, Torborg</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Omre_Arthur"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Parelius_Fredrik">
+        <ns4:title xml:lang="no">Livskald</ns4:title>
+        <ns8:lifespan>1879-1970</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Parelius, Fredrik</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Rud_Nils_Johan">
+        <ns4:title xml:lang="no">Ung mann underveis</ns4:title>
+        <ns8:lifespan>1908-1993</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Rud, Nils Johan</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/zzz"/>
+    <ns4:description xml:lang="no">Av innholdet: Den gaadefulde : en kjærlighedshistorie fra Nordland  / Knut Hamsun, s. 102-121</ns4:description>
+    <ns4:description xml:lang="no">Også bidrag på nynorsk.</ns4:description>
+    <ns4:description xml:lang="no">r91 xat</ns4:description>
+    <ns4:description xml:lang="no">zretting</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1950</ns4:issued>
+    <ns4:location>A</ns4:location>
+    <ns4:location>Før</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Aschehoug"/>
+    <ns4:title>Det Første jeg fikk trykt</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Krog_Eli">
+        <ns8:lifespan>1891-1970</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Krog, Eli</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">246</ns0:numPages>
+    <nt2:genre>
+      <nt2:Genre rdf:about="http://rdf.deichman.no/mogenre/Norsk_litteratur">
+        <ns7:prefLabel xml:lang="no">Norsk litteratur</ns7:prefLabel>
+      </nt2:Genre>
+    </nt2:genre>
+    <ns8:dewey>839.908</ns8:dewey>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/ADN"/>
+    <nt0:variantTitleForTheWork>33 norske forfattere utleverer seg</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0487900">
+    <ns1:statementOfResponsibility>Nils M. Knutsen (red.)</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill.</nt1:physicalDescription>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/dan"/>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nno"/>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nob"/>
+    <ns4:description xml:lang="no">a97-14 xtas970829</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Hamsunselskapetsskriftserie"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1997</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Hamaroey">
+        <ns5:name xml:lang="no">Hamarøy</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/HamsunSelskapet">
+        <ns6:name xml:lang="no">Hamsun-Selskapet</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>De røde jærn</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Knutsen_Nils_M">
+        <ns8:lifespan>1943-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Knutsen, Nils M.</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:isbn>8291002096</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">11</ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">155</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 150.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>7 foredrag fra Hamsun-dagene på Hamarøy 1996</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0680318">
+    <ns1:statementOfResponsibility>Ståle Dingstad (red.)</ns1:statementOfResponsibility>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/dan"/>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nob"/>
+    <ns4:description xml:lang="no">05-uke44a</ns4:description>
+    <ns4:description xml:lang="no">05x1115gq 05xkr</ns4:description>
+    <ns4:description xml:lang="no">Har bibliografi</ns4:description>
+    <ns4:description xml:lang="no">Tekst på bokmål og dansk</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf rdf:resource="http://rdf.deichman.no/resource/LNUsskriftserie"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2005</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Bergen">
+        <ns5:name xml:lang="no">Bergen</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Fagbokforl">
+        <ns6:name xml:lang="no">Fagbokforl.</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/1859-1952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/August">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Benoni_og_Rosa">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Konerne_ved_vandposten">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Landstrykere">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Markens_groede">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Men_livet_lever">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Ringen_sluttet">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Siste_kapitel">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Sult">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n."/>
+    <ns4:title>Den Litterære Hamsun</ns4:title>
+    <ns0:editor rdf:resource="http://rdf.deichman.no/person/Dingstad_Staale"/>
+    <ns0:isbn>8245001082</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">162</ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">346</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:bsID>0159213</ns8:bsID>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 390.00</ns8:priceInfo>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0713408">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/AdlersfeldBallestrem_E_von">
+        <ns4:title xml:lang="no">Das Neujahrsgespenst</ns4:title>
+        <ns6:name>Adlersfeld-Ballestrem, E. von</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Akinari_Ueda">
+        <ns4:title xml:lang="no">Das Haus im Schilf</ns4:title>
+        <ns6:name>Akinari, Ueda</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Boutet_Frederic">
+        <ns4:title xml:lang="no">Wenn wir gestorben sind</ns4:title>
+        <ns6:name>Boutet, Frédéric</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/BulwerLytton_Edward_George">
+        <ns4:title xml:lang="no">Das Spukhaus</ns4:title>
+        <ns6:name>Bulwer-Lytton, Edward George</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Buzzati_Dino">
+        <ns4:title xml:lang="no">Der Mantel</ns4:title>
+        <ns8:lifespan>1906-1972</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/it"/>
+        <ns6:name>Buzzati, Dino</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Dickens_Charles">
+        <ns4:title xml:lang="no">Die Warnung</ns4:title>
+        <ns8:lifespan>1812-1870</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/eng"/>
+        <ns6:name>Dickens, Charles</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Gaskell_Elizabeth">
+        <ns4:title xml:lang="no">Die Geschichte des alten Kindermädchens</ns4:title>
+        <ns8:lifespan>1810-1865</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/eng"/>
+        <ns6:name>Gaskell, Elizabeth</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hodgson_William_Hope">
+        <ns4:title xml:lang="no">Das Geisterpferd</ns4:title>
+        <ns8:lifespan>1877-1918</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/eng"/>
+        <ns6:name>Hodgson, William Hope</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hoffmann_ETA">
+        <ns4:title xml:lang="no">Eine Spukgeschichte</ns4:title>
+        <ns8:lifespan>1776-1822</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/t"/>
+        <ns6:name>Hoffmann, E.T.A.</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Maupassant_Guy_de">
+        <ns4:title xml:lang="no">Der Horla</ns4:title>
+        <ns8:lifespan>1850-1893</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/fr"/>
+        <ns6:name>Maupassant, Guy de</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Oliphant_Margaret">
+        <ns4:title xml:lang="no">Die offene Tür</ns4:title>
+        <ns6:name>Oliphant, Margaret</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Poe_Edgar_Allan">
+        <ns4:title xml:lang="no">Der Rote Tod</ns4:title>
+        <ns8:lifespan>1809-1849</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/am"/>
+        <ns6:name>Poe, Edgar Allan</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/QuillerCouch_Arthur_T">
+        <ns4:title xml:lang="no">Das Händepaar</ns4:title>
+        <ns6:name>Quiller-Couch, Arthur T.</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Twain_Mark">
+        <ns4:title xml:lang="no">Eine Gespenstergeschichte</ns4:title>
+        <ns8:lifespan>1835-1910</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/am"/>
+        <ns6:name>Twain, Mark</ns6:name>
+        <ns6:title xml:lang="no">psevd. for Samuel Langhorne Clemens</ns6:title>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Wilde_Oscar">
+        <ns4:title xml:lang="no">Das Gespenst von Canterville</ns4:title>
+        <ns8:lifespan>1854-1900</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/ir"/>
+        <ns6:name>Wilde, Oscar</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">06x1212s</ns4:description>
+    <ns4:description xml:lang="no">Inneholder 16 fortellinger</ns4:description>
+    <ns4:description xml:lang="no">a06-gave</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1988</ns4:issued>
+    <ns4:location>83</ns4:location>
+    <ns4:location>A</ns4:location>
+    <ns4:location>Hau</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Wien">
+        <ns5:name xml:lang="no">Wien</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Ueberreuter">
+        <ns6:name xml:lang="no">Ueberreuter</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:title>Das Haus im Schilf, und andere Gespenstergeschichten</ns4:title>
+    <ns0:isbn>3800023008</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">316</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Spoekelsesfortellinger"/>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>83</ns8:dewey>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/AN"/>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0315375">
+    <nt1:physicalDescription xml:lang="no">port.</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Dale_Johannes_Andreasson">
+        <ns8:lifespan>1898-1975</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Dale, Johannes Andreasson</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Av innholdet: Knut Hamsun i Finland, s. 80-96</ns4:description>
+    <ns4:description xml:lang="no">Omtale av: Panait Istrati ; Ludwig Lewisohn ; Elmer Diktonius ; H. Olaf Hansen ; Knut Hamsun ; Rolv Thesen ; Olav Midttun.</ns4:description>
+    <ns4:description xml:lang="no">r91 xagnar1223</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1973</ns4:issued>
+    <ns4:location>804</ns4:location>
+    <ns4:location>Dal</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Noregs_boklag">
+        <ns6:name xml:lang="no">Noregs boklag</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18431875">
+        <ns7:prefLabel xml:lang="no">Hansen, Hans Olav</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18821955">
+        <ns7:prefLabel xml:lang="no">Lewisohn, Ludwig</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18831972">
+        <ns7:prefLabel xml:lang="no">Midttun, Olav</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18841935">
+        <ns7:prefLabel xml:lang="no">Istrati, Panaït</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18961961">
+        <ns7:prefLabel xml:lang="no">Diktonius, Elmer</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18961966">
+        <ns7:prefLabel xml:lang="no">Thesen, Rolv</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Diktonius_Elmer">
+        <ns7:prefLabel xml:lang="no">Diktonius, Elmer</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Forfattere">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Biografi"/>
+        <ns7:prefLabel xml:lang="no">Forfattere</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Hansen_Hans_Olav">
+        <ns7:prefLabel xml:lang="no">Hansen, Hans Olav</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Istrati_Panat">
+        <ns7:prefLabel xml:lang="no">Istrati, Panaït</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Lewisohn_Ludwig">
+        <ns7:prefLabel xml:lang="no">Lewisohn, Ludwig</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Midttun_Olav">
+        <ns7:prefLabel xml:lang="no">Midttun, Olav</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Thesen_Rolv">
+        <ns7:prefLabel xml:lang="no">Thesen, Rolv</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/am">
+        <ns7:prefLabel xml:lang="no">Lewisohn, Ludwig</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Pound, Ezra</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/fisv">
+        <ns7:prefLabel xml:lang="no">Diktonius, Elmer</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/rum">
+        <ns7:prefLabel xml:lang="no">Istrati, Panaït</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>Menn i motstraum</ns4:title>
+    <ns0:isbn>8252200699</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">110</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>809</ns8:dewey>
+    <ns8:dewey>920</ns8:dewey>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0218457">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Dahl_Willy">
+        <ns8:lifespan>1927-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Dahl, Willy</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Har bibliografi</ns4:description>
+    <ns4:description xml:lang="no">xbsj901121</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Ubkene"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1965</ns4:issued>
+    <ns4:location>839.823</ns4:location>
+    <ns4:location>Dah</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Universitetsforl">
+        <ns6:name xml:lang="no">Universitetsforl.</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18131895">
+        <ns7:prefLabel xml:lang="no">Collett, Camilla</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18321910">
+        <ns7:prefLabel xml:lang="no">Bjørnson, Bjørnstjerne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Amtmandens_doetre">
+        <ns7:prefLabel xml:lang="no">Collett, Camilla</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Bjoernson_Bjoernstjerne">
+        <ns7:prefLabel xml:lang="no">Bjørnson, Bjørnstjerne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Collett_Camilla">
+        <ns7:prefLabel xml:lang="no">Collett, Camilla</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Norsk_spraak">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Historie"/>
+        <ns7:prefLabel xml:lang="no">Norsk språk</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Pan">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Romaner">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Dansk_litteratur839813"/>
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Norsk_litteratur"/>
+        <ns7:prefLabel xml:lang="no">Romaner</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Romaner, norske</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Synnoeve_Solbakken">
+        <ns7:prefLabel xml:lang="no">Bjørnson, Bjørnstjerne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/norske"/>
+    <ns4:title>Stil og struktur</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">156</ns0:numPages>
+    <ns8:dewey>839.823</ns8:dewey>
+    <nt0:variantTitleForTheWork>Utviklingslinjer i norsk prosa gjennom 150 år</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0225641">
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Dahl_Willy"/>
+    <ns4:description xml:lang="no">Har bibliografi</ns4:description>
+    <ns4:description xml:lang="no">Innhold: Karakterer og typer i Ludvig Holbergs komedier. Johan Nordahl Bruns påskesalme - og det poetiske fenomen. Ivar Aasen som lyriker. Knut Hamsun og datteren på Sirilund. En hundre-årig modernist: Tryggve Andersen. Dikteren Sigurd Hoel - og skribenten. Noen motiver i Arnulf Øverlands lyrikk</ns4:description>
+    <ns4:description xml:lang="no">xbsj3110</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1968</ns4:issued>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:location>Dah</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Bergen"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Eide">
+        <ns6:name xml:lang="no">Eide</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/16841754">
+        <ns7:prefLabel xml:lang="no">Holberg, Ludvig</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/17451816">
+        <ns7:prefLabel xml:lang="no">Brun, Johan Nordahl</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18131896">
+        <ns7:prefLabel xml:lang="no">Aasen, Ivar</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18661920">
+        <ns7:prefLabel xml:lang="no">Andersen, Tryggve</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18891968">
+        <ns7:prefLabel xml:lang="no">Øverland, Arnulf</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18901960">
+        <ns7:prefLabel xml:lang="no">Hoel, Sigurd</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Aasen_Ivar">
+        <ns7:prefLabel xml:lang="no">Aasen, Ivar</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Andersen_Tryggve">
+        <ns7:prefLabel xml:lang="no">Andersen, Tryggve</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Brun_Johan_Nordahl">
+        <ns7:prefLabel xml:lang="no">Brun, Johan Nordahl</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Hoel_Sigurd">
+        <ns7:prefLabel xml:lang="no">Hoel, Sigurd</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Holberg_Ludvig">
+        <ns7:prefLabel xml:lang="no">Holberg, Ludvig</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Oeverland_Arnulf">
+        <ns7:prefLabel xml:lang="no">Øverland, Arnulf</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/nd">
+        <ns7:prefLabel xml:lang="no">Holberg, Ludvig</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>Perspektiver</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">139</ns0:numPages>
+    <ns8:dewey>839.8209</ns8:dewey>
+    <nt0:variantTitleForTheWork>Essays om norske klassikere</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0721650">
+    <ns1:statementOfResponsibility>Sigrid Combüchen</ns1:statementOfResponsibility>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Combchen_Sigrid">
+        <ns8:lifespan>1942-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/sv"/>
+        <ns6:name>Combüchen, Sigrid</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">06-uke49a</ns4:description>
+    <ns4:description xml:lang="no">06x1213gq</ns4:description>
+    <ns4:description xml:lang="no">Bibliografisk note over Hamsuns verker: s. 341-349</ns4:description>
+    <ns4:description xml:lang="no">Kronologi: s. 335-340</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Portrtt"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2006</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>BI</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Stockholm">
+        <ns5:name xml:lang="no">[Stockholm]</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Bonnier">
+        <ns6:name xml:lang="no">Bonnier</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/1859-1952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n."/>
+    <ns4:title>Livsklättraren</ns4:title>
+    <ns0:isbn>9100105899</ns0:isbn>
+    <ns0:isbn>9789100105891</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">351</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Biografier"/>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:bsID>0173084</ns8:bsID>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 246.40</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>en bok om Knut Hamsun</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0498544">
+    <ns1:statementOfResponsibility>[red. og overs. av] Eva Liébana...[et al.]</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill., port.</nt1:physicalDescription>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Jansson_Tove">
+        <ns8:lifespan>1914-2001</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/fisv"/>
+        <ns6:name>Jansson, Tove</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Solstad_Dag">
+        <ns8:lifespan>1941-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Solstad, Dag</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Vesaas_Tarjei"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Vik_Bjoerg">
+        <ns8:lifespan>1935-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Vik, Bjørg</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Samling av nordiske noveller gjennom 100 år. - Inneholder bidrag av bl.a. Knut Hamsun, Tarjei Vesaas, Tove Jansson, Bjørg Vik og Dag Solstad. - Korte biografiske opplysninger om bidragsyterne</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1995</ns4:issued>
+    <ns4:location> SPA</ns4:location>
+    <ns4:location>A</ns4:location>
+    <ns4:location>Cie</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Madrid">
+        <ns5:name xml:lang="no">Madrid</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Torre">
+        <ns6:name xml:lang="no">Torre</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:title>Cien años de cuentos nórdicos</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Liebana_Eva">
+        <ns6:name>Liébana, Eva</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:isbn>8479600543</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">389</ns0:numPages>
+    <ns8:dewey>Spa.</ns8:dewey>
+    <ns8:listCode>xspav80399</ns8:listCode>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/an"/>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0225468">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Andersen_Hans_Christian">
+        <ns8:lifespan>1805-1875</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Andersen, Hans Christian</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bull_Francis">
+        <ns8:lifespan>1887-1974</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bull, Francis</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">06x</ns4:description>
+    <ns4:description xml:lang="no">Har bibliografi.Innhold: H.C Andersen og Bjørnstjerne Bjørnson. Norge og H.C. Andersen. H.C. Ørsted. Ludvig Holberg. Offiserskikkelser i norsk litteratur. Harald Grieg og teaterkonflikten i 1941.</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1956</ns4:issued>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:location>Bul</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Gyldendal"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/16841754"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/17771851">
+        <ns7:prefLabel xml:lang="no">Ørsted, Hans Christian</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/183198">
+        <ns7:prefLabel xml:lang="no">Astrup, Hans Rasmus</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18701924">
+        <ns7:prefLabel xml:lang="no">Kjær, Nils</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18941972">
+        <ns7:prefLabel xml:lang="no">Grieg, Harald</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Astrup_Hans_Rasmus">
+        <ns7:prefLabel xml:lang="no">Astrup, Hans Rasmus</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Grieg_Harald">
+        <ns7:prefLabel xml:lang="no">Grieg, Harald</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Holberg_Ludvig"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kjaer_Nils">
+        <ns7:prefLabel xml:lang="no">Kjær, Nils</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Oersted_Hans_Christian">
+        <ns7:prefLabel xml:lang="no">Ørsted, Hans Christian</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Offiserer">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Litteratur"/>
+        <ns7:prefLabel xml:lang="no">Offiserer</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Teater">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Norge"/>
+        <ns7:prefLabel xml:lang="no">Teater</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/nd"/>
+    <ns4:title>Talt og skrevet</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">294</ns0:numPages>
+    <ns8:dewey>839.8209</ns8:dewey>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0328477">
+    <ns4:creator>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Norske_studentersamfund">
+        <ns6:name xml:lang="no">Norske studentersamfund</ns6:name>
+      </ns6:Organization>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Bull_Francis"/>
+    <ns4:description xml:lang="no">r92 xTS0207</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/SkrifterutgavdetNorskestudentersamfundskulturutvalg"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1954</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Norske_studentersamfund"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Knut Hamsun på ny</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</ns0:numPages>
+    <ns8:dewey>839.82</ns8:dewey>
+    <nt0:variantTitleForTheWork>tale holdt på det Norske studentersamfundets Knut Hamsun-aften i Universitetets aula den 21. februar 1953</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0225458">
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Bull_Francis"/>
+    <ns4:description xml:lang="no">Artikler om bl.a.: Petter Dass. Ludvig Holberg. Ole Bull. Henrik Ibsen. Bjørnstjerne Bjørnson. H.C. Andersen. Ole Richter. Nordahl Rolfsen. Alexander L. Kielland. August Strindberg. Knut Hamsun. Nils Kjær. Fredrik Paasche. Herman Wildenvey. Harald Grieg. Kaj Munk</ns4:description>
+    <ns4:description xml:lang="no">xbsj3010</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Fakkelbkene"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1964</ns4:issued>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:location>Bul</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Gyldendal"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/16471707">
+        <ns7:prefLabel xml:lang="no">Dass, Petter</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/16841754"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18051875">
+        <ns7:prefLabel xml:lang="no">Andersen, Hans Christian</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18101880">
+        <ns7:prefLabel xml:lang="no">Bull, Ole</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18281906"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/182988">
+        <ns7:prefLabel xml:lang="no">Richter, Ole Jørgensen</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/183198"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18321910"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18481928">
+        <ns7:prefLabel xml:lang="no">Rolfsen, Nordahl</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18491906">
+        <ns7:prefLabel xml:lang="no">Kielland, Alexander Lange</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18491912"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18561925">
+        <ns7:prefLabel xml:lang="no">Gran, Gerhard</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18861943">
+        <ns7:prefLabel xml:lang="no">Paasche, Fredrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18861959">
+        <ns7:prefLabel xml:lang="no">Wildenvey, Herman</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Andersen_Hans_Christian">
+        <ns7:prefLabel xml:lang="no">Andersen, Hans Christian</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Astrup_Hans_Rasmus"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Biografier"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Bjoernson_Bjoernstjerne"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Bull_Ole">
+        <ns7:prefLabel xml:lang="no">Bull, Ole</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Dass_Petter">
+        <ns7:prefLabel xml:lang="no">Dass, Petter</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Gran_Gerhard">
+        <ns7:prefLabel xml:lang="no">Gran, Gerhard</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Haermendene_paa_Helgeland">
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Holberg_Ludvig"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Ibsen_Henrik"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kielland_Alexander_Lange">
+        <ns7:prefLabel xml:lang="no">Kielland, Alexander Lange</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kjaerlighedens_komedie">
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Paa_vidderne">
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Paasche_Fredrik">
+        <ns7:prefLabel xml:lang="no">Paasche, Fredrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Paul_Lange_og_Tora_Parsberg">
+        <ns7:prefLabel xml:lang="no">Bjørnson, Bjørnstjerne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Richter_Ole_Joergensen">
+        <ns7:prefLabel xml:lang="no">Richter, Ole Jørgensen</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Rolfsen_Nordahl">
+        <ns7:prefLabel xml:lang="no">Rolfsen, Nordahl</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Strindberg_August"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Wildenvey_Herman">
+        <ns7:prefLabel xml:lang="no">Wildenvey, Herman</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/d">
+        <ns7:prefLabel xml:lang="no">Andersen, Hans Christian</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/nd"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/sv"/>
+    <ns4:title>Essays i utvalg</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">329</ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">58</ns0:numPages>
+    <ns8:dewey>839.8209</ns8:dewey>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0228543">
+    <ns1:statementOfResponsibility>Trygve Braatøy ; med et forord av Sigurd Hoel</ns1:statementOfResponsibility>
+    <ns4:contributor rdf:resource="http://rdf.deichman.no/person/Hoel_Sigurd"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Braatoey_Trygve">
+        <ns8:lifespan>1904-1953</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Braatøy, Trygve</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">1.utgave 1929.     Har bibliografi.</ns4:description>
+    <ns4:description xml:lang="no">xbsj901122</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Uglebkene"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1979</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Cappelen"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Livets cirkel</ns4:title>
+    <ns0:isbn>8202043158</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">178</ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">263</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>b.kr.49,00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>bidrag til analyse av Knut Hamsuns diktning</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0328457">
+    <ns1:statementOfResponsibility>Med forord av Sigrid Hoel</ns1:statementOfResponsibility>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Braatoey_Trygve"/>
+    <ns4:description xml:lang="no">Inneholder bibliografi</ns4:description>
+    <ns4:description xml:lang="no">Kom ut første gang 1929</ns4:description>
+    <ns4:description xml:lang="no">r92 xTS0207</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1954</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Cappelen"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Livets cirkel</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">263</ns0:numPages>
+    <ns8:dewey>839.82</ns8:dewey>
+    <nt0:variantTitleForTheWork>bidrag til analyse av Knut Hamsuns diktning</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0511481">
+    <ns1:statementOfResponsibility>Lars Thomas Braaten</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill.</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Braaten_Lars_Thomas">
+        <ns8:lifespan>1943-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Braaten, Lars Thomas</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">1. utg.: Statens filmsentral, 1991</ns4:description>
+    <ns4:description xml:lang="no">99x0115abo a99-2</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1997</ns4:issued>
+    <ns4:location>791.43</ns4:location>
+    <ns4:location>Brå/2.utg.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Norsk_filminstitutt">
+        <ns6:name xml:lang="no">Norsk filminstitutt</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Sult</ns4:title>
+    <ns0:edition>2. rev. utg</ns0:edition>
+    <ns0:isbn>8290463731</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>791.437</ns8:dewey>
+    <ns8:priceInfo>Nkr 90.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>fra roman til film : studiehefte</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0499819">
+    <ns1:statementOfResponsibility>Lars Thomas Braaten</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill.</nt1:physicalDescription>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Braaten_Lars_Thomas"/>
+    <ns4:description xml:lang="no">f98 98x0304s</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1991</ns4:issued>
+    <ns4:location>791.43</ns4:location>
+    <ns4:location>Brå</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Statens_filmsentral">
+        <ns6:name xml:lang="no">Statens filmsentral</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Sult</ns4:title>
+    <ns0:isbn>8290463251</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>791.43</ns8:dewey>
+    <nt0:variantTitleForTheWork>fra roman til film</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0498555">
+    <ns1:statementOfResponsibility>Per Thomas Andersen</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">fig.</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Andersen_Per_Thomas">
+        <ns8:lifespan>1954-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Andersen, Per Thomas</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Av innholdet: En kamp mellom guder : intertekstuelt blikk på Petter Dass' vise "Om Jephte Løfte" s.12-44 ; Komponisten Henrik Wergeland : komposisjonsanalyse av to Wergelands-dikt s.44-72 ; Om å være i sannhet og i språket samtidig : Bjørnstjerne Bjørnsons sakprosa s.141-166 ; Den poetiske samtale : to nedslag i Rolf Jacobsens senere lyrikk s.258-310</ns4:description>
+    <ns4:description xml:lang="no">a98-4 98x0227abo</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf rdf:resource="http://rdf.deichman.no/resource/LNUsskriftserie"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1997</ns4:issued>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:location>And</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Landslaget_for_norskundervisning"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/16471707"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18081845">
+        <ns7:prefLabel xml:lang="no">Wergeland, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18281906"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18321910"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18511924"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18651926"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/19071994">
+        <ns7:prefLabel xml:lang="no">Jacobsen, Rolf</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/1953">
+        <ns7:prefLabel xml:lang="no">Kjærstad, Jan</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Bjoernson_Bjoernstjerne"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Brand">
+        <ns7:prefLabel xml:lang="no">Ibsen, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Dass_Petter"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Garborg_Arne"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Homo_falsus">
+        <ns7:prefLabel xml:lang="no">Kjærstad, Jan</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Hvitsymre_i_utslaatten">
+        <ns7:prefLabel xml:lang="no">Kinck, Hans Ernst</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Ibsen_Henrik"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Jacobsen_Rolf">
+        <ns7:prefLabel xml:lang="no">Jacobsen, Rolf</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Kinck_Hans_Ernst"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kjaerstad_Jan">
+        <ns7:prefLabel xml:lang="no">Kjærstad, Jan</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Knudaheibrev">
+        <ns7:prefLabel xml:lang="no">Garborg, Arne</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Pan"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Wergeland_Henrik">
+        <ns7:prefLabel xml:lang="no">Wergeland, Henrik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Fra Petter Dass til Jan Kjærstad</ns4:title>
+    <ns0:isbn>8245605115</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">111</ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">333</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>839.8209</ns8:dewey>
+    <ns8:priceInfo>Nkr 275.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>studier i diktekunst og komposisjon</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0225869">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Brynildsen_Aasmund">
+        <ns8:lifespan>1917-1974</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Brynildsen, Aasmund</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">xeaa1102</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/Perspektivbkene"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1970</ns4:issued>
+    <ns4:location>839.824</ns4:location>
+    <ns4:location>Bry</ns4:location>
+    <ns4:location>ESSAYS</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Dreyer">
+        <ns6:name xml:lang="no">Dreyer</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/17401814">
+        <ns7:prefLabel xml:lang="no">Sade, marquis de</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kirke_og_stat">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Norge"/>
+        <ns7:prefLabel xml:lang="no">Kirke og stat</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kultur">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Kultursosiologi"/>
+        <ns7:prefLabel xml:lang="no">Kultur</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Nürnbergprosessen">
+        <ns7:prefLabel xml:lang="no">Nürnbergprosessen</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Sade_marquis_de">
+        <ns7:prefLabel xml:lang="no">Sade, marquis de</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/fr"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Utvalgte essays</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1881</ns0:numPages>
+    <nt2:genre>
+      <nt2:Genre rdf:about="http://rdf.deichman.no/mogenre/Norske_essays">
+        <ns7:prefLabel xml:lang="no">Norske essays</ns7:prefLabel>
+      </nt2:Genre>
+    </nt2:genre>
+    <ns8:dewey>048.1</ns8:dewey>
+    <ns8:dewey>839.824</ns8:dewey>
+    <ns8:priceInfo>18.00</ns8:priceInfo>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0193225">
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Brynildsen_Aasmund"/>
+    <ns4:description xml:lang="no">91xat</ns4:description>
+    <ns4:description xml:lang="no">Artiklene har vært offentliggjort tidligere</ns4:description>
+    <ns4:description xml:lang="no">Innhold: Svermeren og hans demon (1952). For en pests skyld (1953). Den gådefulle (1962). Markens grøde (1972)</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1973</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Dreyer"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Markens_groede"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Mysterier">
+        <ns7:prefLabel xml:lang="no">Hamsun, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Svermeren og hans demon</ns4:title>
+    <ns0:isbn>8209011375</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1022</ns0:numPages>
+    <ns8:dewey>839.82</ns8:dewey>
+    <nt0:variantTitleForTheWork>fire essays om Knut Hamsun 1952-1972</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0292659">
+    <ns1:statementOfResponsibility>Aasmund Brynildsen ; [i utvalg] ved Nils Heyerdahl</ns1:statementOfResponsibility>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Brynildsen_Aasmund"/>
+    <ns4:description xml:lang="no">Av innholdet: Dommen til døden ; Svermeren og hans demon Om de hellige ikoner ; Det nye hjerte ; Til forsvar for mennesket ; Den kristne eros ; Bøkene ; Bønn til en bokfink.</ns4:description>
+    <ns4:description xml:lang="no">Bibliografi s. 301-303</ns4:description>
+    <ns4:description xml:lang="no">Utgitt ved forfatterens 70-årsjubileum Sade</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1987</ns4:issued>
+    <ns4:location>088.82</ns4:location>
+    <ns4:location>Bry</ns4:location>
+    <ns4:location>ESSAYS</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Dreyer"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/12601327">
+        <ns7:prefLabel xml:lang="no">Eckhart</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/15711630">
+        <ns7:prefLabel xml:lang="no">Kepler, Johannes</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/17401814"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18811955">
+        <ns7:prefLabel xml:lang="no">Teilhard de Chardin, Pierre</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18811973">
+        <ns7:prefLabel xml:lang="no">Picasso, Pablo</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/19171974">
+        <ns7:prefLabel xml:lang="no">Brynildsen, Aasmund</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Brynildsen_Aasmund">
+        <ns7:prefLabel xml:lang="no">Brynildsen, Aasmund</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Doedsstraff">
+        <ns7:prefLabel xml:lang="no">Dødsstraff</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Eckhart">
+        <ns7:prefLabel xml:lang="no">Eckhart</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Ikoner">
+        <ns7:prefLabel xml:lang="no">Ikoner</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Kepler_Johannes">
+        <ns7:prefLabel xml:lang="no">Kepler, Johannes</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Picasso_Pablo">
+        <ns7:prefLabel xml:lang="no">Picasso, Pablo</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Sade_marquis_de"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Teilhard_de_Chardin_Pierre">
+        <ns7:prefLabel xml:lang="no">Teilhard de Chardin, Pierre</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/essays._norske">
+        <ns7:prefLabel xml:lang="no">essays. norske</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/fr"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/spfr">
+        <ns7:prefLabel xml:lang="no">Picasso, Pablo</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/t">
+        <ns7:prefLabel xml:lang="no">Kepler, Johannes</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Stauffenberg, Claus Schenk</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>Frihet og forpliktelse</ns4:title>
+    <ns0:isbn>8209104381</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">313</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Norske_essays"/>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>088.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 280.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>essays i utvalg utgitt ved forfatterens 70-årsjubileum</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0365397">
+    <ns1:statementOfResponsibility>Marit Elin Breivik</ns1:statementOfResponsibility>
+    <ns4:creator>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Statens_bibliotek_og_informasjonshoegskole">
+        <ns6:name xml:lang="no">Statens bibliotek- og informasjonshøgskole</ns6:name>
+      </ns6:Organization>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Breivik_Marit_Elin">
+        <ns6:name>Breivik, Marit Elin</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">r92 xatu1505</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1987</ns4:issued>
+    <ns4:location>020.2</ns4:location>
+    <ns4:location>Bre</ns4:location>
+    <ns4:location>q</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/SBH">
+        <ns6:name xml:lang="no">SBH</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/1941">
+        <ns7:prefLabel xml:lang="no">Faldbakken, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Faldbakken_Knut">
+        <ns7:prefLabel xml:lang="no">Faldbakken, Knut</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Fra "Pan" til "Glahn"</ns4:title>
+    <ns8:dewey>020.2</ns8:dewey>
+    <nt0:variantTitleForTheWork>forfatteren som leser</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0267945">
+    <ns1:statementOfResponsibility>Transl. by Jonathan Steinberg</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">port.</nt1:physicalDescription>
+    <ns4:alternative>Der Verrat im 20. Jahrhundert</ns4:alternative>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Boveri_Margret">
+        <ns8:lifespan>1900-</ns8:lifespan>
+        <ns6:name>Boveri, Margret</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Inneholder bibliografi</ns4:description>
+    <ns4:description xml:lang="no">Originaltittel: Der Verrat im 20. Jahrhundert</ns4:description>
+    <ns4:description xml:lang="no">r91 xagnar1707</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1963</ns4:issued>
+    <ns4:location>364.13</ns4:location>
+    <ns4:location>Bov</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/NY">
+        <ns5:name xml:lang="no">N.Y.</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Putnam">
+        <ns6:name xml:lang="no">Putnam</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18561951">
+        <ns7:prefLabel xml:lang="no">Petain, Philippe</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18811942">
+        <ns7:prefLabel xml:lang="no">Darlan, Francois</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18831945">
+        <ns7:prefLabel xml:lang="no">Laval, Pierre</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18851972">
+        <ns7:prefLabel xml:lang="no">Pound, Ezra</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18871945">
+        <ns7:prefLabel xml:lang="no">Quisling, Vidkun</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/1901">
+        <ns7:prefLabel xml:lang="no">Leopold</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/19071944">
+        <ns7:prefLabel xml:lang="no">Stauffenberg, Claus Schenk</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Darlan_Francois">
+        <ns7:prefLabel xml:lang="no">Darlan, Francois</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Foeydalisme">
+        <ns7:prefLabel xml:lang="no">Føydalisme</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/HawHaw_LordWilliam_Joyce">
+        <ns7:prefLabel xml:lang="no">Haw-Haw, Lord(William Joyce)</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Historie">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Verdenshistorie"/>
+        <ns7:prefLabel xml:lang="no">Historie</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/John_Otto">
+        <ns7:prefLabel xml:lang="no">John, Otto</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Joyce_William_190646">
+        <ns7:prefLabel xml:lang="no">Joyce, William, 1906-46</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Landssvik">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Norge"/>
+        <ns7:prefLabel xml:lang="no">Landssvik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Laval_Pierre">
+        <ns7:prefLabel xml:lang="no">Laval, Pierre</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Leopold">
+        <ns7:prefLabel xml:lang="no">Leopold</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Petain_Philippe">
+        <ns7:prefLabel xml:lang="no">Petain, Philippe</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Pound_Ezra">
+        <ns7:prefLabel xml:lang="no">Pound, Ezra</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Quisling_Vidkun">
+        <ns7:prefLabel xml:lang="no">Quisling, Vidkun</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Roessler_Rudolf">
+        <ns7:prefLabel xml:lang="no">Rössler, Rudolf</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Spionasje">
+        <ns7:prefLabel xml:lang="no">Spionasje</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Stauffenberg_Claus_Schenk">
+        <ns7:prefLabel xml:lang="no">Stauffenberg, Claus Schenk</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/am"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/fr"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/t"/>
+    <ns4:title>Treason in the twentieth century</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">370</ns0:numPages>
+    <ns8:dewey>364.13</ns8:dewey>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0518274">
+    <nt1:physicalDescription xml:lang="no">ill., port.</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Landvik_historielag">
+        <ns6:name xml:lang="no">Landvik historielag</ns6:name>
+      </ns6:Organization>
+    </ns4:creator>
+    <ns4:description xml:lang="no">99x0526jgs a99-11</ns4:description>
+    <ns4:description xml:lang="no">Boken er blitt til på bakgrunn av Hamsun-seminaret som ble avholdt i Grimstad høsten 1997</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1999</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>BI</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Grimstad">
+        <ns5:name xml:lang="no">Grimstad</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Landvik_historielag"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Bonde og menneske</ns4:title>
+    <ns0:isbn>8290694199</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">92</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Biografier"/>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 175.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>Knut Hamsun</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0587227">
+    <ns1:statementOfResponsibility>redaksjonskomite: Ingebjørg Aagre ... [et al.]</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill. (noen kol.), port.</nt1:physicalDescription>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nno"/>
+    <ns2:language rdf:resource="http://lexvo.org/id/iso639-3/nob"/>
+    <ns4:creatort>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bakkan_Engvald">
+        <ns4:title xml:lang="no">Skuggar i lauv</ns4:title>
+        <ns8:lifespan>1897-1982</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bakkan, Engvald</ns6:name>
+      </ns6:Person>
+    </ns4:creatort>
+    <ns4:creatort>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bjoernaraa_Torgeir">
+        <ns4:title xml:lang="no">Bjørnesoge frå Setesdal</ns4:title>
+        <ns8:lifespan>1864-1951</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Bjørnaraa, Torgeir</ns6:name>
+      </ns6:Person>
+    </ns4:creatort>
+    <ns4:creatort>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Boerretzen_Odd">
+        <ns4:title xml:lang="no">Eventyret om da Hitler og Beethoven ble født i f.eks Grimstad</ns4:title>
+        <ns8:lifespan>1926-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Børretzen, Odd</ns6:name>
+      </ns6:Person>
+    </ns4:creatort>
+    <ns4:creatort rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creatort rdf:resource="http://rdf.deichman.no/person/Kjaer_Nils"/>
+    <ns4:creatort>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Loenn_Oeystein">
+        <ns4:title xml:lang="no">Kalven i sjøen</ns4:title>
+        <ns8:lifespan>1936-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Lønn, Øystein</ns6:name>
+      </ns6:Person>
+    </ns4:creatort>
+    <ns4:creatort>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Scott_Gabriel">
+        <ns4:title xml:lang="no">Havmannen</ns4:title>
+        <ns4:title xml:lang="no">Tri egg!</ns4:title>
+        <ns8:lifespan>1874-1958</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Scott, Gabriel</ns6:name>
+      </ns6:Person>
+    </ns4:creatort>
+    <ns4:creatort>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Stalleland_Kristen">
+        <ns4:title xml:lang="no">Gamle Gudbrand gravar</ns4:title>
+        <ns8:lifespan>1861-1949</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Stalleland, Kristen</ns6:name>
+      </ns6:Person>
+    </ns4:creatort>
+    <ns4:creatort>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Zwilgmeyer_Dikken">
+        <ns4:title xml:lang="no">Søndag</ns4:title>
+        <ns8:lifespan>1853-1913</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Zwilgmeyer, Dikken</ns6:name>
+      </ns6:Person>
+    </ns4:creatort>
+    <ns4:description xml:lang="no">03x0619abo a03-13</ns4:description>
+    <ns4:description xml:lang="no">Inneholder dikt, noveller og utdrag fra romaner</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2003</ns4:issued>
+    <ns4:location>A q</ns4:location>
+    <ns4:location>Bok</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Arendal">
+        <ns5:name xml:lang="no">Arendal</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Agderposten">
+        <ns6:name xml:lang="no">Agderposten</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:title>Bokskapet</ns4:title>
+    <ns0:editor>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Aagre_Ingebjoerg">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Aagre, Ingebjørg</ns6:name>
+      </ns6:Person>
+    </ns0:editor>
+    <ns0:isbn>8299372321</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">116</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Norsk_litteratur"/>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:bsID>0136183</ns8:bsID>
+    <ns8:dewey>839.8208</ns8:dewey>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/ADN"/>
+    <ns8:priceInfo>Nkr 228.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>litterære streiftog i Aust-Agder 1902-2002</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0329734">
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Bjoernson_Bjoernstjerne"/>
+    <ns4:description xml:lang="no">r92 xleo0211</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/NordlandBcher"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1914</ns4:issued>
+    <ns4:location>83.8399</ns4:location>
+    <ns4:location>Bjø</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Berlin">
+        <ns5:name xml:lang="no">Berlin</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Morawe__Scheffelt">
+        <ns6:name xml:lang="no">Morawe &amp; Scheffelt</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:title>Der Brautmarsch.  Mutters Hände; zwei Erzählungen, mit einem Huldigungsgedicht an den Dichter von Knut Hamsun</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"></ns0:numPages>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">148</ns0:numPages>
+    <ns8:dewey>83.8399</ns8:dewey>
+    <ns8:literaryFormat rdf:resource="http://rdf.deichman.no/literaryFormat/N"/>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0261859">
+    <ns1:statementOfResponsibility>Harald Beyer</ns1:statementOfResponsibility>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Beyer_Harald">
+        <ns8:lifespan>1891-1960</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Beyer, Harald</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">a98 98x0311tas</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1934</ns4:issued>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:location>Bey</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Aschehoug"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/16841754"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18081845"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18281906"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18321910"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18821949"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Bjoernson_Bjoernstjerne"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Erasmus_Montanus">
+        <ns7:prefLabel xml:lang="no">Holberg, Ludvig</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Holberg_Ludvig"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Ibsen_Henrik"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Undset_Sigrid"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Wergeland_Henrik"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/nd"/>
+    <ns4:title>Fra Holberg til Hamsun</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">202</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>839.8209</ns8:dewey>
+    <nt0:variantTitleForTheWork>skrevet og talt</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0325177">
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Beyer_Edvard">
+        <ns8:lifespan>1920-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Beyer, Edvard</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Har bibliografi</ns4:description>
+    <ns4:description xml:lang="no">Innhold: Åttiår og nittiår. Brudd eller sammenheng? Bjørnson, Hamsun og Kinck. Knut Hamsuns Mysterier. Tryggve Andersen - de forkomne sjelers dikter. Tungetale eller poesi? Erik Lindgren: Vid Shellys hav. "Ved ordets grenser". Litt om Stein Mehrens lyrikk. Problemer og metoder i litteraturforskningen</ns4:description>
+    <ns4:description xml:lang="no">r92 xos0130</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1966</ns4:issued>
+    <ns4:location>839.8209</ns4:location>
+    <ns4:location>Bey</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Aschehoug"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18321910"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18651926"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18661920"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/19101968">
+        <ns7:prefLabel xml:lang="no">Lindegren, Erik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/1935">
+        <ns7:prefLabel xml:lang="no">Brink, André</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Mehren, Stein</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Andersen_Tryggve"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Bjoernson_Bjoernstjerne"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Kinck_Hans_Ernst"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Lindegren_Erik">
+        <ns7:prefLabel xml:lang="no">Lindegren, Erik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Mehren_Stein">
+        <ns7:prefLabel xml:lang="no">Mehren, Stein</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Mysterier"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Norsk_litteratur"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Vid_Shelleys_hav">
+        <ns7:prefLabel xml:lang="no">Lindegren, Erik</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/sv"/>
+    <ns4:title>Profiler og problemer</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1381</ns0:numPages>
+    <ns8:dewey>839.8209</ns8:dewey>
+    <nt0:variantTitleForTheWork>[essays]</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0223287">
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Beyer_Edvard"/>
+    <ns4:description xml:lang="no">Inneholder bibliografi</ns4:description>
+    <ns4:description xml:lang="no">Trykt med noen små forandringer</ns4:description>
+    <ns4:description xml:lang="no">xeaa1012</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1959</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>BI</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Aschehoug"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Hamsun og vi</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">33</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Biografier"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <nt0:variantTitleForTheWork>foredrag i Norske studentersamfund, Oslo, 9. mai 1959</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0295329">
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Beyer_Edvard"/>
+    <ns4:description xml:lang="no">"Trykt med noen små forandringer".  Har bibliografi</ns4:description>
+    <ns4:description xml:lang="no">r91 xleo1029</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1959</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>BI</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Aschehoug"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Hamsun og vi</ns4:title>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Biografier"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <nt0:variantTitleForTheWork>foredrag i det Norske studentersamfund, Oslo, 9.mai1959</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0394723">
+    <ns1:statementOfResponsibility>dargestellt von Martin Beheim-Schwarzbach</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">port.</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/BeheimSchwarzbach_Martin">
+        <ns8:lifespan>1900-</ns8:lifespan>
+        <ns6:name>Beheim-Schwarzbach, Martin</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Har bibliografi</ns4:description>
+    <ns4:description xml:lang="no">a93-7</ns4:description>
+    <ns4:description xml:lang="no">xsi930802</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:isPartOf>
+      <ns0:Series rdf:about="http://rdf.deichman.no/resource/RowohltsBildmonographien"/>
+    </ns4:isPartOf>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1990</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>BI</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Hamburg">
+        <ns5:name xml:lang="no">Hamburg</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Rowohlt_Taschenbuch_Verlag">
+        <ns6:name xml:lang="no">Rowohlt Taschenbuch Verlag</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Knut Hamsun</ns4:title>
+    <ns0:isbn>3499500035</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">166</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Biografier"/>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 44.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>mit Selbstzeugnissen und Bilddokumenten</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0505269">
+    <ns1:statementOfResponsibility>Walter Baumgartner ; oversatt av Helge Vold</ns1:statementOfResponsibility>
+    <ns4:alternative>Knut Hamsun</ns4:alternative>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Baumgartner_Walter">
+        <ns8:lifespan>1941-</ns8:lifespan>
+        <ns6:name>Baumgartner, Walter</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">98x0811jgs a98-14</ns4:description>
+    <ns4:description xml:lang="no">Bibliografi: s. 200-[202]</ns4:description>
+    <ns4:description xml:lang="no">Navneliste: s. 203-205</ns4:description>
+    <ns4:description xml:lang="no">Originaltittel: Knut Hamsun</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1998</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun,K</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Gyldendal"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Den modernistiske Hamsun</ns4:title>
+    <ns0:isbn>8205254303</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">205</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 248.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>medrivende og frastøtende</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0334676">
+    <ns1:statementOfResponsibility>Poul Bager</ns1:statementOfResponsibility>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Bager_Poul">
+        <ns6:name>Bager, Poul</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Bang_Herman"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Branner_Hans_Christian">
+        <ns4:title xml:lang="no">Af Skrevet i Vand</ns4:title>
+        <ns8:lifespan>1903-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Branner, Hans Christian</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Hultberg_Peer">
+        <ns4:title xml:lang="no">Af Requiem</ns4:title>
+        <ns8:lifespan>1935-2007</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Hultberg, Peer</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Jacobsen_Jens_Peter">
+        <ns4:title xml:lang="no">Af Fru Marie Grubbe</ns4:title>
+        <ns8:lifespan>1847-1885</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Jacobsen, Jens Peter</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Jensen_Johannes_Vilhelm">
+        <ns4:title xml:lang="no">Kirken i Farsø</ns4:title>
+        <ns8:lifespan>1873-1950</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Jensen, Johannes Vilhelm</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Paludan_Jacob">
+        <ns4:title xml:lang="no">Af Jørgen Stein</ns4:title>
+        <ns8:lifespan>1896-1975</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Paludan, Jacob</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Pontoppidan_Henrik">
+        <ns4:title xml:lang="no">Af Lykke-Peer</ns4:title>
+        <ns8:lifespan>1857-1943</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Pontoppidan, Henrik</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Rasmussen_Bent_William">
+        <ns4:title xml:lang="no">Af Til Venstre for Virum</ns4:title>
+        <ns8:lifespan>1924-</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Rasmussen, Bent William</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Soenderby_Knud">
+        <ns4:title xml:lang="no">Af Midt i en Jazztid</ns4:title>
+        <ns8:lifespan>1909-1966</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/d"/>
+        <ns6:name>Sønderby, Knud</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Omhandler Jacob Paludan, Henrik Pontoppidan, Herman Bang, J.P. Jacobsen, Knud Sønderby, Bent William Rasmussen, H.C. Branner, Peer Hultberg, Knut Hamsun og Johannes V. Jensen</ns4:description>
+    <ns4:description xml:lang="no">xrs0325</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1991</ns4:issued>
+    <ns4:location>839.813</ns4:location>
+    <ns4:location>Bag</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Viby">
+        <ns5:name xml:lang="no">[Viby]</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Centrum">
+        <ns6:name xml:lang="no">Centrum</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Dansk_litteratur">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Historie_og_kritikk"/>
+        <ns7:prefLabel xml:lang="no">Dansk litteratur</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Romaner"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Sult"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Læsninger</ns4:title>
+    <ns0:isbn>8758306145</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">185</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/h"/>
+    <ns8:dewey>839.813</ns8:dewey>
+    <ns8:listCode>a92-5</ns8:listCode>
+    <ns8:priceInfo>Nkr 225.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>analyser af udvalgte tekster</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0408259">
+    <ns1:statementOfResponsibility>Atle Austestad</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill., port.</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Austestad_Atle">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Austestad, Atle</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">Har bibliografi</ns4:description>
+    <ns4:description xml:lang="no">a93-14</ns4:description>
+    <ns4:description xml:lang="no">xrs0921</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1993</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun,K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Oeystese">
+        <ns5:name xml:lang="no">Øystese</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Friske_Tankar">
+        <ns6:name xml:lang="no">Friske Tankar</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Hardanger">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Kulturhistorie"/>
+        <ns7:prefLabel xml:lang="no">Hardanger</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Knut Hamsun i Øystese</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:dewey>948.362</ns8:dewey>
+    <ns8:priceInfo>Nkr 120.00</ns8:priceInfo>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0405965">
+    <ns1:statementOfResponsibility>Carl Angell-Petersen ; tegninger ved Haakon Fjelddalen</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill.</nt1:physicalDescription>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/AngellPetersen_Carl">
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Angell-Petersen, Carl</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:description xml:lang="no">a93-12</ns4:description>
+    <ns4:description xml:lang="no">xjgs0906</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1993</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/S_l">
+        <ns5:name xml:lang="no">[S. l.]</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/Eget_forl">
+        <ns6:name xml:lang="no">Eget forl.</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Kvinner - (og noen haner) i Knut Hamsuns diktning</ns4:title>
+    <ns0:isbn>8299210410</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">253</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr 100.00</ns8:priceInfo>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0205997">
+    <ns1:statementOfResponsibility>Carl Angell-Petersen ; tegninger ved Haakon Fjelddalen</ns1:statementOfResponsibility>
+    <nt1:physicalDescription xml:lang="no">ill.</nt1:physicalDescription>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/AngellPetersen_Carl"/>
+    <ns4:description xml:lang="no">Omhandler Sult, Mysterier, Pan, Victoria, Sværmere, Markens grøde, Landstrykere, Ringen sluttet</ns4:description>
+    <ns4:description xml:lang="no">uke27 alø0627</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1990</ns4:issued>
+    <ns4:location>839.82</ns4:location>
+    <ns4:location>Hamsun, K.</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Eidanger">
+        <ns5:name xml:lang="no">[Eidanger]</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher>
+      <ns6:Organization rdf:about="http://rdf.deichman.no/organization/C_AngellPetersen">
+        <ns6:name xml:lang="no">C. Angell-Petersen</ns6:name>
+      </ns6:Organization>
+    </ns4:publisher>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:title>Hamsun og Eros</ns4:title>
+    <ns0:isbn>8299210402</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">229</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:dewey>839.82</ns8:dewey>
+    <ns8:priceInfo>Nkr90.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>om kjærligheten i Knut Hamsuns diktning</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0709549">
+    <ns1:statementOfResponsibility>Per Thomas Andersen</ns1:statementOfResponsibility>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Andersen_Per_Thomas"/>
+    <ns4:description xml:lang="no">06-uke26a</ns4:description>
+    <ns4:description xml:lang="no">06x0705gq 07xkr</ns4:description>
+    <ns4:description xml:lang="no">Bibliografi: s. [195]-200</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/l"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2006</ns4:issued>
+    <ns4:location>809.933</ns4:location>
+    <ns4:location>And</ns4:location>
+    <ns4:publicationPlace rdf:resource="http://rdf.deichman.no/publicationPlace/Oslo"/>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Universitetsforl"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/18591952"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18801974">
+        <ns7:prefLabel xml:lang="no">Sandel, Cora</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/18991965">
+        <ns7:prefLabel xml:lang="no">Sandemose, Aksel</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/1932">
+        <ns7:prefLabel xml:lang="no">Naipaul, V.S.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/1935"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/1940">
+        <ns7:prefLabel xml:lang="no">Coetzee, John M.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Alberte">
+        <ns7:prefLabel xml:lang="no">Sandel, Cora</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Brink_Andre">
+        <ns7:prefLabel xml:lang="no">Brink, André</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Coetzee_John_M">
+        <ns7:prefLabel xml:lang="no">Coetzee, John M.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/En_flyktning_krysser_sitt_spor">
+        <ns7:prefLabel xml:lang="no">Sandemose, Aksel</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Et_halvt_liv">
+        <ns7:prefLabel xml:lang="no">Naipaul, V.S.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Gribbenes_land">
+        <ns7:prefLabel xml:lang="no">Brink, André</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Hamsun_Knut"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Identitet">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Litteratur"/>
+        <ns7:prefLabel xml:lang="no">Identitet</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Litteratur"/>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/Markens_groede"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Michael_K__hans_liv_og_tid">
+        <ns7:prefLabel xml:lang="no">Coetzee, John M.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Naipaul_VS">
+        <ns7:prefLabel xml:lang="no">Naipaul, V.S.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Sandel_Cora">
+        <ns7:prefLabel xml:lang="no">Sandel, Cora</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Sandemose_Aksel">
+        <ns7:prefLabel xml:lang="no">Sandemose, Aksel</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/Steder">
+        <ns4:subject rdf:resource="http://rdf.deichman.no/classification/Litteratur"/>
+        <ns7:prefLabel xml:lang="no">Steder</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/dn">
+        <ns7:prefLabel xml:lang="no">Sandemose, Aksel</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject rdf:resource="http://rdf.deichman.no/subject/n"/>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/soerafr">
+        <ns7:prefLabel xml:lang="no">Brink, André</ns7:prefLabel>
+        <ns7:prefLabel xml:lang="no">Coetzee, John M.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:subject>
+      <ns7:Concept rdf:about="http://rdf.deichman.no/subject/trinideng">
+        <ns7:prefLabel xml:lang="no">Naipaul, V.S.</ns7:prefLabel>
+      </ns7:Concept>
+    </ns4:subject>
+    <ns4:title>Identitetens geografi</ns4:title>
+    <ns0:isbn>8215008038</ns0:isbn>
+    <ns0:isbn>9788215008035</ns0:isbn>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">205</ns0:numPages>
+    <ns8:bindingInfo rdf:resource="http://rdf.deichman.no/bindingInfo/ib"/>
+    <ns8:bsID>0168938</ns8:bsID>
+    <ns8:dewey>809.933</ns8:dewey>
+    <ns8:priceInfo>Nkr 249.00</ns8:priceInfo>
+    <nt0:variantTitleForTheWork>steder i litteraturen fra Hamsun til Naipaul</nt0:variantTitleForTheWork>
+  </ns0:Document>
+  <ns0:Document rdf:about="http://rdf.deichman.no/resource/tnr_0371661">
+    <ns1:statementOfResponsibility>dikt av Knut Hamsun</ns1:statementOfResponsibility>
+    <ns4:creator>
+      <ns6:Person rdf:about="http://rdf.deichman.no/person/Anderssen_Fridthjov">
+        <ns8:lifespan>1876-1937</ns8:lifespan>
+        <ns9:nationality rdf:resource="http://rdf.deichman.no/nationality/n"/>
+        <ns6:name>Anderssen, Fridthjov</ns6:name>
+      </ns6:Person>
+    </ns4:creator>
+    <ns4:creator rdf:resource="http://rdf.deichman.no/person/Hamsun_Knut"/>
+    <ns4:description xml:lang="no">For sang og klaver</ns4:description>
+    <ns4:description xml:lang="no">r92 xxtk0729</ns4:description>
+    <ns4:format rdf:resource="http://rdf.deichman.no/format/c"/>
+    <ns4:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">19</ns4:issued>
+    <ns4:location>784.1</ns4:location>
+    <ns4:location>And(An24de)</ns4:location>
+    <ns4:location>a</ns4:location>
+    <ns4:location>q</ns4:location>
+    <ns4:publicationPlace>
+      <ns5:Feature rdf:about="http://rdf.deichman.no/publicationPlace/Bodoe">
+        <ns5:name xml:lang="no">Bodø</ns5:name>
+      </ns5:Feature>
+    </ns4:publicationPlace>
+    <ns4:publisher rdf:resource="http://rdf.deichman.no/organization/Eget_forl"/>
+    <ns4:title>Der er noget jeg sidder og ei kan forstå</ns4:title>
+    <ns0:numPages rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">15</ns0:numPages>
+    <nt2:genre rdf:resource="http://rdf.deichman.no/mogenre/Viser_og_sanger"/>
+    <ns8:dewey>784.1</ns8:dewey>
+  </ns0:Document>
+</rdf:RDF>

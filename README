@@ -63,13 +63,16 @@ string replacement characters can be given individually in yaml objects
 
 ## TODO ##
 relation subfield relations should accept different classes
-conditionals in yaml file? if/else
 
 ## REQUIREMENTS ##
-ruby-dev >= 1.8.7
+ruby >= 1.8.7
 ruby-marc (thanks to Ross Singer et.al.)
 rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
 rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
+
+## LINUX USERS ##
+either install via rvm (Ruby Version Manager)
+or install ruby-dev
 
 ## UBUNTU INSTALL ##
 (for rdf-xml support)
