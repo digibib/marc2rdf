@@ -63,7 +63,6 @@ string replacement characters can be given individually in yaml objects
 
 ## TODO ##
 relation subfield relations should accept different classes
-conditionals in yaml file? if/else
 
 ## REQUIREMENTS ##
 ruby >= 1.8.7
