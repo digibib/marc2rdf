@@ -70,6 +70,10 @@ ruby-marc (thanks to Ross Singer et.al.)
 rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
 rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
 
+## LINUX USERS ##
+either install via rvm (Ruby Version Manager)
+or install ruby-dev
+
 ## UBUNTU INSTALL ##
 (for rdf-xml support)
 sudo apt-get install libxml2-dev libxslt1-dev
