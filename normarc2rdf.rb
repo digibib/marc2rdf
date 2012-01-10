@@ -77,7 +77,6 @@ class RDFModeler
 
   subs = MAPPINGFILE['substitutes']
   regex_subs = options[:regex_substitute]
-  
 # remove nil options
   options.delete_if {|k,v| v.nil?}
   #p options
@@ -88,7 +87,7 @@ class RDFModeler
   # substring must be used on whole marcfield
     if options.has_key?(:substr_offset)
       generated_objects << o.slice(options[:substr_offset],options[:substr_length])
-      #generated_objects.delete_if {|a| a.strip.empty? }
+      generated_objects.delete_if {|a| a.strip.empty? }
     elsif options.has_key?(:regex_split)
       generated_objects = o.split(/#{options[:regex_split]}/)
       generated_objects.delete_if {|c| c.empty? }

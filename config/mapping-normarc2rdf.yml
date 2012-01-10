@@ -14,11 +14,10 @@
 #      subs: hash array of { key: 'value' }, where key matches orig and 'value' is predicate
 #      default: in case no match, replace with this
 #   - indicators (eg. 240)
-#      indicator1: indicator 1/2 with hash array of { key: 'value' }, where key is "0","1", etc. amd 'value' is predicate
+#      indicator1: indicator 1/2 with hash array of { key: 'value' }, where key is "0","1", etc. and 'value' is predicate
 #      default: 'http://rdf.deichman.no/originalTitle'
 #
 # OBJECTS
-#
 # objects can be given various options:
 #   substr_offset: 
 #   substr_length: 
@@ -57,7 +56,11 @@ tags:
       object:
         prefix: http://rdf.deichman.no/audience/
         substr_offset: 22
-        substr_length: 1      
+        substr_length: 1
+        regex_substitute: 
+          orig: "a|j"
+          subs: { "a": 'adult', "j": 'juvenile' }
+          default: adult
         datatype: uri
     literaryformat:
       predicate: http://rdf.deichman.no/literaryFormat
@@ -76,6 +79,10 @@ tags:
         prefix: http://rdf.deichman.no/bioContent/
         substr_offset: 34
         substr_length: 1
+        regex_substitute: 
+          orig: "0|1|a|b|c|d"
+          subs: { "0": 'biography', "1": 'biography', "a": 'autobiography', "b": 'biography', "c": 'collectedBiography', "d": 'partlyBiographic' }
+          default: biography        
         datatype: uri
     language:
       predicate: http://purl.org/dc/terms/language
@@ -87,7 +94,6 @@ tags:
       relation: 
         class: http://lexvo.org/ontology#Language
         
-
   "015": 
     subfield:
       a:
@@ -115,6 +121,10 @@ tags:
           prefix: http://rdf.deichman.no/format/
           regex_strip: "[\W]+"
           regex_split: ", *"
+          regex_substitute: 
+            orig: "c|j|l|db|dc|dd|dh|di|dz|ed|ee"
+            subs: { "c": 'musicPrint', "j": 'journal', "l": 'book', "db": 'cassette', "dc": 'compactDisc', "dd": 'digiBook', "de": 'digiCard', "dh": 'languageCourse', "di": 'audioBook', "dz": 'mp3file', "ed": 'vhs', "ee": 'dvd' }
+            default: novel           
           datatype: uri
       d: 
         predicate: http://rdf.deichman.no/literaryFormat
@@ -122,6 +132,10 @@ tags:
           prefix: http://rdf.deichman.no/literaryFormat/
           regex_split: "(\w{1})"
           regex_strip: "[\W]+"
+          regex_substitute: 
+            orig: "a|d|l|n|r|s|t"
+            subs: { "a": 'anthology', "d": 'poetry', "l": 'studyBook', "n": 'shortStories', "r": 'novel', "s": 'play', "t": 'cartoon' }
+            default: novel 
           datatype: uri
       e: 
         predicate: http://purl.org/dc/terms/audience
@@ -279,6 +293,7 @@ tags:
               object:
                 datatype: literal
                   
+#NB combine a+b
   "110": 
     subfield: 
       a:
@@ -368,6 +383,9 @@ tags:
               object: 
                 datatype: literal
 
+# condition indicator 1=0/1=1
+# 24000$a (indikator 1=0) Standardtittel legges her hvis det er hovedinnførsel på forfatter. (Autoriseres) Brukes hovedsakelig av Musikkavdelingen
+# 24010$a (indikator 1=1) Originaltittel. På oversatte dokumenter registrerer vi alltid originaltittel her hvis denne er kjent. I tillegg bruker vi notefelt 574 
   "240":
     subfield:
       a:
@@ -563,6 +581,7 @@ tags:
     subfield: 
       a:
         conditions:
+## predicates by condition
           subfield:
             e:
               orig: "bearb|biogr|dir|forf|fort|foto|gjendikt|overs|ill|innl|k|komm|komp|manus|medarb|medf|oppl|red|reg|sang|skues|t|tekstf|utg|utøv"
@@ -940,6 +959,39 @@ tags:
               object: 
                 datatype: literal
 
+## TEST av regex på subfelt                
+      "[a|a]":
+        predicate: http://purl.org/dc/terms/subject2
+        object:
+          combine:
+            - a
+            - q
+            - x
+            - "0"
+          combinestring: "_"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_strip: "[^\w\-]+"
+          prefix: http://rdf.deichman.no/subject/
+          datatype: uri
+        relation: 
+          class: http://www.w3.org/2004/02/skos/core#Concept
+          subfield:
+            a: 
+              predicate: http://www.w3.org/2004/02/skos/core#broader
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - "0"
+                combinestring: " - "               
+                datatype: literal
+                lang: :no
+            "1": 
+              predicate: http://www.w3.org/2004/02/skos/core#notation
+              object: 
+                datatype: literal                
+## slutt TEST
 
   "652": 
     subfield: 
