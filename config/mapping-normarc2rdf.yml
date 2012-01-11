@@ -40,7 +40,7 @@ substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa,  'æ': ae,  'ø': oe,  'å': aa,  
 tags:
   "001": 
     titleNumber:
-      predicate: http://rdf.deichman.no/titleNumber
+      predicate: http://purl.org/dc/terms/identifier
       object:
         datatype: literal 
           
@@ -50,7 +50,18 @@ tags:
       object:
         substr_offset: 0
         substr_length: 6
-        datatype: literal  
+        datatype: literal
+    periodicatType:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      object:
+        prefix: http://dbpedia.org/resource/
+        substr_offset: 21
+        substr_length: 1
+        regex_substitute: 
+          orig: "a|n|p"
+          subs: { "a": 'Yearbook', "n": 'Newspaper', "p": 'Journal' }
+          default: Newspaper
+        datatype: uri         
     audience:
       predicate: http://purl.org/dc/terms/audience
       object:
@@ -62,16 +73,28 @@ tags:
           subs: { "a": 'adult', "j": 'juvenile' }
           default: adult
         datatype: uri
-    literaryformat:
-      predicate: http://rdf.deichman.no/literaryFormat
+    contentCode:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
       object:
-        prefix: http://rdf.deichman.no/literaryFormat/
+        prefix: http://dbpedia.org/resource/
+        substr_offset: 24
+        substr_length: 4
+        regex_split: "(\w{1})"
+        regex_substitute: 
+          orig: "a|b|d|e|f|h|i|k|l|m|o|r|s|w|x"
+          subs: { "a": 'R%C3%A9sum%C3%A9', "b": 'Bibliography', "d": 'Dictionary', "e": 'Encyclopedia', "f": 'User_guide', "h": 'Yearbook', "i": 'Back-of-the-book_index', "k": 'Discograhy', "l": 'Legal_writing', "m": 'Thesis', "o": 'Review', "r": 'Reference_work', "s": 'Statistics', "x": 'Dissertation' }
+          default: Document
+        datatype: uri        
+    literaryformat:
+      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      object:
+        prefix: http://dbpedia.org/resource/
         substr_offset: 33
         substr_length: 1
         regex_substitute: 
           orig: "0|1"
-          subs: { "0": 'nonFiction', "1": 'fiction' }
-          default: fiction
+          subs: { "0": 'Non-fiction', "1": 'Fiction' }
+          default: Fiction
         datatype: uri
     biocontent:
       predicate: http://rdf.deichman.no/bioContent
@@ -81,7 +104,7 @@ tags:
         substr_length: 1
         regex_substitute: 
           orig: "0|1|a|b|c|d"
-          subs: { "0": 'biography', "1": 'biography', "a": 'autobiography', "b": 'biography', "c": 'collectedBiography', "d": 'partlyBiographic' }
+          subs: { "0": 'nonBiography', "1": 'biography', "a": 'autobiography', "b": 'monoBiography', "c": 'collectedBiography', "d": 'partlyBiographic' }
           default: biography        
         datatype: uri
     language:
@@ -93,6 +116,17 @@ tags:
         datatype: uri
       relation: 
         class: http://lexvo.org/ontology#Language
+    script:
+      predicate: http://rdf.deichman.no/script
+      object:
+        prefix: http://dbpedia.org/resource/
+        substr_offset: 38
+        substr_length: 1
+        regex_substitute: 
+          orig: "a|b|c|d|e|f|g|i|l|m"
+          subs: { "a": 'ISO_basic_Latin_alphabet', "b": 'Latin-derived_alphabet', "c": 'Cyrillic_script', "d": 'Japanese_writing_system', "e": 'Chinese_characters', "f": 'Arabic_alphabet', "g": 'Greek_alphabet', "i": 'Thai_alphabet', "l": 'Tamil_alphabet', "m": 'Blackletter' }
+          default: biography        
+        datatype: uri        
         
   "015": 
     subfield:
@@ -112,36 +146,46 @@ tags:
       a: 
         predicate: http://purl.org/dc/terms/audience
         object: 
-          prefix: http://rdf.deichman.no/audience/
-          regex_strip: "[\W]+"
-          datatype: uri
-      b: 
-        predicate: http://purl.org/dc/terms/format
-        object:
-          prefix: http://rdf.deichman.no/format/
+          prefix: http://rdf.deichman.no/audience/ages_
           regex_strip: "[\W]+"
           regex_split: ", *"
           regex_substitute: 
-            orig: "c|j|l|db|dc|dd|dh|di|dz|ed|ee"
-            subs: { "c": 'musicPrint', "j": 'journal', "l": 'book', "db": 'cassette', "dc": 'compactDisc', "dd": 'digiBook', "de": 'digiCard', "dh": 'languageCourse', "di": 'audioBook', "dz": 'mp3file', "ed": 'vhs', "ee": 'dvd' }
-            default: novel           
+            orig: "a|b|bu|u|mu"
+            subs: { "a": '0-5', "b": '6-7', "bu": '8-9', "u": '10-11', "mu": '12-15' }
+            default: 'all'    
+          datatype: uri
+      b: 
+        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+        object:
+          prefix: http://dbpedia.org/resource/
+          regex_strip: "[\W]+"
+          regex_split: ", *"
+          regex_substitute: 
+            orig: "a|ab|b|c|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|j|l|ma|mb|mc|mj|mn|mo|na|sm|vo"
+            subs: { "a": 'Map', "ab": 'Atlas', "b": 'Manuscript', "c": 'Sheet_music', "da": 'Gramophone_record', "db": 'Compact_Cassette', "dc": 'Compact_Disc', "dd": 'Digi_book', "de": 'Digi_card', "dg": 'Music', "dh": 'Language_education', "di": 'Audiobook', "dj": 'Spoken_word_album', "dz": 'MP3', "ef": 'Blu-ray_Disk', "gg": 'Blu-ray_Disk', "ed": 'Videotape', "ee": 'DVD', "fd": 'Reversal_film', "ff": 'Photography', "fm": 'Poster', "ga": 'Computer_file', "gb": 'Floppy_disk', "gc": 'DVD-ROM', "gd": 'CD_ROM', "ge": 'Web_page', "gi": 'Nintendo_optical_disc', "h": 'Physical_body', "ib": 'Microfilm', "ic": 'Microcard', "j": 'Periodical_literature', "l": 'Book', "ma": 'Personal_computer_game', "mb": 'Playstation_2_games', "mc": 'Playstation_3_games', "mj": 'Xbox_360_games', "mn": 'Nintendo_Game_Card', "mo": 'Nintendo_optical_disc', "na": 'Portable_Document_Format', "sm": 'Magazine', "vo": 'File_folder' }
+            default: Document           
           datatype: uri
       d: 
-        predicate: http://rdf.deichman.no/literaryFormat
+        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
         object: 
-          prefix: http://rdf.deichman.no/literaryFormat/
+          prefix: http://dbpedia.org/resource/
           regex_split: "(\w{1})"
           regex_strip: "[\W]+"
           regex_substitute: 
-            orig: "a|d|l|n|r|s|t"
-            subs: { "a": 'anthology', "d": 'poetry', "l": 'studyBook', "n": 'shortStories', "r": 'novel', "s": 'play', "t": 'cartoon' }
+            orig: "a|b|d|l|n|p|r|s|t"
+            subs: { "a": 'Anthology', "b": 'Picture_book', "d": 'Poetry', "l": 'Textbook', "n": 'Short_stories', "p": 'Pointing_book', "r": 'Novel', "s": 'Play_%28theatre%29', "t": 'Comic_book' }
             default: novel 
           datatype: uri
       e: 
-        predicate: http://purl.org/dc/terms/audience
+        predicate: http://rdf.deichman.no/facilitation
         object: 
-          prefix: http://rdf.deichman.no/audience/
+          prefix: http://rdf.deichman.no/facilitation/
+          regex_split: "(\w{2})"
           regex_strip: "[\W]+"
+          regex_substitute: 
+            orig: "ta|tb|tc|td|te|tf|tg|tj"
+            subs: { "ta": 'simpleText', "tb": 'simpleContent', "tc": 'largePrint', "td": 'largePrint', "te": 'braille', "tf": 'signLanguage', "tg": 'tactile', "tj": 'capitalized' }
+            default: simpleText           
           datatype: uri
       s: 
         predicate: http://rdf.deichman.no/ageLimit
@@ -453,6 +497,7 @@ tags:
               predicate: "http://www.geonames.org/ontology#name"
               object:
                 datatype: literal
+                regex_strip: "[\?\[\]\<\>]+"
       b: 
         predicate: http://purl.org/dc/terms/publisher
         object: 
@@ -584,8 +629,8 @@ tags:
 ## predicates by condition
           subfield:
             e:
-              orig: "bearb|biogr|dir|forf|fort|foto|gjendikt|overs|ill|innl|k|komm|komp|manus|medarb|medf|oppl|red|reg|sang|skues|t|tekstf|utg|utøv"
-              subs: { bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manus: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medf: 'http://purl.org/dc/terms/contributor', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skues: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricWriter', tekstf: 'http://rdf.deichman.no/lyricWriter', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
+              orig: "arr|bearb|biogr|dir|eks|forf|fort|foto|gjendikt|ill|innl|k|komm|komp|manusforf|medarb|medf|oppl|overs|red|reg|sang|skuesp|t|tekstf|u|utg|utøv"
+              subs: { arr: 'http://rdf.deichman.no/musicalArranger', bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', eks: 'http://rdf.deichman.no/perfomer', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manusforf: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medf: 'http://purl.org/dc/terms/contributor', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skuesp: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricist', tekstf: 'http://rdf.deichman.no/lyricist', u: 'http://rdf.deichman.no/publisher', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
               default: 'http://purl.org/dc/terms/contributor'
         object:
           combine:
