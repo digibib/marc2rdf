@@ -51,7 +51,7 @@ tags:
         substr_offset: 0
         substr_length: 6
         datatype: literal
-    periodicatType:
+    periodicaType:
       predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
       object:
         prefix: http://dbpedia.org/resource/
@@ -147,7 +147,6 @@ tags:
         predicate: http://purl.org/dc/terms/audience
         object: 
           prefix: http://rdf.deichman.no/audience/ages_
-          regex_strip: "[\W]+"
           regex_split: ", *"
           regex_substitute: 
             orig: "a|b|bu|u|mu"
@@ -158,7 +157,6 @@ tags:
         predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
         object:
           prefix: http://dbpedia.org/resource/
-          regex_strip: "[\W]+"
           regex_split: ", *"
           regex_substitute: 
             orig: "a|ab|b|c|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|j|l|ma|mb|mc|mj|mn|mo|na|sm|vo"
@@ -170,7 +168,6 @@ tags:
         object: 
           prefix: http://dbpedia.org/resource/
           regex_split: "(\w{1})"
-          regex_strip: "[\W]+"
           regex_substitute: 
             orig: "a|b|d|l|n|p|r|s|t"
             subs: { "a": 'Anthology', "b": 'Picture_book', "d": 'Poetry', "l": 'Textbook', "n": 'Short_stories', "p": 'Pointing_book', "r": 'Novel', "s": 'Play_%28theatre%29', "t": 'Comic_book' }
@@ -191,7 +188,6 @@ tags:
         predicate: http://rdf.deichman.no/ageLimit
         object: 
           prefix: http://rdf.deichman.no/ageLimit/
-          regex_strip: "[\W]+"
           datatype: uri                     
 
   "020": 
@@ -629,8 +625,8 @@ tags:
 ## predicates by condition
           subfield:
             e:
-              orig: "arr|bearb|biogr|dir|eks|forf|fort|foto|gjendikt|ill|innl|k|komm|komp|manusforf|medarb|medf|oppl|overs|red|reg|sang|skuesp|t|tekstf|u|utg|utøv"
-              subs: { arr: 'http://rdf.deichman.no/musicalArranger', bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', eks: 'http://rdf.deichman.no/perfomer', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manusforf: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medf: 'http://purl.org/dc/terms/contributor', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skuesp: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricist', tekstf: 'http://rdf.deichman.no/lyricist', u: 'http://rdf.deichman.no/publisher', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
+              orig: "arr|bearb|biogr|dir|eks|forf|fort|foto|gjendikt|ill|innl|komm|komp|k|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|u"
+              subs: { arr: 'http://rdf.deichman.no/musicalArranger', bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', eks: 'http://rdf.deichman.no/perfomer', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manusforf: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medforf: 'http://purl.org/dc/terms/creator', medf: 'http://purl.org/dc/terms/creator', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skuesp: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricist', tekstf: 'http://rdf.deichman.no/lyricist', u: 'http://rdf.deichman.no/publisher', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
               default: 'http://purl.org/dc/terms/contributor'
         object:
           combine:
@@ -1004,39 +1000,6 @@ tags:
               object: 
                 datatype: literal
 
-## TEST av regex på subfelt                
-      "[a|a]":
-        predicate: http://purl.org/dc/terms/subject2
-        object:
-          combine:
-            - a
-            - q
-            - x
-            - "0"
-          combinestring: "_"
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
-          regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/subject/
-          datatype: uri
-        relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
-          subfield:
-            a: 
-              predicate: http://www.w3.org/2004/02/skos/core#broader
-              object:
-                combine:
-                  - a
-                  - q
-                  - x
-                  - "0"
-                combinestring: " - "               
-                datatype: literal
-                lang: :no
-            "1": 
-              predicate: http://www.w3.org/2004/02/skos/core#notation
-              object: 
-                datatype: literal                
-## slutt TEST
 
   "652": 
     subfield: 
@@ -1136,7 +1099,7 @@ tags:
             indicator2: { "0": 'http://purl.org/dc/terms/alternative', "2": 'http://purl.org/dc/terms/hasPart' }
             default: 'http://purl.org/dc/terms/alternative'
         object: 
-          datatype: literal                       
+          datatype: literal               
           
   "760": 
     subfield: 

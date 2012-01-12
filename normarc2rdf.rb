@@ -97,8 +97,8 @@ class RDFModeler
 
     if options.has_key?(:regex_substitute)
       generated_objects.collect! do |obj|
-        obj.gsub(/[\W]+/, '').downcase 
-        obj.gsub!(/#{regex_subs['orig']}/) do |match| 
+        obj = obj.gsub(/[\W]+/, '').downcase 
+        obj.sub!(/#{regex_subs['orig']}/) do |match| 
           if match then regex_subs['subs'][match] else regex_subs['default'] end
         end
       end
@@ -259,6 +259,8 @@ if $recordlimit then break if i > $recordlimit end
                       @predicate = subfields[1]['conditions']['indicator']['indicator2'][match]
                       if @predicate.nil? then @predicate = subfields[1]['conditions']['indicator']['default'] end
                     end 
+                  else
+                    @predicate = subfields[1]['conditions']['indicator']['default']
                   end
               end
             else
