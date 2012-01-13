@@ -138,7 +138,6 @@ tags:
               subs: { bibbi: 'http://rdf.deichman.no/bsID', bibliofilid: 'http://rdf.deichman.no/bibliofilID', dugnadsbasenibibliofil: 'http://rdf.deichman.no/dugnadsbasenibibliofilID' }
               default: 'http://rdf.deichman.no/bibliofilID'
         object: 
-          regex_strip: "[\D]+"
           datatype: literal
  
   "019": 
@@ -149,7 +148,7 @@ tags:
           prefix: http://rdf.deichman.no/audience/ages_
           regex_split: ", *"
           regex_substitute: 
-            orig: "a|b|bu|u|mu"
+            orig: "a|bu|mu|b|u"
             subs: { "a": '0-5', "b": '6-7', "bu": '8-9', "u": '10-11', "mu": '12-15' }
             default: 'all'    
           datatype: uri
@@ -159,7 +158,7 @@ tags:
           prefix: http://dbpedia.org/resource/
           regex_split: ", *"
           regex_substitute: 
-            orig: "a|ab|b|c|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|j|l|ma|mb|mc|mj|mn|mo|na|sm|vo"
+            orig: "ab|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|ma|mb|mc|mj|mn|mo|na|sm|vo|a|b|c|j|l"
             subs: { "a": 'Map', "ab": 'Atlas', "b": 'Manuscript', "c": 'Sheet_music', "da": 'Gramophone_record', "db": 'Compact_Cassette', "dc": 'Compact_Disc', "dd": 'Digi_book', "de": 'Digi_card', "dg": 'Music', "dh": 'Language_education', "di": 'Audiobook', "dj": 'Spoken_word_album', "dz": 'MP3', "ef": 'Blu-ray_Disk', "gg": 'Blu-ray_Disk', "ed": 'Videotape', "ee": 'DVD', "fd": 'Reversal_film', "ff": 'Photography', "fm": 'Poster', "ga": 'Computer_file', "gb": 'Floppy_disk', "gc": 'DVD-ROM', "gd": 'CD_ROM', "ge": 'Web_page', "gi": 'Nintendo_optical_disc', "h": 'Physical_body', "ib": 'Microfilm', "ic": 'Microcard', "j": 'Periodical_literature', "l": 'Book', "ma": 'Personal_computer_game', "mb": 'Playstation_2_games', "mc": 'Playstation_3_games', "mj": 'Xbox_360_games', "mn": 'Nintendo_Game_Card', "mo": 'Nintendo_optical_disc', "na": 'Portable_Document_Format', "sm": 'Magazine', "vo": 'File_folder' }
             default: Document           
           datatype: uri
@@ -178,7 +177,6 @@ tags:
         object: 
           prefix: http://rdf.deichman.no/facilitation/
           regex_split: "(\w{2})"
-          regex_strip: "[\W]+"
           regex_substitute: 
             orig: "ta|tb|tc|td|te|tf|tg|tj"
             subs: { "ta": 'simpleText', "tb": 'simpleContent', "tc": 'largePrint', "td": 'largePrint', "te": 'braille', "tf": 'signLanguage', "tg": 'tactile', "tj": 'capitalized' }
@@ -333,7 +331,6 @@ tags:
               object:
                 datatype: literal
                   
-#NB combine a+b
   "110": 
     subfield: 
       a:
@@ -625,7 +622,7 @@ tags:
 ## predicates by condition
           subfield:
             e:
-              orig: "arr|bearb|biogr|dir|eks|forf|fort|foto|gjendikt|ill|innl|komm|komp|k|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|u"
+              orig: "arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u"
               subs: { arr: 'http://rdf.deichman.no/musicalArranger', bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', eks: 'http://rdf.deichman.no/perfomer', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manusforf: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medforf: 'http://purl.org/dc/terms/creator', medf: 'http://purl.org/dc/terms/creator', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skuesp: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricist', tekstf: 'http://rdf.deichman.no/lyricist', u: 'http://rdf.deichman.no/publisher', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
               default: 'http://purl.org/dc/terms/contributor'
         object:
