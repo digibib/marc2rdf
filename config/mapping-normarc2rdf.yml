@@ -125,7 +125,7 @@ tags:
         regex_substitute: 
           orig: "a|b|c|d|e|f|g|i|l|m"
           subs: { "a": 'ISO_basic_Latin_alphabet', "b": 'Latin-derived_alphabet', "c": 'Cyrillic_script', "d": 'Japanese_writing_system', "e": 'Chinese_characters', "f": 'Arabic_alphabet', "g": 'Greek_alphabet', "i": 'Thai_alphabet', "l": 'Tamil_alphabet', "m": 'Blackletter' }
-          default: biography        
+          default: ISO_basic_Latin_alphabet        
         datatype: uri        
         
   "015": 
@@ -170,7 +170,7 @@ tags:
           regex_substitute: 
             orig: "a|b|d|l|n|p|r|s|t"
             subs: { "a": 'Anthology', "b": 'Picture_book', "d": 'Poetry', "l": 'Textbook', "n": 'Short_stories', "p": 'Pointing_book', "r": 'Novel', "s": 'Play_%28theatre%29', "t": 'Comic_book' }
-            default: novel 
+            default: Novel 
           datatype: uri
       e: 
         predicate: http://rdf.deichman.no/facilitation

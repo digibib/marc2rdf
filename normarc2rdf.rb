@@ -97,7 +97,7 @@ class RDFModeler
 
     if options.has_key?(:regex_substitute)
       generated_objects.collect! do |obj|
-        obj.gsub(/[\W]+/, '').downcase
+        obj = obj.gsub(/[\W]+/, '').downcase
         obj.scan(/#{regex_subs['orig']}/) do |match| 
           if match then obj = regex_subs['subs'][match] else obj = regex_subs['default'] end
         end
