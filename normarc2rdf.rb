@@ -97,10 +97,11 @@ class RDFModeler
 
     if options.has_key?(:regex_substitute)
       generated_objects.collect! do |obj|
-        obj = obj.gsub(/[\W]+/, '').downcase 
-        obj.sub!(/#{regex_subs['orig']}/) do |match| 
-          if match then regex_subs['subs'][match] else regex_subs['default'] end
+        obj.gsub(/[\W]+/, '').downcase
+        obj.scan(/#{regex_subs['orig']}/) do |match| 
+          if match then obj = regex_subs['subs'][match] else obj = regex_subs['default'] end
         end
+      obj # needed to make sure obj is returned, not match
       end
     end 
 
@@ -121,6 +122,10 @@ class RDFModeler
       generated_objects.collect! { |obj| obj.gsub(/#{options[:regex_strip]}/, '') }
     end
 
+    if options.has_key?(:downcase)
+      generated_objects.collect! { |obj| obj.downcase }
+    end
+	
 	return generated_objects
   end
   
@@ -192,7 +197,7 @@ if $recordlimit then break if i > $recordlimit end
           marc_object = "#{marcfield.value}"
           unless marc_object.strip.empty?
             yamlvalue.each do | key,value |
-              objects = rdfrecord.generate_objects(marc_object, :marcfield => marcfield, :regex_split => value['object']['regex_split'], :regex_replace => value['object']['regex_replace'], :regex_strip => value['object']['regex_strip'], :regex_substitute => value['object']['regex_substitute'], :substr_offset => value['object']['substr_offset'], :substr_length => value['object']['substr_length'], :combine => value['object']['combine'], :combinestring => value['object']['combinestring'])
+              objects = rdfrecord.generate_objects(marc_object, :marcfield => marcfield, :regex_split => value['object']['regex_split'], :regex_replace => value['object']['regex_replace'], :regex_strip => value['object']['regex_strip'], :regex_substitute => value['object']['regex_substitute'], :substr_offset => value['object']['substr_offset'], :substr_length => value['object']['substr_length'], :combine => value['object']['combine'], :combinestring => value['object']['combinestring'], :downcase => value['object']['downcase'])
               unless objects.empty?
                 objects.each do | o |
                   unless o.strip.empty?
@@ -235,12 +240,8 @@ if $recordlimit then break if i > $recordlimit end
                   m = "#{marcfield[key]}"
                   unless m.empty?
                     @predicate = m.gsub(/[\W]+/, '').downcase
-                    @predicate.gsub!(/#{value['orig']}/) do |match| 
-                      if match
-                        value['subs'][match] 
-                      else 
-                        value['default'] 
-                      end
+                    @predicate.scan(/#{value['orig']}/) do |match| 
+                      if match then @predicate = value['subs'][match] else @predicate = value['default'] end
                     end
                   else
                     @predicate = value['default']
@@ -249,19 +250,17 @@ if $recordlimit then break if i > $recordlimit end
               ### condition by indicators                   ###
               ### if no match from given array, use default ###
               elsif subfields[1]['conditions'].has_key?('indicator')
-                  if marcfield.indicator1 
-                    marcfield.indicator1.gsub!(/#{marcfield.indicator1}/) do |match| 
-                      @predicate = subfields[1]['conditions']['indicator']['indicator1'][match]
-                      if @predicate.nil? then @predicate = subfields[1]['conditions']['indicator']['default'] end
-                    end  
-                  elsif marcfield.indicator2
-                    marcfield.indicator2.gsub!(/#{marcfield.indicator2}/) do |match| 
-                      @predicate = subfields[1]['conditions']['indicator']['indicator2'][match]
-                      if @predicate.nil? then @predicate = subfields[1]['conditions']['indicator']['default'] end
-                    end 
-                  else
-                    @predicate = subfields[1]['conditions']['indicator']['default']
+                if subfields[1]['conditions']['indicator']['indicator1']
+                  marcfield.indicator1.scan(/#{subfields[1]['conditions']['indicator']['indicator1']['orig']}/) do |match|
+                    @predicate = subfields[1]['conditions']['indicator']['indicator1']['subs'][match]
                   end
+                end
+                if subfields[1]['conditions']['indicator']['indicator2']
+                  marcfield.indicator2.scan(/#{subfields[1]['conditions']['indicator']['indicator2']['orig']}/) do |match|
+                    @predicate = subfields[1]['conditions']['indicator']['indicator2']['subs'][match]
+                  end
+                end
+                if @predicate.empty? then @predicate = subfields[1]['conditions']['indicator']['default'] end
               end
             else
               @predicate = subfields[1]['predicate']
@@ -277,7 +276,7 @@ if $recordlimit then break if i > $recordlimit end
 ## NEED A WAY TO USE REGEX FOR SUBFIELDS?              
                  marc_object = "#{marcfield[subfields[0]]}"
                  unless marc_object.empty?
-                   objects = rdfrecord.generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'])
+                   objects = rdfrecord.generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'], :downcase => subfields[1]['object']['downcase'])
 
                    objects.each do | o |
                      object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")
@@ -294,7 +293,7 @@ if $recordlimit then break if i > $recordlimit end
                        relationsubfields.each do | relsub |
                          relobject = "#{marcfield[relsub[0]]}"
                          unless relobject.empty?
-                           relobjects = rdfrecord.generate_objects(relobject, :marcfield => marcfield, :regex_split => relsub[1]['object']['regex_split'], :regex_replace => relsub[1]['object']['regex_replace'], :regex_strip => relsub[1]['object']['regex_strip'], :regex_substitute => relsub[1]['object']['regex_substitute'], :substr_offset => relsub[1]['object']['substr_offset'], :substr_length => relsub[1]['object']['substr_length'], :combine => relsub[1]['object']['combine'], :combinestring => relsub[1]['object']['combinestring'])
+                           relobjects = rdfrecord.generate_objects(relobject, :marcfield => marcfield, :regex_split => relsub[1]['object']['regex_split'], :regex_replace => relsub[1]['object']['regex_replace'], :regex_strip => relsub[1]['object']['regex_strip'], :regex_substitute => relsub[1]['object']['regex_substitute'], :substr_offset => relsub[1]['object']['substr_offset'], :substr_length => relsub[1]['object']['substr_length'], :combine => relsub[1]['object']['combine'], :combinestring => relsub[1]['object']['combinestring'], :downcase => relsub[1]['object']['downcase'])
                            relobjects.each do | ro |
                              if relsub[1]['object']['datatype'] == "uri"
                                relobject_uri = rdfrecord.generate_uri(ro, "#{relsub[1]['object']['prefix']}")
@@ -319,7 +318,7 @@ if $recordlimit then break if i > $recordlimit end
               if subfields[0]
                 marc_object = "#{marcfield[subfields[0]]}"
                 unless marc_object.empty?
-                  objects = rdfrecord.generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'])
+                  objects = rdfrecord.generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'], :downcase => subfields[1]['object']['downcase'])
                   objects.each do | o |  
                     if subfields[1]['object']['datatype'] == "uri"
                       object_uri = rdfrecord.generate_uri(o, "#{subfields[1]['object']['prefix']}")

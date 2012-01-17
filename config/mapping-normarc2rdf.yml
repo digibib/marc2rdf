@@ -35,7 +35,7 @@
 # 
 # object relation by new class and further subfield loops
 
-substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa,  'æ': ae,  'ø': oe,  'å': aa,  'Ä': Ae,  'Ö': Oe,  'ä': ae, 'ö': oe,  ' ': '_', 'é': e, 'è': e, 'ê': e, 'á': a, 'à': a, 'â': a, 'ã': a, 'í': i, 'ì': i, 'î': i, 'ĩ': i, 'ó': o, 'ò': o, 'ô': o, 'õ': o, 'ú': u, 'ù': u, 'û': u, 'ũ': u}
+substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa,  'æ': ae,  'ø': oe,  'å': aa,  'Ä': Ae,  'Ö': Oe,  'ä': ae, 'ö': oe,  ' ': '_', 'é': e, 'è': e, 'ê': e, 'ë': e, 'á': a, 'à': a, 'â': a, 'ã': a, 'í': i, 'ì': i, 'î': i, 'ĩ': i, 'ï': i, 'ó': o, 'ò': o, 'ô': o, 'õ': o, 'ú': u, 'ù': u, 'û': u, 'ũ': u, 'ü': u}
 
 tags:
   "001": 
@@ -138,7 +138,6 @@ tags:
               subs: { bibbi: 'http://rdf.deichman.no/bsID', bibliofilid: 'http://rdf.deichman.no/bibliofilID', dugnadsbasenibibliofil: 'http://rdf.deichman.no/dugnadsbasenibibliofilID' }
               default: 'http://rdf.deichman.no/bibliofilID'
         object: 
-          regex_strip: "[\D]+"
           datatype: literal
  
   "019": 
@@ -149,7 +148,7 @@ tags:
           prefix: http://rdf.deichman.no/audience/ages_
           regex_split: ", *"
           regex_substitute: 
-            orig: "a|b|bu|u|mu"
+            orig: "a|bu|mu|b|u"
             subs: { "a": '0-5', "b": '6-7', "bu": '8-9', "u": '10-11', "mu": '12-15' }
             default: 'all'    
           datatype: uri
@@ -159,7 +158,7 @@ tags:
           prefix: http://dbpedia.org/resource/
           regex_split: ", *"
           regex_substitute: 
-            orig: "a|ab|b|c|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|j|l|ma|mb|mc|mj|mn|mo|na|sm|vo"
+            orig: "ab|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|ma|mb|mc|mj|mn|mo|na|sm|vo|a|b|c|j|l"
             subs: { "a": 'Map', "ab": 'Atlas', "b": 'Manuscript', "c": 'Sheet_music', "da": 'Gramophone_record', "db": 'Compact_Cassette', "dc": 'Compact_Disc', "dd": 'Digi_book', "de": 'Digi_card', "dg": 'Music', "dh": 'Language_education', "di": 'Audiobook', "dj": 'Spoken_word_album', "dz": 'MP3', "ef": 'Blu-ray_Disk', "gg": 'Blu-ray_Disk', "ed": 'Videotape', "ee": 'DVD', "fd": 'Reversal_film', "ff": 'Photography', "fm": 'Poster', "ga": 'Computer_file', "gb": 'Floppy_disk', "gc": 'DVD-ROM', "gd": 'CD_ROM', "ge": 'Web_page', "gi": 'Nintendo_optical_disc', "h": 'Physical_body', "ib": 'Microfilm', "ic": 'Microcard', "j": 'Periodical_literature', "l": 'Book', "ma": 'Personal_computer_game', "mb": 'Playstation_2_games', "mc": 'Playstation_3_games', "mj": 'Xbox_360_games', "mn": 'Nintendo_Game_Card', "mo": 'Nintendo_optical_disc', "na": 'Portable_Document_Format', "sm": 'Magazine', "vo": 'File_folder' }
             default: Document           
           datatype: uri
@@ -178,7 +177,6 @@ tags:
         object: 
           prefix: http://rdf.deichman.no/facilitation/
           regex_split: "(\w{2})"
-          regex_strip: "[\W]+"
           regex_substitute: 
             orig: "ta|tb|tc|td|te|tf|tg|tj"
             subs: { "ta": 'simpleText', "tb": 'simpleContent', "tc": 'largePrint', "td": 'largePrint', "te": 'braille', "tf": 'signLanguage', "tg": 'tactile', "tj": 'capitalized' }
@@ -255,8 +253,10 @@ tags:
       a:
         conditions: 
           indicator:
-            indicator1: { "3": 'http://rdf.deichman.no/dewey', " ": 'http://rdf.deichman.no/localCode' }
             default: 'http://rdf.deichman.no/dewey'
+            indicator1: 
+              orig: "3| "
+              subs: { "3": 'http://rdf.deichman.no/dewey', " ": 'http://rdf.deichman.no/localCode' }
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
@@ -304,7 +304,7 @@ tags:
             - d
           combinestring: "_"       
           prefix: "http://rdf.deichman.no/person/"
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
@@ -333,7 +333,6 @@ tags:
               object:
                 datatype: literal
                   
-#NB combine a+b
   "110": 
     subfield: 
       a:
@@ -345,7 +344,7 @@ tags:
             - q
           combinestring: "_"          
           prefix: "http://rdf.deichman.no/organization/" 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
         relation: 
@@ -379,7 +378,7 @@ tags:
         predicate: "http://purl.org/dc/terms/creator" 
         object: 
           prefix: "http://rdf.deichman.no/conference/"
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
         relation: 
@@ -412,7 +411,7 @@ tags:
         predicate: "http://purl.org/vocab/frbr/core#embodimentOf" 
         object: 
           prefix: "http://rdf.deichman.no/work/"
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri    
         relation: 
@@ -423,16 +422,15 @@ tags:
               object: 
                 datatype: literal
 
-# condition indicator 1=0/1=1
-# 24000$a (indikator 1=0) Standardtittel legges her hvis det er hovedinnførsel på forfatter. (Autoriseres) Brukes hovedsakelig av Musikkavdelingen
-# 24010$a (indikator 1=1) Originaltittel. På oversatte dokumenter registrerer vi alltid originaltittel her hvis denne er kjent. I tillegg bruker vi notefelt 574 
   "240":
     subfield:
       a:
         conditions: 
           indicator:
-            indicator1: { "0": 'http://rdf.deichman.no/uniformTitle', "1": 'http://rdf.deichman.no/originalTitle' }
             default: 'http://rdf.deichman.no/originalTitle'
+            indicator1:
+              orig: "0|1"
+              subs: { "0": 'http://rdf.deichman.no/uniformTitle', "1": 'http://rdf.deichman.no/originalTitle' }
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
@@ -482,7 +480,7 @@ tags:
       a: 
         predicate: http://rdf.deichman.no/publicationPlace
         object: 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/publicationPlace/
           datatype: uri
@@ -497,7 +495,7 @@ tags:
       b: 
         predicate: http://purl.org/dc/terms/publisher
         object: 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/organization/
           datatype: uri
@@ -511,6 +509,7 @@ tags:
       c: 
         predicate: http://purl.org/dc/terms/issued
         object: 
+          regex_strip: "[\[\]\?]+"
           datatype: literal
           
   "300": 
@@ -622,10 +621,9 @@ tags:
     subfield: 
       a:
         conditions:
-## predicates by condition
           subfield:
             e:
-              orig: "arr|bearb|biogr|dir|eks|forf|fort|foto|gjendikt|ill|innl|komm|komp|k|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|u"
+              orig: "arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u"
               subs: { arr: 'http://rdf.deichman.no/musicalArranger', bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', eks: 'http://rdf.deichman.no/perfomer', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manusforf: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medforf: 'http://purl.org/dc/terms/creator', medf: 'http://purl.org/dc/terms/creator', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skuesp: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricist', tekstf: 'http://rdf.deichman.no/lyricist', u: 'http://rdf.deichman.no/publisher', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
               default: 'http://purl.org/dc/terms/contributor'
         object:
@@ -634,7 +632,7 @@ tags:
             - b
             - d
           combinestring: "_" 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/person/
           datatype: uri
@@ -676,7 +674,7 @@ tags:
             - d
             - t
           combinestring: "_" 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/work/
           datatype: uri
@@ -692,7 +690,7 @@ tags:
                   - b
                   - d
                 combinestring: "_" 
-                regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+                regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
                 regex_strip: "[^\w\-]+"
                 prefix: http://rdf.deichman.no/person/
             t:
@@ -706,7 +704,8 @@ tags:
       a: 
         predicate: http://purl.org/dc/terms/isPartOf
         object: 
-          regex_strip: "[\W]+"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
+          regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/resource/
           datatype: uri
         relation: 
@@ -732,12 +731,24 @@ tags:
             - t
           combinestring: "_" 
           prefix: http://rdf.deichman.no/subject/
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
           class: http://www.w3.org/2004/02/skos/core#Concept
           subfield:
+            t:
+              predicate: http://www.w3.org/2004/02/skos/core#broader
+              object:
+                datatype: uri
+                combine:
+                  - a
+                  - c
+                  - d
+                combinestring: "_" 
+                regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
+                regex_strip: "[^\w\-]+"
+                prefix: http://rdf.deichman.no/subject/
             a:
               predicate: http://www.w3.org/2004/02/skos/core#prefLabel
               object:
@@ -762,25 +773,33 @@ tags:
             - d
           combinestring: "_" 
           prefix: http://rdf.deichman.no/subject/
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
           class: http://www.w3.org/2004/02/skos/core#Concept
           subfield:
             a:
-              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              predicate: http://xmlns.com/foaf/0.1/focus
               object:
-                datatype: literal
+                datatype: uri
+                combine:
+                  - a
+                  - c
+                  - d
+                combinestring: "_" 
+                regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
+                regex_strip: "[^\w\-]+"
+                prefix: http://rdf.deichman.no/person/            
             "1": 
               predicate: http://www.w3.org/2004/02/skos/core#notation
               object: 
                 datatype: literal  
-                
+               
   "600|600|600": 
     subfield: 
       a:
-        predicate: http://xmlns.com/foaf/0.1/focus
+        predicate: http://purl.org/dc/terms/subject
         object:
           combine:
             - a
@@ -788,7 +807,7 @@ tags:
             - d
           combinestring: "_" 
           prefix: http://rdf.deichman.no/person/
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
@@ -829,7 +848,7 @@ tags:
             - t
           combinestring: "_" 
           prefix: http://rdf.deichman.no/work/
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
@@ -851,7 +870,7 @@ tags:
             - q
           combinestring: "_" 
           prefix: http://rdf.deichman.no/subject/
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
@@ -882,7 +901,7 @@ tags:
             - q
           combinestring: "_"          
           prefix: "http://rdf.deichman.no/organization/" 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
         relation: 
@@ -921,7 +940,7 @@ tags:
             - x
           combinestring: "_" 
           prefix: http://rdf.deichman.no/subject/
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
@@ -951,7 +970,7 @@ tags:
             - p
           combinestring: "_" 
           prefix: http://rdf.deichman.no/work/
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
@@ -966,7 +985,7 @@ tags:
                 combinestring: ". "
                 datatype: literal      
 
-  "(650|653|690|691|692|694|699)": 
+  "(650|653|690|691|692|694)": 
     subfield: 
       a:
         predicate: http://purl.org/dc/terms/subject
@@ -977,9 +996,45 @@ tags:
             - x
             - "0"
           combinestring: "_"
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/subject/
+          downcase: true
+          datatype: uri
+        relation: 
+          class: http://www.w3.org/2004/02/skos/core#Concept
+          subfield:
+            a: 
+              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - "0"
+                combinestring: " - "               
+                datatype: literal
+                lang: :no
+            "1": 
+              predicate: http://www.w3.org/2004/02/skos/core#notation
+              object: 
+                datatype: literal
+
+  "699": 
+    subfield: 
+      a:
+        predicate: http://rdf.deichman.no/bibsubject
+        object:
+          combine:
+            - a
+            - q
+            - x
+            - "0"
+          combinestring: "_"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
+          regex_strip: "[^\w\-]+"
+          prefix: http://rdf.deichman.no/subject/
+          downcase: true
           datatype: uri
         relation: 
           class: http://www.w3.org/2004/02/skos/core#Concept
@@ -1006,9 +1061,10 @@ tags:
       a: 
         predicate: http://purl.org/ontology/mo/genre
         object: 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/mogenre/
+          downcase: true
           datatype: uri
         relation: 
           class: http://purl.org/ontology/mo/Genre
@@ -1024,9 +1080,10 @@ tags:
       a: 
         predicate: http://dbpedia.org/ontology/literaryGenre
         object: 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/literaryGenre/
+          downcase: true
           datatype: uri
         relation: 
           class: http://dbpedia.org/class/yago/LiteraryGenres
@@ -1043,9 +1100,10 @@ tags:
         predicate: http://commontag.org/ns#tagged
         object: 
           regex_split: " "
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/keyword/        
+          prefix: http://rdf.deichman.no/keyword/
+          downcase: true      
           datatype: uri          
         relation: 
           class: http://commontag.org/ns#Tag
@@ -1061,7 +1119,7 @@ tags:
       a: 
         predicate: http://purl.org/dc/terms/contributor
         object: 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/organization/
           datatype: uri
@@ -1080,7 +1138,7 @@ tags:
         predicate: "http://purl.org/dc/terms/contributor" 
         object: 
           prefix: "http://rdf.deichman.no/conference/"
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
         relation:
@@ -1096,10 +1154,12 @@ tags:
       a:
         conditions: 
           indicator:
-            indicator2: { "0": 'http://purl.org/dc/terms/alternative', "2": 'http://purl.org/dc/terms/hasPart' }
             default: 'http://purl.org/dc/terms/alternative'
+            indicator2:
+              orig: "0|2"
+              subs: { "0": 'http://purl.org/dc/terms/alternative', "2": 'http://purl.org/dc/terms/hasPart' }
         object: 
-          datatype: literal               
+          datatype: literal            
           
   "760": 
     subfield: 
