@@ -38,21 +38,21 @@
 substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa,  'æ': ae,  'ø': oe,  'å': aa,  'Ä': Ae,  'Ö': Oe,  'ä': ae, 'ö': oe,  ' ': '_', 'é': e, 'è': e, 'ê': e, 'ë': e, 'á': a, 'à': a, 'â': a, 'ã': a, 'í': i, 'ì': i, 'î': i, 'ĩ': i, 'ï': i, 'ó': o, 'ò': o, 'ô': o, 'õ': o, 'ú': u, 'ù': u, 'û': u, 'ũ': u, 'ü': u}
 
 tags:
-  "001": 
+  "001":
     titleNumber:
-      predicate: http://purl.org/dc/terms/identifier
+      predicate: DC.identifier
       object:
         datatype: literal 
-          
+
   "008":
     cataloguingDate:
-      predicate: http://rdf.deichman.no/cataloguingDate
+      predicate: DEICHMAN.cataloguingDate
       object:
         substr_offset: 0
         substr_length: 6
         datatype: literal
     periodicaType:
-      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      predicate: DBO.literaryGenre
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 21
@@ -63,7 +63,7 @@ tags:
           default: Newspaper
         datatype: uri         
     audience:
-      predicate: http://purl.org/dc/terms/audience
+      predicate: DC.audience
       object:
         prefix: http://rdf.deichman.no/audience/
         substr_offset: 22
@@ -74,7 +74,7 @@ tags:
           default: adult
         datatype: uri
     contentCode:
-      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      predicate: DBO.literaryGenre
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 24
@@ -86,7 +86,7 @@ tags:
           default: Document
         datatype: uri        
     literaryformat:
-      predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+      predicate: DBO.literaryGenre
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 33
@@ -97,7 +97,7 @@ tags:
           default: Fiction
         datatype: uri
     biocontent:
-      predicate: http://rdf.deichman.no/bioContent
+      predicate: DEICHMAN.bioContent
       object:
         prefix: http://rdf.deichman.no/bioContent/
         substr_offset: 34
@@ -108,16 +108,16 @@ tags:
           default: biography        
         datatype: uri
     language:
-      predicate: http://purl.org/dc/terms/language
+      predicate: DC.language
       object:
         prefix: http://lexvo.org/id/iso639-3/
         substr_offset: 35
         substr_length: 3
         datatype: uri
       relation: 
-        class: http://lexvo.org/ontology#Language
+        class: LEXVO.Language
     script:
-      predicate: http://rdf.deichman.no/script
+      predicate: DEICHMAN.script
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 38
@@ -127,23 +127,23 @@ tags:
           subs: { "a": 'ISO_basic_Latin_alphabet', "b": 'Latin-derived_alphabet', "c": 'Cyrillic_script', "d": 'Japanese_writing_system', "e": 'Chinese_characters', "f": 'Arabic_alphabet', "g": 'Greek_alphabet', "i": 'Thai_alphabet', "l": 'Tamil_alphabet', "m": 'Blackletter' }
           default: ISO_basic_Latin_alphabet        
         datatype: uri        
-        
-  "015": 
+
+  "015":
     subfield:
       a:
         conditions:
           subfield:
             b: 
               orig: "bibbi|bibliofilid|dugnadsbasenibibliofil"
-              subs: { bibbi: 'http://rdf.deichman.no/bsID', bibliofilid: 'http://rdf.deichman.no/bibliofilID', dugnadsbasenibibliofil: 'http://rdf.deichman.no/dugnadsbasenibibliofilID' }
-              default: 'http://rdf.deichman.no/bibliofilID'
+              subs: { bibbi: DEICHMAN.bsID, bibliofilid: DEICHMAN.bibliofilID, dugnadsbasenibibliofil: DEICHMAN.dugnadsbasenibibliofilID }
+              default: DEICHMAN.bibliofilID
         object: 
           datatype: literal
- 
-  "019": 
+
+  "019":
     subfield: 
       a: 
-        predicate: http://purl.org/dc/terms/audience
+        predicate: DC.audience
         object: 
           prefix: http://rdf.deichman.no/audience/ages_
           regex_split: ", *"
@@ -153,9 +153,9 @@ tags:
             default: 'all'    
           datatype: uri
       b: 
-        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+        predicate: DC.format
         object:
-          prefix: http://dbpedia.org/resource/
+          prefix: http://rdf.deichman.no/format/
           regex_split: ", *"
           regex_substitute: 
             orig: "ab|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|ma|mb|mc|mj|mn|mo|na|sm|vo|a|b|c|j|l"
@@ -163,7 +163,7 @@ tags:
             default: Document           
           datatype: uri
       d: 
-        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+        predicate: RDF.type
         object: 
           prefix: http://dbpedia.org/resource/
           regex_split: "(\w{1})"
@@ -173,7 +173,7 @@ tags:
             default: Novel 
           datatype: uri
       e: 
-        predicate: http://rdf.deichman.no/facilitation
+        predicate: DEICHMAN.facilitation
         object: 
           prefix: http://rdf.deichman.no/facilitation/
           regex_split: "(\w{2})"
@@ -183,49 +183,49 @@ tags:
             default: simpleText           
           datatype: uri
       s: 
-        predicate: http://rdf.deichman.no/ageLimit
+        predicate: DEICHMAN.ageLimit
         object: 
           prefix: http://rdf.deichman.no/ageLimit/
           datatype: uri                     
 
-  "020": 
+  "020":
     subfield: 
       a: 
-        predicate: http://purl.org/ontology/bibo/isbn
+        predicate: BIBO.isbn
         object: 
           regex_strip: "[\D]+"
           datatype: literal
       b: 
-        predicate: http://rdf.deichman.no/bindingInfo
+        predicate: DEICHMAN.bindingInfo
         object: 
           prefix: http://rdf.deichman.no/bindingInfo/        
           regex_strip: "[\W]+"
           datatype: uri
       c: 
-        predicate: http://rdf.deichman.no/priceInfo
+        predicate: DEICHMAN.priceInfo
         object: 
           datatype: literal
 
-  "022": 
+  "022":
     subfield: 
       a: 
-        predicate: http://purl.org/ontology/bibo/issn
+        predicate: BIBO.issn
         object:
           regex_strip: "[\D]+"
           datatype: literal
 
-  "025": 
+  "025":
     subfield: 
       a: 
-        predicate: http://purl.org/ontology/bibo/eanucc13
+        predicate: BIBO.eanucc13
         object:
           regex_strip: "[\D]+"
           datatype: literal          
 
-  "041": 
+  "041":
     subfield: 
       a: 
-        predicate: http://purl.org/dc/term/language
+        predicate: DC.language
         object: 
           prefix: http://lexvo.org/id/iso639-3/
           regex_strip: "[\W]+"
@@ -233,7 +233,7 @@ tags:
           datatype: uri 
 
       b: 
-        predicate: http://rdf.deichman.no/subTitles
+        predicate: DEICHMAN.subTitles
         object:
           prefix: http://lexvo.org/id/iso639-3/
           regex_strip: "[\W]+"
@@ -241,62 +241,62 @@ tags:
           datatype: uri 
 
       h: 
-        predicate: http://rdf.deichman.no/originalLanguage
+        predicate: DEICHMAN.originalLanguage
         object: 
           prefix: http://lexvo.org/id/iso639-3/
           regex_strip: "[\W]+"
           regex_split: "(\w{3})"
           datatype: uri 
-                                
-  "082": 
+
+  "082":
     subfield: 
       a:
         conditions: 
           indicator:
-            default: 'http://rdf.deichman.no/dewey'
+            default: DEICHMAN.dewey
             indicator1: 
               orig: "3| "
-              subs: { "3": 'http://rdf.deichman.no/dewey', " ": 'http://rdf.deichman.no/localCode' }
+              subs: { "3": 'DEICHMAN.dewey', " ": 'DEICHMAN.localCode' }
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
-                
-  "090": 
+
+  "090":
     subfield: 
       a:
-        predicate: http://purl.org/dc/terms/location
+        predicate: DC.location
         object:
           datatype: literal
       b:
-        predicate: http://purl.org/dc/terms/location
+        predicate: DC.location
         object:
           datatype: literal
       c:
-        predicate: http://purl.org/dc/terms/location
+        predicate: DC.location
         object:
           datatype: literal
       d:
-        predicate: http://purl.org/dc/terms/location
+        predicate: DC.location
         object:
           datatype: literal
-                                        
-  "092": 
+
+  "092":
     subfield: 
       a:
-        predicate: http://purl.org/dc/terms/location
+        predicate: DC.location
         object: 
           datatype: literal      
-  "099": 
+  "099":
     subfield: 
       a:
-        predicate: http://rdf.deichman.no/listCode
+        predicate: DEICHMAN.listCode
         object: 
           datatype: literal
 
-  "100": 
+  "100":
     subfield: 
       a:
-        predicate: "http://purl.org/dc/terms/creator" 
+        predicate: DC.creator
         object:
           combine:
             - a
@@ -308,35 +308,35 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: "http://xmlns.com/foaf/0.1/Person"
+          class: FOAF.Person
           subfield:
             a:
-              predicate: "http://xmlns.com/foaf/0.1/name"
+              predicate: FOAF.name
               object:
                 datatype: literal               
             c:
-              predicate: "http://xmlns.com/foaf/0.1/title"
+              predicate: FOAF.title
               object:
                 datatype: literal
             d:
-              predicate: "http://rdf.deichman.no/lifespan"
+              predicate: DEICHMAN.lifespan
               object:
                 datatype: literal
             j:
-              predicate: "http://www.foafrealm.org/xfoaf/0.1/nationality"
+              predicate: XFOAF.nationality
               object:
                 datatype: uri
                 prefix: "http://rdf.deichman.no/nationality/"
                 regex_strip: "[\W]+"
             q:
-              predicate: "http://www.foafrealm.org/xfoaf/0.1/givenName"
+              predicate: XFOAF.givenName
               object:
                 datatype: literal
-                  
-  "110": 
+
+  "110":
     subfield: 
       a:
-        predicate: "http://purl.org/dc/terms/creator"
+        predicate: DC.creator
         object:
           combine:
             - a
@@ -348,10 +348,10 @@ tags:
           regex_strip: "[\W]+"
           datatype: uri    
         relation: 
-          class: http://xmlns.com/foaf/0.1/Organization
+          class: FOAF.Organization
           subfield: 
             a: 
-              predicate: http://xmlns.com/foaf/0.1/name
+              predicate: FOAF.name
               object:
                 combine:
                   - a
@@ -360,65 +360,65 @@ tags:
                 combinestring: ". "              
                 datatype: literal
             c: 
-              predicate: http://rdf.deichman.no/conferencePlace
+              predicate: DEICHMAN.conferencePlace
               object: 
                 datatype: literal
             d: 
-              predicate: http://rdf.deichman.no/conferenceDate
+              predicate: DEICHMAN.conferenceDate
               object: 
                 datatype: literal
             n: 
-              predicate: http://rdf.deichman.no/corporationNumber
+              predicate: DEICHMAN.corporationNumber
               object: 
                 datatype: literal
 
-  "111": 
+  "111":
     subfield: 
       a:
-        predicate: "http://purl.org/dc/terms/creator" 
+        predicate: DC.creator 
         object: 
           prefix: "http://rdf.deichman.no/conference/"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
         relation: 
-          class: http://purl.org/ontology/bibo/Conference
+          class: BIBO.Conference
           subfield: 
             a: 
-              predicate: http://xmlns.com/foaf/0.1/name
+              predicate: FOAF.name
               object: 
                 datatype: literal
             c: 
-              predicate: http://rdf.deichman.no/conferencePlace
+              predicate: DEICHMAN.conferencePlace
               object: 
                 datatype: literal
             d: 
-              predicate: http://rdf.deichman.no/conferenceDate
+              predicate: DEICHMAN.conferenceDate
               object: 
                 datatype: literal
             n: 
-              predicate: http://rdf.deichman.no/corporationNumber
+              predicate: DEICHMAN.corporationNumber
               object: 
                 datatype: literal
             q: 
-              predicate: http://www.w3.org/1999/02/22-rdf-syntax-ns#description
+              predicate: RDF.description
               object: 
                 datatype: literal
 
-  "130|730": 
+  "130|730":
     subfield: 
       a:
-        predicate: "http://purl.org/vocab/frbr/core#embodimentOf" 
+        predicate: FABIO.isManifestationOf 
         object: 
           prefix: "http://rdf.deichman.no/work/"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri    
         relation: 
-          class: http://purl.org/vocab/frbr/core#Work
+          class: FABIO.Work
           subfield: 
             a: 
-              predicate: http://purl.org/dc/terms/title
+              predicate: DC.title
               object: 
                 datatype: literal
 
@@ -427,205 +427,204 @@ tags:
       a:
         conditions: 
           indicator:
-            default: 'http://rdf.deichman.no/originalTitle'
+            default: DEICHMAN.originalTitle
             indicator1:
               orig: "0|1"
-              subs: { "0": 'http://rdf.deichman.no/uniformTitle', "1": 'http://rdf.deichman.no/originalTitle' }
+              subs: { "0": 'DEICHMAN.uniformTitle', "1": 'DEICHMAN.originalTitle' }
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
 
-  "(245|246)": 
+  "(245|246)":
     subfield: 
       a: 
-        predicate: http://purl.org/dc/terms/title
+        predicate: DC.title
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
       b: 
-        predicate: http://rdvocab.info/Elements/variantTitleForTheWork
+        predicate: RDA.variantTitleForTheWork
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
       c: 
-        predicate: http://rdvocab.info/Elements/statementOfResponsibility
+        predicate: RDA.statementOfResponsibility
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal
       n: 
-        predicate: http://purl.org/ontology/bibo/number
+        predicate: BIBO.number
         object: 
           datatype: literal
       p: 
-        predicate: http://rdvocab.info/Elements/variantTitleForTheWork
+        predicate: RDA.variantTitleForTheWork
         object: 
           regex_strip: "[\.:,;\/\s]\s*$"
           datatype: literal          
-          
-          
-  "250": 
+
+  "250":
     subfield: 
       a: 
-        predicate: http://purl.org/ontology/bibo/edition
+        predicate: BIBO.edition
         object: 
           datatype: literal
       b: 
-        predicate: http://rdvocab.info/Elements/statementOfResponsibility
+        predicate: RDA.statementOfResponsibility
         object:
           regex_strip: "[\.:,;\/\s]\s*$" 
           datatype: literal
 
-  "260": 
+  "260":
     subfield: 
       a: 
-        predicate: http://rdf.deichman.no/publicationPlace
+        predicate: DEICHMAN.publicationPlace
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/publicationPlace/
           datatype: uri
         relation: 
-          class: "http://www.geonames.org/ontology#Feature"
+          class: GEONAMES.Feature
           subfield:
             a:
-              predicate: "http://www.geonames.org/ontology#name"
+              predicate: "GEONAMES.name"
               object:
                 datatype: literal
                 regex_strip: "[\?\[\]\<\>]+"
       b: 
-        predicate: http://purl.org/dc/terms/publisher
+        predicate: DC.publisher
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
-          class: http://xmlns.com/foaf/0.1/Organization
+          class: FOAF.Organization
           subfield:
             b:
-              predicate: "http://xmlns.com/foaf/0.1/name"
+              predicate: FOAF.name
               object:
                 datatype: literal
       c: 
-        predicate: http://purl.org/dc/terms/issued
+        predicate: DC.issued
         object: 
           regex_strip: "[\[\]\?]+"
           datatype: literal
-          
-  "300": 
+
+  "300":
     subfield: 
       a: 
-        predicate: http://purl.org/ontology/bibo/numPages
+        predicate: BIBO.numPages
         object:
           regex_strip: "[\s]*s[\.\s]*$"
           datatype: literal
       b:
-        predicate: http://rdf.deichman.no/physicalDescription
+        predicate: DEICHMAN.physicalDescription
         object: 
           datatype: literal
       c:
-        predicate: http://rdf.deichman.no/physicalDescription
+        predicate: DEICHMAN.physicalDescription
         object: 
           datatype: literal
       e:
-        predicate: http://rdf.deichman.no/physicalDescription
+        predicate: DEICHMAN.physicalDescription
         object: 
           datatype: literal          
 
-  "^5(?!03|21|46|71|72|73|74|90|92|95|99)": 
+  "^5(?!03|21|46|71|72|73|74|90|92|95|99)":
     subfield: 
       a: 
-        predicate: http://purl.org/dc/terms/description
+        predicate: DC.description
         object: 
           datatype: literal
           lang: :no
 
-  "503": 
+  "503":
     subfield: 
       a: 
-        predicate: http://rdf.deichman.no/publicationHistory
-        object: 
-          datatype: literal
-          
-  "521": 
-    subfield: 
-      a: 
-        predicate: http://rdf.deichman.no/ageLimit
+        predicate: DEICHMAN.publicationHistory
         object: 
           datatype: literal
 
-  "546": 
+  "521":
     subfield: 
       a: 
-        predicate: http://rdf.deichman.no/languageNote
-        object: 
-          datatype: literal
-                    
-  "571": 
-    subfield: 
-      a: 
-        predicate: http://purl.org/ontology/bibo/identifier
+        predicate: DEICHMAN.ageLimit
         object: 
           datatype: literal
 
-  "572": 
-    subfield:
+  "546":
+    subfield: 
       a: 
-        predicate: http://rdf.deichman.no/variantTitleNote
+        predicate: DEICHMAN.languageNote
         object: 
           datatype: literal
 
-  "573": 
-    subfield:
+  "571":
+    subfield: 
       a: 
-        predicate: http://rdf.deichman.no/titleSourceNote
+        predicate: BIBO.identifier
         object: 
           datatype: literal
-                    
-  "574": 
+
+  "572":
     subfield:
       a: 
-        predicate: http://rdf.deichman.no/originalTitleNote
+        predicate: DEICHMAN.variantTitleNote
+        object: 
+          datatype: literal
+
+  "573":
+    subfield:
+      a: 
+        predicate: DEICHMAN.titleSourceNote
+        object: 
+          datatype: literal
+
+  "574":
+    subfield:
+      a: 
+        predicate: DEICHMAN.originalTitleNote
         object: 
           datatype: literal                    
 
-  "590": 
+  "590":
     subfield:
       a: 
-        predicate: http://rdf.deichman.no/listNote
+        predicate: DEICHMAN.listNote
         object: 
           datatype: literal                     
 
-  "592": 
+  "592":
     subfield:
       a: 
-        predicate: http://rdf.deichman.no/volumePartNote
+        predicate: DEICHMAN.volumePartNote
         object: 
           datatype: literal 
 
-  "595": 
+  "595":
     subfield:
       a: 
-        predicate: http://rdf.deichman.no/periodicalCoverage
+        predicate: DEICHMAN.periodicalCoverage
         object: 
           datatype: literal 
 
-  "599": 
+  "599":
     subfield:
       a: 
-        predicate: http://rdf.deichman.no/signatureNote
+        predicate: DEICHMAN.signatureNote
         object: 
           datatype: literal 
-                             
-  "700": 
+
+  "700":
     subfield: 
       a:
         conditions:
           subfield:
             e:
               orig: "arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u"
-              subs: { arr: 'http://rdf.deichman.no/musicalArranger', bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', eks: 'http://rdf.deichman.no/perfomer', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manusforf: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medforf: 'http://purl.org/dc/terms/creator', medf: 'http://purl.org/dc/terms/creator', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skuesp: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricist', tekstf: 'http://rdf.deichman.no/lyricist', u: 'http://rdf.deichman.no/publisher', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
-              default: 'http://purl.org/dc/terms/contributor'
+              subs: { arr: 'DEICHMAN.musicalArranger', bearb: 'DC.contributor', biogr: 'DEICHMAN.biographer', dir: 'DEICHMAN.director', eks: 'DEICHMAN.perfomer', forf: 'DC.creator', fort: 'DC.narrator', foto: 'DEICHMAN.photographer', gjendikt: 'BIBO.translator', overs: 'BIBO.translator', ill: 'BIBO.illustrator', innl: 'DEICHMAN.reader', k: 'DEICHMAN.composer', komm: 'DEICHMAN.commentator', komp: 'DEICHMAN.composer', manusforf: 'DEICHMAN.scriptWriter', medarb: 'DC.contributor', medforf: 'DC.creator', medf: 'DC.creator', oppl: 'DC.narrator', red: 'BIBO.editor', reg: 'DEICHMAN.director', sang: 'DEICHMAN.singer', skuesp: 'DEICHMAN.actor', t: 'DEICHMAN.lyricist', tekstf: 'DEICHMAN.lyricist', u: 'DEICHMAN.publisher', utg: 'DEICHMAN.publisher', utøv: 'DEICHMAN.perfomer' }
+              default: 'DC.contributor'
         object:
           combine:
             - a
@@ -637,36 +636,35 @@ tags:
           prefix: http://rdf.deichman.no/person/
           datatype: uri
         relation: 
-          class: "http://xmlns.com/foaf/0.1/Person"
+          class: FOAF.Person
           subfield:
             a:
-              predicate: "http://xmlns.com/foaf/0.1/name"
+              predicate: FOAF.name
               object:
                 datatype: literal
             b:
-              predicate: "http://purl.org/ontology/bibo/suffixName"
+              predicate: BIBO.suffixName
               object:
                 datatype: literal                
             c:
-              predicate: "http://xmlns.com/foaf/0.1/title"
+              predicate: FOAF.title
               object:
                 datatype: literal
-                lang: :no
             d:
-              predicate: "http://rdf.deichman.no/lifespan"
+              predicate: DEICHMAN.lifespan
               object:
                 datatype: literal
             j:
-              predicate: "http://www.foafrealm.org/xfoaf/0.1/nationality"
+              predicate: XFOAF.nationality
               object:
                 datatype: uri
                 prefix: "http://rdf.deichman.no/nationality/"
                 regex_strip: "[\W]+"
 
-  "700|700": 
+  "700|700":
     subfield: 
       t:
-        predicate: http://purl.org/dc/terms/hasPart
+        predicate: DC.hasPart
         object:
           combine:
             - a
@@ -679,10 +677,10 @@ tags:
           prefix: http://rdf.deichman.no/work/
           datatype: uri
         relation: 
-          class: http://purl.org/vocab/frbr/core#Work
+          class: FABIO.Work
           subfield:
             a:
-              predicate: http://purl.org/dc/terms/creator
+              predicate: DC.creator
               object:
                 datatype: uri
                 combine:
@@ -694,35 +692,34 @@ tags:
                 regex_strip: "[^\w\-]+"
                 prefix: http://rdf.deichman.no/person/
             t:
-              predicate: "http://purl.org/dc/terms/title"
+              predicate: "DC.title"
               object:
                 datatype: literal
-                lang: :no
-       
-  "440": 
+
+  "440":
     subfield: 
       a: 
-        predicate: http://purl.org/dc/terms/isPartOf
+        predicate: DC.isPartOf
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/resource/
           datatype: uri
         relation: 
-          class: http://purl.org/ontology/bibo/Series
+          class: BIBO.Series
       v: 
-        predicate: http://rdf.deichman.no/volumeNumber
+        predicate: DEICHMAN.volumeNumber
         object: 
           datatype: literal
       x: 
-        predicate: http://purl.org/ontology/bibo/issn
+        predicate: BIBO.issn
         object: 
           datatype: literal
 
-  "600": 
+  "600":
     subfield: 
       t:
-        predicate: http://purl.org/dc/terms/subject
+        predicate: DC.subject
         object:
           combine:
             - a
@@ -735,10 +732,10 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
+          class: SKOS.Concept
           subfield:
             t:
-              predicate: http://www.w3.org/2004/02/skos/core#broader
+              predicate: SKOS.broader
               object:
                 datatype: uri
                 combine:
@@ -750,22 +747,22 @@ tags:
                 regex_strip: "[^\w\-]+"
                 prefix: http://rdf.deichman.no/subject/
             a:
-              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              predicate: SKOS.prefLabel
               object:
                 combine:
                   - a
                   - t
                 combinestring: ". "
                 datatype: literal
-            "1": 
-              predicate: http://www.w3.org/2004/02/skos/core#notation
+            "1":
+              predicate: SKOS.notation
               object: 
                 datatype: literal                
 
-  "600|600": 
+  "600|600":
     subfield: 
       a:
-        predicate: http://purl.org/dc/terms/subject
+        predicate: DC.subject
         object:
           combine:
             - a
@@ -777,10 +774,10 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
+          class: SKOS.Concept
           subfield:
             a:
-              predicate: http://xmlns.com/foaf/0.1/focus
+              predicate: FOAF.focus
               object:
                 datatype: uri
                 combine:
@@ -791,15 +788,15 @@ tags:
                 regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
                 regex_strip: "[^\w\-]+"
                 prefix: http://rdf.deichman.no/person/            
-            "1": 
-              predicate: http://www.w3.org/2004/02/skos/core#notation
+            "1":
+              predicate: SKOS.notation
               object: 
                 datatype: literal  
-               
-  "600|600|600": 
+
+  "600|600|600":
     subfield: 
       a:
-        predicate: http://purl.org/dc/terms/subject
+        predicate: DC.subject
         object:
           combine:
             - a
@@ -811,35 +808,35 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: http://xmlns.com/foaf/0.1/Person
+          class: FOAF.Person
           subfield:
             a:
-              predicate: "http://xmlns.com/foaf/0.1/name"
+              predicate: "FOAF.name"
               object:
                 datatype: literal               
             c:
-              predicate: "http://xmlns.com/foaf/0.1/title"
+              predicate: "FOAF.title"
               object:
                 datatype: literal
             d:
-              predicate: "http://rdf.deichman.no/lifespan"
+              predicate: "DEICHMAN.lifespan"
               object:
                 datatype: literal
             j:
-              predicate: "http://www.foafrealm.org/xfoaf/0.1/nationality"
+              predicate: "XFOAF.nationality"
               object:
                 datatype: uri
                 prefix: "http://rdf.deichman.no/nationality/"
                 regex_strip: "[\W]+"
             q:
-              predicate: "http://www.foafrealm.org/xfoaf/0.1/givenName"
+              predicate: "XFOAF.givenName"
               object:
                 datatype: literal
 
-  "600|600|600|600": 
+  "600|600|600|600":
     subfield: 
       t:
-        predicate: http://xmlns.com/foaf/0.1/focus
+        predicate: FOAF.focus
         object:
           combine:
             - a
@@ -852,17 +849,17 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: http://purl.org/vocab/frbr/core#Work
+          class: FABIO.Work
           subfield:
             t:
-              predicate: "http://purl.org/dc/terms/title"
+              predicate: "DC.title"
               object:
                 datatype: literal
-                                
-  "610|611": 
+
+  "610|611":
     subfield: 
       a:
-        predicate: http://purl.org/dc/terms/subject
+        predicate: DC.subject
         object:
           combine:
             - a
@@ -874,10 +871,10 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
+          class: SKOS.Concept
           subfield:
             a:
-              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              predicate: SKOS.prefLabel
               object:
                 combine:
                   - a
@@ -885,15 +882,15 @@ tags:
                   - q
                 combinestring: ". "           
                 datatype: literal
-            "1": 
-              predicate: http://www.w3.org/2004/02/skos/core#notation
+            "1":
+              predicate: SKOS.notation
               object: 
                 datatype: literal                
 
-  "610|610|611": 
+  "610|610|611":
     subfield: 
       a:
-        predicate: http://xmlns.com/foaf/0.1/focus
+        predicate: FOAF.focus
         object:
           combine:
             - a
@@ -905,10 +902,10 @@ tags:
           regex_strip: "[\W]+"
           datatype: uri    
         relation: 
-          class: http://xmlns.com/foaf/0.1/Organization
+          class: FOAF.Organization
           subfield: 
             a: 
-              predicate: http://xmlns.com/foaf/0.1/name
+              predicate: FOAF.name
               object:
                 combine:
                   - a
@@ -917,22 +914,22 @@ tags:
                 combinestring: ". "              
                 datatype: literal
             c: 
-              predicate: http://rdf.deichman.no/conferencePlace
+              predicate: DEICHMAN.conferencePlace
               object: 
                 datatype: literal
             d: 
-              predicate: http://rdf.deichman.no/conferenceDate
+              predicate: DEICHMAN.conferenceDate
               object: 
                 datatype: literal
             n: 
-              predicate: http://rdf.deichman.no/corporationNumber
+              predicate: DEICHMAN.corporationNumber
               object: 
                 datatype: literal                              
 
-  "630": 
+  "630":
     subfield: 
       a:
-        predicate: http://purl.org/dc/terms/subject
+        predicate: DC.subject
         object:
           combine:
             - a
@@ -944,10 +941,10 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
+          class: SKOS.Concept
           subfield:
             a:
-              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              predicate: SKOS.prefLabel
               object:
                 combine:
                   - a
@@ -955,15 +952,15 @@ tags:
                   - x
                 combinestring: ". "
                 datatype: literal
-            "1": 
-              predicate: http://www.w3.org/2004/02/skos/core#notation
+            "1":
+              predicate: SKOS.notation
               object: 
                 datatype: literal   
 
-  "630|630": 
+  "630|630":
     subfield: 
       a:
-        predicate: http://xmlns.com/foaf/0.1/focus
+        predicate: FOAF.focus
         object:
           combine:
             - a
@@ -974,10 +971,10 @@ tags:
           regex_strip: "[^\w\-]+"
           datatype: uri
         relation: 
-          class: http://purl.org/vocab/frbr/core#Work
+          class: FABIO.Work
           subfield:
              a:
-              predicate: http://purl.org/dc/terms/title
+              predicate: DC.title
               object:
                 combine:
                   - a
@@ -985,10 +982,10 @@ tags:
                 combinestring: ". "
                 datatype: literal      
 
-  "(650|653|690|691|692|694)": 
+  "(650|653|690|691|692|694)":
     subfield: 
       a:
-        predicate: http://purl.org/dc/terms/subject
+        predicate: DC.subject
         object:
           combine:
             - a
@@ -1002,10 +999,10 @@ tags:
           downcase: true
           datatype: uri
         relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
+          class: SKOS.Concept
           subfield:
             a: 
-              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              predicate: SKOS.prefLabel
               object:
                 combine:
                   - a
@@ -1015,15 +1012,36 @@ tags:
                 combinestring: " - "               
                 datatype: literal
                 lang: :no
-            "1": 
-              predicate: http://www.w3.org/2004/02/skos/core#notation
+            "1":
+              predicate: SKOS.notation
               object: 
                 datatype: literal
 
-  "699": 
+# Place as subject
+  "691":
+    subfield:
+      a:
+        predicate: DEICHMAN.subject
+        object:
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
+          regex_strip: "[^\w\-]+"
+          prefix: http://rdf.deichman.no/geographicalSubject/
+          downcase: true
+          datatype: uri
+        relation: 
+          class: GEONAMES.Feature
+          subfield:
+            a: 
+              predicate: GEONAMES.name
+              object:
+                datatype: literal
+                regex_strip: "[\?\[\]\<\>]+"
+                lang: :no
+
+  "699":
     subfield: 
       a:
-        predicate: http://rdf.deichman.no/bibsubject
+        predicate: DEICHMAN.bibsubject
         object:
           combine:
             - a
@@ -1037,10 +1055,10 @@ tags:
           downcase: true
           datatype: uri
         relation: 
-          class: http://www.w3.org/2004/02/skos/core#Concept
+          class: SKOS.Concept
           subfield:
             a: 
-              predicate: http://www.w3.org/2004/02/skos/core#prefLabel
+              predicate: SKOS.prefLabel
               object:
                 combine:
                   - a
@@ -1050,16 +1068,16 @@ tags:
                 combinestring: " - "               
                 datatype: literal
                 lang: :no
-            "1": 
-              predicate: http://www.w3.org/2004/02/skos/core#notation
+            "1":
+              predicate: SKOS.notation
               object: 
                 datatype: literal
 
 
-  "652": 
+  "652":
     subfield: 
       a: 
-        predicate: http://purl.org/ontology/mo/genre
+        predicate: MO.genre
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
@@ -1067,18 +1085,18 @@ tags:
           downcase: true
           datatype: uri
         relation: 
-          class: http://purl.org/ontology/mo/Genre
+          class: MO.Genre
           subfield:
             a: 
-              predicate: http://purl.org/dc/terms/title
+              predicate: DC.title
               object: 
                 datatype: literal
                 lang: :no
 
-  "655": 
+  "655":
     subfield: 
       a: 
-        predicate: http://dbpedia.org/ontology/literaryGenre
+        predicate: DBO.literaryGenre
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
@@ -1086,18 +1104,18 @@ tags:
           downcase: true
           datatype: uri
         relation: 
-          class: http://dbpedia.org/class/yago/LiteraryGenres
+          class: YAGO.LiteraryGenres
           subfield:
             a: 
-              predicate: http://www.w3.org/2000/01/rdf-schema#label
+              predicate: RDFS.label
               object: 
                 datatype: literal
                 lang: :no
-                               
-  "695": 
+
+  "695":
     subfield: 
       a: 
-        predicate: http://commontag.org/ns#tagged
+        predicate: CTAG.tagged
         object: 
           regex_split: " "
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
@@ -1106,46 +1124,45 @@ tags:
           downcase: true      
           datatype: uri          
         relation: 
-          class: http://commontag.org/ns#Tag
+          class: CTAG.Tag
           subfield:
             a: 
-              predicate: http://commontag.org/ns#label
+              predicate: CTAG.label
               object: 
                 datatype: literal
                 lang: :no
 
-  "710": 
+  "710":
     subfield: 
       a: 
-        predicate: http://purl.org/dc/terms/contributor
+        predicate: DC.contributor
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/organization/
           datatype: uri
         relation: 
-          class: http://xmlns.com/foaf/0.1/Organization
+          class: FOAF.Organization
           subfield:
             a:
-              predicate: "http://xmlns.com/foaf/0.1/name"
+              predicate: FOAF.name
               object:
                 datatype: literal
-                lang: :no
 
-  "711": 
+  "711":
     subfield: 
       a:
-        predicate: "http://purl.org/dc/terms/contributor" 
+        predicate: DC.contributor
         object: 
           prefix: "http://rdf.deichman.no/conference/"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
         relation:
-          class: http://purl.org/ontology/bibo/Conference
+          class: BIBO.Conference
           subfield: 
             a: 
-              predicate: http://xmlns.com/foaf/0.1/name
+              predicate: FOAF.name
               object: 
                 datatype: literal
 
@@ -1154,44 +1171,43 @@ tags:
       a:
         conditions: 
           indicator:
-            default: 'http://purl.org/dc/terms/alternative'
+            default: DC.alternative
             indicator2:
               orig: "0|2"
-              subs: { "0": 'http://purl.org/dc/terms/alternative', "2": 'http://purl.org/dc/terms/hasPart' }
+              subs: { "0": 'DC.alternative', "2": 'DC.hasPart' }
         object: 
           datatype: literal            
-          
-  "760": 
+
+  "760":
     subfield: 
       w: 
-        predicate: http://purl.org/dc/terms/isPartOf
-        object:
-          regex_strip: "[\W]+"
-          prefix: http://rdf.deichman.no/resource/tnr_
-          datatype: uri
-  
-  "780": 
-    subfield: 
-      w: 
-        predicate: http://dbpedia.org/ontology/previousWork
+        predicate: DC.isPartOf
         object:
           regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/resource/tnr_
           datatype: uri
 
-  "785": 
+  "780":
     subfield: 
       w: 
-        predicate: http://dbpedia.org/ontology/subsequentWork
+        predicate: DBO.previousWork
         object:
           regex_strip: "[\W]+"
           prefix: http://rdf.deichman.no/resource/tnr_
           datatype: uri
-                             
-  "856": 
+
+  "785":
+    subfield: 
+      w: 
+        predicate: DBO.subsequentWork
+        object:
+          regex_strip: "[\W]+"
+          prefix: http://rdf.deichman.no/resource/tnr_
+          datatype: uri
+
+  "856":
     subfield: 
       u: 
-        predicate: http://purl.org/spar/fabio/hasURL
+        predicate: FABIO.hasURL
         object:
           datatype: uri
- 

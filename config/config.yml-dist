@@ -5,7 +5,7 @@ uri:
     resource_path: /collections/
     resource_prefix: id_
     resource_identifier_field: '001'
-    resource_type: http://example.com/type
+    resource_type: BIBO.Document
 
     
 database:

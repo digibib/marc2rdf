@@ -33,8 +33,28 @@ loop { case ARGV[0]
 end; }
 
 # Initialize additional vocabularies we will be drawing from
+# Existing vocabularies are listed on http://rdf.rubyforge.org/
+# NB! protected methods must be overridden! (with e.g. property :name)
 module RDF
   class BIBO < RDF::Vocabulary("http://purl.org/ontology/bibo/");end
+  class RDFS < RDF::Vocabulary("http://www.w3.org/2000/01/rdf-schema#");end
+  class XFOAF < RDF::Vocabulary("http://www.foafrealm.org/xfoaf/0.1/")
+    property :name
+  end
+  class LEXVO < RDF::Vocabulary("http://lexvo.org/ontology#")
+    property :name
+  end
+  class DEICHMAN < RDF::Vocabulary("http://rdf.deichman.no/");end
+  class DBO < RDF::Vocabulary("http://dbpedia.org/ontology/");end
+  class FABIO < RDF::Vocabulary("http://purl.org/spar/fabio/");end
+  class FRBR < RDF::Vocabulary("http://purl.org/vocab/frbr/core#");end  
+  class RDA < RDF::Vocabulary("http://rdvocab.info/Elements/");end  
+  class GEONAMES < RDF::Vocabulary("http://www.geonames.org/ontology#")
+    property :name
+  end  
+  class MO < RDF::Vocabulary("http://purl.org/ontology/mo/");end
+  class YAGO < RDF::Vocabulary("http://dbpedia.org/class/yago/");end 
+  class CTAG < RDF::Vocabulary("http://commontag.org/ns#");end 
 end
 
 class RDFModeler
@@ -52,7 +72,7 @@ class RDFModeler
   end
 
   def set_type(t)
-    @statements << RDF::Statement.new(@uri, RDF.type, t)
+    @statements << RDF::Statement.new(@uri, RDF.type, RDF.module_eval("#{t}"))
   end
   
   def generate_uri(s, prefix=nil)
@@ -130,7 +150,7 @@ class RDFModeler
   end
   
   def assert(p, o)
-    @statements << RDF::Statement.new(@uri, RDF::URI(p), o)
+    @statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
   end
   
   def relate(s, p, o)
@@ -171,11 +191,14 @@ RDF::Writer.open($output_file) do | writer |
 reader.each do | record |
 # limit number of records for testing purpose
 i += 1
+### offset and breaks for testing subset of marc records
+#next unless i > 31000
+#break if i > 33000
 if $recordlimit then break if i > $recordlimit end
 
   # initiate record and set type
   rdfrecord = RDFModeler.new(record)
-  rdfrecord.set_type(RDF::URI(CONFIG['uri']['resource_type']))
+  rdfrecord.set_type(CONFIG['uri']['resource_type'])
 
 # start graph handle, one graph per record, else graph will grow too large to parse
   record.tags.each do | marctag | 
@@ -204,11 +227,12 @@ if $recordlimit then break if i > $recordlimit end
                     unless value['object']['datatype'] == "literal"
                       object_uri = rdfrecord.generate_uri(o, "#{value['object']['prefix']}")
                       # first create assertion triple
-                      rdfrecord.assert(value['predicate'], object_uri)
+                      rdfrecord.assert("#{value['predicate']}", object_uri)
+                      #rdfrecord.assert(value['predicate'], object_uri)
                       if value.has_key?('relation')
                         ## create relation class
                         relatorclass = "#{value['relation']['class']}"
-                        rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
+                        rdfrecord.relate(object_uri, RDF.type, RDF.module_eval("#{relatorclass}"))
                       end # end if relation
                     else # literal
                       rdfrecord.assert(value['predicate'], RDF::Literal("#{o}"))
@@ -239,10 +263,11 @@ if $recordlimit then break if i > $recordlimit end
                 subfields[1]['conditions']['subfield'].each do | key,value |
                   m = "#{marcfield[key]}"
                   unless m.empty?
-                    @predicate = m.gsub(/[\W]+/, '').downcase
-                    @predicate.scan(/#{value['orig']}/) do |match| 
-                      if match then @predicate = value['subs'][match] else @predicate = value['default'] end
+                    predicate = m.gsub(/[\W]+/, '').downcase
+                    predicate.scan(/#{value['orig']}/) do |match| 
+                      @predicate = value['subs'][match]
                     end
+                    if @predicate.empty? then @predicate = value['default'] end
                   else
                     @predicate = value['default']
                   end
@@ -285,7 +310,7 @@ if $recordlimit then break if i > $recordlimit end
 
                      ## create relation class
                      relatorclass = "#{subfields[1]['relation']['class']}"
-                     rdfrecord.relate(object_uri, RDF.type, RDF::URI(relatorclass))
+                     rdfrecord.relate(object_uri, RDF.type, RDF.module_eval("#{relatorclass}"))
                                        
                      # do relations have subfields? parse them too ...
                      relationsubfields = subfields[1]['relation']['subfield']
@@ -298,9 +323,9 @@ if $recordlimit then break if i > $recordlimit end
                              if relsub[1]['object']['datatype'] == "uri"
                                relobject_uri = rdfrecord.generate_uri(ro, "#{relsub[1]['object']['prefix']}")
 
-                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), RDF::URI(relobject_uri))
+                               rdfrecord.relate(object_uri, RDF.module_eval("#{relsub[1]['predicate']}"), RDF::URI(relobject_uri))
                              else
-                               rdfrecord.relate(object_uri, RDF::URI(relsub[1]['predicate']), RDF::Literal("#{ro}", :language => relsub[1]['object']['lang']))
+                               rdfrecord.relate(object_uri, RDF.module_eval("#{relsub[1]['predicate']}"), RDF::Literal("#{ro}", :language => relsub[1]['object']['lang']))
                              end
                            end # relobjects.each
                          end # end unless empty relobject
