@@ -1,11 +1,31 @@
 ### MARC bibliographic record to RDF converter
-### Ruby script using YAML mapping
+    NORMARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+    Copyright (C) 2012 Benjamin Rokseth
+    Purpose: Convert binary marc to semantic markup using yaml mapping file
 
-# Purpose: Convert binary marc to semantic markup using yaml mapping file
-# Creator: Benjamin Rokseth
-# Date: 10.07.2011
+####################
+### GPLv3 LICENSE ##
+####################
+    
+    NORMARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+    Copyright (C) 2012 Benjamin Rokseth
 
-## FILES ##
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#############
+### FILES ###
+#############
 normarc2rdf.rb                            -- main ruby script to convert NORMARC file to RDF
 config/config-dist.yml                    -- config file
 config/mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
@@ -14,56 +34,65 @@ hamsun_fikset.mrc                         -- test NORMARC file
 output.rdf                                -- test output RDF with -r 50 (50 records)
 output.nt                                 -- test output NTRIPLES with -r 50 (50 records)
 
-## MAPPING ##
+###############
+### MAPPING ###
+###############
+
 uses yaml hashes mapping
 excerpt:
 -----
 tag:
-  "700": 
+  "700":
     subfield: 
       a:
         conditions:
           subfield:
             e:
-              orig: "bearb|biogr|dir|forf|fort|foto|gjendikt|overs|ill|innl|k|komm|komp|manus|medarb|medf|oppl|red|reg|sang|skues|t|tekstf|utg|utøv"
-              subs: { bearb: 'http://purl.org/dc/terms/contributor', biogr: 'http://rdf.deichman.no/biographer', dir: 'http://rdf.deichman.no/director', forf: 'http://purl.org/dc/terms/creator', fort: 'http://purl.org/dc/terms/narrator', foto: 'http://rdf.deichman.no/photographer', gjendikt: 'http://purl.org/ontology/bibo/translator', overs: 'http://purl.org/ontology/bibo/translator', ill: 'http://purl.org/ontology/bibo/illustrator', innl: 'http://rdf.deichman.no/reader', k: 'http://rdf.deichman.no/composer', komm: 'http://rdf.deichman.no/commentator', komp: 'http://rdf.deichman.no/composer', manus: 'http://rdf.deichman.no/scriptWriter', medarb: 'http://purl.org/dc/terms/contributor', medf: 'http://purl.org/dc/terms/contributor', oppl: 'http://purl.org/dc/terms/narrator', red: 'http://purl.org/ontology/bibo/editor', reg: 'http://rdf.deichman.no/director', sang: 'http://rdf.deichman.no/singer', skues: 'http://rdf.deichman.no/actor', t: 'http://rdf.deichman.no/lyricWriter', tekstf: 'http://rdf.deichman.no/lyricWriter', utg: 'http://rdf.deichman.no/publisher', utøv: 'http://rdf.deichman.no/perfomer' }
-              default: 'http://purl.org/dc/terms/contributor'
+              orig: "arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u"
+              subs: { arr: 'DEICHMAN.musicalArranger', bearb: 'DC.contributor', biogr: 'DEICHMAN.biographer', dir: 'DEICHMAN.director', eks: 'DEICHMAN.perfomer', forf: 'DC.creator', fort: 'DC.narrator', foto: 'DEICHMAN.photographer', gjendikt: 'BIBO.translator', overs: 'BIBO.translator', ill: 'BIBO.illustrator', innl: 'DEICHMAN.reader', k: 'DEICHMAN.composer', komm: 'DEICHMAN.commentator', komp: 'DEICHMAN.composer', manusforf: 'DEICHMAN.scriptWriter', medarb: 'DC.contributor', medforf: 'DC.creator', medf: 'DC.creator', oppl: 'DC.narrator', red: 'BIBO.editor', reg: 'DEICHMAN.director', sang: 'DEICHMAN.singer', skuesp: 'DEICHMAN.actor', t: 'DEICHMAN.lyricist', tekstf: 'DEICHMAN.lyricist', u: 'DEICHMAN.publisher', utg: 'DEICHMAN.publisher', utøv: 'DEICHMAN.perfomer' }
+              default: 'DC.contributor'
         object:
           combine:
             - a
             - b
             - d
           combinestring: "_" 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|ä|ö|\ |[éèêẽ]|[áàâã]|[íìîĩ]|[óòôõ]|[úùûũ]"
+          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/person/
           datatype: uri
         relation: 
-          class: "http://xmlns.com/foaf/0.1/Person"
+          class: FOAF.Person
           subfield:
             a:
-              predicate: "http://xmlns.com/foaf/0.1/name"
+              predicate: FOAF.name
               object:
                 datatype: literal
  
-------
-## FEATURES ##
-For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml'
+################
+### FEATURES ###
+################
+
+For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml' based on NORMARC variant of USMARC
 
 tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
 all uris are exploded in yaml file, and objects need full prefix 
 predicates can be conditionally mapped from subfields or indicators
-objects can have language tags given as symbols (:se :en_UK etc)
+objects can have language tags given as symbols (:se, :en_UK etc)
 objects can be mapped key => values
 relations can have subfields
 string replacement characters can be given individually in yaml objects 
   main list under substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa, ... }
 
-
-## TODO ##
+############
+### TODO ###
+############
 relation subfield relations should accept different classes
 
-## REQUIREMENTS ##
+####################
+### REQUIREMENTS ###
+####################
+
 ruby >= 1.8.7
 ruby-marc (thanks to Ross Singer et.al.)
 rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
