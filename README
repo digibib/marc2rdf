@@ -1,13 +1,14 @@
 ### MARC bibliographic record to RDF converter
-    NORMARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+    MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
     Copyright (C) 2012 Benjamin Rokseth
     Purpose: Convert binary marc to semantic markup using yaml mapping file
+             Add OAI harvester and rdf store to host live rdf repository
 
 ####################
 ### GPLv3 LICENSE ##
 ####################
     
-    NORMARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+    MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
     Copyright (C) 2012 Benjamin Rokseth
 
     This program is free software: you can redistribute it and/or modify
@@ -26,7 +27,8 @@
 #############
 ### FILES ###
 #############
-normarc2rdf.rb                            -- main ruby script to convert NORMARC file to RDF
+marc2rdf.rb                               -- main ruby script to convert NORMARC file to RDF
+oai.rb									  -- oai harvester skript to harvest and update rdf store
 config/config-dist.yml                    -- config file
 config/mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
 config/mapping-normarc2rdf_bildebaser.yml -- example mapping file: image base in NORMARC
@@ -83,6 +85,7 @@ objects can be mapped key => values
 relations can have subfields
 string replacement characters can be given individually in yaml objects 
   main list under substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa, ... }
+oai harvester and rdf store updates with RestClient
 
 ############
 ### TODO ###
@@ -97,6 +100,8 @@ ruby >= 1.8.7
 ruby-marc (thanks to Ross Singer et.al.)
 rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
 rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
+rest-client
+oai
 
 ## LINUX USERS ##
 either install via rvm (Ruby Version Manager)
@@ -108,7 +113,8 @@ sudo apt-get install libxml2-dev libxslt1-dev
 gem install marc rdf rdf-rdfxml
 
 ## USAGE ##
-normarc2rdf.rb -i input_file -o output_file [-r recordlimit]
+marc2rdf.rb -i input_file -o output_file [-r recordlimit]
   -i input_file must be marc binary
   -o output_file extension can be either .rdf (slooow) or .nt (very fast)
   -r [number] stops processing after given number of records
+
