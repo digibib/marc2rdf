@@ -15,7 +15,7 @@
 #      default: in case no match, replace with this
 #   - indicators (eg. 240)
 #      indicator1: indicator 1/2 with hash array of { key: 'value' }, where key is "0","1", etc. and 'value' is predicate
-#      default: 'http://rdf.deichman.no/originalTitle'
+#      default: 'http://data.deichman.no/originalTitle'
 #
 # OBJECTS
 # objects can be given various options:
@@ -65,7 +65,7 @@ tags:
     audience:
       predicate: DC.audience
       object:
-        prefix: http://rdf.deichman.no/audience/
+        prefix: http://data.deichman.no/audience/
         substr_offset: 22
         substr_length: 1
         regex_substitute: 
@@ -99,7 +99,7 @@ tags:
     biocontent:
       predicate: DEICHMAN.bioContent
       object:
-        prefix: http://rdf.deichman.no/bioContent/
+        prefix: http://data.deichman.no/bioContent/
         substr_offset: 34
         substr_length: 1
         regex_substitute: 
@@ -145,7 +145,7 @@ tags:
       a: 
         predicate: DC.audience
         object: 
-          prefix: http://rdf.deichman.no/audience/ages_
+          prefix: http://data.deichman.no/audience/ages_
           regex_split: ", *"
           regex_substitute: 
             orig: "a|bu|mu|b|u"
@@ -155,7 +155,7 @@ tags:
       b: 
         predicate: DC.format
         object:
-          prefix: http://rdf.deichman.no/format/
+          prefix: http://data.deichman.no/format/
           regex_split: ", *"
           regex_substitute: 
             orig: "ab|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|ma|mb|mc|mj|mn|mo|na|sm|vo|a|b|c|j|l"
@@ -163,7 +163,7 @@ tags:
             default: Document           
           datatype: uri
       d: 
-        predicate: RDF.type
+        predicate: DBO.literaryGenre
         object: 
           prefix: http://dbpedia.org/resource/
           regex_split: "(\w{1})"
@@ -175,7 +175,7 @@ tags:
       e: 
         predicate: DEICHMAN.facilitation
         object: 
-          prefix: http://rdf.deichman.no/facilitation/
+          prefix: http://data.deichman.no/facilitation/
           regex_split: "(\w{2})"
           regex_substitute: 
             orig: "ta|tb|tc|td|te|tf|tg|tj"
@@ -185,7 +185,7 @@ tags:
       s: 
         predicate: DEICHMAN.ageLimit
         object: 
-          prefix: http://rdf.deichman.no/ageLimit/
+          prefix: http://data.deichman.no/ageLimit/
           datatype: uri                     
 
   "020":
@@ -198,7 +198,7 @@ tags:
       b: 
         predicate: DEICHMAN.bindingInfo
         object: 
-          prefix: http://rdf.deichman.no/bindingInfo/        
+          prefix: http://data.deichman.no/bindingInfo/        
           regex_strip: "[\W]+"
           datatype: uri
       c: 
@@ -303,7 +303,7 @@ tags:
             - c
             - d
           combinestring: "_"       
-          prefix: "http://rdf.deichman.no/person/"
+          prefix: "http://data.deichman.no/person/"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -326,7 +326,7 @@ tags:
               predicate: XFOAF.nationality
               object:
                 datatype: uri
-                prefix: "http://rdf.deichman.no/nationality/"
+                prefix: "http://data.deichman.no/nationality/"
                 regex_strip: "[\W]+"
             q:
               predicate: XFOAF.givenName
@@ -343,7 +343,7 @@ tags:
             - b
             - q
           combinestring: "_"          
-          prefix: "http://rdf.deichman.no/organization/" 
+          prefix: "http://data.deichman.no/organization/" 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
@@ -377,7 +377,7 @@ tags:
       a:
         predicate: DC.creator 
         object: 
-          prefix: "http://rdf.deichman.no/conference/"
+          prefix: "http://data.deichman.no/conference/"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
@@ -410,7 +410,7 @@ tags:
       a:
         predicate: FABIO.isManifestationOf 
         object: 
-          prefix: "http://rdf.deichman.no/work/"
+          prefix: "http://data.deichman.no/work/"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri    
@@ -481,7 +481,7 @@ tags:
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
-          prefix: http://rdf.deichman.no/publicationPlace/
+          prefix: http://data.deichman.no/publicationPlace/
           datatype: uri
         relation: 
           class: GEONAMES.Feature
@@ -496,7 +496,7 @@ tags:
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
-          prefix: http://rdf.deichman.no/organization/
+          prefix: http://data.deichman.no/organization/
           datatype: uri
         relation: 
           class: FOAF.Organization
@@ -633,7 +633,7 @@ tags:
           combinestring: "_" 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/person/
+          prefix: http://data.deichman.no/person/
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -658,7 +658,7 @@ tags:
               predicate: XFOAF.nationality
               object:
                 datatype: uri
-                prefix: "http://rdf.deichman.no/nationality/"
+                prefix: "http://data.deichman.no/nationality/"
                 regex_strip: "[\W]+"
 
   "700|700":
@@ -674,7 +674,7 @@ tags:
           combinestring: "_" 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/work/
+          prefix: http://data.deichman.no/work/
           datatype: uri
         relation: 
           class: FABIO.Work
@@ -690,7 +690,7 @@ tags:
                 combinestring: "_" 
                 regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
                 regex_strip: "[^\w\-]+"
-                prefix: http://rdf.deichman.no/person/
+                prefix: http://data.deichman.no/person/
             t:
               predicate: "DC.title"
               object:
@@ -703,7 +703,7 @@ tags:
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/resource/
+          prefix: http://data.deichman.no/resource/
           datatype: uri
         relation: 
           class: BIBO.Series
@@ -727,7 +727,7 @@ tags:
             - d
             - t
           combinestring: "_" 
-          prefix: http://rdf.deichman.no/subject/
+          prefix: http://data.deichman.no/subject/
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -745,7 +745,7 @@ tags:
                 combinestring: "_" 
                 regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
                 regex_strip: "[^\w\-]+"
-                prefix: http://rdf.deichman.no/subject/
+                prefix: http://data.deichman.no/subject/
             a:
               predicate: SKOS.prefLabel
               object:
@@ -769,7 +769,7 @@ tags:
             - c
             - d
           combinestring: "_" 
-          prefix: http://rdf.deichman.no/subject/
+          prefix: http://data.deichman.no/subject/
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -787,7 +787,7 @@ tags:
                 combinestring: "_" 
                 regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
                 regex_strip: "[^\w\-]+"
-                prefix: http://rdf.deichman.no/person/            
+                prefix: http://data.deichman.no/person/            
             "1":
               predicate: SKOS.notation
               object: 
@@ -803,7 +803,7 @@ tags:
             - c
             - d
           combinestring: "_" 
-          prefix: http://rdf.deichman.no/person/
+          prefix: http://data.deichman.no/person/
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -826,7 +826,7 @@ tags:
               predicate: "XFOAF.nationality"
               object:
                 datatype: uri
-                prefix: "http://rdf.deichman.no/nationality/"
+                prefix: "http://data.deichman.no/nationality/"
                 regex_strip: "[\W]+"
             q:
               predicate: "XFOAF.givenName"
@@ -844,7 +844,7 @@ tags:
             - d
             - t
           combinestring: "_" 
-          prefix: http://rdf.deichman.no/work/
+          prefix: http://data.deichman.no/work/
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -866,7 +866,7 @@ tags:
             - b
             - q
           combinestring: "_" 
-          prefix: http://rdf.deichman.no/subject/
+          prefix: http://data.deichman.no/subject/
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -897,7 +897,7 @@ tags:
             - b
             - q
           combinestring: "_"          
-          prefix: "http://rdf.deichman.no/organization/" 
+          prefix: "http://data.deichman.no/organization/" 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
@@ -936,7 +936,7 @@ tags:
             - p
             - x
           combinestring: "_" 
-          prefix: http://rdf.deichman.no/subject/
+          prefix: http://data.deichman.no/subject/
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -966,7 +966,7 @@ tags:
             - a
             - p
           combinestring: "_" 
-          prefix: http://rdf.deichman.no/work/
+          prefix: http://data.deichman.no/work/
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
           datatype: uri
@@ -995,7 +995,7 @@ tags:
           combinestring: "_"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/subject/
+          prefix: http://data.deichman.no/subject/
           downcase: true
           datatype: uri
         relation: 
@@ -1025,7 +1025,7 @@ tags:
         object:
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/geographicalSubject/
+          prefix: http://data.deichman.no/geographicalSubject/
           downcase: true
           datatype: uri
         relation: 
@@ -1051,7 +1051,7 @@ tags:
           combinestring: "_"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/subject/
+          prefix: http://data.deichman.no/subject/
           downcase: true
           datatype: uri
         relation: 
@@ -1081,7 +1081,7 @@ tags:
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/mogenre/
+          prefix: http://data.deichman.no/mogenre/
           downcase: true
           datatype: uri
         relation: 
@@ -1100,7 +1100,7 @@ tags:
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/literaryGenre/
+          prefix: http://data.deichman.no/literaryGenre/
           downcase: true
           datatype: uri
         relation: 
@@ -1120,7 +1120,7 @@ tags:
           regex_split: " "
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/keyword/
+          prefix: http://data.deichman.no/keyword/
           downcase: true      
           datatype: uri          
         relation: 
@@ -1139,7 +1139,7 @@ tags:
         object: 
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/organization/
+          prefix: http://data.deichman.no/organization/
           datatype: uri
         relation: 
           class: FOAF.Organization
@@ -1154,7 +1154,7 @@ tags:
       a:
         predicate: DC.contributor
         object: 
-          prefix: "http://rdf.deichman.no/conference/"
+          prefix: "http://data.deichman.no/conference/"
           regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
           regex_strip: "[\W]+"
           datatype: uri    
@@ -1184,7 +1184,7 @@ tags:
         predicate: DC.isPartOf
         object:
           regex_strip: "[\W]+"
-          prefix: http://rdf.deichman.no/resource/tnr_
+          prefix: http://data.deichman.no/resource/tnr_
           datatype: uri
 
   "780":
@@ -1193,7 +1193,7 @@ tags:
         predicate: DBO.previousWork
         object:
           regex_strip: "[\W]+"
-          prefix: http://rdf.deichman.no/resource/tnr_
+          prefix: http://data.deichman.no/resource/tnr_
           datatype: uri
 
   "785":
@@ -1202,7 +1202,7 @@ tags:
         predicate: DBO.subsequentWork
         object:
           regex_strip: "[\W]+"
-          prefix: http://rdf.deichman.no/resource/tnr_
+          prefix: http://data.deichman.no/resource/tnr_
           datatype: uri
 
   "856":
