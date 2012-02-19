@@ -27,7 +27,6 @@ loop { case ARGV[0]
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
-      if !$output_file then usage("Missing argument!\n") end
     break
 end; }
 
@@ -41,8 +40,8 @@ end; }
 =end
 
 @@yamltags = MAPPINGFILE['tags']
-client = OAI::Client.new(CONFIG['oai']['repository_url'], :parser=>CONFIG['oai']['parser'])
-oairecords = client.list_records :metadata_prefix => 'marcxchange', :from => DateTime.now.to_s, :until => DateTime.now.to_s
+client = OAI::Client.new(CONFIG['oai']['repository_url'], :redirects=>CONFIG['oai']['follow_redirects'], :parser=>CONFIG['oai']['parser'])
+oairecords = client.list_records :metadata_prefix => 'marcxchange', :from => Date.today.prev_day.to_s, :until => Date.today.to_s
 
 i = 0
 
@@ -92,8 +91,10 @@ RDF::Writer.open($output_file) do | writer |
     
 	  rdfrecord.marc2rdf_convert(record)
     
-    ## finally ... write processed record 
-    #rdfrecord.write_record
+    ## finally ... write processed record if output file stated
+    if $output_file then rdfrecord.write_record end
+    
+    # and do sparql update
     RestClient.sparql_insert(titlenumber)
     
     end # end oairecord loop

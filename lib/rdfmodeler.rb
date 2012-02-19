@@ -73,6 +73,7 @@ class RDFModeler
   # substring must be used on whole marcfield
     if options.has_key?(:substr_offset)
       generated_objects << o.slice(options[:substr_offset],options[:substr_length])
+      generated_objects.delete_if {|a| a.nil? } # needed to avoid nil-errors on invalid 008 tags
       generated_objects.delete_if {|a| a.strip.empty? }
     elsif options.has_key?(:regex_split)
       generated_objects = o.split(/#{options[:regex_split]}/)
