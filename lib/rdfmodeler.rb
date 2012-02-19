@@ -10,7 +10,7 @@ module RDF
   class LEXVO < RDF::Vocabulary("http://lexvo.org/ontology#")
     property :name
   end
-  class DEICHMAN < RDF::Vocabulary("http://rdf.deichman.no/");end
+  class DEICHMAN < RDF::Vocabulary("http://data.deichman.no/");end
   class DBO < RDF::Vocabulary("http://dbpedia.org/ontology/");end
   class FABIO < RDF::Vocabulary("http://purl.org/spar/fabio/");end
   class FRBR < RDF::Vocabulary("http://purl.org/vocab/frbr/core#");end  
