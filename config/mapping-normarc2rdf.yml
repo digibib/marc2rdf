@@ -435,6 +435,21 @@ tags:
           regex_strip: '[\.:,;\/\s]\s*$'
           datatype: literal
 
+  '240|240':
+    subfield:
+      a:
+        conditions: 
+          indicator:
+            default: DEICHMAN.originalTitleURLized
+            indicator1:
+              orig: '0|1'
+              subs: { '0': 'DEICHMAN.uniformTitleURLized', '1': 'DEICHMAN.originalTitleURLized' }
+        object: 
+          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          regex_strip: '[\W]+'
+          datatype: literal
+                    
+
   '(245|246)':
     subfield: 
       a: 
@@ -460,7 +475,17 @@ tags:
         predicate: RDA.variantTitleForTheWork
         object: 
           regex_strip: '[\.:,;\/\s]\s*$'
-          datatype: literal          
+          datatype: literal
+
+  '245|245|246':
+    subfield: 
+      a: 
+        predicate: DEICHMAN.titleURLized
+        object: 
+          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          regex_strip: '[\W]+'
+          datatype: literal
+                           
 
   '250':
     subfield: 
