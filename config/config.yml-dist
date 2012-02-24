@@ -21,3 +21,4 @@ oai:
     repository_url: http://example.com/cgi-bin/oai
     follow_redirects: false
     parser: rexml
+    timeout: 60
