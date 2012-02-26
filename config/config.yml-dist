@@ -16,6 +16,12 @@ rdfstore:
     default_graph: http://example.com/default_graph/
     username: username
     password: password
+    # Alternative storage: ARC2
+    # store: arc2
+    # sparul_endpoint: http://example.com/sparql/
+    # default_graph: http://example.com/default_graph/
+    # key: username
+    
 
 oai:
     repository_url: http://example.com/cgi-bin/oai
