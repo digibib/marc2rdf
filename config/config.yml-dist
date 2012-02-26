@@ -22,3 +22,4 @@ oai:
     follow_redirects: false
     parser: rexml
     timeout: 60
+    format: marcxchange

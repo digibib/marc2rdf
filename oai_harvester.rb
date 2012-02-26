@@ -45,7 +45,7 @@ end; }
 
 @@yamltags = MAPPINGFILE['tags']
 client = OAI::Client.new(CONFIG['oai']['repository_url'], {:redirects=>CONFIG['oai']['follow_redirects'], :parser=>CONFIG['oai']['parser'], :timeout=>CONFIG['oai']['timeout'], :debug=>true})
-oairecords = client.list_records :metadata_prefix => 'marcxchange', :from => Date.today.prev_day.to_s, :until => Date.today.to_s
+oairecords = client.list_records :metadata_prefix =>CONFIG['oai']['format'], :from => Date.today.prev_day.to_s, :until => Date.today.to_s
 
 i = 0
 
