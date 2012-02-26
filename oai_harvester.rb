@@ -20,12 +20,17 @@ require './lib/sparql_update.rb'
 def usage(s)
     $stderr.puts(s)
     $stderr.puts("Usage: \n")
-    $stderr.puts("#{File.basename($0)} [-r recordlimit]\n")
+    $stderr.puts("#{File.basename($0)} [-f fromdate] [-r recordlimit]\n")
     $stderr.puts("  -r [number] stops processing after given number of records\n")
+    $stderr.puts("  -f 'date' harvests records starting from the given date. Default is yesterday.\n")
     exit(2)
 end
 
+# Defaults
+$fromdate = Date.today.prev_day.to_s
+
 loop { case ARGV[0]
+    when '-f' then  ARGV.shift; $fromdate = ARGV.shift
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
@@ -42,7 +47,7 @@ end; }
 
 @@yamltags = MAPPINGFILE['tags']
 client = OAI::Client.new(CONFIG['oai']['repository_url'], {:redirects=>CONFIG['oai']['follow_redirects'], :parser=>CONFIG['oai']['parser'], :timeout=>CONFIG['oai']['timeout'], :debug=>true})
-oairecords = client.list_records :metadata_prefix =>CONFIG['oai']['format'], :from => Date.today.prev_day.to_s, :until => Date.today.to_s
+oairecords = client.list_records :metadata_prefix =>CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
 
 i = 0
 
