@@ -6,7 +6,7 @@ resource:
     resource_path: /collections/
     resource_prefix: id_
     resource_identifier_field: '001'
-    resource_type: PREFIX.type
+    resource_type: BIBO.Document
 
 rdfstore:
     #:adapter: sqlite

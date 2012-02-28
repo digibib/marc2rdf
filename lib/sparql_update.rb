@@ -6,12 +6,8 @@ module RestClient
   @password = CONFIG['rdfstore']['password']
   @key = CONFIG['rdfstore']['key']
   
-  @delete_statement = 'DELETE FROM GRAPH'
-  @insert_statement = 'INSERT INTO GRAPH'
-  if @store == 'arc2'
-    @delete_statement = 'DELETE FROM'
-    @insert_statement = 'INSERT INTO'
-  end
+  @delete_statement = 'DELETE FROM'
+  @insert_statement = 'INSERT INTO'
 
   def self.sparql_delete(titlenumber)
     resource = CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber
@@ -23,7 +19,7 @@ EOQ
     resource.post :query => query, :key => @key
   end
 
-  def self.sparql_insert(titlenumber)
+  def self.sparql_update(titlenumber)
 
     ## delete resource first!
     sparql_delete(titlenumber)

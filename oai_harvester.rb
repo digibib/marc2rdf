@@ -85,10 +85,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
     #start parsing MARC records
     xmlreader.each do | record |
     # limit number of records for testing purpose
-    i += 1
-    ### offset and breaks for testing subset of marc records
-    #next unless i > 31000
-    #break if i > 33000
+
     if $recordlimit then break if i > $recordlimit end
     
       # initiate record and set type
@@ -98,7 +95,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
 	  rdfrecord.marc2rdf_convert(record)
     
     # and do sparql update
-    RestClient.sparql_insert(titlenumber)
+    RestClient.sparql_update(titlenumber)
     
     end # end oairecord loop
 
@@ -107,4 +104,4 @@ RDF::Writer.for(:ntriples).buffer do |writer|
   end # end oairecords.deleted?
  end # end oairecords.each
 end # end writer loop
-puts "converted records: #{i-1}"
+puts "modified records: #{i}"
