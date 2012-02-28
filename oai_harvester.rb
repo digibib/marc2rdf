@@ -32,6 +32,7 @@ $fromdate = Date.today.prev_day.to_s
 loop { case ARGV[0]
     when '-f' then  ARGV.shift; $fromdate = ARGV.shift
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
+    when '-d' then  ARGV.shift; $debug = true
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
     break
