@@ -42,33 +42,33 @@
 
 uses yaml hashes mapping:
 
-`tag:
-  "700":
-    subfield: 
-      a:
-        conditions:
-          subfield:
-            e:
-              orig: "arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u"
-              subs: { arr: 'DEICHMAN.musicalArranger', bearb: 'DC.contributor', biogr: 'DEICHMAN.biographer', dir: 'DEICHMAN.director', eks: 'DEICHMAN.perfomer', forf: 'DC.creator', fort: 'DC.narrator', foto: 'DEICHMAN.photographer', gjendikt: 'BIBO.translator', overs: 'BIBO.translator', ill: 'BIBO.illustrator', innl: 'DEICHMAN.reader', k: 'DEICHMAN.composer', komm: 'DEICHMAN.commentator', komp: 'DEICHMAN.composer', manusforf: 'DEICHMAN.scriptWriter', medarb: 'DC.contributor', medforf: 'DC.creator', medf: 'DC.creator', oppl: 'DC.narrator', red: 'BIBO.editor', reg: 'DEICHMAN.director', sang: 'DEICHMAN.singer', skuesp: 'DEICHMAN.actor', t: 'DEICHMAN.lyricist', tekstf: 'DEICHMAN.lyricist', u: 'DEICHMAN.publisher', utg: 'DEICHMAN.publisher', utøv: 'DEICHMAN.perfomer' }
-              default: 'DC.contributor'
-        object:
-          combine:
-            - a
-            - b
-            - d
-          combinestring: "_" 
-          urlize: true
-          regex_strip: "[^\w\-]+"
-          prefix: http://rdf.deichman.no/person/
-          datatype: uri
-        relation: 
-          class: FOAF.Person
-          subfield:
-            a:
-              predicate: FOAF.name
-              object:
-                datatype: literal`
+    tag:
+      "700":
+        subfield: 
+          a:
+            conditions:
+              subfield:
+                e:
+                  orig: "arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u"
+                  subs: { arr: 'DEICHMAN.musicalArranger', bearb: 'DC.contributor', biogr: 'DEICHMAN.biographer', dir: 'DEICHMAN.director', eks: 'DEICHMAN.perfomer', forf: 'DC.creator', fort: 'DC.narrator', foto: 'DEICHMAN.photographer', gjendikt: 'BIBO.translator', overs: 'BIBO.translator', ill: 'BIBO.illustrator', innl: 'DEICHMAN.reader', k: 'DEICHMAN.composer', komm: 'DEICHMAN.commentator', komp: 'DEICHMAN.composer', manusforf: 'DEICHMAN.scriptWriter', medarb: 'DC.contributor', medforf: 'DC.creator', medf: 'DC.creator', oppl: 'DC.narrator', red: 'BIBO.editor', reg: 'DEICHMAN.director', sang: 'DEICHMAN.singer', skuesp: 'DEICHMAN.actor', t: 'DEICHMAN.lyricist', tekstf: 'DEICHMAN.lyricist', u: 'DEICHMAN.publisher', utg: 'DEICHMAN.publisher', utøv: 'DEICHMAN.perfomer' }
+                  default: 'DC.contributor'
+            object:
+              combine:
+                - a
+                - b
+                - d
+              combinestring: "_" 
+              urlize: true
+              regex_strip: "[^\w\-]+"
+              prefix: http://rdf.deichman.no/person/
+              datatype: uri
+            relation: 
+              class: FOAF.Person
+              subfield:
+                a:
+                  predicate: FOAF.name
+                  object:
+                    datatype: literal`
 
 ## FEATURES
 
@@ -110,7 +110,7 @@ or install ruby-dev
 
 ## USAGE 
 
-`marc2rdf.rb -i input_file -o output_file [-r recordlimit]
-  -i input_file must be marc binary
-  -o output_file extension can be either .rdf (slooow) or .nt (very fast)
-  -r [number] stops processing after given number of records`
+    marc2rdf.rb -i input_file -o output_file [-r recordlimit]
+      -i input_file must be marc binary
+      -o output_file extension can be either .rdf (slooow) or .nt (very fast)
+      -r [number] stops processing after given number of records
