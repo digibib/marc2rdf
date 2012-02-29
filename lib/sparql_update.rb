@@ -15,6 +15,7 @@ module RestClient
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
 WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o } }
 EOQ
+    puts query if $debug
     resource = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
     resource.post :query => query, :key => @key
   end
@@ -32,6 +33,7 @@ EOQ
     query = <<-EOQ
 #{@insert_statement} <#{@default_graph}> { #{ntriples.join} }
 EOQ
+    puts query if $debug
     resource = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
     resource.post :query => query, :key => @key
   end  
