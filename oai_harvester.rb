@@ -33,6 +33,7 @@ $fromdate = Date.today.prev_day.to_s
 loop { case ARGV[0]
     when '-f' then  ARGV.shift; $fromdate = ARGV.shift
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
+    when '-d' then  ARGV.shift; $debug = true
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
     break
@@ -48,7 +49,21 @@ end; }
 
 @@yamltags = MAPPINGFILE['tags']
 client = OAI::Client.new(CONFIG['oai']['repository_url'], {:redirects=>CONFIG['oai']['follow_redirects'], :parser=>CONFIG['oai']['parser'], :timeout=>CONFIG['oai']['timeout'], :debug=>true})
-oairecords = client.list_records :metadata_prefix =>CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
+response = client.list_records :metadata_prefix =>CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
+
+# Pick out the first records
+oairecords = Array.new
+response.each do | oairecord |
+  oairecords << oairecord
+end
+
+# If we got a resumption token we need to loop until we have all the records
+while(response.resumption_token and not response.resumption_token.empty?)
+  response = client.list_records(:resumption_token => response.resumption_token)
+  response.each do | oairecord |
+    oairecords << oairecord
+  end
+end
 
 i = 0
 
