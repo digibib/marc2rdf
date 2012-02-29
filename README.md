@@ -1,14 +1,13 @@
-### MARC bibliographic record to RDF converter
-    MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+# MARC bibliographic record to RDF converter
+
+>    "MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
     Copyright (C) 2012 Benjamin Rokseth
     Purpose: Convert binary marc to semantic markup using yaml mapping file
-             Add OAI harvester and rdf store to host live rdf repository
+             Add OAI harvester and rdf store to host live rdf repository"
 
-####################
-### GPLv3 LICENSE ##
-####################
+## GPLv3 LICENSE
     
-    MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+>    "MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
     Copyright (C) 2012 Benjamin Rokseth
 
     This program is free software: you can redistribute it and/or modify
@@ -22,27 +21,28 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#############
-### FILES ###
-#############
-marc2rdf.rb                               -- main ruby script to convert NORMARC file to RDF
-oai.rb									  -- oai harvester skript to harvest and update rdf store
-config/config-dist.yml                    -- config file
-config/mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
-config/mapping-normarc2rdf_bildebaser.yml -- example mapping file: image base in NORMARC
+## FILES
+
+* marc2rdf.rb                            -- main ruby script to convert NORMARC file to RDF
+* oai.rb								 -- oai harvester skript to harvest and update rdf store
+* lib/
+    * string_replace.rb 
+    * rdfmodeler.rb
+    * sparql_update.rb  
+* config/
+    * config-dist.yml                    -- config file
+    * mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
+    * mapping-normarc2rdf_bildebaser.yml -- example mapping file: image base in NORMARC
 hamsun_fikset.mrc                         -- test NORMARC file
 output.rdf                                -- test output RDF with -r 50 (50 records)
-output.nt                                 -- test output NTRIPLES with -r 50 (50 records)
 
-###############
-### MAPPING ###
-###############
+## MAPPING
 
 uses yaml hashes mapping
 excerpt:
------
+***
 tag:
   "700":
     subfield: 
@@ -59,7 +59,7 @@ tag:
             - b
             - d
           combinestring: "_" 
-          regex_replace: "Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]"
+          urlize: true
           regex_strip: "[^\w\-]+"
           prefix: http://rdf.deichman.no/person/
           datatype: uri
@@ -70,51 +70,51 @@ tag:
               predicate: FOAF.name
               object:
                 datatype: literal
- 
-################
-### FEATURES ###
-################
+***
+
+## FEATURES
 
 For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml' based on NORMARC variant of USMARC
 
-tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
-all uris are exploded in yaml file, and objects need full prefix 
-predicates can be conditionally mapped from subfields or indicators
-objects can have language tags given as symbols (:se, :en_UK etc)
-objects can be mapped key => values
-relations can have subfields
-string replacement characters can be given individually in yaml objects 
-  main list under substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa, ... }
-oai harvester and rdf store updates with RestClient
+* tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
+* all uris are exploded in yaml file, and objects need full prefix 
+* predicates can be conditionally mapped from subfields or indicators
+* objects can have language tags given as symbols (:se, :en_UK etc)
+* objects can be mapped key => values
+* relations can have subfields
+* string replace non-ascii characters to create uris
+* oai harvester and rdf store updates with RestClient
 
-############
-### TODO ###
-############
+## TODO 
+
 relation subfield relations should accept different classes
 
-####################
-### REQUIREMENTS ###
-####################
+## REQUIREMENTS
 
-ruby >= 1.8.7
-ruby-marc (thanks to Ross Singer et.al.)
-rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
-rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
-rest-client
-oai
+* ruby >= 1.8.7
+* ruby-marc (thanks to Ross Singer et.al.)
+* rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
+* rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
+* rest-client
+* oai
 
-## LINUX USERS ##
+## LINUX USERS
+
 either install via rvm (Ruby Version Manager)
 or install ruby-dev
+gem install bundler
+bundle install
 
-## UBUNTU INSTALL ##
+## UBUNTU INSTALL
+
 (for rdf-xml support)
 sudo apt-get install libxml2-dev libxslt1-dev
-gem install marc rdf rdf-rdfxml
+gem install marc rdf rdf-rdfxml bundler
+bundle install
 
-## USAGE ##
+## USAGE 
+
 marc2rdf.rb -i input_file -o output_file [-r recordlimit]
   -i input_file must be marc binary
   -o output_file extension can be either .rdf (slooow) or .nt (very fast)
   -r [number] stops processing after given number of records
-

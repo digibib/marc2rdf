@@ -35,8 +35,6 @@
 # 
 # object relation by new class and further subfield loops
 
-substitutes: {'Æ': Ae,  'Ø': Oe,  'Å': Aa,  'æ': ae,  'ø': oe,  'å': aa,  'Ä': Ae,  'Ö': Oe,  'ä': ae, 'ö': oe,  ' ': '_', 'é': e, 'è': e, 'ê': e, 'ë': e, 'á': a, 'à': a, 'â': a, 'ã': a, 'ä': a, 'í': i, 'ì': i, 'î': i, 'ĩ': i, 'ï': i, 'ó': o, 'ò': o, 'ô': o, 'õ': o, 'ú': u, 'ù': u, 'û': u, 'ũ': u, 'ü': u}
-
 tags:
   '001':
     titleNumber:
@@ -304,7 +302,7 @@ tags:
             - d
           combinestring: '_'       
           prefix: 'http://data.deichman.no/person/'
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -344,7 +342,7 @@ tags:
             - q
           combinestring: '_'          
           prefix: 'http://data.deichman.no/organization/' 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           datatype: uri    
         relation: 
@@ -378,7 +376,7 @@ tags:
         predicate: DC.creator 
         object: 
           prefix: 'http://data.deichman.no/conference/'
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           datatype: uri    
         relation: 
@@ -411,7 +409,7 @@ tags:
         predicate: FABIO.isManifestationOf 
         object: 
           prefix: 'http://data.deichman.no/work/'
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri    
         relation: 
@@ -445,7 +443,7 @@ tags:
               orig: '0|1'
               subs: { '0': 'DEICHMAN.uniformTitleURLized', '1': 'DEICHMAN.originalTitleURLized' }
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           datatype: literal
                     
@@ -482,7 +480,7 @@ tags:
       a: 
         predicate: DEICHMAN.titleURLized
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           datatype: literal
                            
@@ -504,7 +502,7 @@ tags:
       a: 
         predicate: DEICHMAN.publicationPlace
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           prefix: http://data.deichman.no/publicationPlace/
           datatype: uri
@@ -519,7 +517,7 @@ tags:
       b: 
         predicate: DC.publisher
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           prefix: http://data.deichman.no/organization/
           datatype: uri
@@ -647,7 +645,7 @@ tags:
         conditions:
           subfield:
             e:
-              orig: 'arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u'
+              orig: 'arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|utg|utøv|forf|eks|k|t|u'
               subs: { arr: 'DEICHMAN.musicalArranger', bearb: 'DC.contributor', biogr: 'DEICHMAN.biographer', dir: 'DEICHMAN.director', eks: 'DEICHMAN.performer', forf: 'DC.creator', fort: 'DC.narrator', foto: 'DEICHMAN.photographer', gjendikt: 'BIBO.translator', overs: 'BIBO.translator', ill: 'BIBO.illustrator', innl: 'DEICHMAN.reader', k: 'DEICHMAN.composer', komm: 'DEICHMAN.commentator', komp: 'DEICHMAN.composer', manusforf: 'DEICHMAN.scriptWriter', medarb: 'DC.contributor', medforf: 'DC.creator', medf: 'DC.creator', oppl: 'DC.narrator', red: 'BIBO.editor', reg: 'DEICHMAN.director', sang: 'DEICHMAN.singer', skuesp: 'DEICHMAN.actor', t: 'DEICHMAN.lyricist', tekstf: 'DEICHMAN.lyricist', u: 'DEICHMAN.publisher', utg: 'DEICHMAN.publisher', utøv: 'DEICHMAN.performer' }
               default: 'DC.contributor'
         object:
@@ -656,7 +654,7 @@ tags:
             - b
             - d
           combinestring: '_' 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/person/
           datatype: uri
@@ -697,7 +695,7 @@ tags:
             - d
             - t
           combinestring: '_' 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/work/
           datatype: uri
@@ -713,7 +711,7 @@ tags:
                   - b
                   - d
                 combinestring: '_' 
-                regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+                urlize: true
                 regex_strip: '[^\w\-]+'
                 prefix: http://data.deichman.no/person/
             t:
@@ -726,7 +724,7 @@ tags:
       a: 
         predicate: DC.isPartOf
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/resource/
           datatype: uri
@@ -753,7 +751,7 @@ tags:
             - t
           combinestring: '_' 
           prefix: http://data.deichman.no/subject/
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -768,7 +766,7 @@ tags:
                   - c
                   - d
                 combinestring: '_' 
-                regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+                urlize: true
                 regex_strip: '[^\w\-]+'
                 prefix: http://data.deichman.no/subject/
             a:
@@ -795,7 +793,7 @@ tags:
             - d
           combinestring: '_' 
           prefix: http://data.deichman.no/subject/
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -810,7 +808,7 @@ tags:
                   - c
                   - d
                 combinestring: '_' 
-                regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+                urlize: true
                 regex_strip: '[^\w\-]+'
                 prefix: http://data.deichman.no/person/            
             '1':
@@ -829,7 +827,7 @@ tags:
             - d
           combinestring: '_' 
           prefix: http://data.deichman.no/person/
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -870,7 +868,7 @@ tags:
             - t
           combinestring: '_' 
           prefix: http://data.deichman.no/work/
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -892,7 +890,7 @@ tags:
             - q
           combinestring: '_' 
           prefix: http://data.deichman.no/subject/
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -923,7 +921,7 @@ tags:
             - q
           combinestring: '_'          
           prefix: 'http://data.deichman.no/organization/' 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           datatype: uri    
         relation: 
@@ -962,7 +960,7 @@ tags:
             - x
           combinestring: '_' 
           prefix: http://data.deichman.no/subject/
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -992,7 +990,7 @@ tags:
             - p
           combinestring: '_' 
           prefix: http://data.deichman.no/work/
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
@@ -1018,10 +1016,10 @@ tags:
             - x
             - '0'
           combinestring: '_'
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
+          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/subject/
-          downcase: true
           datatype: uri
         relation: 
           class: SKOS.Concept
@@ -1048,10 +1046,10 @@ tags:
       a:
         predicate: DEICHMAN.subject
         object:
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
+          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/geographicalSubject/
-          downcase: true
           datatype: uri
         relation: 
           class: GEONAMES.Feature
@@ -1074,10 +1072,10 @@ tags:
             - x
             - '0'
           combinestring: '_'
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
+          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/subject/
-          downcase: true
           datatype: uri
         relation: 
           class: SKOS.Concept
@@ -1104,10 +1102,10 @@ tags:
       a: 
         predicate: MO.genre
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
+          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/mogenre/
-          downcase: true
           datatype: uri
         relation: 
           class: MO.Genre
@@ -1123,10 +1121,10 @@ tags:
       a: 
         predicate: DBO.literaryGenre
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
+          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/literaryGenre/
-          downcase: true
           datatype: uri
         relation: 
           class: YAGO.LiteraryGenres
@@ -1143,10 +1141,10 @@ tags:
         predicate: CTAG.tagged
         object: 
           regex_split: ' '
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
+          downcase: true      
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/keyword/
-          downcase: true      
           datatype: uri          
         relation: 
           class: CTAG.Tag
@@ -1162,7 +1160,7 @@ tags:
       a: 
         predicate: DC.contributor
         object: 
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/organization/
           datatype: uri
@@ -1180,7 +1178,7 @@ tags:
         predicate: DC.contributor
         object: 
           prefix: 'http://data.deichman.no/conference/'
-          regex_replace: 'Å|Ø|Æ|å|ø|æ|Ä|Ö|\ |[éèêẽë]|[áàâãä]|[íìîĩï]|[óòôõö]|[úùûũü]'
+          urlize: true
           regex_strip: '[\W]+'
           datatype: uri    
         relation:

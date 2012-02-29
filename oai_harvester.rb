@@ -16,6 +16,7 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
 
 require './lib/rdfmodeler.rb'
 require './lib/sparql_update.rb'
+require './lib/string_replace.rb'
 
 def usage(s)
     $stderr.puts(s)

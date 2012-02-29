@@ -51,17 +51,19 @@ class RDFModeler
  options are:
    :marcfield => full marcfield object to use e.g. in :combine
    :regex_split => regex split condition, eg. ", *" - split by comma and space
-   :regex_replace => regex characters to replace, eg. "Å|Ø|Æ|\ |" mapped against hash substitutes in yaml file
+   :urlize => non-ascii character replacement, alternatively with :downcase, :convert_chars and :regex
+   :downcase => true or false (default) 
+   :convert_spaces => default '_'
+   :regexp => default /[^-_A-Za-z0-9]/
    :regex_strip => regex match to strip away
    :regex_substitute => hash of 'orig', 'subs', and 'default' to map object substitutions - read into 'regex_subs'
    :substr_offset => string slice by position, eg. - substr_offset: 34 - get string from position 34
    :substr_length => string slice length
    :combine => combine field with one or more others
    :combinestring => string to combine field with
-   regex_split takes precedence, then regex_replace and finally regex_strip to remove disallowed characters
+   regex_split takes precedence, then urlize and finally regex_strip to remove disallowed characters
 =end
 
-  subs = MAPPINGFILE['substitutes']
   regex_subs = options[:regex_substitute]
 # remove nil options
   options.delete_if {|k,v| v.nil?}
@@ -101,18 +103,20 @@ class RDFModeler
       end
     end
 
-    if options.has_key?(:regex_replace)
-      generated_objects.collect! { |obj| obj.gsub(/#{options[:regex_replace]}/) { |match| subs[match] } }
-    end
+    if options.has_key?(:urlize)
+      downcase = options[:downcase] || false
+      convert_spaces = options[:convert_spaces] || true
+      regexp = options[:regexp] || /[^-_A-Za-z0-9]/
 
+      generated_objects.collect! do |obj| 
+        obj.urlize({:downcase => downcase, :convert_spaces => convert_spaces, :regexp => regexp})
+      end
+    end
+    
     if options.has_key?(:regex_strip)
       generated_objects.collect! { |obj| obj.gsub(/#{options[:regex_strip]}/, '') }
     end
 
-    if options.has_key?(:downcase)
-      generated_objects.collect! { |obj| obj.downcase }
-    end
-  
   return generated_objects
   end
   
@@ -148,7 +152,7 @@ class RDFModeler
           marc_object = "#{marcfield.value}"
           unless marc_object.strip.empty?
             yamlvalue.each do | key,value |
-              objects = generate_objects(marc_object, :marcfield => marcfield, :regex_split => value['object']['regex_split'], :regex_replace => value['object']['regex_replace'], :regex_strip => value['object']['regex_strip'], :regex_substitute => value['object']['regex_substitute'], :substr_offset => value['object']['substr_offset'], :substr_length => value['object']['substr_length'], :combine => value['object']['combine'], :combinestring => value['object']['combinestring'], :downcase => value['object']['downcase'])
+              objects = generate_objects(marc_object, :marcfield => marcfield, :regex_split => value['object']['regex_split'], :urlize => value['object']['urlize'], :regex_strip => value['object']['regex_strip'], :regex_substitute => value['object']['regex_substitute'], :substr_offset => value['object']['substr_offset'], :substr_length => value['object']['substr_length'], :combine => value['object']['combine'], :combinestring => value['object']['combinestring'], :downcase => value['object']['downcase'])
               unless objects.empty?
                 objects.each do | o |
                   unless o.strip.empty?
@@ -229,7 +233,7 @@ class RDFModeler
 ## NEED A WAY TO USE REGEX FOR SUBFIELDS?              
                  marc_object = "#{marcfield[subfields[0]]}"
                  unless marc_object.empty?
-                   objects = generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'], :downcase => subfields[1]['object']['downcase'])
+                   objects = generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :urlize => subfields[1]['object']['urlize'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'], :downcase => subfields[1]['object']['downcase'])
 
                    objects.each do | o |
                      object_uri = generate_uri(o, "#{subfields[1]['object']['prefix']}")
@@ -246,7 +250,7 @@ class RDFModeler
                        relationsubfields.each do | relsub |
                          relobject = "#{marcfield[relsub[0]]}"
                          unless relobject.empty?
-                           relobjects = generate_objects(relobject, :marcfield => marcfield, :regex_split => relsub[1]['object']['regex_split'], :regex_replace => relsub[1]['object']['regex_replace'], :regex_strip => relsub[1]['object']['regex_strip'], :regex_substitute => relsub[1]['object']['regex_substitute'], :substr_offset => relsub[1]['object']['substr_offset'], :substr_length => relsub[1]['object']['substr_length'], :combine => relsub[1]['object']['combine'], :combinestring => relsub[1]['object']['combinestring'], :downcase => relsub[1]['object']['downcase'])
+                           relobjects = generate_objects(relobject, :marcfield => marcfield, :regex_split => relsub[1]['object']['regex_split'], :urlize => relsub[1]['object']['urlize'], :regex_strip => relsub[1]['object']['regex_strip'], :regex_substitute => relsub[1]['object']['regex_substitute'], :substr_offset => relsub[1]['object']['substr_offset'], :substr_length => relsub[1]['object']['substr_length'], :combine => relsub[1]['object']['combine'], :combinestring => relsub[1]['object']['combinestring'], :downcase => relsub[1]['object']['downcase'])
                            relobjects.each do | ro |
                              if relsub[1]['object']['datatype'] == "uri"
                                relobject_uri = generate_uri(ro, "#{relsub[1]['object']['prefix']}")
@@ -271,7 +275,7 @@ class RDFModeler
               if subfields[0]
                 marc_object = "#{marcfield[subfields[0]]}"
                 unless marc_object.empty?
-                  objects = generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :regex_replace => subfields[1]['object']['regex_replace'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'], :downcase => subfields[1]['object']['downcase'])
+                  objects = generate_objects(marc_object, :marcfield => marcfield, :regex_split => subfields[1]['object']['regex_split'], :urlize => subfields[1]['object']['urlize'], :regex_strip => subfields[1]['object']['regex_strip'], :regex_substitute => subfields[1]['object']['regex_substitute'], :substr_offset => subfields[1]['object']['substr_offset'], :substr_length => subfields[1]['object']['substr_length'], :combine => subfields[1]['object']['combine'], :combinestring => subfields[1]['object']['combinestring'], :downcase => subfields[1]['object']['downcase'])
                   objects.each do | o |  
                     if subfields[1]['object']['datatype'] == "uri"
                       object_uri = generate_uri(o, "#{subfields[1]['object']['prefix']}")
