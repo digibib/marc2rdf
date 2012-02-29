@@ -35,15 +35,14 @@
     * config-dist.yml                    -- config file
     * mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
     * mapping-normarc2rdf_bildebaser.yml -- example mapping file: image base in NORMARC
-hamsun_fikset.mrc                         -- test NORMARC file
-output.rdf                                -- test output RDF with -r 50 (50 records)
+* hamsun_fikset.mrc                         -- test NORMARC file
+* output.rdf                                -- test output RDF with -r 50 (50 records)
 
 ## MAPPING
 
-uses yaml hashes mapping
-excerpt:
-***
-tag:
+uses yaml hashes mapping:
+
+`tag:
   "700":
     subfield: 
       a:
@@ -69,8 +68,7 @@ tag:
             a:
               predicate: FOAF.name
               object:
-                datatype: literal
-***
+                datatype: literal`
 
 ## FEATURES
 
@@ -102,19 +100,17 @@ relation subfield relations should accept different classes
 
 either install via rvm (Ruby Version Manager)
 or install ruby-dev
-gem install bundler
-bundle install
 
 ## UBUNTU INSTALL
 
 (for rdf-xml support)
-sudo apt-get install libxml2-dev libxslt1-dev
-gem install marc rdf rdf-rdfxml bundler
-bundle install
+* sudo apt-get install libxml2-dev libxslt1-dev
+* gem install marc rdf rdf-rdfxml bundler
+* bundle install
 
 ## USAGE 
 
-marc2rdf.rb -i input_file -o output_file [-r recordlimit]
+`marc2rdf.rb -i input_file -o output_file [-r recordlimit]
   -i input_file must be marc binary
   -o output_file extension can be either .rdf (slooow) or .nt (very fast)
-  -r [number] stops processing after given number of records
+  -r [number] stops processing after given number of records`
