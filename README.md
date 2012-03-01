@@ -1,15 +1,12 @@
 # MARC bibliographic record to RDF converter
 
->    "MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+    MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
     Copyright (C) 2012 Benjamin Rokseth
     Purpose: Convert binary marc to semantic markup using yaml mapping file
-             Add OAI harvester and rdf store to host live rdf repository"
+             Add OAI harvester and rdf store to host live rdf repository
 
 ## GPLv3 LICENSE
     
->    "MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
-    Copyright (C) 2012 Benjamin Rokseth
-
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
