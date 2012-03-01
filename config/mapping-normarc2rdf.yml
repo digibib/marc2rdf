@@ -446,7 +446,6 @@ tags:
           urlize: true
           regex_strip: '[\W]+'
           datatype: literal
-                    
 
   '(245|246)':
     subfield: 
@@ -483,7 +482,6 @@ tags:
           urlize: true
           regex_strip: '[\W]+'
           datatype: literal
-                           
 
   '250':
     subfield: 

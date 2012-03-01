@@ -12,6 +12,7 @@ rdfstore:
     #:adapter: sqlite
     #:database: db/storage.db
     store: virtuoso
+    sparql_endpoint: http://example.com/sparql/
     sparul_endpoint: http://example.com/update/
     default_graph: http://example.com/default_graph/
     username: username
@@ -29,3 +30,9 @@ oai:
     parser: rexml
     timeout: 60
     format: marcxchange
+
+coverart_sources:
+    bokkilden: 
+        url: 'http://example.com'
+        apikey: 'dummykey'
+        limit: 10
