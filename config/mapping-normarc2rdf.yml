@@ -1015,7 +1015,6 @@ tags:
             - '0'
           combinestring: '_'
           urlize: true
-          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/subject/
           datatype: uri
@@ -1045,7 +1044,6 @@ tags:
         predicate: DEICHMAN.subject
         object:
           urlize: true
-          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/geographicalSubject/
           datatype: uri
@@ -1071,7 +1069,6 @@ tags:
             - '0'
           combinestring: '_'
           urlize: true
-          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/subject/
           datatype: uri
@@ -1101,7 +1098,6 @@ tags:
         predicate: MO.genre
         object: 
           urlize: true
-          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/mogenre/
           datatype: uri
@@ -1120,7 +1116,6 @@ tags:
         predicate: DBO.literaryGenre
         object: 
           urlize: true
-          downcase: true
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/literaryGenre/
           datatype: uri
@@ -1139,8 +1134,7 @@ tags:
         predicate: CTAG.tagged
         object: 
           regex_split: ' '
-          urlize: true
-          downcase: true      
+          urlize: true      
           regex_strip: '[^\w\-]+'
           prefix: http://data.deichman.no/keyword/
           datatype: uri          

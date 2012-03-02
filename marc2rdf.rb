@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby 
 # encoding: UTF-8
+if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 
 require 'rubygems'
 require 'marc'
