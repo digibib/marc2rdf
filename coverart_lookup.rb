@@ -10,6 +10,7 @@ require 'sparql/client'
 CONFIG           = YAML::load_file('config/config.yml')
 QUERY_ENDPOINT   = SPARQL::Client.new(CONFIG['rdfstore']['sparql_endpoint'])
 SPARUL_ENDPOINT  = CONFIG['rdfstore']['sparul_endpoint']
+DEFAULT_PREFIX    = CONFIG['rdfstore']['default_prefix']
 DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
 COVERART_SOURCES = CONFIG['coverart_sources']
 
@@ -34,8 +35,10 @@ loop { case ARGV[0]
 end; }
 
   def fetch_cover_art(isbn)
-    response = RestClient.get @url + isbn
-    if @source == 'bokkilden' then bokkilden_cover(response) end
+    response = RestClient.get "#{@prefix}#{isbn}#{@suffix}#{@apikey}"
+    if @source == 'bokkilden' then cover = bokkilden_cover(response) end
+    if @source == 'openlibrary' then cover = openlibrary_cover(response) end
+    return cover
   end
 
   def bokkilden_cover(response)
@@ -44,17 +47,25 @@ end; }
     cover_url.gsub('&width=80', '') if cover_url
   end
 
+  def openlibrary_cover(response)
+  #p response
+    res = Nokogiri::XML(response)
+    cover_url = res.xpath('//sparql:uri', 'sparql' => 'http://www.w3.org/2005/sparql-results#').text
+  end
+  
   def fetch_results(offset, limit)
   	isbns = []
   	# query to return books without foaf:depiction
     query = <<-eos
     PREFIX bibo: <http://purl.org/ontology/bibo/>
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX local: <#{DEFAULT_PREFIX}>
 
     SELECT ?book ?isbn WHERE {
       GRAPH <#{DEFAULT_GRAPH}> {
-        ?book bibo:isbn ?isbn .
-        MINUS { ?book foaf:depiction ?depiction }
+        ?book bibo:isbn ?isbn ;
+            a bibo:Document .
+        MINUS { ?book local:depiction_#{@source} ?depiction }
       }
     } LIMIT #{limit} OFFSET #{offset}
     eos
@@ -64,10 +75,12 @@ end; }
     results.each do | solution |
       
       cover_url = fetch_cover_art(solution.isbn.value)
+      #p cover_url
       unless cover_url.empty?
         query = <<-EOQ
         PREFIX foaf: <#{RDF::FOAF.to_s}>
-        INSERT INTO <#{DEFAULT_GRAPH}> { <#{solution.book}> foaf:depiction <#{cover_url}> } 
+        PREFIX local: <#{DEFAULT_PREFIX}>
+        INSERT INTO <#{DEFAULT_GRAPH}> { <#{solution.book}> local:depiction_#{@source} <#{cover_url}> } 
         EOQ
 
         if $debug then puts query end
@@ -84,9 +97,11 @@ offset = 0
 
 COVERART_SOURCES.each do | source, sourcevalue |
   limit = sourcevalue['limit']
-  @url = sourcevalue['url']
+  @prefix = sourcevalue['prefix']
+  @suffix = sourcevalue['suffix']
+  @apikey = sourcevalue['apikey']
   @source = source
-  
+  # next if @source == 'bokkilden'
   # loops over source, uses url and limit from yaml
   loop do    
     fetch_results(offset, limit)

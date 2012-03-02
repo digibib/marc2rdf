@@ -14,6 +14,7 @@ rdfstore:
     store: virtuoso
     sparql_endpoint: http://example.com/sparql/
     sparul_endpoint: http://example.com/update/
+    default_prefix: http://example.com/
     default_graph: http://example.com/default_graph/
     username: username
     password: password
@@ -23,7 +24,6 @@ rdfstore:
     # default_graph: http://example.com/default_graph/
     # key: username
     
-
 oai:
     repository_url: http://example.com/cgi-bin/oai
     follow_redirects: false
@@ -32,7 +32,13 @@ oai:
     format: marcxchange
 
 coverart_sources:
-    bokkilden: 
-        url: 'http://example.com'
+    dummysource1: 
+        prefix: 'http://example.com/?query='
+        suffix: '&result=application/json'
         apikey: 'dummykey'
         limit: 10
+    dummysource2:
+        prefix: 'http://example.com/?query='
+        suffix: '&result=application/json'
+        apikey: 'dummykey'
+        limit: 10    
