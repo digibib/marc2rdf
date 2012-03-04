@@ -9,8 +9,10 @@ GEM
   specs:
     addressable (2.2.7)
     builder (3.0.0)
+    json_pure (1.6.5)
     marc (0.4.3)
     mime-types (1.17.2)
+    net-http-persistent (2.5.2)
     nokogiri (1.5.0)
     rdf (0.3.5)
       addressable (>= 2.2.6)
@@ -21,6 +23,9 @@ GEM
       rdf (>= 0.3.4)
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    sparql-client (0.0.9)
+      json_pure (>= 1.4.2)
+      rdf (~> 0.3.0)
 
 PLATFORMS
   ruby
@@ -28,9 +33,11 @@ PLATFORMS
 DEPENDENCIES
   builder
   marc
+  net-http-persistent (~> 2.5.2)
   nokogiri
   oai (= 0.0.9)!
   rdf
   rdf-n3
   rdf-rdfxml
   rest-client
+  sparql-client
