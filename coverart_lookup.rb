@@ -12,7 +12,7 @@ QUERY_ENDPOINT   = SPARQL::Client.new(CONFIG['rdfstore']['sparql_endpoint'])
 SPARUL_ENDPOINT  = CONFIG['rdfstore']['sparul_endpoint']
 DEFAULT_PREFIX    = CONFIG['rdfstore']['default_prefix']
 DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
-COVERART_SOURCES = CONFIG['coverart_sources']
+COVERART_SOURCES = CONFIG['harvesting_sources']['coverart']
 
 @username = CONFIG['rdfstore']['username']
 @password = CONFIG['rdfstore']['password']
@@ -35,24 +35,21 @@ loop { case ARGV[0]
 end; }
 
   def fetch_cover_art(isbn)
-    response = RestClient.get "#{@prefix}#{isbn}#{@suffix}#{@apikey}"
-    if @source == 'bokkilden' then cover = bokkilden_cover(response) end
-    if @source == 'openlibrary' then cover = openlibrary_cover(response) end
-    return cover
+    response = RestClient.get("#{@prefix}#{isbn}#{@suffix}#{@apikey}", :timeout => 900, :open_timeout => 900)
+    # make sure we get valid response
+    if response.code == 200
+      res = Nokogiri::XML(response)
+      if @source == 'bokkilden' 
+        cover_url = res.xpath("/Produkter/Produkt/BildeURL").text
+        cover_url.gsub('&width=80', '') if cover_url
+      end
+      if @source == 'openlibrary' 
+        cover_url = res.xpath('//sparql:uri', 'sparql' => 'http://www.w3.org/2005/sparql-results#').text
+      end
+    end
+    cover_url
   end
 
-  def bokkilden_cover(response)
-    res = Nokogiri::XML(response)
-    cover_url = res.xpath("/Produkter/Produkt/BildeURL").text
-    cover_url.gsub('&width=80', '') if cover_url
-  end
-
-  def openlibrary_cover(response)
-  #p response
-    res = Nokogiri::XML(response)
-    cover_url = res.xpath('//sparql:uri', 'sparql' => 'http://www.w3.org/2005/sparql-results#').text
-  end
-  
   def fetch_results(offset, limit)
   	isbns = []
   	# query to return books without foaf:depiction
@@ -65,7 +62,7 @@ end; }
       GRAPH <#{DEFAULT_GRAPH}> {
         ?book bibo:isbn ?isbn ;
             a bibo:Document .
-        MINUS { ?book local:depiction_#{@source} ?depiction }
+#        MINUS { ?book local:depiction_#{@source} ?depiction }
       }
     } LIMIT #{limit} OFFSET #{offset}
     eos
@@ -75,7 +72,6 @@ end; }
     results.each do | solution |
       
       cover_url = fetch_cover_art(solution.isbn.value)
-      #p cover_url
       unless cover_url.empty?
         query = <<-EOQ
         PREFIX foaf: <#{RDF::FOAF.to_s}>
@@ -85,8 +81,8 @@ end; }
 
         if $debug then puts query end
 
-        resource = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password)
-        result = resource.post :query => query
+        #resource = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password, :timeout => 900, :open_timeout => 900)
+        #result = resource.post :query => query
         @count += 1
       end
     end
