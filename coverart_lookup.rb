@@ -36,6 +36,7 @@ end; }
 
   def fetch_cover_art(isbn)
     response = RestClient.get("#{@prefix}#{isbn}#{@suffix}#{@apikey}", :timeout => 900, :open_timeout => 900)
+    
     # make sure we get valid response
     if response.code == 200
       res = Nokogiri::XML(response)
@@ -81,8 +82,8 @@ end; }
 
         if $debug then puts query end
 
-        #resource = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password, :timeout => 900, :open_timeout => 900)
-        #result = resource.post :query => query
+        resource = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password, :timeout => 900, :open_timeout => 900)
+        result = resource.post :query => query
         @count += 1
       end
     end
@@ -97,6 +98,7 @@ COVERART_SOURCES.each do | source, sourcevalue |
   @suffix = sourcevalue['suffix']
   @apikey = sourcevalue['apikey']
   @source = source
+
   # next if @source == 'bokkilden'
   # loops over source, uses url and limit from yaml
   loop do    
