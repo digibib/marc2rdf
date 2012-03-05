@@ -1,44 +1,43 @@
 mapping:
-    file: 'config/example-mappingfile.yml'
+  file: 'config/example-mappingfile.yml'
 
 resource:
-    base: http://example.org
-    resource_path: /collections/
-    resource_prefix: id_
-    resource_identifier_field: '001'
-    resource_type: BIBO.Document
+  base: http://example.org
+  resource_path: /collections/
+  resource_prefix: id_
+  resource_identifier_field: '001'
+  resource_type: BIBO.Document
 
 rdfstore:
-    #:adapter: sqlite
-    #:database: db/storage.db
-    store: virtuoso
-    sparql_endpoint: http://example.com/sparql/
-    sparul_endpoint: http://example.com/update/
-    default_prefix: http://example.com/
-    default_graph: http://example.com/default_graph/
-    username: username
-    password: password
-    # Alternative storage: ARC2
-    # store: arc2
-    # sparul_endpoint: http://example.com/sparql/
-    # default_graph: http://example.com/default_graph/
-    # key: username
+  store: virtuoso
+  sparql_endpoint: http://example.com/sparql/
+  sparul_endpoint: http://example.com/update/
+  default_prefix: http://example.com/
+  default_graph: http://example.com/default_graph/
+  username: username
+  password: password
+  # Alternative storage: ARC2
+  # store: arc2
+  # sparul_endpoint: http://example.com/sparql/
+  # default_graph: http://example.com/default_graph/
+  # key: username
     
 oai:
-    repository_url: http://example.com/cgi-bin/oai
-    follow_redirects: false
-    parser: rexml
-    timeout: 60
-    format: marcxchange
+  repository_url: http://example.com/cgi-bin/oai
+  follow_redirects: false
+  parser: rexml
+  timeout: 60
+  format: marcxchange
 
-coverart_sources:
+harvesting_sources:
+  coverart:
     dummysource1: 
-        prefix: 'http://example.com/?query='
-        suffix: '&result=application/json'
-        apikey: 'dummykey'
-        limit: 10
+      prefix: 'http://example.com/?query='
+      suffix: '&result=application/json'
+      apikey: 'dummykey'
+      limit: 10
     dummysource2:
-        prefix: 'http://example.com/?query='
-        suffix: '&result=application/json'
-        apikey: 'dummykey'
-        limit: 10    
+      prefix: 'http://example.com/?query='
+      suffix: '&result=application/json'
+      apikey: 'dummykey'
+      limit: 10    

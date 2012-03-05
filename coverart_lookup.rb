@@ -1,5 +1,7 @@
 require 'rubygems'
-require 'rest_client'
+require 'bundler/setup'
+#require 'rest_client'
+require 'base64'
 require 'yaml'
 require 'nokogiri'
 require 'rdf'
@@ -14,8 +16,11 @@ DEFAULT_PREFIX    = CONFIG['rdfstore']['default_prefix']
 DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
 COVERART_SOURCES = CONFIG['harvesting_sources']['coverart']
 
-@username = CONFIG['rdfstore']['username']
-@password = CONFIG['rdfstore']['password']
+# SPARUL 
+username = CONFIG['rdfstore']['username']
+password = CONFIG['rdfstore']['password']
+enc = "Basic " + Base64.encode64("#{username}:#{password}")
+@sparul_client = SPARQL::Client.new("#{SPARUL_ENDPOINT}", :headers => {"Authorization" => "#{enc}"})
 
 def usage(s)
     $stderr.puts(s)
@@ -37,11 +42,12 @@ loop { case ARGV[0]
 end; }
 
   def fetch_cover_art(isbn)
-    response = RestClient.get("#{@prefix}#{isbn}#{@suffix}#{@apikey}", :timeout => 900, :open_timeout => 900)
+    #response = RestClient.get("#{@prefix}#{isbn}#{@suffix}#{@apikey}", :timeout => 900, :open_timeout => 900)
+    response = @http_persistent.request URI "#{@prefix}#{isbn}#{@suffix}#{@apikey}"
     
     # make sure we get valid response
-    if response.code == 200
-      res = Nokogiri::XML(response)
+    if response.code == "200"
+      res = Nokogiri::XML(response.body)
       if @source == 'bokkilden' 
         cover_url = res.xpath("/Produkter/Produkt/BildeURL").text
         cover_url.gsub('&width=80', '') if cover_url
@@ -77,15 +83,19 @@ end; }
       
       cover_url = fetch_cover_art(solution.isbn.value)
       unless cover_url.empty?
-        query = <<-EOQ
+        query1 = <<-EOQ
         PREFIX foaf: <#{RDF::FOAF.to_s}>
         PREFIX local: <#{DEFAULT_PREFIX}>
         INSERT INTO <#{DEFAULT_GRAPH}> { <#{solution.book}> local:depiction_#{@source} <#{cover_url}> } 
         EOQ
-        if $debug then puts query end
-
-        resource = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password, :timeout => 900, :open_timeout => 900)
-        result = resource.post :query => query
+        if $debug then puts query1 end
+     
+        # SPARQL UPDATE
+        #resource = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password, :timeout => 900, :open_timeout => 900)
+        #result = resource.post :query => query
+        @local = RDF::Vocabulary.new "#{DEFAULT_PREFIX}"
+        query = @sparul_client.insert([RDF::URI.new("#{solution.book}"), @local.depiction_ + "#{@source}", RDF::URI.new("#{cover_url}") ]).graph(RDF::URI.new("#{DEFAULT_GRAPH}"))
+        if $debug then puts query.result.inspect end
         @count += 1
       end
     end
@@ -100,7 +110,8 @@ COVERART_SOURCES.each do | source, sourcevalue |
   @suffix = sourcevalue['suffix']
   @apikey = sourcevalue['apikey']
   @source = source
-
+  @http_persistent = Net::HTTP::Persistent.new "#{@source}"
+  
   # next if @source == 'bokkilden'
   # loops over source, uses url and limit from yaml
   loop do    
