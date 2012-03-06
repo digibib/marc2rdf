@@ -13,7 +13,7 @@ module RestClient
   def self.sparql_delete(titlenumber)
     resource = CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber
     query = <<-EOQ
-PREFIX local: <#{DEFAULT_PREFIX}>
+PREFIX local: <#{@default_prefix}>
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
 WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o .
 MINUS { <#{resource}> local:depiction_bokkilden ?depiction } 

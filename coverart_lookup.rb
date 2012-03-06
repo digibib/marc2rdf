@@ -10,9 +10,9 @@ require 'rdf/ntriples'
 require 'sparql/client'
 
 CONFIG           = YAML::load_file('config/config.yml')
-QUERY_ENDPOINT   = SPARQL::Client.new(CONFIG['rdfstore']['sparql_endpoint'])
+SPARQL_ENDPOINT  = SPARQL::Client.new(CONFIG['rdfstore']['sparql_endpoint'])
 SPARUL_ENDPOINT  = CONFIG['rdfstore']['sparul_endpoint']
-DEFAULT_PREFIX    = CONFIG['rdfstore']['default_prefix']
+DEFAULT_PREFIX   = CONFIG['rdfstore']['default_prefix']
 DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
 COVERART_SOURCES = CONFIG['harvesting_sources']['coverart']
 
@@ -40,7 +40,16 @@ loop { case ARGV[0]
     else 
     break
 end; }
-
+  
+  def count_books
+    query =<<-EOQ
+    PREFIX bibo: <http://purl.org/ontology/bibo/>
+    SELECT (COUNT(?book) as ?count) WHERE {GRAPH <#{DEFAULT_GRAPH}> { ?book a bibo:Document } }
+EOQ
+    result = SPARQL_ENDPOINT.query(query).first.to_hash
+    count = result[result.keys.first].value.to_i
+  end
+  
   def fetch_cover_art(isbn)
     response = @http_persistent.request URI "#{@prefix}#{isbn}#{@suffix}#{@apikey}"
     
@@ -75,14 +84,12 @@ end; }
     } LIMIT #{limit} OFFSET #{offset}
     eos
     if $debug then puts "offset: #{offset}" end
-    results = QUERY_ENDPOINT.query(query)
+    results = SPARQL_ENDPOINT.query(query)
 
     @count = 0
     results.each do | solution |
-      
       cover_url = fetch_cover_art(solution.isbn.value)
       unless cover_url.empty?
- 
         # SPARQL UPDATE
         @local = RDF::Vocabulary.new "#{DEFAULT_PREFIX}"
         query = @sparul_client.insert([RDF::URI.new("#{solution.book}"), @local.depiction_ + "#{@source}", RDF::URI.new("#{cover_url}") ]).graph(RDF::URI.new("#{DEFAULT_GRAPH}"))
@@ -94,6 +101,8 @@ end; }
   end
 
 unless $offset then $offset = 0 end
+book_count = count_books
+if $debug then puts "book count: #{book_count.inspect}" end
 
 COVERART_SOURCES.each do | source, sourcevalue |
   limit = sourcevalue['limit']
@@ -109,6 +118,7 @@ COVERART_SOURCES.each do | source, sourcevalue |
     fetch_results($offset, limit)
     $offset += limit
     if $recordlimit then break if @count > $recordlimit end
+    break if @count >= book_count
   end
 end
 p @count
