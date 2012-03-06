@@ -1,3 +1,5 @@
+# encoding: UTF-8
+if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 require 'rubygems'
 require 'bundler/setup'
 #require 'rest_client'
@@ -45,14 +47,14 @@ end; }
     query =<<-EOQ
     PREFIX bibo: <http://purl.org/ontology/bibo/>
     SELECT (COUNT(?book) as ?count) WHERE {GRAPH <#{DEFAULT_GRAPH}> { ?book a bibo:Document } }
-EOQ
+    EOQ
     result = SPARQL_ENDPOINT.query(query).first.to_hash
     count = result[result.keys.first].value.to_i
   end
   
   def fetch_cover_art(isbn)
     response = @http_persistent.request URI "#{@prefix}#{isbn}#{@suffix}#{@apikey}"
-    
+    cover_url = ''
     # make sure we get valid response
     if response.code == "200"
       res = Nokogiri::XML(response.body)
@@ -70,7 +72,7 @@ EOQ
   def fetch_results(offset, limit)
   	isbns = []
   	# query to return books without foaf:depiction
-    query = <<-eos
+    query = <<-EOQ
     PREFIX bibo: <http://purl.org/ontology/bibo/>
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     PREFIX local: <#{DEFAULT_PREFIX}>
@@ -82,7 +84,7 @@ EOQ
         MINUS { ?book local:depiction_#{@source} ?depiction }
       }
     } LIMIT #{limit} OFFSET #{offset}
-    eos
+    EOQ
     if $debug then puts "offset: #{offset}" end
     results = SPARQL_ENDPOINT.query(query)
 

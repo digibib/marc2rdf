@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby 
 # encoding: UTF-8
+if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 require 'bundler/setup'
 require 'builder'
 require 'rubygems'
@@ -92,7 +93,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
   if oairecord.deleted?
     puts "deleted: #{titlenumber}"
     RestClient.sparql_delete(titlenumber)
-    next  
+    next # deleted record has no metadata
   else 
     puts "modified: #{titlenumber}"
     ## read metadata into MARCXML object
@@ -100,8 +101,8 @@ RDF::Writer.for(:ntriples).buffer do |writer|
 
     #start parsing MARC records
     xmlreader.each do | record |
-    # limit number of records for testing purpose
 
+    # limit number of records for testing purpose
     if $recordlimit then break if i > $recordlimit end
     
       # initiate record and set type
