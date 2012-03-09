@@ -67,8 +67,7 @@ end; }
       xml = Nokogiri::XML(http_response.body)
       result = xml.xpath("#{conditions[:xpath]}").text
       if conditions[:gsub] then result.gsub!("#{conditions[:gsub]}", "") end
-    else
-      result = ""
+      return result
     end
   end
   
@@ -131,6 +130,7 @@ SOURCES.each do | source, sourcevalue |
         
         sourcevalue['harvest'].each do | predicate, conditions |
           obj = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'])
+          p obj
           unless obj.nil?
             # SPARQL UPDATE
             if conditions['datatype'] == "uri" then obj = RDF::URI.new("#{obj}") end
