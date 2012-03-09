@@ -21,6 +21,7 @@ GEM
     builder (3.0.0)
     json_pure (1.6.5)
     marc (0.4.3)
+    mime-types (1.17.2)
     net-http-persistent (1.4.1)
     nokogiri (1.5.0)
     rdf (0.3.5)
@@ -30,6 +31,8 @@ GEM
     rdf-rdfxml (0.3.5)
       nokogiri (>= 1.4.4)
       rdf (>= 0.3.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
 
 PLATFORMS
   ruby
@@ -42,4 +45,5 @@ DEPENDENCIES
   rdf
   rdf-n3
   rdf-rdfxml
+  rest-client
   sparql-client!

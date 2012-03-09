@@ -28,16 +28,3 @@ oai:
   parser: rexml
   timeout: 60
   format: marcxchange
-
-harvesting_sources:
-  coverart:
-    dummysource1: 
-      prefix: 'http://example.com/?query='
-      suffix: '&result=application/json'
-      apikey: 'dummykey'
-      limit: 10
-    dummysource2:
-      prefix: 'http://example.com/?query='
-      suffix: '&result=application/json'
-      apikey: 'dummykey'
-      limit: 10    

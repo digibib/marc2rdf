@@ -1,0 +1,13 @@
+---
+harvesting_source:
+  protocol: http
+  prefix: 'http://example.com/?query='
+  suffix: '&result=application/json'
+  apikey: 'dummykey'  
+  limit: 10
+  harvest:
+    FOAF.depiction:
+      xpath: "/Path/to/xml/object"
+      gsub: "&width=80'"
+    BIBO.abstract:
+      xpath: "/Path/to/xml/object"
