@@ -14,10 +14,12 @@ module RestClient
     resource = CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber
     query = <<-EOQ
 PREFIX local: <#{@default_prefix}>
+PREFIX rev: <http://purl.org/stuff/rev#>
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
 WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o .
 MINUS { <#{resource}> local:depiction_bokkilden ?depiction } 
 MINUS { <#{resource}> local:depiction_onskebok ?depiction } 
+MINUS { <#{resource}> rev:hasReview ?review } 
 } }
 EOQ
     puts query if $debug

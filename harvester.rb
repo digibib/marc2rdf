@@ -30,7 +30,7 @@ enc = "Basic " + Base64.encode64("#{username}:#{password}")
 def usage(s)
     $stderr.puts(s)
     $stderr.puts("Usage: \n")
-    $stderr.puts("#{File.basename($0)} -o output_file [-r recordlimit]\n")
+    $stderr.puts("#{File.basename($0)} -o output_file [-r recordlimit] [-d] \n")
     $stderr.puts("  -r [number] stops processing after given number of records\n")
     $stderr.puts("  -o [number] offset for start of harvest\n")    
     $stderr.puts("  -d debug output\n")
@@ -39,7 +39,8 @@ end
 
 loop { case ARGV[0]
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
-    when '-o' then  ARGV.shift; $offset = ARGV.shift.to_i # force integer    
+    when '-f' then  ARGV.shift; $output_file = ARGV.shift # force integer
+    when '-o' then  ARGV.shift; $offset = ARGV.shift.to_i # force integer
     when '-d' then  ARGV.shift; $debug = true
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
@@ -92,10 +93,12 @@ end; }
   end
 
   def sparul_insert(statements)
+    
     statements.each do | statement |
       if $debug then puts statement.inspect end
-      query = @sparul_client.insert(statement).graph(RDF::URI.new("#{DEFAULT_GRAPH}"))
-      if $debug then puts query.results.inspect end
+      if $output_file then $output_file << statement.to_s + "\n" end
+      query = @sparul_client.insert([statement]).graph(RDF::URI.new("#{DEFAULT_GRAPH}"))
+      if $debug then puts query.inspect end
     end
   end
   
@@ -104,6 +107,8 @@ book_count = count_books
 if $debug then puts "book count: #{book_count.inspect}" end
 
 @count = 0
+if $output_file then $output_file = File.open($output_file, "a") end
+
 # let's harvest!
 SOURCES.each do | source, sourcevalue |
   @source = source
@@ -132,17 +137,18 @@ SOURCES.each do | source, sourcevalue |
             @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
             @count += 1
           end
-        sparul_insert(@statements)
         end        
+        sparul_insert(@statements)
       end #sourcevalue['harvest'].each
       #continue to next loop iteration
       $offset += limit
       if $recordlimit then break if @count > $recordlimit end
       break if @count >= book_count
-      sleep 10 # allow source 10 secs rest between harvests ...
+      sleep 5 # allow source 5 secs rest between harvests ...
     end
   when 'sparql'
     puts "sparql"
   end #end case @protocol
 end
 p "count: #{@count}"
+if $output_file then $output_file.close end
