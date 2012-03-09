@@ -130,8 +130,7 @@ SOURCES.each do | source, sourcevalue |
         
         sourcevalue['harvest'].each do | predicate, conditions |
           obj = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'])
-          p obj
-          unless obj.nil?
+          unless obj.empty?
             # SPARQL UPDATE
             if conditions['datatype'] == "uri" then obj = RDF::URI.new("#{obj}") end
             @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
