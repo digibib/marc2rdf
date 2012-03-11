@@ -15,11 +15,17 @@ module RestClient
     query = <<-EOQ
 PREFIX local: <#{@default_prefix}>
 PREFIX rev: <http://purl.org/stuff/rev#>
+PREFIX foaf: <http://www.foafrealm.org/xfoaf/0.1/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX bibo: http://purl.org/ontology/bibo/isbn>
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
 WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o .
-MINUS { <#{resource}> local:depiction_bokkilden ?depiction } 
-MINUS { <#{resource}> local:depiction_onskebok ?depiction } 
+MINUS { <#{resource}> foaf:depiction ?depiction } 
 MINUS { <#{resource}> rev:hasReview ?review } 
+MINUS { <#{resource}> owl:sameAs ?sameAs } 
+MINUS { <#{resource}> foaf:isVersionOf ?isVersionOf } 
+MINUS { <#{resource}> bibo:isbn ?isbn } 
+
 } }
 EOQ
     puts query if $debug

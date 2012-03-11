@@ -32,11 +32,12 @@ def usage(s)
     $stderr.puts(s)
     $stderr.puts("Usage: \n")
     $stderr.puts("#{File.basename($0)} [-f output_file] [-r recordlimit] [-o offset] [-s source] [-d] \n")
-    $stderr.puts("  -f [output_file] rdf output to file\n")    
+    $stderr.puts("  -f [output_file] rdf output to file\n") 
     $stderr.puts("  -r [number] stops processing after given number of records\n")
     $stderr.puts("  -o [number] offset for start of harvest\n")    
     $stderr.puts("  -s [source] limit harvest to this source\n")        
     $stderr.puts("  -d debug output\n")
+    $stderr.puts("  -i insert triples directly\n")    
     exit(2)
 end
 
@@ -46,6 +47,7 @@ loop { case ARGV[0]
     when '-o' then  ARGV.shift; $offset = ARGV.shift.to_i # force integer
     when '-s' then  ARGV.shift; $source = ARGV.shift
     when '-d' then  ARGV.shift; $debug = true
+    when '-i' then  ARGV.shift; $insert = true
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
     break
@@ -98,8 +100,10 @@ end; }
     statements.each do | statement |
       if $debug then puts statement.inspect end
       if $output_file then $output_file << statement.to_s + "\n" end
-      query = @sparul_client.insert([statement]).graph(RDF::URI.new("#{DEFAULT_GRAPH}"))
-      if $debug then puts query.inspect end
+      if $insert
+        query = @sparul_client.insert([statement]).graph(RDF::URI.new("#{DEFAULT_GRAPH}"))
+        if $debug then puts query.inspect end
+      end
     end
   end
   
@@ -131,7 +135,6 @@ loop do
         sourcevalue['harvest'].each do | predicate, conditions |
           obj = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'])
           unless obj.empty?
-            # SPARQL UPDATE
             if conditions['datatype'] == "uri" then obj = RDF::URI.new("#{obj}") end
             @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
             @count += 1
