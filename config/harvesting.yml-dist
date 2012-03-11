@@ -1,13 +1,30 @@
 ---
-harvesting_source:
-  protocol: http
-  prefix: 'http://example.com/?query='
-  suffix: '&result=application/json'
-  apikey: 'dummykey'  
-  limit: 10
-  harvest:
-    FOAF.depiction:
-      xpath: "/Path/to/xml/object"
-      gsub: "&width=80'"
-    BIBO.abstract:
-      xpath: "/Path/to/xml/object"
+options:
+  limit: 100
+harvesting_sources:
+  source1:
+    protocol: http
+    prefix: 'http://example.com/?query='
+    suffix: '&result=application/json'
+    apikey: 'dummykey'
+    harvest:
+      FOAF.depiction:
+        datatype: uri
+        xpath: "//path/to/object"
+        gsub: "somethingtocut"
+      BIBO.abstract:
+        datatype: literal
+        xpath: "//path/to/another/object"
+  source2:
+    protocol: sparql
+    endpoint: http://example.com/sparql
+    headers:
+      CUSTOM_APIKEY: 'your_key_here'
+    options:
+      :content_type: application/sparql-results+json
+    harvest:
+      - OWL.sameAs
+      - FOAF.isPrimaryTopicOf
+      - BIBO.isbn
+      - BIBO.lccn
+      - BIBO.oclcnum
