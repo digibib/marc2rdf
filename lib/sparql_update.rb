@@ -17,7 +17,7 @@ PREFIX local: <#{@default_prefix}>
 PREFIX rev: <http://purl.org/stuff/rev#>
 PREFIX foaf: <http://www.foafrealm.org/xfoaf/0.1/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX bibo: http://purl.org/ontology/bibo/isbn>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
 WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o .
 MINUS { <#{resource}> foaf:depiction ?depiction } 
