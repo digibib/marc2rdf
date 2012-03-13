@@ -21,6 +21,7 @@ module RDF
   class MO < RDF::Vocabulary("http://purl.org/ontology/mo/");end
   class YAGO < RDF::Vocabulary("http://dbpedia.org/class/yago/");end 
   class CTAG < RDF::Vocabulary("http://commontag.org/ns#");end 
+  class RADATANA < RDF::Vocabulary("http://def.bibsys.no/xmlns/radatana/1.0#");end 
 end
 
 class RDFModeler

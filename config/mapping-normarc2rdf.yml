@@ -309,7 +309,7 @@ tags:
           class: FOAF.Person
           subfield:
             a:
-              predicate: DEICHMAN.catalogueName
+              predicate: RADATANA.catalogueName
               object:
                 datatype: literal               
             c:
@@ -660,7 +660,7 @@ tags:
           class: FOAF.Person
           subfield:
             a:
-              predicate: DEICHMAN.catalogueName
+              predicate: RADATANA.catalogueName
               object:
                 datatype: literal
             b:
@@ -832,7 +832,7 @@ tags:
           class: FOAF.Person
           subfield:
             a:
-              predicate: 'DEICHMAN.catalogueName'
+              predicate: 'RADATANA.catalogueName'
               object:
                 datatype: literal               
             c:
