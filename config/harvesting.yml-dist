@@ -1,7 +1,8 @@
 ---
 options:
   limit: 100
-harvesting_sources:
+sources:
+# http source with apikey 
   source1:
     protocol: http
     prefix: 'http://example.com/?query='
@@ -15,6 +16,18 @@ harvesting_sources:
       BIBO.abstract:
         datatype: literal
         xpath: "//path/to/another/object"
+# http source with xml namespaces        
+  source2:
+    protocol: http
+    prefix: 'http://xisbn.worldcat.org/webservices/xid/isbn/'
+    suffix: '?method=getEditions&format=xml'
+    namespaces:
+      xmlns: 'http://worldcat.org/xid/isbn/'
+    harvest:
+      BIBO.isbn:
+        datatype: literal
+        xpath: '//xmlns:isbn'  
+# sparql endpoint with custom apikey (eg. Kasabi)              
   source2:
     protocol: sparql
     endpoint: http://example.com/sparql

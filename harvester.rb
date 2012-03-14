@@ -71,8 +71,8 @@ end; }
     # make sure we get valid response
     if http_response.code == "200"
       xml = Nokogiri::XML(http_response.body)
-      xml.remove_namespaces!
-      results = xml.xpath("#{conditions[:xpath]}") { | elem | elem.text }
+      results = []
+      xml.xpath("#{conditions[:xpath]}", conditions[:namespaces]).each { | elem | results << elem.text }
       if conditions[:gsub]
         results.each { |result| result.gsub!("#{conditions[:gsub]}", "") }
       end
@@ -117,11 +117,12 @@ if $debug then puts "book count: #{book_count.inspect}" end
 @count = 0
 if $output_file then $output_file = File.open($output_file, "a") end
 
-# loops over source, uses url and limit from yaml
+# loops over rdfstore with limit from yaml, then source
 loop do    
   # let's harvest!
   @limit = HARVEST_CONFIG['options']['limit']
   rdf_result = rdfstore_lookup($offset, @limit)
+  # iterate SPARQL results
   rdf_result.each do | solution |
     SOURCES.each do | source, sourcevalue |
       @statements = []
@@ -132,13 +133,13 @@ loop do
         @prefix = sourcevalue['prefix']
         @suffix = sourcevalue['suffix']
         @apikey = sourcevalue['apikey']
+        @namespaces = sourcevalue['namespaces']
         @http_persistent = Net::HTTP::Persistent.new "#{source}"
         http_response = fetch_xpath_results(solution.isbn.value)
-
         sourcevalue['harvest'].each do | predicate, conditions |
-          objects = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'])
+       
+          objects = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'], :namespaces => @namespaces)
           unless objects.empty?
-          #p objects
             if conditions['datatype'] == "uri" then objects.each { |obj| obj = RDF::URI.new("#{obj}") } end
             objects.each do | obj |
               @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
