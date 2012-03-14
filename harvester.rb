@@ -71,9 +71,12 @@ end; }
     # make sure we get valid response
     if http_response.code == "200"
       xml = Nokogiri::XML(http_response.body)
-      result = xml.xpath("#{conditions[:xpath]}").text
-      if conditions[:gsub] then result.gsub!("#{conditions[:gsub]}", "") end
-      return result
+      xml.remove_namespaces!
+      results = xml.xpath("#{conditions[:xpath]}") { | elem | elem.text }
+      if conditions[:gsub]
+        results.each { |result| result.gsub!("#{conditions[:gsub]}", "") }
+      end
+      return results
     end
   end
   
@@ -133,10 +136,13 @@ loop do
         http_response = fetch_xpath_results(solution.isbn.value)
 
         sourcevalue['harvest'].each do | predicate, conditions |
-          obj = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'])
-          unless obj.empty?
-            if conditions['datatype'] == "uri" then obj = RDF::URI.new("#{obj}") end
-            @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
+          objects = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'])
+          unless objects.empty?
+          #p objects
+            if conditions['datatype'] == "uri" then objects.each { |obj| obj = RDF::URI.new("#{obj}") } end
+            objects.each do | obj |
+              @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
+            end
             @count += 1
           end
         end #sourcevalue['harvest'].each
