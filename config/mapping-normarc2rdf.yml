@@ -50,7 +50,7 @@ tags:
         substr_length: 6
         datatype: literal
     periodicaType:
-      predicate: DBO.literaryGenre
+      predicate: DEICHMAN.literaryFormat
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 21
@@ -72,7 +72,7 @@ tags:
           default: adult
         datatype: uri
     contentCode:
-      predicate: DBO.literaryGenre
+      predicate: DEICHMAN.literaryFormat
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 24
@@ -84,7 +84,7 @@ tags:
           default: Document
         datatype: uri        
     literaryformat:
-      predicate: DBO.literaryGenre
+      predicate: DEICHMAN.literaryFormat
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 33
@@ -161,7 +161,7 @@ tags:
             default: Document           
           datatype: uri
       d: 
-        predicate: DBO.literaryGenre
+        predicate: DEICHMAN.literaryFormat
         object: 
           prefix: http://dbpedia.org/resource/
           regex_split: '(\w{1})'
