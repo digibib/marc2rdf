@@ -92,8 +92,8 @@ RDF::Writer.for(:ntriples).buffer do |writer|
   #if oairecord.header.status == "deleted" 
   if oairecord.deleted?
     puts "deleted: #{titlenumber}"
-    RestClient.sparql_delete(titlenumber)
-    next # deleted record has no metadata
+    RestClient.sparql_purge(titlenumber)
+    next # deleted records have no metadata in oai
   else 
     puts "modified: #{titlenumber}"
     ## read metadata into MARCXML object
