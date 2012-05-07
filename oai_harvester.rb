@@ -25,6 +25,7 @@ def usage(s)
     $stderr.puts("#{File.basename($0)} [-f fromdate] [-r recordlimit]\n")
     $stderr.puts("  -r [number] stops processing after given number of records\n")
     $stderr.puts("  -f 'date' harvests records starting from the given date. Default is yesterday.\n")
+    $stderr.puts("  -d debug output to stdout.\n")
     exit(2)
 end
 
@@ -35,6 +36,7 @@ loop { case ARGV[0]
     when '-f' then  ARGV.shift; $fromdate = ARGV.shift
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when '-d' then  ARGV.shift; $debug = true
+    when '-h' then  usage("help")
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
     break

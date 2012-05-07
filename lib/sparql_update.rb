@@ -15,7 +15,7 @@ module RestClient
     query = <<-EOQ
 PREFIX local: <#{@default_prefix}>
 PREFIX rev: <http://purl.org/stuff/rev#>
-PREFIX foaf: <http://www.foafrealm.org/xfoaf/0.1/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX bibo: <http://purl.org/ontology/bibo/>
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
@@ -38,12 +38,11 @@ EOQ
     resource_as_subject = <<-EOQ
 PREFIX local: <#{@default_prefix}>
 PREFIX rev: <http://purl.org/stuff/rev#>
-PREFIX foaf: <http://www.foafrealm.org/xfoaf/0.1/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX bibo: <http://purl.org/ontology/bibo/>
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
-WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o .
-} }
+WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o } }
 EOQ
     puts resource_as_subject if $debug
     sparqlclient = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
@@ -52,12 +51,11 @@ EOQ
     resource_as_object = <<-EOQ
 PREFIX local: <#{@default_prefix}>
 PREFIX rev: <http://purl.org/stuff/rev#>
-PREFIX foaf: <http://www.foafrealm.org/xfoaf/0.1/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX bibo: <http://purl.org/ontology/bibo/>
-#{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
-WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o .
-} }
+#{@delete_statement} <#{@default_graph}> { ?s ?p <#{resource}> }
+WHERE { GRAPH <#{@default_graph}> { ?s ?p <#{resource}> } }
 EOQ
     puts resource_as_object if $debug
     sparqlclient = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
