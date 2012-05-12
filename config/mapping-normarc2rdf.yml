@@ -1110,7 +1110,7 @@ tags:
                 datatype: literal
                 lang: :no
 
-  '655':
+  '(655|693)':
     subfield: 
       a: 
         predicate: DBO.literaryGenre
