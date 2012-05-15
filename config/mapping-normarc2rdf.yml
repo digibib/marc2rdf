@@ -156,8 +156,8 @@ tags:
           prefix: http://data.deichman.no/format/
           regex_split: ', *'
           regex_substitute: 
-            orig: 'ab|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|h|ib|ic|ma|mb|mc|mj|mn|mo|na|sm|vo|a|b|c|j|l'
-            subs: { 'a': 'Map', 'ab': 'Atlas', 'b': 'Manuscript', 'c': 'Sheet_music', 'da': 'Gramophone_record', 'db': 'Compact_Cassette', 'dc': 'Compact_Disc', 'dd': 'Digi_book', 'de': 'Digi_card', 'dg': 'Music', 'dh': 'Language_education', 'di': 'Audiobook', 'dj': 'Spoken_word_album', 'dz': 'MP3', 'ef': 'Blu-ray_Disk', 'gg': 'Blu-ray_Disk', 'ed': 'Videotape', 'ee': 'DVD', 'fd': 'Reversal_film', 'ff': 'Photography', 'fm': 'Poster', 'ga': 'Computer_file', 'gb': 'Floppy_disk', 'gc': 'DVD-ROM', 'gd': 'CD_ROM', 'ge': 'Web_page', 'gi': 'Nintendo_optical_disc', 'h': 'Physical_body', 'ib': 'Microfilm', 'ic': 'Microcard', 'j': 'Periodical_literature', 'l': 'Book', 'ma': 'Personal_computer_game', 'mb': 'Playstation_2_games', 'mc': 'Playstation_3_games', 'mj': 'Xbox_360_games', 'mn': 'Nintendo_Game_Card', 'mo': 'Nintendo_optical_disc', 'na': 'Portable_Document_Format', 'sm': 'Magazine', 'vo': 'File_folder' }
+            orig: 'ab|da|db|dc|dd|de|dg|dh|di|dj|dz|ed|ee|ef|fd|ff|fm|ga|gb|gc|gd|ge|gg|gi|gt|h|ib|ic|ma|mb|mc|mj|mn|mo|na|sm|vo|a|b|c|j|l'
+            subs: { 'a': 'Map', 'ab': 'Atlas', 'b': 'Manuscript', 'c': 'Sheet_music', 'da': 'Gramophone_record', 'db': 'Compact_Cassette', 'dc': 'Compact_Disc', 'dd': 'Digi_book', 'de': 'Digi_card', 'dg': 'Music', 'dh': 'Language_education', 'di': 'Audiobook', 'dj': 'Spoken_word_album', 'dz': 'MP3', 'ef': 'Blu-ray_Disk', 'gg': 'Blu-ray_Disk', 'ed': 'Videotape', 'ee': 'DVD', 'fd': 'Reversal_film', 'ff': 'Photography', 'fm': 'Poster', 'ga': 'Computer_file', 'gb': 'Floppy_disk', 'gc': 'DVD-ROM', 'gd': 'CD_ROM', 'ge': 'Web_page', 'gi': 'Nintendo_optical_disc', 'gt': 'DTbook', 'h': 'Physical_body', 'ib': 'Microfilm', 'ic': 'Microcard', 'j': 'Periodical_literature', 'l': 'Book', 'ma': 'Personal_computer_game', 'mb': 'Playstation_2_games', 'mc': 'Playstation_3_games', 'mj': 'Xbox_360_games', 'mn': 'Nintendo_Game_Card', 'mo': 'Nintendo_optical_disc', 'na': 'Portable_Document_Format', 'sm': 'Magazine', 'vo': 'File_folder' }
             default: Document           
           datatype: uri
       d: 
@@ -293,17 +293,11 @@ tags:
 
   '100':
     subfield: 
-      a:
+      "3":
         predicate: DC.creator
         object:
-          combine:
-            - a
-            - c
-            - d
-          combinestring: '_'       
-          prefix: 'http://data.deichman.no/person/'
+          prefix: 'http://data.deichman.no/person/x'
           urlize: true
-          regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -333,17 +327,11 @@ tags:
 
   '110':
     subfield: 
-      a:
+      "3":
         predicate: DC.creator
         object:
-          combine:
-            - a
-            - b
-            - q
-          combinestring: '_'          
-          prefix: 'http://data.deichman.no/organization/' 
+          prefix: 'http://data.deichman.no/organization/x' 
           urlize: true
-          regex_strip: '[\W]+'
           datatype: uri    
         relation: 
           class: FOAF.Organization
@@ -639,7 +627,7 @@ tags:
 
   '700':
     subfield: 
-      a:
+      "3":
         conditions:
           subfield:
             e:
@@ -647,14 +635,8 @@ tags:
               subs: { arr: 'DEICHMAN.musicalArranger', bearb: 'DC.contributor', biogr: 'DEICHMAN.biographer', dir: 'DEICHMAN.director', eks: 'DEICHMAN.performer', forf: 'DC.creator', fort: 'DC.narrator', foto: 'DEICHMAN.photographer', gjendikt: 'BIBO.translator', overs: 'BIBO.translator', ill: 'BIBO.illustrator', innl: 'DEICHMAN.reader', k: 'DEICHMAN.composer', komm: 'DEICHMAN.commentator', komp: 'DEICHMAN.composer', manusforf: 'DEICHMAN.scriptWriter', medarb: 'DC.contributor', medforf: 'DC.creator', medf: 'DC.creator', oppl: 'DC.narrator', red: 'BIBO.editor', reg: 'DEICHMAN.director', sang: 'DEICHMAN.singer', skuesp: 'DEICHMAN.actor', t: 'DEICHMAN.lyricist', tekstf: 'DEICHMAN.lyricist', u: 'DEICHMAN.publisher', utg: 'DEICHMAN.publisher', utøv: 'DEICHMAN.performer' }
               default: 'DC.contributor'
         object:
-          combine:
-            - a
-            - b
-            - d
-          combinestring: '_' 
           urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/person/
+          prefix: http://data.deichman.no/person/x
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -700,18 +682,12 @@ tags:
         relation: 
           class: FABIO.Work
           subfield:
-            a:
+            "3":
               predicate: DC.creator
               object:
                 datatype: uri
-                combine:
-                  - a
-                  - b
-                  - d
-                combinestring: '_' 
                 urlize: true
-                regex_strip: '[^\w\-]+'
-                prefix: http://data.deichman.no/person/
+                prefix: http://data.deichman.no/person/x
             t:
               predicate: 'DC.title'
               object:
@@ -797,18 +773,12 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            a:
+            "3":
               predicate: FOAF.focus
               object:
                 datatype: uri
-                combine:
-                  - a
-                  - c
-                  - d
-                combinestring: '_' 
                 urlize: true
-                regex_strip: '[^\w\-]+'
-                prefix: http://data.deichman.no/person/            
+                prefix: http://data.deichman.no/person/x
             '1':
               predicate: SKOS.notation
               object: 
@@ -816,17 +786,11 @@ tags:
 
   '600|600|600':
     subfield: 
-      a:
+      "3":
         predicate: DC.subject
         object:
-          combine:
-            - a
-            - c
-            - d
-          combinestring: '_' 
-          prefix: http://data.deichman.no/person/
+          prefix: http://data.deichman.no/person/x
           urlize: true
-          regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -910,17 +874,11 @@ tags:
 
   '610|610|611':
     subfield: 
-      a:
+      "a":
         predicate: FOAF.focus
         object:
-          combine:
-            - a
-            - b
-            - q
-          combinestring: '_'          
-          prefix: 'http://data.deichman.no/organization/' 
+          prefix: 'http://data.deichman.no/organization/x' 
           urlize: true
-          regex_strip: '[\W]+'
           datatype: uri    
         relation: 
           class: FOAF.Organization
@@ -1149,12 +1107,11 @@ tags:
 
   '710':
     subfield: 
-      a: 
+      "3": 
         predicate: DC.contributor
         object: 
           urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/organization/
+          prefix: http://data.deichman.no/organization/x
           datatype: uri
         relation: 
           class: FOAF.Organization
@@ -1166,12 +1123,11 @@ tags:
 
   '711':
     subfield: 
-      a:
+      "3":
         predicate: DC.contributor
         object: 
-          prefix: 'http://data.deichman.no/conference/'
+          prefix: 'http://data.deichman.no/conference/x'
           urlize: true
-          regex_strip: '[\W]+'
           datatype: uri    
         relation:
           class: BIBO.Conference
