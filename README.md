@@ -79,6 +79,7 @@ For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml
 * relations can have subfields
 * string replace non-ascii characters to create uris
 * oai harvester and rdf store updates with RestClient
+* erronemous 000 marc field in normarc can be removed with perl script tools/marcfix.pl
 
 ## TODO 
 
@@ -102,7 +103,7 @@ or install ruby-dev
 
 (for rdf-xml support)
 * sudo apt-get install libxml2-dev libxslt1-dev
-* gem install marc rdf rdf-rdfxml bundler
+* gem install bundler
 * bundle install
 
 ## USAGE 
