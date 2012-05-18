@@ -408,17 +408,10 @@ tags:
 
   '100':
     subfield: 
-      a:
+      '3':
         predicate: DC.creator
         object:
-          combine:
-            - a
-            - c
-            - d
-          combinestring: '_'       
-          prefix: 'http://data.deichman.no/person/'
-          urlize: true
-          regex_strip: '[^\w\-]+'
+          prefix: 'http://data.deichman.no/person/x'
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -448,17 +441,10 @@ tags:
 
   '110':
     subfield: 
-      a:
+      '3':
         predicate: DC.creator
         object:
-          combine:
-            - a
-            - b
-            - q
-          combinestring: '_'          
-          prefix: 'http://data.deichman.no/organization/' 
-          urlize: true
-          regex_strip: '[\W]+'
+          prefix: 'http://data.deichman.no/organization/x' 
           datatype: uri    
         relation: 
           class: FOAF.Organization
@@ -487,12 +473,10 @@ tags:
 
   '111':
     subfield: 
-      a:
+      '3':
         predicate: DC.creator 
         object: 
-          prefix: 'http://data.deichman.no/conference/'
-          urlize: true
-          regex_strip: '[\W]+'
+          prefix: 'http://data.deichman.no/conference/x'
           datatype: uri    
         relation: 
           class: BIBO.Conference
@@ -520,11 +504,10 @@ tags:
 
   '130|730':
     subfield: 
-      a:
+      '3':
         predicate: FABIO.isManifestationOf 
         object: 
-          prefix: 'http://data.deichman.no/work/'
-          urlize: true
+          prefix: 'http://data.deichman.no/work/x'
           regex_strip: '[^\w\-]+'
           datatype: uri    
         relation: 
@@ -762,7 +745,7 @@ tags:
 
   '700':
     subfield: 
-      a:
+      '3':
         conditions:
           subfield:
             e:
@@ -799,14 +782,7 @@ tags:
                 utøv: DEICHMAN.performer
               default: 'DC.contributor'
         object:
-          combine:
-            - a
-            - b
-            - d
-          combinestring: '_' 
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/person/
+          prefix: http://data.deichman.no/person/x
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -840,30 +816,17 @@ tags:
         predicate: DC.hasPart
         object:
           combine:
-            - a
-            - b
-            - d
-            - t
-          combinestring: '_' 
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/work/
+            - '3'
+          prefix: http://data.deichman.no/work/x
           datatype: uri
         relation: 
           class: FABIO.Work
           subfield:
-            a:
+            '3':
               predicate: DC.creator
               object:
                 datatype: uri
-                combine:
-                  - a
-                  - b
-                  - d
-                combinestring: '_' 
-                urlize: true
-                regex_strip: '[^\w\-]+'
-                prefix: http://data.deichman.no/person/
+                prefix: http://data.deichman.no/person/x
             t:
               predicate: 'DC.title'
               object:
@@ -949,18 +912,12 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            a:
+            '3':
               predicate: FOAF.focus
               object:
                 datatype: uri
-                combine:
-                  - a
-                  - c
-                  - d
-                combinestring: '_' 
                 urlize: true
-                regex_strip: '[^\w\-]+'
-                prefix: http://data.deichman.no/person/            
+                prefix: http://data.deichman.no/person/x
             '1':
               predicate: SKOS.notation
               object: 
@@ -968,17 +925,11 @@ tags:
 
   '600|600|600':
     subfield: 
-      a:
+      '3':
         predicate: DC.subject
         object:
-          combine:
-            - a
-            - c
-            - d
-          combinestring: '_' 
-          prefix: http://data.deichman.no/person/
+          prefix: http://data.deichman.no/person/x
           urlize: true
-          regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -1031,22 +982,15 @@ tags:
 
   '610|611':
     subfield: 
-      a:
+      '3':
         predicate: DC.subject
         object:
-          combine:
-            - a
-            - b
-            - q
-          combinestring: '_' 
-          prefix: http://data.deichman.no/subject/
-          urlize: true
-          regex_strip: '[^\w\-]+'
+          prefix: http://data.deichman.no/subject/x
           datatype: uri
         relation: 
           class: SKOS.Concept
           subfield:
-            a:
+            '3':
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1062,17 +1006,10 @@ tags:
 
   '610|610|611':
     subfield: 
-      a:
+      '3':
         predicate: FOAF.focus
         object:
-          combine:
-            - a
-            - b
-            - q
-          combinestring: '_'          
-          prefix: 'http://data.deichman.no/organization/' 
-          urlize: true
-          regex_strip: '[\W]+'
+          prefix: 'http://data.deichman.no/organization/x' 
           datatype: uri    
         relation: 
           class: FOAF.Organization
@@ -1101,22 +1038,15 @@ tags:
 
   '630':
     subfield: 
-      a:
+      '3':
         predicate: DC.subject
         object:
-          combine:
-            - a
-            - p
-            - x
-          combinestring: '_' 
-          prefix: http://data.deichman.no/subject/
-          urlize: true
-          regex_strip: '[^\w\-]+'
+          prefix: http://data.deichman.no/subject/x
           datatype: uri
         relation: 
           class: SKOS.Concept
           subfield:
-            a:
+            '3':
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1132,21 +1062,15 @@ tags:
 
   '630|630':
     subfield: 
-      a:
+      '3':
         predicate: FOAF.focus
         object:
-          combine:
-            - a
-            - p
-          combinestring: '_' 
-          prefix: http://data.deichman.no/work/
-          urlize: true
-          regex_strip: '[^\w\-]+'
+          prefix: http://data.deichman.no/work/x
           datatype: uri
         relation: 
           class: FABIO.Work
           subfield:
-             a:
+             '3':
               predicate: DC.title
               object:
                 combine:
@@ -1155,25 +1079,95 @@ tags:
                 combinestring: '. '
                 datatype: literal      
 
-  '(650|653|690|691|692|694)':
+  '650':
     subfield: 
-      a:
+      '3':
         predicate: DC.subject
         object:
-          combine:
-            - a
-            - q
-            - x
-            - '0'
-          combinestring: '_'
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/subject/
+          prefix: http://data.deichman.no/subject/x
           datatype: uri
         relation: 
           class: SKOS.Concept
           subfield:
-            a: 
+            '3': 
+              predicate: SKOS.prefLabel
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - '0'
+                combinestring: ' - '               
+                datatype: literal
+                lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
+
+  '653':
+    subfield: 
+      '3':
+        predicate: DC.subject
+        object:
+          prefix: http://data.deichman.no/keyword/x
+          datatype: uri
+        relation: 
+          class: SKOS.Concept
+          subfield:
+            '3': 
+              predicate: SKOS.prefLabel
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - '0'
+                combinestring: ' - '               
+                datatype: literal
+                lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
+
+  '690':
+    subfield: 
+      '3':
+        predicate: DC.subject
+        object:
+          prefix: http://data.deichman.no/subjectMultilingual/x
+          datatype: uri
+        relation: 
+          class: SKOS.Concept
+          subfield:
+            '3': 
+              predicate: SKOS.prefLabel
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - '0'
+                combinestring: ' - '               
+                datatype: literal
+                lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
+
+  '691':
+    subfield: 
+      '3':
+        predicate: DC.subject
+        object:
+          prefix: http://data.deichman.no/subjectFiction/x
+          datatype: uri
+        relation: 
+          class: SKOS.Concept
+          subfield:
+            '3': 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1192,12 +1186,10 @@ tags:
 # Place as subject
   '691':
     subfield:
-      a:
-        predicate: DEICHMAN.subject
+      '3':
+        predicate: DEICHMAN.geographicalSubject
         object:
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/geographicalSubject/
+          prefix: http://data.deichman.no/geographicalSubject/x
           datatype: uri
         relation: 
           class: GEONAMES.Feature
@@ -1208,6 +1200,58 @@ tags:
                 datatype: literal
                 regex_strip: '[\?\[\]\<\>]+'
                 lang: :no
+
+  '692':
+    subfield: 
+      '3':
+        predicate: DC.subject
+        object:
+          prefix: http://data.deichman.no/subjectJuvenileFiction/x
+          datatype: uri
+        relation: 
+          class: SKOS.Concept
+          subfield:
+            '3': 
+              predicate: SKOS.prefLabel
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - '0'
+                combinestring: ' - '               
+                datatype: literal
+                lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
+
+  '694':
+    subfield: 
+      '3':
+        predicate: DC.subject
+        object:
+          prefix: http://data.deichman.no/keywordJuvenile/x
+          datatype: uri
+        relation: 
+          class: SKOS.Concept
+          subfield:
+            '3': 
+              predicate: SKOS.prefLabel
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - '0'
+                combinestring: ' - '               
+                datatype: literal
+                lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '699':
     subfield: 
@@ -1246,12 +1290,10 @@ tags:
 
   '652':
     subfield: 
-      a: 
+      '3': 
         predicate: MO.genre
         object: 
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/mogenre/
+          prefix: http://data.deichman.no/mogenre/x
           datatype: uri
         relation: 
           class: MO.Genre
@@ -1262,14 +1304,12 @@ tags:
                 datatype: literal
                 lang: :no
 
-  '(655|693)':
+  '655':
     subfield: 
-      a: 
+      '3': 
         predicate: DBO.literaryGenre
         object: 
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/literaryGenre/
+          prefix: http://data.deichman.no/genre/x
           datatype: uri
         relation: 
           class: YAGO.LiteraryGenres
@@ -1280,6 +1320,22 @@ tags:
                 datatype: literal
                 lang: :no
 
+  '693':
+    subfield: 
+      '3': 
+        predicate: DBO.literaryGenre
+        object: 
+          prefix: http://data.deichman.no/genreJuvenile/x
+          datatype: uri
+        relation: 
+          class: YAGO.LiteraryGenres
+          subfield:
+            a: 
+              predicate: RDFS.label
+              object: 
+                datatype: literal
+                lang: :no
+                
   '695':
     subfield: 
       a: 
@@ -1301,12 +1357,10 @@ tags:
 
   '710':
     subfield: 
-      a: 
+      '3': 
         predicate: DC.contributor
         object: 
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/organization/
+          prefix: http://data.deichman.no/organization/x
           datatype: uri
         relation: 
           class: FOAF.Organization
@@ -1318,12 +1372,10 @@ tags:
 
   '711':
     subfield: 
-      a:
+      '3':
         predicate: DC.contributor
         object: 
-          prefix: 'http://data.deichman.no/conference/'
-          urlize: true
-          regex_strip: '[\W]+'
+          prefix: 'http://data.deichman.no/conference/x'
           datatype: uri    
         relation:
           class: BIBO.Conference
