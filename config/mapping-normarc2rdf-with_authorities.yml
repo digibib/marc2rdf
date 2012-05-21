@@ -219,9 +219,9 @@ tags:
               dd: Digi_book
               de: Digi_card
               dg: Music
-              dh: Language_education
+              dh: Language_course
               di: Audiobook
-              dj: Spoken_word_album
+              dj: Spoken_word_recording
               dz: MP3
               ed: Videotape
               ee: DVD
@@ -238,16 +238,16 @@ tags:
               gi: Nintendo_optical_disc
               gt: DTbook
               h:  Physical_body
-              ib: Microfilm
-              ic: Microcard
+              ib: Microfilm_reel
+              ic: Microfiche
               j:  Periodical_literature
               l:  Book
               ma: Personal_computer_game
-              mb: Playstation_2_games
-              mc: Playstation_3_games
-              mj: Xbox_360_games
-              mn: Nintendo_Game_Card
-              mo: Nintendo_optical_disc
+              mb: Playstation_2_game
+              mc: Playstation_3_game
+              mj: Xbox_360_game
+              mn: Nintendo_DS_game
+              mo: Nintendo_Wii_game
               na: Portable_Document_Format
               sm: Magazine
               vo: File_folder
@@ -377,19 +377,19 @@ tags:
   '090':
     subfield: 
       a:
-        predicate: DC.location
+        predicate: DEICHMAN.location_category
         object:
           datatype: literal
       b:
-        predicate: DC.location
+        predicate: DEICHMAN.location_format
         object:
           datatype: literal
       c:
-        predicate: DC.location
+        predicate: DEICHMAN.location_dewey
         object:
           datatype: literal
       d:
-        predicate: DC.location
+        predicate: DEICHMAN.location_signature
         object:
           datatype: literal
 
@@ -435,7 +435,7 @@ tags:
                 prefix: 'http://data.deichman.no/nationality/'
                 regex_strip: '[\W]+'
             q:
-              predicate: XFOAF.givenName
+              predicate: FOAF.givenName
               object:
                 datatype: literal
 
@@ -815,9 +815,7 @@ tags:
       t:
         predicate: DC.hasPart
         object:
-          combine:
-            - '3'
-          prefix: http://data.deichman.no/work/x
+          prefix: http://data.deichman.no/partOfWork/
           datatype: uri
         relation: 
           class: FABIO.Work
@@ -834,21 +832,35 @@ tags:
 
   '440':
     subfield: 
-      a: 
+      '3': 
         predicate: DC.isPartOf
-        object: 
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          prefix: http://data.deichman.no/resource/
+        object:
+          prefix: http://data.deichman.no/series/x
           datatype: uri
         relation: 
           class: BIBO.Series
+          subfield:
+            a:
+              predicate: DC.title
+              object:
+                regex_strip: '[\.:,;\/\s]\s*$'
+                datatype: literal
+            c:
+              predicate: RDA.statementOfResponsibility
+              object:
+                regex_strip: '[\.:,;\/\s]\s*$'
+                datatype: literal
+            p:
+              predicate: RDA.variantTitleForTheWork
+              object:
+                regex_strip: '[\.:,;\/\s]\s*$'
+                datatype: literal
+            x:
+              predicate: BIBO.issn
+              object:
+                datatype: literal
       v: 
         predicate: DEICHMAN.volumeNumber
-        object: 
-          datatype: literal
-      x: 
-        predicate: BIBO.issn
         object: 
           datatype: literal
 
@@ -858,78 +870,32 @@ tags:
         predicate: DC.subject
         object:
           combine:
-            - a
-            - c
-            - d
+            - '3'
             - t
           combinestring: '_' 
-          prefix: http://data.deichman.no/subject/
+          prefix: http://data.deichman.no/work/x
           urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
-          class: SKOS.Concept
-          subfield:
-            t:
-              predicate: SKOS.broader
-              object:
-                datatype: uri
-                combine:
-                  - a
-                  - c
-                  - d
-                combinestring: '_' 
-                urlize: true
-                regex_strip: '[^\w\-]+'
-                prefix: http://data.deichman.no/subject/
-            a:
-              predicate: SKOS.prefLabel
-              object:
-                combine:
-                  - a
-                  - t
-                combinestring: '. '
-                datatype: literal
-            '1':
-              predicate: SKOS.notation
-              object: 
-                datatype: literal                
-
-  '600|600':
-    subfield: 
-      a:
-        predicate: DC.subject
-        object:
-          combine:
-            - a
-            - c
-            - d
-          combinestring: '_' 
-          prefix: http://data.deichman.no/subject/
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          datatype: uri
-        relation: 
-          class: SKOS.Concept
+          class: FABIO.Work
           subfield:
             '3':
-              predicate: FOAF.focus
+              predicate: DC.creator
               object:
+                prefix: 'http://data.deichman.no/person/x'
                 datatype: uri
-                urlize: true
-                prefix: http://data.deichman.no/person/x
-            '1':
-              predicate: SKOS.notation
-              object: 
-                datatype: literal  
+            t:
+              predicate: 'DC.title'
+              object:
+                datatype: literal
 
-  '600|600|600':
-    subfield: 
+  '600|600':
+    subfield:
       '3':
         predicate: DC.subject
         object:
           prefix: http://data.deichman.no/person/x
-          urlize: true
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -953,30 +919,7 @@ tags:
                 prefix: 'http://data.deichman.no/nationality/'
                 regex_strip: '[\W]+'
             q:
-              predicate: 'XFOAF.givenName'
-              object:
-                datatype: literal
-
-  '600|600|600|600':
-    subfield: 
-      t:
-        predicate: FOAF.focus
-        object:
-          combine:
-            - a
-            - c
-            - d
-            - t
-          combinestring: '_' 
-          prefix: http://data.deichman.no/work/
-          urlize: true
-          regex_strip: '[^\w\-]+'
-          datatype: uri
-        relation: 
-          class: FABIO.Work
-          subfield:
-            t:
-              predicate: 'DC.title'
+              predicate: 'FOAF.givenName'
               object:
                 datatype: literal
 
@@ -984,30 +927,6 @@ tags:
     subfield: 
       '3':
         predicate: DC.subject
-        object:
-          prefix: http://data.deichman.no/subject/x
-          datatype: uri
-        relation: 
-          class: SKOS.Concept
-          subfield:
-            '3':
-              predicate: SKOS.prefLabel
-              object:
-                combine:
-                  - a
-                  - b
-                  - q
-                combinestring: '. '           
-                datatype: literal
-            '1':
-              predicate: SKOS.notation
-              object: 
-                datatype: literal                
-
-  '610|610|611':
-    subfield: 
-      '3':
-        predicate: FOAF.focus
         object:
           prefix: 'http://data.deichman.no/organization/x' 
           datatype: uri    
@@ -1031,10 +950,10 @@ tags:
               predicate: DEICHMAN.conferenceDate
               object: 
                 datatype: literal
-            n: 
+            'n': 
               predicate: DEICHMAN.corporationNumber
               object: 
-                datatype: literal                              
+                datatype: literal
 
   '630':
     subfield: 
@@ -1184,7 +1103,7 @@ tags:
                 datatype: literal
 
 # Place as subject
-  '691':
+  '651':
     subfield:
       '3':
         predicate: DEICHMAN.geographicalSubject
@@ -1299,7 +1218,7 @@ tags:
           class: MO.Genre
           subfield:
             a: 
-              predicate: DC.title
+              predicate: RDFS.label
               object: 
                 datatype: literal
                 lang: :no
