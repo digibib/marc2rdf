@@ -37,35 +37,51 @@
 
 ## MAPPING
 
-uses yaml hashes mapping:
+uses yaml hashes mapping. Example excerpt:
 
-    tag:
-      "700":
-        subfield: 
-          a:
-            conditions:
-              subfield:
-                e:
-                  orig: "arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|t|utg|utøv|forf|eks|k|t|u"
-                  subs: { arr: 'DEICHMAN.musicalArranger', bearb: 'DC.contributor', biogr: 'DEICHMAN.biographer', dir: 'DEICHMAN.director', eks: 'DEICHMAN.perfomer', forf: 'DC.creator', fort: 'DC.narrator', foto: 'DEICHMAN.photographer', gjendikt: 'BIBO.translator', overs: 'BIBO.translator', ill: 'BIBO.illustrator', innl: 'DEICHMAN.reader', k: 'DEICHMAN.composer', komm: 'DEICHMAN.commentator', komp: 'DEICHMAN.composer', manusforf: 'DEICHMAN.scriptWriter', medarb: 'DC.contributor', medforf: 'DC.creator', medf: 'DC.creator', oppl: 'DC.narrator', red: 'BIBO.editor', reg: 'DEICHMAN.director', sang: 'DEICHMAN.singer', skuesp: 'DEICHMAN.actor', t: 'DEICHMAN.lyricist', tekstf: 'DEICHMAN.lyricist', u: 'DEICHMAN.publisher', utg: 'DEICHMAN.publisher', utøv: 'DEICHMAN.perfomer' }
-                  default: 'DC.contributor'
-            object:
-              combine:
-                - a
-                - b
-                - d
-              combinestring: "_" 
-              urlize: true
-              regex_strip: "[^\w\-]+"
-              prefix: http://rdf.deichman.no/person/
-              datatype: uri
-            relation: 
-              class: FOAF.Person
-              subfield:
-                a:
-                  predicate: FOAF.name
-                  object:
-                    datatype: literal`
+  tag:
+    '700':
+      subfield: 
+        a:
+          conditions:
+            subfield:
+              e:
+                orig: 'arr|bearb|biogr|dir|fort|foto|...|utøv'
+                subs: 
+                  arr: DEICHMAN.musicalArranger
+                  bearb: DC.contributor
+                  biogr: DEICHMAN.biographer
+                  dir: DEICHMAN.director
+                  eks: DEICHMAN.performer
+                  forf: DC.creator
+                  fort: DC.narrator
+                  foto: DEICHMAN.photographer
+                  ...
+                  utøv: DEICHMAN.performer
+                default: DC.contributor
+          object:
+            combine:
+              - a
+              - b
+              - d
+            combinestring: '_' 
+            urlize: true
+            regex_strip: '[^\w\-]+'
+            prefix: http://data.deichman.no/person/
+            datatype: uri
+          relation: 
+            class: FOAF.Person
+            subfield:
+              a:
+                predicate: RADATANA.catalogueName
+                object:
+                  datatype: literal
+              j:
+                predicate: XFOAF.nationality
+                object:
+                  datatype: uri
+                  prefix: 'http://data.deichman.no/nationality/'
+                  regex_strip: '[\W]+'
 
 ## FEATURES
 

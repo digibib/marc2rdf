@@ -815,7 +815,13 @@ tags:
       t:
         predicate: DC.hasPart
         object:
-          prefix: http://data.deichman.no/partOfWork/
+          combine:
+            - '3'
+            - 't'
+          combinestring: '_'
+          prefix: http://data.deichman.no/work/
+          urlize: true
+          regex_strip: '[^\w\-]+'
           datatype: uri
         relation: 
           class: FABIO.Work
@@ -826,7 +832,7 @@ tags:
                 datatype: uri
                 prefix: http://data.deichman.no/person/x
             t:
-              predicate: 'DC.title'
+              predicate: DC.title
               object:
                 datatype: literal
 
