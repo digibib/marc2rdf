@@ -438,6 +438,11 @@ tags:
               predicate: FOAF.givenName
               object:
                 datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
+
 
   '110':
     subfield: 
@@ -468,6 +473,10 @@ tags:
                 datatype: literal
             n: 
               predicate: DEICHMAN.corporationNumber
+              object: 
+                datatype: literal
+            '1':
+              predicate: SKOS.notation
               object: 
                 datatype: literal
 
@@ -501,6 +510,10 @@ tags:
               predicate: RDF.description
               object: 
                 datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '130|730':
     subfield: 
@@ -512,9 +525,17 @@ tags:
           datatype: uri    
         relation: 
           class: FABIO.Work
-          subfield: 
-            a: 
+          subfield:
+            '3':
               predicate: DC.title
+              object:
+                combine:
+                  - a
+                  - p
+                combinestring: '. '
+                datatype: literal
+            '1':
+              predicate: SKOS.notation
               object: 
                 datatype: literal
 
@@ -809,6 +830,10 @@ tags:
                 datatype: uri
                 prefix: 'http://data.deichman.no/nationality/'
                 regex_strip: '[\W]+'
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '700|700':
     subfield: 
@@ -834,6 +859,10 @@ tags:
             t:
               predicate: DC.title
               object:
+                datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
                 datatype: literal
 
   '440':
@@ -865,6 +894,10 @@ tags:
               predicate: BIBO.issn
               object:
                 datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
       v: 
         predicate: DEICHMAN.volumeNumber
         object: 
@@ -894,6 +927,10 @@ tags:
             t:
               predicate: 'DC.title'
               object:
+                datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
                 datatype: literal
 
   '600|600':
@@ -928,6 +965,10 @@ tags:
               predicate: 'FOAF.givenName'
               object:
                 datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '610|611':
     subfield: 
@@ -960,6 +1001,10 @@ tags:
               predicate: DEICHMAN.corporationNumber
               object: 
                 datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '630':
     subfield: 
@@ -983,38 +1028,42 @@ tags:
             '1':
               predicate: SKOS.notation
               object: 
-                datatype: literal   
+                datatype: literal
 
   '630|630':
     subfield: 
       '3':
         predicate: FOAF.focus
         object:
-          prefix: http://data.deichman.no/work/x
+          prefix: 'http://data.deichman.no/work/x'
           datatype: uri
         relation: 
           class: FABIO.Work
           subfield:
-             '3':
+            '3':
               predicate: DC.title
               object:
                 combine:
                   - a
                   - p
                 combinestring: '. '
-                datatype: literal      
+                datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal				
 
   '650':
     subfield: 
       '3':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/subject/x
+          prefix: 'http://data.deichman.no/subject/x'
           datatype: uri
-        relation: 
+        relation:
           class: SKOS.Concept
           subfield:
-            '3': 
+            '3':
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1022,14 +1071,14 @@ tags:
                   - q
                   - x
                   - '0'
-                combinestring: ' - '               
+                combinestring: ' - '
                 datatype: literal
                 lang: :no
             '1':
               predicate: SKOS.notation
-              object: 
+              object:
                 datatype: literal
-
+                
   '653':
     subfield: 
       '3':
@@ -1125,6 +1174,10 @@ tags:
                 datatype: literal
                 regex_strip: '[\?\[\]\<\>]+'
                 lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '692':
     subfield: 
@@ -1228,6 +1281,10 @@ tags:
               object: 
                 datatype: literal
                 lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '655':
     subfield: 
@@ -1242,8 +1299,16 @@ tags:
             a: 
               predicate: RDFS.label
               object: 
+                combine:
+                  - a
+                  - x
+                combinestring: ' - '               
                 datatype: literal
                 lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '693':
     subfield: 
@@ -1258,8 +1323,16 @@ tags:
             a: 
               predicate: RDFS.label
               object: 
+                combine:
+                  - a
+                  - x
+                combinestring: ' - '               
                 datatype: literal
                 lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
                 
   '695':
     subfield: 
@@ -1279,6 +1352,10 @@ tags:
               object: 
                 datatype: literal
                 lang: :no
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '710':
     subfield: 
@@ -1294,6 +1371,10 @@ tags:
               predicate: FOAF.name
               object:
                 datatype: literal
+            '1':
+              predicate: SKOS.notation
+              object: 
+                datatype: literal
 
   '711':
     subfield: 
@@ -1307,6 +1388,10 @@ tags:
           subfield: 
             a: 
               predicate: FOAF.name
+              object: 
+                datatype: literal
+            '1':
+              predicate: SKOS.notation
               object: 
                 datatype: literal
 
