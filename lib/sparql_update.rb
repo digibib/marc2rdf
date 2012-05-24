@@ -10,8 +10,11 @@ module RestClient
   @delete_statement = 'DELETE FROM'
   @insert_statement = 'INSERT INTO'
 
-  def self.sparql_delete(titlenumber)
+  def self.sparql_delete(titlenumber, options={})
     resource = CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber
+    if options[:preserve]
+      @minus = options[:preserve].collect { |p| "MINUS { <#{resource}> <" + RDF.module_eval("#{p}") + "> ?o } " }
+    end
     query = <<-EOQ
 PREFIX local: <#{@default_prefix}>
 PREFIX rev: <http://purl.org/stuff/rev#>
@@ -20,12 +23,7 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX bibo: <http://purl.org/ontology/bibo/>
 #{@delete_statement} <#{@default_graph}> { <#{resource}> ?p ?o }
 WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o .
-MINUS { <#{resource}> foaf:depiction ?o } 
-MINUS { <#{resource}> rev:hasReview ?o } 
-MINUS { <#{resource}> owl:sameAs ?o } 
-MINUS { <#{resource}> foaf:isVersionOf ?o } 
-MINUS { <#{resource}> bibo:isbn ?o } 
-
+#{@minus.join}
 } }
 EOQ
     puts query if $debug
@@ -62,10 +60,10 @@ EOQ
     sparqlclient.post :query => resource_as_object, :key => @key
   end
   
-  def self.sparql_update(titlenumber)
-
+  def self.sparql_update(titlenumber, options={})
+    preserve =  options[:preserve] || nil
     ## delete resource first!
-    sparql_delete(titlenumber)
+    sparql_delete(titlenumber, :preserve => preserve)
 
     ## then insert new triples
     ntriples = []

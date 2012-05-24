@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/teefax/oai.git
-  revision: 52694f86142def8e2532932d50e324a13156f2d6
-  specs:
-    oai (0.0.9)
-
-GIT
   remote: git://github.com/xaop/sparql-client.git
   revision: ed4db969c53cfe587d0d70445f6ed10d48feffdf
   branch: virtuoso_update
@@ -24,6 +18,8 @@ GEM
     mime-types (1.17.2)
     net-http-persistent (1.4.1)
     nokogiri (1.5.0)
+    oai (0.0.13)
+      builder (>= 2.0.0)
     rdf (0.3.5)
       addressable (>= 2.2.6)
     rdf-n3 (0.3.6)
@@ -41,7 +37,7 @@ DEPENDENCIES
   builder
   marc
   nokogiri
-  oai (= 0.0.9)!
+  oai
   rdf
   rdf-n3
   rdf-rdfxml

@@ -28,3 +28,12 @@ oai:
   parser: rexml
   timeout: 60
   format: marcxchange
+  preserve_on_update:
+    - FOAF.depiction
+    - REV.hasReview
+    - OWL.sameAs
+    - FOAF.isVersionOf
+    - FOAF.isPrimaryTopicOf
+    - BIBO.lccn
+    - BIBO.oclcnum
+    - BIBO.isbn  
