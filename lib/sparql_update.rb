@@ -13,7 +13,7 @@ module RestClient
   def self.sparql_delete(titlenumber, options={})
     resource = CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber
     if options[:preserve]
-      @minus = options[:preserve].collect { |p| "MINUS { <#{resource}> <" + RDF.module_eval("#{p}") + "> ?o } " }
+      @minus = options[:preserve].collect { |p| "MINUS { <#{resource}> <" + RDF.module_eval("#{p}") + "> ?o }\n" }
     end
     query = <<-EOQ
 PREFIX local: <#{@default_prefix}>

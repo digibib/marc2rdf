@@ -1444,5 +1444,4 @@ tags:
         predicate: FABIO.hasURL
         object:
           datatype: uri
-          regex_strip: '.*(?=(f|ht)tp[s]://)'
-          urlize: true
+          regex_strip: '^.*?(?=http)'
