@@ -844,7 +844,7 @@ tags:
             - '3'
             - 't'
           combinestring: '_'
-          prefix: http://data.deichman.no/work/
+          prefix: http://data.deichman.no/work/x
           urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
