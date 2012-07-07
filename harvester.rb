@@ -13,7 +13,7 @@ require 'sparql/client'
 CONFIG           = YAML::load_file('config/config.yml')
 HARVEST_CONFIG   = YAML::load_file('config/harvesting.yml')
 SOURCES          = HARVEST_CONFIG['sources']
-SPARQL_ENDPOINT  = SPARQL::Client.new(CONFIG['rdfstore']['sparql_endpoint'])
+SPARQL_ENDPOINT  = CONFIG['rdfstore']['sparql_endpoint']
 SPARUL_ENDPOINT  = CONFIG['rdfstore']['sparul_endpoint']
 DEFAULT_PREFIX   = CONFIG['rdfstore']['default_prefix']
 DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
@@ -22,11 +22,14 @@ require './lib/rdfmodeler.rb'
 require './lib/sparql_update.rb'
 require './lib/string_replace.rb'
 
+# SPARQL
+@sparql_client = SPARQL::Client.new(:url => "#{SPARQL_ENDPOINT}")
+
 # SPARUL 
 username = CONFIG['rdfstore']['username']
 password = CONFIG['rdfstore']['password']
 enc = "Basic " + Base64.encode64("#{username}:#{password}")
-@sparul_client = SPARQL::Client.new("#{SPARUL_ENDPOINT}", :headers => {"Authorization" => "#{enc}"})
+@sparul_client = SPARQL::Client.new(:update_url => "#{SPARUL_ENDPOINT}", :headers => {"Authorization" => "#{enc}"})
 
 def usage(s)
     $stderr.puts(s)
@@ -58,7 +61,7 @@ end; }
     PREFIX bibo: <http://purl.org/ontology/bibo/>
     SELECT (COUNT(?book) as ?count) WHERE {GRAPH <#{DEFAULT_GRAPH}> { ?book a bibo:Document } }
     EOQ
-    result = SPARQL_ENDPOINT.query(query).first.to_hash
+    result = @sparql_client.query(query).first.to_hash
     count = result[result.keys.first].value.to_i
   end
   
@@ -95,7 +98,7 @@ end; }
     } LIMIT #{limit} OFFSET #{offset}
     EOQ
     if $debug then puts "offset: #{offset}" end
-    results = SPARQL_ENDPOINT.query(query)
+    results = @sparql_client.query(query)
   end
 
   def sparul_insert(statements)
@@ -157,7 +160,7 @@ loop do
         }
         EOQ
         endpoint = sourcevalue['endpoint']
-        sparql_client = SPARQL::Client.new("#{endpoint}", :headers => sourcevalue['headers'])
+        sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
         results = sparql_client.query(query, sourcevalue['options'])
 
         results.each do | statement |
