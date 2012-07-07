@@ -39,17 +39,17 @@ either install ruby via rvm (Ruby Version Manager) or install ruby-dev
 #### UBUNTU INSTALL
 
 (for rdf-xml support)
-  sudo apt-get install libxml2-dev libxslt1-dev
-  gem install bundler
+    sudo apt-get install libxml2-dev libxslt1-dev
+    gem install bundler
 
 install needed gems given in Gemfile:
 
-  bundle install
+    bundle install
 
 copy needed configuration files
 
-  cp ./config/config.yml-dist ./config/config.yml
-  cp ./config/harvesting.yml-dist ./config/harvesting.yml
+    cp ./config/config.yml-dist ./config/config.yml
+    cp ./config/harvesting.yml-dist ./config/harvesting.yml
   
 and make changes as needed to fit your system
 
@@ -60,7 +60,7 @@ and make changes as needed to fit your system
 
 #### UBUNTU
 
-  sudo apt-get install virtuoso-opensource
+    sudo apt-get install virtuoso-opensource
 
 ### PREPARATION
 
@@ -74,6 +74,7 @@ A typical conversion consists of:
 * adding sources to harvest and reap the internet with harvester.rb
 
 Before conversion, care must be taken to setup config files under ./config
+
 three config files are needed:
 
 * config.yml (file and RDF repository settings)
