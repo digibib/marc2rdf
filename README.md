@@ -1,9 +1,9 @@
 # MARC bibliographic record to RDF converter
 
-    MARC2RDF - a ruby program to convert binary MARC to RDF by YAML mapping
+    MARC2RDF - a ruby toolkit to convert bibliographic MARC to RDF by YAML mapping
     Copyright (C) 2012 Benjamin Rokseth
-    Purpose: Convert binary marc to semantic markup using yaml mapping file
-             Add OAI harvester and rdf store to host live rdf repository
+    Purpose: Convert binary/xml marc to semantic markup using yaml mapping file
+             Import into RDF triplestore and maintain via OAI-PMH harvesting
 
 ## GPLv3 LICENSE
     
@@ -20,7 +20,84 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
-## FILES
+## FEATURES
+
+The toolkit consists of three parts:
+
+* marc2rdf.rb      -- a ruby script to convert binary MARC records to RDF (ntriples, turtle or rdf/xml)
+* oai_harvester.rb -- a ruby script (cronjob) to harvest and convert MARC records from an OAI_PMH repository 
+and update a RDF triplestore
+* harvester.rb     -- a ruby script to harvest bibliographical metadata via SPARQL or XML APIs,
+and convert to semantic triples (RDF) and optionally import to existing RDF store
+
+## HOWTO
+
+### INSTALL
+
+either install ruby via rvm (Ruby Version Manager) or install ruby-dev
+
+#### UBUNTU INSTALL
+
+(for rdf-xml support)
+  sudo apt-get install libxml2-dev libxslt1-dev
+  gem install bundler
+
+install needed gems given in Gemfile:
+
+  bundle install
+
+copy needed configuration files
+
+  cp ./config/config.yml-dist ./config/config.yml
+  cp ./config/harvesting.yml-dist ./config/harvesting.yml
+  
+and make changes as needed to fit your system
+
+### RDF STORE
+
+* Recommended triplestore is OpenLink Virtuoso, minimum version 6.1.3
+* any other triplestore should work fine, though, as long as it supports SPARQL 1.1 UPDATE LANGUAGE
+
+#### UBUNTU
+
+  sudo apt-get install virtuoso-opensource
+
+### PREPARATION
+
+Command line options are listed by running either of the three scripts.
+
+A typical conversion consists of:
+
+* converting an entire MARC binary record set with marc2rdf.rb.
+* splitting up and importing result RDF to a triplestore
+* setting up cron job to use OAI-PMH repository with oai_harvester.rb
+* adding sources to harvest and reap the internet with harvester.rb
+
+Before conversion, care must be taken to setup config files under ./config
+three config files are needed:
+
+* config.yml (file and RDF repository settings)
+* harvesting.yml (sources and settings for harvesting)
+* mappingfile.yml (MARC to RDF mapping)
+
+examples on all three are under ./config 
+
+Excerpt of YAML mapping given below.
+
+For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml' based on NORMARC variant of USMARC
+
+* tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
+* predicates are given in format PREFIX.suffix and non-standard prefixes must exist in ./lib/rdfmodeler.rb
+* objects prefixes must be exploded 
+* predicates can be conditionally mapped from subfields or indicators
+* objects can have language tags given as symbols (:se, :en_UK etc)
+* objects can be mapped key => values
+* relations can have subfields
+* string replace non-ascii characters to create uris
+* oai harvester uses same mapping as marc2rdf given in config.yml
+* erronemous 000 marc field in normarc can be removed with perl script ./tools/marcfix.pl
+
+## FILES INCLUDED
 
 * marc2rdf.rb                            -- main ruby script to convert NORMARC file to RDF
 * oai.rb								 -- oai harvester skript to harvest and update rdf store
@@ -31,11 +108,12 @@
 * config/
     * config-dist.yml                    -- config file
     * mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
+    * mapping-normarc2rdf-with-authorities.yml  -- example mapping file: NORMARC tags to rdf mapping with authorities    
     * mapping-normarc2rdf_bildebaser.yml -- example mapping file: image base in NORMARC
-* hamsun_fikset.mrc                         -- test NORMARC file
-* output.rdf                                -- test output RDF with -r 50 (50 records)
+* hamsun_fikset.mrc                      -- test NORMARC file
+* output.rdf                             -- test output RDF with -r 50 (50 records)
 
-## MAPPING
+## YAML MAPPING
 
 uses yaml hashes mapping. Example excerpt:
 
@@ -83,19 +161,6 @@ uses yaml hashes mapping. Example excerpt:
                     prefix: 'http://data.deichman.no/nationality/'
                     regex_strip: '[\W]+'
 
-## FEATURES
-
-For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml' based on NORMARC variant of USMARC
-
-* tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
-* all uris are exploded in yaml file, and objects need full prefix 
-* predicates can be conditionally mapped from subfields or indicators
-* objects can have language tags given as symbols (:se, :en_UK etc)
-* objects can be mapped key => values
-* relations can have subfields
-* string replace non-ascii characters to create uris
-* oai harvester and rdf store updates with RestClient
-* erronemous 000 marc field in normarc can be removed with perl script tools/marcfix.pl
 
 ## TODO 
 
@@ -109,22 +174,4 @@ relation subfield relations should accept different classes
 * rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
 * rest-client
 * oai
-
-## LINUX USERS
-
-either install via rvm (Ruby Version Manager)
-or install ruby-dev
-
-## UBUNTU INSTALL
-
-(for rdf-xml support)
-* sudo apt-get install libxml2-dev libxslt1-dev
-* gem install bundler
-* bundle install
-
-## USAGE 
-
-    marc2rdf.rb -i input_file -o output_file [-r recordlimit]
-      -i input_file must be marc binary
-      -o output_file extension can be either .rdf (slooow) or .nt (very fast)
-      -r [number] stops processing after given number of records
+* sparql/client from git, branch virtuoso_update
