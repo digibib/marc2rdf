@@ -39,49 +39,49 @@
 
 uses yaml hashes mapping. Example excerpt:
 
-  tag:
-    '700':
-      subfield: 
-        a:
-          conditions:
-            subfield:
-              e:
-                orig: 'arr|bearb|biogr|dir|fort|foto|...|utøv'
-                subs: 
-                  arr: DEICHMAN.musicalArranger
-                  bearb: DC.contributor
-                  biogr: DEICHMAN.biographer
-                  dir: DEICHMAN.director
-                  eks: DEICHMAN.performer
-                  forf: DC.creator
-                  fort: DC.narrator
-                  foto: DEICHMAN.photographer
-                  ...
-                  utøv: DEICHMAN.performer
-                default: DC.contributor
-          object:
-            combine:
-              - a
-              - b
-              - d
-            combinestring: '_' 
-            urlize: true
-            regex_strip: '[^\w\-]+'
-            prefix: http://data.deichman.no/person/
-            datatype: uri
-          relation: 
-            class: FOAF.Person
-            subfield:
-              a:
-                predicate: RADATANA.catalogueName
-                object:
-                  datatype: literal
-              j:
-                predicate: XFOAF.nationality
-                object:
-                  datatype: uri
-                  prefix: 'http://data.deichman.no/nationality/'
-                  regex_strip: '[\W]+'
+    tag:
+      '700':
+        subfield: 
+          a:
+            conditions:
+              subfield:
+                e:
+                  orig: 'arr|bearb|biogr|dir|fort|foto|...|utøv'
+                  subs: 
+                    arr: DEICHMAN.musicalArranger
+                    bearb: DC.contributor
+                    biogr: DEICHMAN.biographer
+                    dir: DEICHMAN.director
+                    eks: DEICHMAN.performer
+                    forf: DC.creator
+                    fort: DC.narrator
+                    foto: DEICHMAN.photographer
+                    ...
+                    utøv: DEICHMAN.performer
+                  default: DC.contributor
+            object:
+              combine:
+                - a
+                - b
+                - d
+              combinestring: '_' 
+              urlize: true
+              regex_strip: '[^\w\-]+'
+              prefix: http://data.deichman.no/person/
+              datatype: uri
+            relation: 
+              class: FOAF.Person
+              subfield:
+                a:
+                  predicate: RADATANA.catalogueName
+                  object:
+                    datatype: literal
+                j:
+                  predicate: XFOAF.nationality
+                  object:
+                    datatype: uri
+                    prefix: 'http://data.deichman.no/nationality/'
+                    regex_strip: '[\W]+'
 
 ## FEATURES
 
