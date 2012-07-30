@@ -1,3 +1,14 @@
+require 'rubygems'
+require 'marc'
+require 'yaml'
+require 'rdf'
+require 'rdf/rdfxml'
+require 'rdf/n3'
+require 'rdf/ntriples'
+
+CONFIG = YAML::load_file('config/config.yml')
+MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
+
 # Initialize additional vocabularies we will be drawing from
 # Existing vocabularies are listed on http://rdf.rubyforge.org/
 # NB! protected methods must be overridden! (with e.g. property :name)

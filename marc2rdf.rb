@@ -2,20 +2,9 @@
 # encoding: UTF-8
 if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 
-require 'rubygems'
-require 'marc'
-require 'yaml'
-require 'rdf'
-require 'rdf/rdfxml'
-require 'rdf/n3'
-require 'rdf/ntriples'
-
-CONFIG = YAML::load_file('config/config.yml')
-MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
-
-require './lib/rdfmodeler.rb'
-require './lib/sparql_update.rb'
-require './lib/string_replace.rb'
+require_relative './lib/rdfmodeler.rb'
+require_relative './lib/sparql_update.rb'
+require_relative './lib/string_replace.rb'
 
 def usage(s)
     $stderr.puts(s)
