@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'bundler/setup'
 require 'marc'
 require 'yaml'
 require 'rdf'
@@ -6,8 +7,8 @@ require 'rdf/rdfxml'
 require 'rdf/n3'
 require 'rdf/ntriples'
 
-CONFIG = YAML::load_file('config/config.yml')
-MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
+require_relative './sparql_update.rb'
+require_relative './string_replace.rb'
 
 # Initialize additional vocabularies we will be drawing from
 # Existing vocabularies are listed on http://rdf.rubyforge.org/
@@ -37,6 +38,10 @@ module RDF
 end
 
 class RDFModeler
+
+CONFIG = YAML::load_file('config/config.yml')
+MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
+
   attr_reader :record, :statements, :uri
   def initialize(record)
     @record = record

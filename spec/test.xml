@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd info:lc/xmlns/marcxchange-v1 http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd">
+
+  <responseDate>2012-07-30T21:12:12Z</responseDate>
+  <request verb="ListRecords" metadataPrefix="bibliofilmarc"
+  from="2012-07-29" until="2012-07-30">
+  http://www.deich.folkebibl.no/cgi-bin/oai</request>
+  <ListRecords>
+    <record>
+      <header>
+        <identifier>oai:bibliofil.no:NO-2030000:14890</identifier>
+        <datestamp>2012-05-21</datestamp>
+        <setSpec>bibliofil:data</setSpec>
+      </header>
+      <metadata>
+        <marcxchange:record xmlns:marcxchange="info:lc/xmlns/marcxchange-v1" format="normarc" type="Bibliographic">
+          <marcxchange:leader>00447nam  2200181   4500</marcxchange:leader>
+          <marcxchange:controlfield tag="001">14890</marcxchange:controlfield>
+          <marcxchange:controlfield tag="008">871014                a          00nob r</marcxchange:controlfield>
+          <marcxchange:datafield tag="015" ind1=" " ind2=" ">
+            <marcxchange:subfield code="a">51</marcxchange:subfield>
+            <marcxchange:subfield code="b">BibliofilID</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="019" ind1=" " ind2=" ">
+            <marcxchange:subfield code="b">l</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="090" ind1=" " ind2=" ">
+            <marcxchange:subfield code="c">293</marcxchange:subfield>
+            <marcxchange:subfield code="d">Hve</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="100" ind1=" " ind2="0">
+            <marcxchange:subfield code="a">Hveberg, Harald</marcxchange:subfield>
+            <marcxchange:subfield code="3">10014000</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="245" ind1="1" ind2="0">
+            <marcxchange:subfield code="a">Norrøn mytologi</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="260" ind1=" " ind2=" ">
+            <marcxchange:subfield code="a">Oslo</marcxchange:subfield>
+            <marcxchange:subfield code="b">Tanum</marcxchange:subfield>
+            <marcxchange:subfield code="c">1944</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="300" ind1=" " ind2=" ">
+            <marcxchange:subfield code="a">99 s.</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="490" ind1=" " ind2="0">
+            <marcxchange:subfield code="a">Stang og Lange - 6000 år. Fri lesning ; 3</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="599" ind1=" " ind2=" ">
+            <marcxchange:subfield code="a">07x</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="650" ind1=" " ind2=" ">
+            <marcxchange:subfield code="a">Mytologi</marcxchange:subfield>
+            <marcxchange:subfield code="x">Norrøn</marcxchange:subfield>
+            <marcxchange:subfield code="1">293.1</marcxchange:subfield>
+            <marcxchange:subfield code="4">d5</marcxchange:subfield>
+            <marcxchange:subfield code="6">293 x</marcxchange:subfield>
+            <marcxchange:subfield code="3">10013900</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="850" ind1=" " ind2=" ">
+            <marcxchange:subfield code="a">NO-2030000</marcxchange:subfield>
+            <marcxchange:subfield code="b">Voksenavdelingen, Hovedbiblioteket</marcxchange:subfield>
+            <marcxchange:subfield code="f">9</marcxchange:subfield>
+            <marcxchange:subfield code="h">0</marcxchange:subfield>
+            <marcxchange:subfield code="x">2012-05-23T12:17+0200</marcxchange:subfield>
+          </marcxchange:datafield>
+          <marcxchange:datafield tag="996" ind1=" " ind2=" ">
+            <marcxchange:subfield code="u">http://www.deich.folkebibl.no/cgi-bin/websok?tnr=14890&amp;sourceid=OAI</marcxchange:subfield>
+            <marcxchange:subfield code="t">local</marcxchange:subfield>
+          </marcxchange:datafield>
+        </marcxchange:record>
+      </metadata>
+    </record>
+  </ListRecords>
+</OAI-PMH>

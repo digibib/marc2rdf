@@ -3,24 +3,17 @@ if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion i
 require 'rubygems'
 require 'bundler/setup'
 require 'base64'
-require 'yaml'
 require 'nokogiri'
-require 'rdf'
-require 'rdf/rdfxml'
-require 'rdf/ntriples'
-require 'sparql/client'
 
-CONFIG           = YAML::load_file('config/config.yml')
+require 'sparql/client'
+require_relative './lib/rdfmodeler.rb'
+
 HARVEST_CONFIG   = YAML::load_file('config/harvesting.yml')
 SOURCES          = HARVEST_CONFIG['sources']
 SPARQL_ENDPOINT  = CONFIG['rdfstore']['sparql_endpoint']
 SPARUL_ENDPOINT  = CONFIG['rdfstore']['sparul_endpoint']
 DEFAULT_PREFIX   = CONFIG['rdfstore']['default_prefix']
 DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
-
-require './lib/rdfmodeler.rb'
-require './lib/sparql_update.rb'
-require './lib/string_replace.rb'
 
 # SPARQL
 @sparql_client = SPARQL::Client.new(:url => "#{SPARQL_ENDPOINT}")

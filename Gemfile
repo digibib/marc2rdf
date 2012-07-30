@@ -5,8 +5,9 @@ gem "marc"
 gem "rdf"
 gem "rdf-rdfxml"
 gem "rdf-n3"
-#gem 'rdf-virtuoso', :path => '../rdf-virtuoso'
-gem 'rdf-virtuoso', git: 'https://github.com/digibib/rdf-virtuoso.git', branch: 'develop'
+gem 'rdf-virtuoso', :path => '../rdf-virtuoso'
+#gem 'rdf-virtuoso', git: 'https://github.com/digibib/rdf-virtuoso.git', branch: 'develop'
 gem "rest-client"
 gem "sparql-client", :git => 'git://github.com/xaop/sparql-client.git', :branch => 'virtuoso_update'
 gem "oai"
+gem "rdf-spec"

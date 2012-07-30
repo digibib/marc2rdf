@@ -3,8 +3,6 @@
 if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 
 require_relative './lib/rdfmodeler.rb'
-require_relative './lib/sparql_update.rb'
-require_relative './lib/string_replace.rb'
 
 def usage(s)
     $stderr.puts(s)

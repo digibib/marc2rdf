@@ -10,7 +10,7 @@ describe SparqlUpdate do
     $statements = [
       RDF::URI(@uri + @book_id),
       RDF.type,
-      RDF::URI(CONFIG['resource']['resource_type'])
+      RDF::URI(RDF::BIBO.Document)
       ]
   end
   

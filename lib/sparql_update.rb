@@ -1,8 +1,7 @@
-require 'bundler/setup'
 require 'rdf/virtuoso'
-require_relative './rdfmodeler.rb'
 
 module SparqlUpdate
+  CONFIG = YAML::load_file('config/config.yml')
   @store =          CONFIG['rdfstore']['store']
   @endpoint =       CONFIG['rdfstore']['sparul_endpoint']
   @default_graph =  CONFIG['rdfstore']['default_graph']
