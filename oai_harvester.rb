@@ -12,12 +12,9 @@ require 'rdf/rdfxml'
 require 'rdf/ntriples'
 require 'rest_client'
 
-CONFIG = YAML::load_file('config/config.yml')
-MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
-
-require './lib/rdfmodeler.rb'
-require './lib/sparql_update.rb'
-require './lib/string_replace.rb'
+require_relative './lib/rdfmodeler.rb'
+require_relative './lib/sparql_update.rb'
+require_relative './lib/string_replace.rb'
 
 def usage(s)
     $stderr.puts(s)
@@ -94,7 +91,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
   #if oairecord.header.status == "deleted" 
   if oairecord.deleted?
     puts "deleted: #{titlenumber}"
-    RestClient.sparql_purge(titlenumber)
+    SparqlUpdate.sparql_purge(titlenumber)
     next # deleted records have no metadata in oai
   else 
     puts "modified: #{titlenumber}"
@@ -113,7 +110,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
     
 	  rdfrecord.marc2rdf_convert(record)
     # and do sparql update, preserving harvested resources
-    RestClient.sparql_update(titlenumber, :preserve => CONFIG['oai']['preserve_on_update'])
+    SparqlUpdate.sparql_update(titlenumber, :preserve => CONFIG['oai']['preserve_on_update'])
     
     end # end oairecord loop
 

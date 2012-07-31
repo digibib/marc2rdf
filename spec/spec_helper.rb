@@ -1,6 +1,6 @@
 require 'rdf/spec'
 require 'rdf'
-#require_relative '../../rdf-virtuoso/lib/rdf/virtuoso'
-require 'rdf/virtuoso'
+require_relative '../../rdf-virtuoso/lib/rdf/virtuoso'
+#require 'rdf/virtuoso'
 require_relative '../lib/sparql_update.rb'
 require_relative '../lib/rdfmodeler.rb'

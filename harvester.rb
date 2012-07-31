@@ -10,7 +10,6 @@ require 'rdf/rdfxml'
 require 'rdf/ntriples'
 require 'sparql/client'
 
-CONFIG           = YAML::load_file('config/config.yml')
 HARVEST_CONFIG   = YAML::load_file('config/harvesting.yml')
 SOURCES          = HARVEST_CONFIG['sources']
 SPARQL_ENDPOINT  = CONFIG['rdfstore']['sparql_endpoint']
@@ -23,7 +22,7 @@ require './lib/sparql_update.rb'
 require './lib/string_replace.rb'
 
 # SPARQL
-@sparql_client = SPARQL::Client.new(:url => "#{SPARQL_ENDPOINT}")
+# @sparql_client = SPARQL::Client.new(:url => "#{SPARQL_ENDPOINT}")
 
 # SPARUL 
 username = CONFIG['rdfstore']['username']
