@@ -16,7 +16,7 @@ DEFAULT_PREFIX   = CONFIG['rdfstore']['default_prefix']
 DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
 
 # SPARQL
-@sparql_client = SPARQL::Client.new(:url => "#{SPARQL_ENDPOINT}")
+# @sparql_client = SPARQL::Client.new(:url => "#{SPARQL_ENDPOINT}")
 
 # SPARUL 
 username = CONFIG['rdfstore']['username']

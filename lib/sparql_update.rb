@@ -13,22 +13,22 @@ module SparqlUpdate
   
   CLIENT = RDF::Virtuoso::Client.new(@endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
   QUERY  = RDF::Virtuoso::Query
-  
-  def self.sparql_delete(titlenumber, options={})
-    resource = CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber
-    if options[:preserve]
-      @minus = options[:preserve].collect { |p| [RDF::URI("#{resource}"), RDF.module_eval("#{p}"), :o] }
-    end
-    
-    prefixes = [
+
+    @prefixes = [
 "local: <#{@default_prefix}>",
 "rev: <http://purl.org/stuff/rev#>",
 "foaf: <http://xmlns.com/foaf/0.1/>",
 "owl: <http://www.w3.org/2002/07/owl#>",
 "bibo: <http://purl.org/ontology/bibo/>",
     ]
-
-   QUERY.delete([resource, :p, :o]).graph(@default_graph).where([resource, :p, :o]).minus(@minus)
+      
+  def self.sparql_delete(titlenumber, options={})
+    resource = CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber
+    if options[:preserve]
+      @minus = options[:preserve].collect { |p| [RDF::URI("#{resource}"), RDF.module_eval("#{p}"), :o] }
+    end
+    
+   QUERY.delete([resource, :p, :o]).graph(@default_graph).where([resource, :p, :o]).minus(@minus).prefixes(@prefixes)
     puts QUERY.to_s if $debug
    # sparqlclient = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
    # sparqlclient.post :query => query, :key => @key
@@ -46,6 +46,8 @@ PREFIX bibo: <http://purl.org/ontology/bibo/>
 WHERE { GRAPH <#{@default_graph}> { <#{resource}> ?p ?o } }
 EOQ
     puts resource_as_subject if $debug
+    QUERY.delete([resource, :p, :o]).graph(@default_graph).where([resource, :p, :o]).prefixes(@prefixes)
+    puts QUERY.to_s if $debug
    # sparqlclient = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
    # sparqlclient.post :query => resource_as_subject, :key => @key
 
@@ -59,6 +61,8 @@ PREFIX bibo: <http://purl.org/ontology/bibo/>
 WHERE { GRAPH <#{@default_graph}> { ?s ?p <#{resource}> } }
 EOQ
     puts resource_as_object if $debug
+    QUERY.delete([:S, :p, resource]).graph(@default_graph).where([:s, :p, resource]).prefixes(@prefixes)
+    puts QUERY.to_s if $debug
    # sparqlclient = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
    # sparqlclient.post :query => resource_as_object, :key => @key
   end
@@ -77,6 +81,8 @@ EOQ
 #{@insert_statement} <#{@default_graph}> { #{ntriples.join} }
 EOQ
     puts query if $debug
+    QUERY.insert_data($statements).graph(@default_graph)
+    puts QUERY.to_s if $debug
    # sparqlclient = RestClient::Resource.new(@endpoint, :user => @username, :password => @password)
    # sparqlclient.post :query => query, :key => @key
   end  
