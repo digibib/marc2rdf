@@ -1,15 +1,8 @@
 #!/usr/bin/env ruby 
 # encoding: UTF-8
 if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
-require 'bundler/setup'
-require 'builder'
 require 'rubygems'
-require 'yaml'
 require 'oai'
-require 'marc'
-require 'rdf'
-require 'rdf/rdfxml'
-require 'rdf/ntriples'
 require 'rest_client'
 
 require_relative './lib/rdfmodeler.rb'

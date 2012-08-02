@@ -1,6 +1,8 @@
 require 'rdf/spec'
+require 'rspec/mocks'
 require 'rdf'
 require 'oai'
+require 'faraday'
 #require 'rdf/virtuoso'
 require_relative '../../rdf-virtuoso/lib/rdf/virtuoso'
 require_relative '../lib/rdfmodeler.rb'
