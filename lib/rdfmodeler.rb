@@ -41,6 +41,7 @@ class RDFModeler
 
 CONFIG = YAML::load_file('config/config.yml')
 MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
+@@yamltags = MAPPINGFILE['tags']
 
   attr_reader :record, :statements, :uri
   def initialize(record)

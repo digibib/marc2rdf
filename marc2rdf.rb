@@ -33,7 +33,6 @@ end; }
   - write processed record according to output given on command line
 =end
 
-@@yamltags = MAPPINGFILE['tags']
 reader = MARC::ForgivingReader.new($input_file)
 i = 0
 

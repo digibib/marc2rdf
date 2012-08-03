@@ -40,7 +40,6 @@ end; }
   - write processed record to OAI-PMH repository given in the config file
 =end
 
-@@yamltags = MAPPINGFILE['tags']
 client = OAI::Client.new(CONFIG['oai']['repository_url'], {:redirects=>CONFIG['oai']['follow_redirects'], :parser=>CONFIG['oai']['parser'], :timeout=>CONFIG['oai']['timeout'], :debug=>true})
 response = client.list_records :metadata_prefix =>CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
 
