@@ -39,7 +39,7 @@ end
 
 class RDFModeler
 
-CONFIG = YAML::load_file('config/config.yml')
+CONFIG      = YAML::load_file('config/config.yml')
 MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
 @@yamltags = MAPPINGFILE['tags']
 

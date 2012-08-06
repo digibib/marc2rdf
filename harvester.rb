@@ -5,7 +5,6 @@ require 'bundler/setup'
 require 'base64'
 require 'nokogiri'
 
-require 'sparql/client'
 require_relative './lib/rdfmodeler.rb'
 
 HARVEST_CONFIG   = YAML::load_file('config/harvesting.yml')
@@ -13,16 +12,14 @@ SOURCES          = HARVEST_CONFIG['sources']
 SPARQL_ENDPOINT  = CONFIG['rdfstore']['sparql_endpoint']
 SPARUL_ENDPOINT  = CONFIG['rdfstore']['sparul_endpoint']
 DEFAULT_PREFIX   = CONFIG['rdfstore']['default_prefix']
-DEFAULT_GRAPH    = CONFIG['rdfstore']['default_graph']
+DEFAULT_GRAPH    = RDF::URI(CONFIG['rdfstore']['default_graph'])
 
-# SPARQL
-# @sparql_client = SPARQL::Client.new(:url => "#{SPARQL_ENDPOINT}")
+@username    = CONFIG['rdfstore']['username']
+@password    = CONFIG['rdfstore']['password']
+@auth_method = CONFIG['rdfstore']['auth_method']
 
-# SPARUL 
-username = CONFIG['rdfstore']['username']
-password = CONFIG['rdfstore']['password']
-enc = "Basic " + Base64.encode64("#{username}:#{password}")
-@sparul_client = SPARQL::Client.new(:update_url => "#{SPARUL_ENDPOINT}", :headers => {"Authorization" => "#{enc}"})
+CLIENT = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
+QUERY  = RDF::Virtuoso::Query
 
 def usage(s)
     $stderr.puts(s)
@@ -54,8 +51,10 @@ end; }
     PREFIX bibo: <http://purl.org/ontology/bibo/>
     SELECT (COUNT(?book) as ?count) WHERE {GRAPH <#{DEFAULT_GRAPH}> { ?book a bibo:Document } }
     EOQ
-    result = @sparql_client.query(query).first.to_hash
-    count = result[result.keys.first].value.to_i
+    query    = QUERY.select("COUNT(?book) as ?count").where([:book, a, BIBO.Document]).graph(DEFAULT_GRAPH)
+    response = CLIENT.select(query)
+    #result = @sparql_client.query(query).first.to_hash
+    #count = result[result.keys.first].value.to_i
   end
   
   def fetch_xpath_results(isbn)
@@ -91,27 +90,31 @@ end; }
     } LIMIT #{limit} OFFSET #{offset}
     EOQ
     if $debug then puts "offset: #{offset}" end
-    results = @sparql_client.query(query)
+    query = QUERY.select(:book, :isbn).where([:book, a, BIBO.Document],[:book, BIBO.isbn, :isbn]).offset(offset).limit(limit)
+    puts query.to_s if $debug
+    
+    results = CLIENT.select(query)
   end
 
   def sparul_insert(statements)
-    
-    statements.each do | statement |
-      if $debug then puts statement.inspect end
-      if $output_file then $output_file << statement.to_s + "\n" end
-      if $insert
-        query = @sparul_client.insert([statement]).graph(RDF::URI.new("#{DEFAULT_GRAPH}"))
-        if $debug then puts query.inspect end
-      end
+    ntriples = []
+    $statements.each do | statement |
+       ntriples << statement.to_ntriples
     end
+
+    query = QUERY.insert_data($statements).graph(@default_graph)
+    puts query.to_s if $debug
+    $output_file << statement.each {|s| s.to_s + "\n"} if $output_file
+    results = CLIENT.insert_data(query) if $insert
+
   end
   
 unless $offset then $offset = 0 end
 book_count = count_books
-if $debug then puts "book count: #{book_count.inspect}" end
+puts "book count: #{book_count.inspect}" if $debug
 
 @count = 0
-if $output_file then $output_file = File.open($output_file, "a") end
+$output_file = File.open($output_file, "a") if $output_file
 
 # loops over rdfstore with limit from yaml, then source
 loop do    
@@ -178,4 +181,4 @@ sleep 5 # allow endpoint 5 secs rest between harvests ...
 end    
 
 p "count: #{@count}"
-if $output_file then $output_file.close end
+$output_file.close if $output_file

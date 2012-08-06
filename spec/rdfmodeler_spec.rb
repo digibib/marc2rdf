@@ -32,14 +32,31 @@ describe RDFModeler do
       end
       @oaiclient    = OAI::Client.new(@oai, :http => @oaitest)
       @oairesponse  = @oaiclient.list_records :metadata_prefix => 'bibliofilmarc', :from=> "2012-02-09", :until=> "2012-02-09"
-      @oairecord    = OAI::Record.new(@oairesponse.doc)
-      @marcxml      = MARC::XMLReader.new(StringIO.new(@oairecord.metadata.to_s))
+      @oairecords   = @oairesponse.entries
+      @marcxml      = MARC::XMLReader.new(StringIO.new(@oairecords.first.metadata.to_s))
     end
-    
+
+    it "should support checking if OAI response contains records" do
+       @oairesponse.any? == true
+    end
+        
+    it "should support count records in OAI response" do
+       @oairesponse.count.should == 12
+    end
+
+    it "should support fetch resumption token from an OAI response header" do
+       @oairesponse.resumption_token.should == "24590-1343733244"
+    end
+
     it "should support fetch book ID from an OAI response header" do
-       @oairecord.header.identifier.split(':').last.should == "103215"
+       @oairesponse.first.header.identifier.split(':').last.should == "103215"
     end
-       
+
+    it "should support checking if an OAI response header stauts is deleted" do
+       @oairesponse.first.header.deleted? == false
+    end
+            
+               
     it "should support creating a RDF record from an OAI response" do
       RDFModeler.new(@marcxml.first)
     end
@@ -50,11 +67,17 @@ describe RDFModeler do
       $statements.first.should be_a_kind_of(RDF::Statement)
     end
 
-    it "should support creating a converted RDF record from a OAI record" do
+    it "should support converting a MARCXML record to a RDF statements array" do
+      $statements = nil
       record = @marcxml.first
-      rdfrecord = RDFModeler.new(record)
-      rdfrecord.set_type("BIBO.Document")
-      rdfrecord.marc2rdf_convert(record)
+      rdf = RDF::Writer.for(:ntriples).buffer do |writer|
+        @@writer = writer
+        rdfrecord = RDFModeler.new(record)
+        rdfrecord.set_type("BIBO.Document")        
+        rdfrecord.marc2rdf_convert(record)
+        rdfrecord.write_record
+      end
+      $statements[1].to_s.should == "<http://data.deichman.no/resource/tnr_103215> <http://purl.org/dc/terms/identifier> 103215 ."
     end
     
   end
