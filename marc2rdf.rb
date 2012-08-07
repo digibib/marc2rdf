@@ -11,12 +11,14 @@ def usage(s)
     $stderr.puts("  -i input_file must be marc binary\n")
     $stderr.puts("  -o output_file extension can be either .rdf (slooow) or .nt (very fast)\n")
     $stderr.puts("  -r [number] stops processing after given number of records\n")
+    $stderr.puts("  -d output debug info\n")
     exit(2)
 end
 
 loop { case ARGV[0]
     when '-i' then  ARGV.shift; $input_file  = ARGV.shift
     when '-o' then  ARGV.shift; $output_file = ARGV.shift
+    when '-d' then  ARGV.shift; $debug = true    
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
@@ -56,8 +58,7 @@ if $recordlimit then break if i > $recordlimit end
 
   # initiate record and set type
   rdfrecord = RDFModeler.new(record)
-  rdfrecord.set_type(CONFIG['resource']['resource_type'])
-
+  rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
   rdfrecord.marc2rdf_convert(record)
 
 ## finally ... write processed record 

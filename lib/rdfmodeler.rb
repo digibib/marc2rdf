@@ -83,10 +83,9 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
    regex_split takes precedence, then urlize and finally regex_strip to remove disallowed characters
 =end
 
-  regex_subs = options[:regex_substitute]
+  regex_subs = options[:regex_substitute] || nil
 # remove nil options
   options.delete_if {|k,v| v.nil?}
-  #p options
 
 # make object array in any case
   generated_objects = []
@@ -116,7 +115,11 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
     if options.has_key?(:combine)
       generated_objects.collect! do | obj |
         obj2 = []
-        options[:combine].each { | c | obj2 << options[:marcfield][c] }
+        options[:combine].each do |combine|
+          options[:marcfield].each do |mrc|
+            obj2 << mrc.value if combine == mrc.code
+          end
+        end
         obj2.delete_if {|d| d.nil? }
         obj = obj2.join(options[:combinestring])
       end
@@ -135,7 +138,8 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
     if options.has_key?(:regex_strip)
       generated_objects.collect! { |obj| obj.gsub(/#{options[:regex_strip]}/, '') }
     end
-
+  
+  #puts generated_objects if $debug
   return generated_objects
   end
   
@@ -167,7 +171,7 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
 
         # controlfields 001-009 don't have subfields
         unless yamlvalue.has_key?('subfield')
-          # do controlfields here ... to be done
+          # do controlfields here 
           marc_object = "#{marcfield.value}"
           unless marc_object.strip.empty?
             yamlvalue.each do | key,value |

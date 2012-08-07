@@ -71,7 +71,7 @@ describe RDFModeler do
       $statements = nil
       record = @marcxml.first
       rdf = RDF::Writer.for(:ntriples).buffer do |writer|
-        @@writer = writer
+        RDFModeler.class_variable_set(:@@writer, writer)
         rdfrecord = RDFModeler.new(record)
         rdfrecord.set_type("BIBO.Document")        
         rdfrecord.marc2rdf_convert(record)
