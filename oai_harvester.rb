@@ -40,8 +40,8 @@ end; }
   - write processed record to OAI-PMH repository given in the config file
 =end
 
-client = OAI::Client.new(CONFIG['oai']['repository_url'], {:redirects=>CONFIG['oai']['follow_redirects'], :parser=>CONFIG['oai']['parser'], :timeout=>CONFIG['oai']['timeout'], :debug=>true})
-response = client.list_records :metadata_prefix =>CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
+client = OAI::Client.new(RDFModeler::CONFIG['oai']['repository_url'], {:redirects=>RDFModeler::CONFIG['oai']['follow_redirects'], :parser=>RDFModeler::CONFIG['oai']['parser'], :timeout=>RDFModeler::CONFIG['oai']['timeout'], :debug=>true})
+response = client.list_records :metadata_prefix =>RDFModeler::CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
 
 # Pick out the first records
 oairecords = Array.new
@@ -98,11 +98,11 @@ RDF::Writer.for(:ntriples).buffer do |writer|
     
       # initiate record and set type
       rdfrecord = RDFModeler.new(record)
-      rdfrecord.set_type(CONFIG['resource']['resource_type'])
+      rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
     
 	  rdfrecord.marc2rdf_convert(record)
     # and do sparql update, preserving harvested resources
-    SparqlUpdate.sparql_update(titlenumber, :preserve => CONFIG['oai']['preserve_on_update'])
+    SparqlUpdate.sparql_update(titlenumber, :preserve => RDFModeler::CONFIG['oai']['preserve_on_update'])
     
     end # end oairecord loop
 
