@@ -91,10 +91,6 @@ module SparqlUpdate
     sparql_delete(titlenumber, :preserve => preserve)
 
     ## then insert new triples
-    ntriples = []
-    $statements.each do | statement |
-       ntriples << statement.to_ntriples
-    end
 
     query = QUERY.insert_data($statements).graph(@default_graph)
     puts query.to_s if $debug
