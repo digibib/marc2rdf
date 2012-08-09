@@ -40,7 +40,8 @@ end; }
   - write processed record to OAI-PMH repository given in the config file
 =end
 
-client = OAI::Client.new(RDFModeler::CONFIG['oai']['repository_url'], {:redirects=>RDFModeler::CONFIG['oai']['follow_redirects'], :parser=>RDFModeler::CONFIG['oai']['parser'], :timeout=>RDFModeler::CONFIG['oai']['timeout'], :debug=>true})
+faraday = Faraday.new :request => { :open_timeout => 20, :timeout => RDFModeler::CONFIG['oai']['timeout'] } 
+client = OAI::Client.new(RDFModeler::CONFIG['oai']['repository_url'], {:redirects=>RDFModeler::CONFIG['oai']['follow_redirects'], :parser=>RDFModeler::CONFIG['oai']['parser'], :timeout=>RDFModeler::CONFIG['oai']['timeout'], :debug=>true, :http => faraday})
 response = client.list_records :metadata_prefix =>RDFModeler::CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
 
 # Pick out the first records

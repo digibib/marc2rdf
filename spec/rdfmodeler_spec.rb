@@ -35,7 +35,14 @@ describe RDFModeler do
       @oairecords   = @oairesponse.entries
       @marcxml      = MARC::XMLReader.new(StringIO.new(@oairecords.first.metadata.to_s))
     end
-
+    
+    it "should support timeout option sent to Faraday request" do
+      timeout = 80
+      faraday = Faraday.new :request => { :timeout => timeout }
+      client  = OAI::Client.new(@oai, :http => faraday)
+      client.instance_variable_get(:@http_client).instance_variable_get(:@options)[:timeout].should == 80
+    end
+    
     it "should support checking if OAI response contains records" do
        @oairesponse.any? == true
     end
