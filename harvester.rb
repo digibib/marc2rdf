@@ -18,7 +18,7 @@ DEFAULT_GRAPH    = RDF::URI(RDFModeler::CONFIG['rdfstore']['default_graph'])
 @password    = RDFModeler::CONFIG['rdfstore']['password']
 @auth_method = RDFModeler::CONFIG['rdfstore']['auth_method']
 
-CLIENT = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
+CLIENT = RDF::Virtuoso::Client.new(SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
 QUERY  = RDF::Virtuoso::Query
 
 def usage(s)
@@ -139,6 +139,7 @@ loop do
         }
         EOQ
         endpoint = sourcevalue['endpoint']
+        CLIENT = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
         sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
         results = sparql_client.query(query, sourcevalue['options'])
 
