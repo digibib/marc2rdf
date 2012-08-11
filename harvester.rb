@@ -9,14 +9,14 @@ require_relative './lib/rdfmodeler.rb'
 
 HARVEST_CONFIG   = YAML::load_file('config/harvesting.yml')
 SOURCES          = HARVEST_CONFIG['sources']
-SPARQL_ENDPOINT  = CONFIG['rdfstore']['sparql_endpoint']
-SPARUL_ENDPOINT  = CONFIG['rdfstore']['sparul_endpoint']
-DEFAULT_PREFIX   = CONFIG['rdfstore']['default_prefix']
-DEFAULT_GRAPH    = RDF::URI(CONFIG['rdfstore']['default_graph'])
+SPARQL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparql_endpoint']
+SPARUL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparul_endpoint']
+DEFAULT_PREFIX   = RDFModeler::CONFIG['rdfstore']['default_prefix']
+DEFAULT_GRAPH    = RDF::URI(RDFModeler::CONFIG['rdfstore']['default_graph'])
 
-@username    = CONFIG['rdfstore']['username']
-@password    = CONFIG['rdfstore']['password']
-@auth_method = CONFIG['rdfstore']['auth_method']
+@username    = RDFModeler::CONFIG['rdfstore']['username']
+@password    = RDFModeler::CONFIG['rdfstore']['password']
+@auth_method = RDFModeler::CONFIG['rdfstore']['auth_method']
 
 CLIENT = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
 QUERY  = RDF::Virtuoso::Query
@@ -47,14 +47,10 @@ loop { case ARGV[0]
 end; }
   
   def count_books
-    query =<<-EOQ
-    PREFIX bibo: <http://purl.org/ontology/bibo/>
-    SELECT (COUNT(?book) as ?count) WHERE {GRAPH <#{DEFAULT_GRAPH}> { ?book a bibo:Document } }
-    EOQ
-    query    = QUERY.select("COUNT(?book) as ?count").where([:book, a, BIBO.Document]).graph(DEFAULT_GRAPH)
-    response = CLIENT.select(query)
-    #result = @sparql_client.query(query).first.to_hash
-    #count = result[result.keys.first].value.to_i
+    query    = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document]).count(:book).graph(DEFAULT_GRAPH)
+    puts query.to_s if $debug
+    solutions = CLIENT.select(query)
+    count = solutions.first[:count].to_i
   end
   
   def fetch_xpath_results(isbn)
@@ -76,37 +72,24 @@ end; }
   end
   
   def rdfstore_lookup(offset, limit)
-    query = <<-EOQ
-    PREFIX bibo: <http://purl.org/ontology/bibo/>
-    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-    PREFIX local: <#{DEFAULT_PREFIX}>
 
-    SELECT ?book ?isbn WHERE {
-      GRAPH <#{DEFAULT_GRAPH}> {
-        ?book bibo:isbn ?isbn ;
-            a bibo:Document .
-#        MINUS { ?book <#{@predicate}> ?object }
-      }
-    } LIMIT #{limit} OFFSET #{offset}
-    EOQ
     if $debug then puts "offset: #{offset}" end
-    query = QUERY.select(:book, :isbn).where([:book, a, BIBO.Document],[:book, BIBO.isbn, :isbn]).offset(offset).limit(limit)
+    prefixes = RDF::Virtuoso::Prefixes.new bibo: "http://purl.org/ontology/bibo/", foaf: "http://xmlns.com/foaf/0.1/", local: "#{DEFAULT_PREFIX}"
+    #minuses = [:book, RDF::FOAF.depiction, :object]
+    query = QUERY.select(:book, :isbn).where([:book, RDF::type, RDF::BIBO.Document],[:book, RDF::BIBO.isbn, :isbn]).prefixes(prefixes).offset(offset).limit(limit)
     puts query.to_s if $debug
     
-    results = CLIENT.select(query)
+    result = CLIENT.select(query)
   end
 
   def sparul_insert(statements)
-    ntriples = []
-    $statements.each do | statement |
-       ntriples << statement.to_ntriples
+    unless statements.empty?
+      query = QUERY.insert_data(statements).graph(DEFAULT_GRAPH)
+      puts query.to_s if $debug
+      #puts statements.each { |s| s.to_s } if $debug
+      statements.each {|statement| $output_file << RDF::NTriples.serialize(statement) } if $output_file
+      result = CLIENT.insert_data(query) if $insert
     end
-
-    query = QUERY.insert_data($statements).graph(@default_graph)
-    puts query.to_s if $debug
-    $output_file << statement.each {|s| s.to_s + "\n"} if $output_file
-    results = CLIENT.insert_data(query) if $insert
-
   end
   
 unless $offset then $offset = 0 end
