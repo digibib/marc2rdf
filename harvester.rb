@@ -18,7 +18,7 @@ DEFAULT_GRAPH    = RDF::URI(RDFModeler::CONFIG['rdfstore']['default_graph'])
 @password    = RDFModeler::CONFIG['rdfstore']['password']
 @auth_method = RDFModeler::CONFIG['rdfstore']['auth_method']
 
-CLIENT = RDF::Virtuoso::Client.new(SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
+REPO = RDF::Virtuoso::Repository.new(SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
 QUERY  = RDF::Virtuoso::Query
 
 def usage(s)
@@ -49,7 +49,7 @@ end; }
   def count_books
     query    = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document]).count(:book).graph(DEFAULT_GRAPH)
     puts query.to_s if $debug
-    solutions = CLIENT.select(query)
+    solutions = REPO.select(query)
     count = solutions.first[:count].to_i
   end
   
@@ -79,7 +79,7 @@ end; }
     query = QUERY.select(:book, :isbn).where([:book, RDF::type, RDF::BIBO.Document],[:book, RDF::BIBO.isbn, :isbn]).prefixes(prefixes).offset(offset).limit(limit)
     puts query.to_s if $debug
     
-    result = CLIENT.select(query)
+    result = REPO.select(query)
   end
 
   def sparul_insert(statements)
@@ -88,7 +88,7 @@ end; }
       puts query.to_s if $debug
       #puts statements.each { |s| s.to_s } if $debug
       statements.each {|statement| $output_file << RDF::NTriples.serialize(statement) } if $output_file
-      result = CLIENT.insert_data(query) if $insert
+      result = REPO.insert_data(query) if $insert
     end
   end
   
@@ -139,7 +139,7 @@ loop do
         }
         EOQ
         endpoint = sourcevalue['endpoint']
-        CLIENT = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
+        REPO = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
         sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
         results = sparql_client.query(query, sourcevalue['options'])
 

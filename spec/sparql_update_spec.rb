@@ -5,7 +5,7 @@ describe SparqlUpdate do
   before(:all) do
     @endpoint   = "http://localhost:8890"
     @uri = "http://example.com/"
-    @client = RDF::Virtuoso::Client
+    @client = RDF::Virtuoso::Repository
   end
   
   context "when connecting to a triplestore" do
