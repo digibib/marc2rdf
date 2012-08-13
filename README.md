@@ -51,7 +51,9 @@ copy needed configuration files
     cp ./config/config.yml-dist ./config/config.yml
     cp ./config/harvesting.yml-dist ./config/harvesting.yml
   
-and make changes as needed to fit your system
+and make changes as needed to fit your system.
+
+* Please read rspec tests under ./spec for examples on usage
 
 ### RDF STORE
 
@@ -103,9 +105,9 @@ For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml
 * marc2rdf.rb                            -- main ruby script to convert NORMARC file to RDF
 * oai.rb								 -- oai harvester skript to harvest and update rdf store
 * lib/
-    * string_replace.rb 
-    * rdfmodeler.rb
-    * sparql_update.rb  
+    * string_replace.rb                  -- mapping of UTF8-encoded characters
+    * rdfmodeler.rb                      -- the MARC to RDF conversion module
+    * sparql_update.rb                   -- SPARQL Update module
 * config/
     * config-dist.yml                    -- config file
     * mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
@@ -173,6 +175,6 @@ relation subfield relations should accept different classes
 * ruby-marc (thanks to Ross Singer et.al.)
 * rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
 * rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
-* rest-client
+* rdf-virtuoso
+* rest-client (if not using Virtuoso as storage)
 * oai
-* sparql/client from git, branch virtuoso_update

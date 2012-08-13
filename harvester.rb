@@ -18,7 +18,7 @@ DEFAULT_GRAPH    = RDF::URI(RDFModeler::CONFIG['rdfstore']['default_graph'])
 @password    = RDFModeler::CONFIG['rdfstore']['password']
 @auth_method = RDFModeler::CONFIG['rdfstore']['auth_method']
 
-REPO = RDF::Virtuoso::Repository.new(SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
+REPO = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
 QUERY  = RDF::Virtuoso::Query
 
 def usage(s)

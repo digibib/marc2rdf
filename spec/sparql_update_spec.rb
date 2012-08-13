@@ -3,22 +3,23 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 describe SparqlUpdate do
 
   before(:all) do
-    @endpoint   = "http://localhost:8890"
+    @sparql_endpoint   = "http://localhost:8890/sparql"
+    @sparul_endpoint   = "http://localhost:8890/sparql-auth"
     @uri = "http://example.com/"
-    @client = RDF::Virtuoso::Repository
+    @repo = RDF::Virtuoso::Repository
   end
   
   context "when connecting to a triplestore" do
     it "should support connecting to a SPARQL endpoint" do
-      @client.new(@endpoint)
+      repo = @repo.new(@sparql_endpoint)
     end
     
     it "should support connecting to a SPARUL endpoint with BASIC AUTH" do
-      @client.new(@endpoint, :username => 'admin', :password => 'secret', :auth_method => 'basic')
+      @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'basic')
     end
     
     it "should support connecting to a SPARUL endpoint with DIGEST AUTH" do
-      @client.new(@endpoint, :username => 'admin', :password => 'secret', :auth_method => 'digest')
+      @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'digest')
     end
   end
   

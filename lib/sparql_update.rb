@@ -1,5 +1,4 @@
 require 'rdf/virtuoso'
-#require_relative '../../rdf-virtuoso/lib/rdf/virtuoso'
 
 module SparqlUpdate
   CONFIG           = YAML::load_file('config/config.yml')
@@ -14,7 +13,7 @@ module SparqlUpdate
   @key             = CONFIG['rdfstore']['key']
   
   if @store == 'virtuoso'
-    UPDATE_CLIENT = RDF::Virtuoso::Repository.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
+    UPDATE_CLIENT = RDF::Virtuoso::Repository.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
     QUERY  = RDF::Virtuoso::Query
   else
     # TODO: implement generic RestClient
