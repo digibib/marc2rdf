@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby 
+# encoding: UTF-8
+if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
+require 'rubygems'
+require 'bundler/setup'
+require 'grape'
+require_relative '../lib/rdfmodeler.rb'
+
+SPARQL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparql_endpoint']
+SPARUL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparul_endpoint']
+DEFAULT_PREFIX   = RDFModeler::CONFIG['rdfstore']['default_prefix']
+DEFAULT_GRAPH    = RDF::URI(RDFModeler::CONFIG['rdfstore']['default_graph'])
+
+@username    = RDFModeler::CONFIG['rdfstore']['username']
+@password    = RDFModeler::CONFIG['rdfstore']['password']
+@auth_method = RDFModeler::CONFIG['rdfstore']['auth_method']
+
+REPO  = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
+QUERY = RDF::Virtuoso::Query
+
+class RDFModeler
+  class API < Grape::API
+    prefix 'api'
+    format :json
+    default_format :json
+  
+    resource :books do
+      desc "returns a total count of books in rdf store"
+      get '/count' do
+        query = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document]).count(:book).graph(DEFAULT_GRAPH)
+        solutions = REPO.select(query)
+        count = solutions.first[:count].to_i
+        { :count => count }
+      end
+
+      desc "return literary formats found in store"
+      get '/literaryFormats' do
+        query = QUERY.select(:lf).where([:book, RDF::DEICHMAN.literaryFormat, :lf]).distinct.graph(DEFAULT_GRAPH)
+        solutions = REPO.select(query)
+        { :literaryFormats => solutions.bindings }
+      end
+    end
+    
+  end
+end
