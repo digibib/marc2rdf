@@ -4,11 +4,10 @@ if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion i
 require 'rubygems'
 require 'bundler/setup'
 require 'oai'
-require 'rest_client'
 
 require_relative './lib/rdfmodeler.rb'
-require_relative './lib/sparql_update.rb'
-require_relative './lib/string_replace.rb'
+#require_relative './lib/sparql_update.rb'
+#require_relative './lib/string_replace.rb'
 
 def usage(s)
     $stderr.puts(s)
@@ -42,9 +41,9 @@ end; }
 =end
 
 faraday = Faraday.new :request => { :open_timeout => 20, :timeout => RDFModeler::CONFIG['oai']['timeout'] } 
-client = OAI::Client.new(RDFModeler::CONFIG['oai']['repository_url'], {:redirects=>RDFModeler::CONFIG['oai']['follow_redirects'], :parser=>RDFModeler::CONFIG['oai']['parser'], :timeout=>RDFModeler::CONFIG['oai']['timeout'], :debug=>true, :http => faraday})
-response = client.list_records :metadata_prefix =>RDFModeler::CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
-
+client = OAI::Client.new(RDFModeler::CONFIG['oai']['repository_url'], {:redirects => RDFModeler::CONFIG['oai']['follow_redirects'], :parser => RDFModeler::CONFIG['oai']['parser'], :timeout => RDFModeler::CONFIG['oai']['timeout'], :debug => true, :http => faraday})
+response = client.list_records :metadata_prefix => RDFModeler::CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
+p response.doc
 # Pick out the first records
 oairecords = Array.new
 response.each do | oairecord |
@@ -85,7 +84,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
   #if oairecord.header.status == "deleted" 
   if oairecord.deleted?
     puts "deleted: #{titlenumber}"
-    SparqlUpdate.sparql_purge(titlenumber)
+    OAIUpdate.sparql_purge(titlenumber)
     next # deleted records have no metadata in oai
   else 
     puts "modified: #{titlenumber}"
@@ -104,12 +103,10 @@ RDF::Writer.for(:ntriples).buffer do |writer|
     
 	  rdfrecord.marc2rdf_convert(record)
     # and do sparql update, preserving harvested resources
-    SparqlUpdate.sparql_update(titlenumber, :preserve => RDFModeler::CONFIG['oai']['preserve_on_update'])
+    OAIUpdate.sparql_update(titlenumber, :preserve => RDFModeler::CONFIG['oai']['preserve_on_update'])
     
     end # end oairecord loop
 
-  
-  
   end # end oairecords.deleted?
  end # end oairecords.each
 end # end writer loop

@@ -15,3 +15,7 @@ gem "oai"
 #gem "oai", '0.0.9', :git => 'git://github.com/teefax/oai.git'
 gem "rdf-spec"
 gem "rspec-mocks"
+gem "rack"
+gem "grape"
+gem "shotgun"
+#gem "thin"

@@ -7,6 +7,7 @@ describe SparqlUpdate do
     @sparul_endpoint   = "http://localhost:8890/sparql-auth"
     @uri = "http://example.com/"
     @repo = RDF::Virtuoso::Repository
+    #$debug = true
   end
   
   context "when connecting to a triplestore" do
@@ -23,7 +24,7 @@ describe SparqlUpdate do
     end
   end
   
-  context "when doing a SPARQL UPDATE" do
+  context "when doing a SPARQL UPDATE from OAI response" do
     before(:all) do
       @query = RDF::Virtuoso::Query
       
@@ -37,20 +38,21 @@ describe SparqlUpdate do
     end
     
     it "should support updating a book" do
-      response = SparqlUpdate.sparql_update(@book_id)
+      response = OAIUpdate.sparql_update(@book_id)
+      #p response
       response.should match(/(done|nothing)/)
       response.should_not match(/NULL/)
     end
     
     it "should support updating a book while preserving harvested info" do
       preserve = ["FOAF.depiction", "REV.hasReview"]
-      response = SparqlUpdate.sparql_update(@book_id, :preserve => preserve)
+      response = OAIUpdate.sparql_update(@book_id, :preserve => preserve)
       response.should match(/(done|nothing)/)
       response.should_not match(/NULL/)
     end
     
     it "should support deleting a book entirely" do
-      response = SparqlUpdate.sparql_purge(@book_id)
+      response = OAIUpdate.sparql_purge(@book_id)
       response.should match(/(done|nothing)/)
       response.should_not match(/NULL/)
     end

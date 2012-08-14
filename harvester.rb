@@ -2,6 +2,7 @@
 if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 require 'rubygems'
 require 'bundler/setup'
+require 'rdf'
 require 'base64'
 require 'nokogiri'
 
@@ -9,17 +10,6 @@ require_relative './lib/rdfmodeler.rb'
 
 HARVEST_CONFIG   = YAML::load_file('config/harvesting.yml')
 SOURCES          = HARVEST_CONFIG['sources']
-SPARQL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparql_endpoint']
-SPARUL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparul_endpoint']
-DEFAULT_PREFIX   = RDFModeler::CONFIG['rdfstore']['default_prefix']
-DEFAULT_GRAPH    = RDF::URI(RDFModeler::CONFIG['rdfstore']['default_graph'])
-
-@username    = RDFModeler::CONFIG['rdfstore']['username']
-@password    = RDFModeler::CONFIG['rdfstore']['password']
-@auth_method = RDFModeler::CONFIG['rdfstore']['auth_method']
-
-REPO = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
-QUERY  = RDF::Virtuoso::Query
 
 def usage(s)
     $stderr.puts(s)
@@ -46,13 +36,6 @@ loop { case ARGV[0]
     break
 end; }
   
-  def count_books
-    query    = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document]).count(:book).graph(DEFAULT_GRAPH)
-    puts query.to_s if $debug
-    solutions = REPO.select(query)
-    count = solutions.first[:count].to_i
-  end
-  
   def fetch_xpath_results(isbn)
     http_response = @http_persistent.request URI "#{@prefix}#{isbn}#{@suffix}#{@apikey}"
   end
@@ -71,29 +54,8 @@ end; }
     end
   end
   
-  def rdfstore_lookup(offset, limit)
-
-    if $debug then puts "offset: #{offset}" end
-    prefixes = RDF::Virtuoso::Prefixes.new bibo: "http://purl.org/ontology/bibo/", foaf: "http://xmlns.com/foaf/0.1/", local: "#{DEFAULT_PREFIX}"
-    #minuses = [:book, RDF::FOAF.depiction, :object]
-    query = QUERY.select(:book, :isbn).where([:book, RDF::type, RDF::BIBO.Document],[:book, RDF::BIBO.isbn, :isbn]).prefixes(prefixes).offset(offset).limit(limit)
-    puts query.to_s if $debug
-    
-    result = REPO.select(query)
-  end
-
-  def sparul_insert(statements)
-    unless statements.empty?
-      query = QUERY.insert_data(statements).graph(DEFAULT_GRAPH)
-      puts query.to_s if $debug
-      #puts statements.each { |s| s.to_s } if $debug
-      statements.each {|statement| $output_file << RDF::NTriples.serialize(statement) } if $output_file
-      result = REPO.insert_data(query) if $insert
-    end
-  end
-  
 unless $offset then $offset = 0 end
-book_count = count_books
+book_count = Sparql::count(RDF::BIBO.Document)
 puts "book count: #{book_count.inspect}" if $debug
 
 @count = 0
@@ -103,7 +65,7 @@ $output_file = File.open($output_file, "a") if $output_file
 loop do    
   # let's harvest!
   @limit = HARVEST_CONFIG['options']['limit']
-  rdf_result = rdfstore_lookup($offset, @limit)
+  rdf_result = Sparql::rdfstore_isbnlookup($offset, @limit)
   # iterate SPARQL results
   rdf_result.each do | solution |
     SOURCES.each do | source, sourcevalue |
@@ -139,7 +101,7 @@ loop do
         }
         EOQ
         endpoint = sourcevalue['endpoint']
-        REPO = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
+
         sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
         results = sparql_client.query(query, sourcevalue['options'])
 
@@ -154,7 +116,7 @@ loop do
         end #end results.each       
 
       end #end if @protocol
-      sparul_insert(@statements)
+      SPARUL.sparul_insert(@statements)
     end #end SOURCES.each
   end #end rdf_result.each
   #continue to next loop iteration

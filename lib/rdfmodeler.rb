@@ -8,6 +8,7 @@ require 'rdf/n3'
 require 'rdf/ntriples'
 
 require_relative './sparql_update.rb'
+require_relative './sparql.rb'
 require_relative './string_replace.rb'
 
 # Initialize additional vocabularies we will be drawing from
@@ -38,7 +39,6 @@ module RDF
 end
 
 class RDFModeler
-
 CONFIG      = YAML::load_file('config/config.yml')
 MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
 @@yamltags = MAPPINGFILE['tags']
