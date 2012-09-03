@@ -71,12 +71,24 @@ end; }
     end
   end
   
-  def rdfstore_lookup(offset, limit)
-
+  def rdfstore_lookup(options = {})
+    # lookup in RDF repository with options from config file
+    minuses = options[:minuses] || nil
+    limit   = options[:limit]   || nil
+    offset  = options[:offset]  || nil
     if $debug then puts "offset: #{offset}" end
-    prefixes = RDF::Virtuoso::Prefixes.new bibo: "http://purl.org/ontology/bibo/", foaf: "http://xmlns.com/foaf/0.1/", local: "#{DEFAULT_PREFIX}"
-    #minuses = [:book, RDF::FOAF.depiction, :object]
-    query = QUERY.select(:book, :isbn).where([:book, RDF::type, RDF::BIBO.Document],[:book, RDF::BIBO.isbn, :isbn]).prefixes(prefixes).offset(offset).limit(limit)
+    
+    
+        
+    if minuses
+      minus = minuses.map { |m| [:book, RDF.module_eval("#{m}"), :object] }
+    end
+    
+    query = QUERY.select(:book, :isbn)
+    query.where([:book, RDF::type, RDF::BIBO.Document],[:book, RDF::BIBO.isbn, :isbn])
+    minus.each {|m| query.minus(m) } if minuses
+    query.offset(offset).limit(limit)
+    
     puts query.to_s if $debug
     
     result = REPO.select(query)
@@ -103,7 +115,8 @@ $output_file = File.open($output_file, "a") if $output_file
 loop do    
   # let's harvest!
   @limit = HARVEST_CONFIG['options']['limit']
-  rdf_result = rdfstore_lookup($offset, @limit)
+  minuses = HARVEST_CONFIG['options']['minuses']
+  rdf_result = rdfstore_lookup(:offset => $offset, :limit => @limit, :minuses => minuses)
   # iterate SPARQL results
   rdf_result.each do | solution |
     SOURCES.each do | source, sourcevalue |
@@ -119,10 +132,9 @@ loop do
         @http_persistent = Net::HTTP::Persistent.new "#{source}"
         http_response = fetch_xpath_results(solution.isbn.value)
         sourcevalue['harvest'].each do | predicate, conditions |
-       
           objects = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'], :namespaces => @namespaces)
           unless objects.empty?
-            if conditions['datatype'] == "uri" then objects.each { |obj| obj = RDF::URI.new("#{obj}") } end
+            if conditions['datatype'] == "uri" then objects.map! { |obj| RDF::URI("#{obj}") } end
             objects.each do | obj |
               @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
             end
@@ -131,17 +143,11 @@ loop do
         end #sourcevalue['harvest'].each
 
       elsif @protocol == 'sparql'
-        query = <<-EOQ
-        PREFIX bibo: <http://purl.org/ontology/bibo/>
-        SELECT * WHERE {
-          ?s bibo:isbn "#{solution.isbn.value}" ;
-             ?p ?o .
-        }
-        EOQ
         endpoint = sourcevalue['endpoint']
-        REPO = RDF::Virtuoso::Client.new(@sparul_endpoint, :username => @username, :password => @password, :auth_method => @auth_method)
-        sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
-        results = sparql_client.query(query, sourcevalue['options'])
+        query = QUERY.select.where([:s, RDF::BIBO.isbn, "#{solution.isbn.value}"],[:s, :p, :o])
+        sparql_endpoint = RDF::Virtuoso::Client.new("#{endpoint}")
+        #sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
+        results = sparql_endpoint.select(query)
 
         results.each do | statement |
           # harvest!
