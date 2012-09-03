@@ -47,10 +47,10 @@ loop { case ARGV[0]
 end; }
   
   def count_books
-    query    = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document]).count(:book).graph(DEFAULT_GRAPH)
+    query    = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document]).count(:book).from(DEFAULT_GRAPH)
     puts query.to_s if $debug
     solutions = REPO.select(query)
-    count = solutions.first[:count].to_i
+    count = solutions.first[:book].to_i
   end
   
   def fetch_xpath_results(isbn)
