@@ -27,7 +27,9 @@ class RDFModeler
     resource :books do
       desc "returns a total count of books in rdf store"
       get '/count' do
-        query = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document]).count(:book).graph(DEFAULT_GRAPH)
+        query = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document])
+          .count(:book)
+          .from(DEFAULT_GRAPH)
         solutions = REPO.select(query)
         count = solutions.first[:count].to_i
         { :count => count }
@@ -35,9 +37,28 @@ class RDFModeler
 
       desc "return literary formats found in store"
       get '/literaryFormats' do
-        query = QUERY.select(:lf).where([:book, RDF::DEICHMAN.literaryFormat, :lf]).distinct.graph(DEFAULT_GRAPH)
+        query = QUERY.select(:lf).where([:book, RDF::DEICHMAN.literaryFormat, :lf])
+          .distinct
+          .from(DEFAULT_GRAPH)
         solutions = REPO.select(query)
         { :literaryFormats => solutions.bindings }
+      end
+      
+      desc "lookup a book by titlenumber"
+      get '/:tnr' do
+        tnr = params[:tnr].to_s
+        query = QUERY.select.where(
+          [:id, RDF::DC.identifier, "#{tnr}"],
+          [:id, RDF::DC.title, :title],
+          [:id, RDF::DC.creator, :creator_id],
+          [:creator_id, RDF::RADATANA.catalogueName, :creator],
+          [:id, RDF::BIBO.isbn, :isbn]
+          )
+          .distinct
+          .from(DEFAULT_GRAPH)
+          .optional([:book, RDF::FOAF.depiction, :cover_url])
+        solutions = REPO.select(query)
+        { :book => solutions.bindings }
       end
     end
     
