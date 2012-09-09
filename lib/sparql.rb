@@ -19,13 +19,28 @@ QUERY  = RDF::Virtuoso::Query
     count = solutions.first[:s].to_i
   end
 
-  def self.rdfstore_isbnlookup(offset, limit)
+  def self.rdfstore_isbnlookup(options={})
+    # lookup in RDF repository with options from config file
+    minuses = options[:minuses] || nil
+    limit   = options[:limit]   || nil
+    offset  = options[:offset]  || nil
+  
     if $debug then puts "offset: #{offset}" end
-    #minuses = [:book, RDF::FOAF.depiction, :object]
-    query = QUERY.select(:book, :isbn)
-      .from(DEFAULT_GRAPH)
-      .where([:book, RDF::type, RDF::BIBO.Document],[:book, RDF::BIBO.isbn, :isbn])
-      .offset(offset).limit(limit)
+
+    if minuses
+      minus = minuses.map { |m| [:book, RDF.module_eval("#{m}"), :object] }
+    end
+
+    query = QUERY.select(:work, :book, :isbn)
+    query.from(DEFAULT_GRAPH)
+    query.where(
+      [:book, RDF::type, RDF::BIBO.Document],
+      [:book, RDF::BIBO.isbn, :isbn],
+      [:work, RDF::FABIO.hasManifestation, :book])
+      minus.each {|m| query.minus(m) } if minuses
+    query.offset(offset) if offset
+    query.limit(limit) if limit
+    
     puts query.to_s if $debug
     solutions = REPO.select(query)
   end

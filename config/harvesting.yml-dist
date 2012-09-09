@@ -18,7 +18,7 @@ sources:
       BIBO.abstract:
         datatype: literal
         xpath: "//path/to/another/object"
-# http source with xml namespaces        
+# http source with xml namespaces and optional harvest_to
   source2:
     protocol: http
     prefix: 'http://xisbn.worldcat.org/webservices/xid/isbn/'
@@ -29,6 +29,7 @@ sources:
       BIBO.isbn:
         datatype: literal
         xpath: '//xmlns:isbn'  
+        harvest_to: 'work'
 # sparql endpoint with custom apikey (eg. Kasabi)              
   source2:
     protocol: sparql

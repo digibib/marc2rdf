@@ -6,8 +6,6 @@ require 'bundler/setup'
 require 'oai'
 
 require_relative './lib/rdfmodeler.rb'
-#require_relative './lib/sparql_update.rb'
-#require_relative './lib/string_replace.rb'
 
 def usage(s)
     $stderr.puts(s)
@@ -97,9 +95,9 @@ RDF::Writer.for(:ntriples).buffer do |writer|
     # limit number of records for testing purpose
     if $recordlimit then break if i > $recordlimit end
     
-      # initiate record and set type
-      rdfrecord = RDFModeler.new(record)
-      rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
+    # initiate record and set type
+    rdfrecord = RDFModeler.new(record)
+    rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
     
 	  rdfrecord.marc2rdf_convert(record)
     # and do sparql update, preserving harvested resources

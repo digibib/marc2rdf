@@ -50,6 +50,7 @@ end; }
       if conditions[:gsub]
         results.each { |result| result.gsub!("#{conditions[:gsub]}", "") }
       end
+      puts results
       return results
     end
   end
@@ -64,8 +65,10 @@ $output_file = File.open($output_file, "a") if $output_file
 # loops over rdfstore with limit from yaml, then source
 loop do    
   # let's harvest!
-  @limit = HARVEST_CONFIG['options']['limit']
-  rdf_result = Sparql::rdfstore_isbnlookup($offset, @limit)
+  @limit  = HARVEST_CONFIG['options']['limit']
+  minuses = HARVEST_CONFIG['options']['minuses']
+  rdf_result = Sparql::rdfstore_isbnlookup(:offset => $offset, :limit => @limit, :minuses => minuses)
+  
   # iterate SPARQL results
   rdf_result.each do | solution |
     SOURCES.each do | source, sourcevalue |
@@ -84,26 +87,25 @@ loop do
        
           objects = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'], :namespaces => @namespaces)
           unless objects.empty?
-            if conditions['datatype'] == "uri" then objects.each { |obj| obj = RDF::URI.new("#{obj}") } end
+            if conditions['datatype'] == "uri" then objects.map! { |obj| RDF::URI("#{obj}") } end
             objects.each do | obj |
-              @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
+              if conditions['harvest_to'] == 'work'
+                @statements << RDF::Statement.new(RDF::URI.new("#{solution.work}"), RDF.module_eval("#{predicate}"), obj)
+              else
+                @statements << RDF::Statement.new(RDF::URI.new("#{solution.book}"), RDF.module_eval("#{predicate}"), obj)
+              end
             end
             @count += 1
           end
         end #sourcevalue['harvest'].each
 
       elsif @protocol == 'sparql'
-        query = <<-EOQ
-        PREFIX bibo: <http://purl.org/ontology/bibo/>
-        SELECT * WHERE {
-          ?s bibo:isbn "#{solution.isbn.value}" ;
-             ?p ?o .
-        }
-        EOQ
         endpoint = sourcevalue['endpoint']
 
-        sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
-        results = sparql_client.query(query, sourcevalue['options'])
+        query = QUERY.select.where([:s, RDF::BIBO.isbn, "#{solution.isbn.value}"],[:s, :p, :o])
+        sparql_endpoint = RDF::Virtuoso::Client.new("#{endpoint}")
+        #sparql_client = SPARQL::Client.new(:url => "#{endpoint}", :headers => sourcevalue['headers'])
+        results = sparql_endpoint.select(query)
 
         results.each do | statement |
           # harvest!

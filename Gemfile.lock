@@ -15,7 +15,6 @@ GEM
       hashie (~> 1.0)
       httparty
       net-http-persistent
-    backports (2.6.2)
     builder (3.0.0)
     diff-lcs (1.1.3)
     faraday (0.8.4)
@@ -42,7 +41,7 @@ GEM
     multipart-post (1.1.5)
     net-http-persistent (2.7)
     nokogiri (1.5.5)
-    oai (0.2.1)
+    oai (0.2.0)
       builder (>= 2.0.0)
       faraday
       faraday_middleware
@@ -94,7 +93,7 @@ DEPENDENCIES
   grape
   marc
   nokogiri
-  oai
+  oai (= 0.2.0)
   rack
   rdf
   rdf-n3

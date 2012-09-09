@@ -10,7 +10,7 @@ gem "rdf-n3"
 #gem 'rdf-virtuoso', git: 'https://github.com/digibib/rdf-virtuoso.git', branch: 'develop'
 gem "rdf-virtuoso"
 gem "rest-client"
-gem "oai"
+gem "oai", '0.2.0'
 #gem "oai", '0.0.9', :git => 'git://github.com/teefax/oai.git'
 gem "rdf-spec"
 gem "rspec-mocks"
