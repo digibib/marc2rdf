@@ -30,43 +30,92 @@ and update a RDF triplestore
 * harvester.rb     -- a ruby script to harvest bibliographical metadata via SPARQL or XML APIs,
 and convert to semantic triples (RDF) and optionally import to existing RDF store
 
+Auxiliary tool to fix input file
+
+* marcfix.pl strips erroneous 000 tags from binary MARC records in iput file
+
 ## HOWTO
+
+### REQUIREMENTS
+
+Ruby
+
+* ruby >= 1.8.7
+* ruby-marc (thanks to Ross Singer et.al.)
+* rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
+* rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
+* rdf-virtuoso
+* rest-client (if not using Virtuoso as storage)
+* oai
+
+Requirements for marcfix.pl
+
+ * Perl
+ * MARC::Record perl module from [CPAN](http://search.cpan.org/~gmcharlt/MARC-Record-2.0.3/lib/MARC/Record.pm)
 
 ### INSTALL
 
-either install ruby via rvm (Ruby Version Manager) or install ruby-dev
+Here is a short walk-trough on how to install the needed tools and libraries.
 
-#### UBUNTU INSTALL
+1. Clone this repository form github  
+	* ```git://github.com/digibib/marc2rdf.git```  
+	This creates a subdirectory called marc2rdf
 
-(for rdf-xml support)
-    sudo apt-get install libxml2-dev libxslt1-dev
-    gem install bundler
+1. Either install ruby via rvm (Ruby Version Manager) or install ruby-dev  
+	*  Ubuntu install (for ruby and rdf-xml support)  
+	```sudo apt-get install ruby-dev libxml2-dev libxslt1-dev libyaml-ruby libzlib-ruby rubygems```  
+	* Debian note  
+	Debian adds a version postfix to the ruby executables. Thus all references to `ruby` becomes 
+	`ruby1.8` and references to `gem` becomes `gem1.8`.
 
-install needed gems given in Gemfile:
+1. Install RubyGems bundler  
+	```sudo gem install bundler```  
+	If you can not or do not want to install RubyGems into system folder locations, please have a look at 
+	http://docs.rubygems.org/read/chapter/3/
 
-    bundle install
+1. Install needed gems given in Gemfile:  
+	```
+	cd marc2rdf
+	bundle install
+	```
 
-copy needed configuration files
+1. Copy needed configuration files  
+	```
+	cp ./config/config.yml-dist ./config/config.yml
+	cp ./config/harvesting.yml-dist ./config/harvesting.yml
+	```  
+	* Make changes to the new files as needed to fit your system.  
+	* Please read rspec tests under ./spec for examples on usage.  
 
-    cp ./config/config.yml-dist ./config/config.yml
-    cp ./config/harvesting.yml-dist ./config/harvesting.yml
-  
-and make changes as needed to fit your system.
-
-* Please read rspec tests under ./spec for examples on usage
+1. Install Perl and MARC::Record  
+	On Debian and Ubuntu these are installed with apt:  
+	```
+	apt-get install perl libmarc-record-perl
+	```  
+	MARC::Record can also be installed with 
+	[CPAN](http://search.cpan.org/~gmcharlt/MARC-Record-2.0.3/lib/MARC/Record.pm)  
 
 ### RDF STORE
 
-* Recommended triplestore is OpenLink Virtuoso, minimum version 6.1.3
-* any other triplestore should work fine, though, as long as it supports SPARQL 1.1 UPDATE LANGUAGE
+ * Recommended triplestore is OpenLink Virtuoso, minimum version 6.1.3
+ * any other triplestore should work fine, though, as long as it supports SPARQL 1.1 UPDATE LANGUAGE
 
-#### UBUNTU
+#### Ubuntu
 
-    sudo apt-get install virtuoso-opensource
+```
+sudo apt-get install virtuoso-opensource
+```
+
+#### Debian
+
+Debian squeeze does not have a recent version of Virtuoso. Please compile from source as described 
+over at [their site](http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSDebianNotes). 
+
+Debian wheezy comes with Virtuoso version 6.1.4, as does Ubuntu 12.04 Precise.
 
 ### PREPARATION
 
-Command line options are listed by running either of the three scripts.
+Command line options are listed by running either of the three Ruby scripts.
 
 A typical conversion consists of:
 
@@ -77,7 +126,7 @@ A typical conversion consists of:
 
 Before conversion, care must be taken to setup config files under ./config
 
-three config files are needed:
+Three config files are needed:
 
 * config.yml (file and RDF repository settings)
 * harvesting.yml (sources and settings for harvesting)
@@ -98,7 +147,7 @@ For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml
 * relations can have subfields
 * string replace non-ascii characters to create uris
 * oai harvester uses same mapping as marc2rdf given in config.yml
-* erronemous 000 marc field in normarc can be removed with perl script ./tools/marcfix.pl
+* erroneous 000 marc field in normarc can be removed with perl script ./tools/marcfix.pl
 
 ## FILES INCLUDED
 
@@ -169,12 +218,4 @@ uses yaml hashes mapping. Example excerpt:
 
 relation subfield relations should accept different classes
 
-## REQUIREMENTS
 
-* ruby >= 1.8.7
-* ruby-marc (thanks to Ross Singer et.al.)
-* rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
-* rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)
-* rdf-virtuoso
-* rest-client (if not using Virtuoso as storage)
-* oai
