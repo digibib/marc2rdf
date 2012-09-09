@@ -1,6 +1,8 @@
 ---
 options:
   limit: 100
+  minuses: 
+    - FOAF.depiction
 sources:
 # http source with apikey 
   source1:
