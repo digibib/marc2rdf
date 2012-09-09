@@ -28,8 +28,9 @@ describe Sparql do
     end
 
     it "should support looking up isbns with OFFSET and LIMIT" do
-      response = Sparql.rdfstore_isbnlookup(10,50)
+      response = Sparql.rdfstore_isbnlookup(:offset => 10, :limit => 50)
       response.first[:book].should be_kind_of(RDF::URI)
+      response.first[:work].should be_kind_of(RDF::URI)
       response.first[:isbn].should be_kind_of(RDF::Literal)
     end    
   end
