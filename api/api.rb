@@ -27,11 +27,7 @@ class RDFModeler
     resource :books do
       desc "returns a total count of books in rdf store"
       get '/count' do
-        query = QUERY.select.where([:book, RDF.type, RDF::BIBO.Document])
-          .count(:book)
-          .from(DEFAULT_GRAPH)
-        solutions = REPO.select(query)
-        count = solutions.first[:count].to_i
+        count = Sparql::count(RDF::BIBO.Document)
         { :count => count }
       end
 
