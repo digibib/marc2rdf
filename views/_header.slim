@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    meta charset='utf-8'
+    title MARC2RDF toolkit
+    link href='/css/style.css' rel='stylesheet' type='text/css'
+    script src="/js/jquery.min.js"
+
+  body
+    div class="main"
+      div id="header"
+        a href="/": img src="/img/logo.png" class="logo"
+        
+        div id="header-buttons"
+          ul
+            - if admin? 
+              a[href="/mapping"]: li[class="header"] mapping 
+              a[href="/converter"]: li[class="header"] converter
+              a[href="/harvester"]: li[class="header"] harvester
+              a[href="/about"]: li[class="header"] about
+              a[href="/logout"]: li[class="header"] Log Out
+            - else
+              a[href="/about"]: li[class="header"] about
+              a[href="/admin"]: li[class="header"] Log In
+        div id="debug"

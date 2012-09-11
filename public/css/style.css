@@ -1,0 +1,41 @@
+@import url("/css/normalize.css");
+
+body        { font-family: Arial; font-size:16px;}
+h2          { border-bottom: 1px solid #ccc;}
+h3          { margin-top: 26px;}
+pre         { background-color: #ef9384; border: 1px solid #c03019;
+              border-radius: 3px; font-size: 13px; line-height: 19px;
+              padding: 6px 10px;}
+a:link, a:visited { color: #5740e6; text-decoration: none }
+a:hover     { text-decoration: underline }
+div.main    { width: 1000px; margin: auto;}
+div#header  { background-color: #888;}
+div#footer  { border-top: 1px solid #ccc; margin-top: 30px; margin-bottom: 20px;
+                font-family: monospace; font-size: 12px; padding:5px;}
+div#header-buttons { float: right; margin-top: -3px; padding:0; }
+img.logo    { margin-top: 10px; margin-left:10px;}
+
+span 		    { font-family: monospace; font-size: 12px; font-weight: bold; }
+span.info   { display: none; }
+span.error  { display: none; color: #c03019; font-weight: bold; }
+span.bold   { font-weight: bold;}
+.inputmissing { background: yellow;}
+span.inherited { color:#c03019; }
+div.inputf  { font-size:12px; font-family: monospace;}
+
+div.divdot    { border: 1px dotted #ccc; padding:14px; background-color: #f8f8f8;}
+div.backup    { display:none;}
+button        { background-color: #e8e8e8; border: 1px solid #888; border-radius: 2px;
+                padding: 3px; color: #160b57; font-size: 12px; font-family: monospace;
+            	min-width: 22px;}
+button:disabled { border: 1px dashed #ccc; color: #aaa;}
+button:disabled:active { background: #e8e8e8; position:static;}
+button:active { background:#ddd; position:relative; top: 1px; }
+button.guest  { }
+button.gen    { margin-right:10px;}
+button.innstillinger { display: none; }
+ul            { list-style: none; }
+li.header     { padding:10px; margin-right:13px; border: 1px solid #eee; color:#fff;
+				background-color: #999; letter-spacing: 0.15em; display:inline-block;
+				font-family: monospace; font-size: 12px; border-radius: 2px;}
+li.header:hover { background-color: #88a; }

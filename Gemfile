@@ -6,15 +6,22 @@ gem "marc"
 gem "rdf"
 gem "rdf-rdfxml"
 gem "rdf-n3"
-#gem 'rdf-virtuoso', :path => '../rdf-virtuoso'
-#gem 'rdf-virtuoso', git: 'https://github.com/digibib/rdf-virtuoso.git', branch: 'develop'
 gem "rdf-virtuoso"
-gem "rest-client"
-gem "oai", '0.2.0'
-#gem "oai", '0.0.9', :git => 'git://github.com/teefax/oai.git'
 gem "rdf-spec"
 gem "rspec-mocks"
+gem "oai", '0.2.0'
+gem "rest-client"
 gem "rack"
 gem "grape"
-gem "shotgun"
-#gem "thin"
+gem "sinatra"
+gem "sinatra-contrib"
+gem "sequel"
+gem "sqlite3"
+gem "slim"
+gem "thin"
+gem "foreman"
+
+group :development do
+  gem "sinatra-reloader"
+  gem "pry"
+end

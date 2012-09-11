@@ -7,6 +7,7 @@ require 'rdf/rdfxml'
 require 'rdf/n3'
 require 'rdf/ntriples'
 
+require_relative './model.rb'
 require_relative './sparql_update.rb'
 require_relative './sparql.rb'
 require_relative './string_replace.rb'
