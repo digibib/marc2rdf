@@ -35,6 +35,25 @@ get '/' do
   end
 end
 
+get '/mapping' do
+  # Mapping tool
+  slim(:mapping)  
+end
+get '/converter' do
+  # Main conversion tool
+  slim(:converter)  
+end
+
+get '/harvester' do
+  # Harvesting sources
+  slim(:harvester)  
+end
+
+get '/settings' do
+  # Misc. settings
+  slim(:settings)  
+end
+
 get '/about' do
   # Front page
   slim(:about)  

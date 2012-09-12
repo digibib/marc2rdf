@@ -8,8 +8,8 @@ pre         { background-color: #ef9384; border: 1px solid #c03019;
               padding: 6px 10px;}
 a:link, a:visited { color: #5740e6; text-decoration: none }
 a:hover     { text-decoration: underline }
-div.main    { width: 1000px; margin: auto;}
-div#header  { background-color: #888;}
+div.main    { width: 80%; margin: auto;}
+div#header  { background-color: #97C28F;}
 div#footer  { border-top: 1px solid #ccc; margin-top: 30px; margin-bottom: 20px;
                 font-family: monospace; font-size: 12px; padding:5px;}
 div#header-buttons { float: right; margin-top: -3px; padding:0; }
@@ -31,7 +31,6 @@ button        { background-color: #e8e8e8; border: 1px solid #888; border-radius
 button:disabled { border: 1px dashed #ccc; color: #aaa;}
 button:disabled:active { background: #e8e8e8; position:static;}
 button:active { background:#ddd; position:relative; top: 1px; }
-button.guest  { }
 button.gen    { margin-right:10px;}
 button.innstillinger { display: none; }
 ul            { list-style: none; }
