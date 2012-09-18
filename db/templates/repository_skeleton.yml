@@ -1,0 +1,33 @@
+---
+resource:
+  base: 'http://example.com'
+  resource_path: /resource/
+  resource_prefix: tnr_
+  resource_identifier_field: '001'
+  resource_type: BIBO.Document
+
+rdfstore:
+  store: virtuoso
+  sparql_endpoint: http://localhost:8890/sparql
+  sparul_endpoint: http://localhost:8890/sparql-auth
+  default_prefix:  http://example.com/
+  default_graph:   http://example.com/books
+  username:    
+  password:    
+  auth_method: digest
+
+oai:
+  repository_url: http://www.example.com/cgi-bin/oai
+  follow_redirects: false
+  parser: rexml
+  timeout: 600
+  format: bibliofilmarc
+  preserve_on_update:
+    - FOAF.depiction
+    - REV.hasReview
+    - OWL.sameAs
+    - FOAF.isVersionOf
+    - FOAF.isPrimaryTopicOf
+    - BIBO.lccn
+    - BIBO.oclcnum
+    - BIBO.isbn

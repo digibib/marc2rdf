@@ -8,7 +8,7 @@ pre         { background-color: #ef9384; border: 1px solid #c03019;
               padding: 6px 10px;}
 a:link, a:visited { color: #5740e6; text-decoration: none }
 a:hover     { text-decoration: underline }
-div.main    { width: 80%; margin: auto;}
+div.main    { width: 70%; margin: auto;}
 div#header  { background-color: #97C28F;}
 div#footer  { border-top: 1px solid #ccc; margin-top: 30px; margin-bottom: 20px;
                 font-family: monospace; font-size: 12px; padding:5px;}
@@ -21,7 +21,7 @@ span.error  { display: none; color: #c03019; font-weight: bold; }
 span.bold   { font-weight: bold;}
 .inputmissing { background: yellow;}
 span.inherited { color:#c03019; }
-div.inputf  { font-size:12px; font-family: monospace;}
+div.inputf  { font-size:12px; font-family: monospace; margin-left: 30px; margin-right: 30px;}
 
 div.divdot    { border: 1px dotted #ccc; padding:14px; background-color: #f8f8f8;}
 div.backup    { display:none;}
@@ -38,3 +38,7 @@ li.header     { padding:10px; margin-right:13px; border: 1px solid #eee; color:#
 				background-color: #999; letter-spacing: 0.15em; display:inline-block;
 				font-family: monospace; font-size: 12px; border-radius: 2px;}
 li.header:hover { background-color: #88a; }
+
+table.genform  {  }
+.genform td    { padding: 5px; font-weight: bold;}
+.genform input { width:250px ; }

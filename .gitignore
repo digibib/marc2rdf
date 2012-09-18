@@ -1,2 +1,6 @@
 config/config.yml
 config/harvesting.yml
+db/repository/
+db/mapping/
+db/harvesting/
+oai_updates/

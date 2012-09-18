@@ -2,6 +2,49 @@
 
 div class="main"
   h2 Settings
-  p info here
+  h3 Rdfstore
   
+  div class="divdot inputf"
+    form id="change_rdfstore_form" autocomplete="off"
+    table class="genform"
+      - repo.repository_skeleton['rdfstore'].each do |key,value|
+        tr
+          td
+            td #{key}
+            - if key == "store"
+              td: input[type="text" id="#{key}" value="#{value}" disabled="true"]
+            - elsif key == "auth_method"
+              td: input[type="radio" id="#{key}" value="#{value}" checked="true"] #{value}
+            - else
+              td: input[type="text" id="#{key}" value="#{value}"]
+  
+  h3 Resource
+  div class="divdot inputf"
+    form id="change_rdfstore_form" autocomplete="off"
+    table class="genform"
+      - repo.repository_skeleton['resource'].each do |key,value|
+        tr
+          td
+            td #{key}
+            td: input[type="text" id="#{key}" value="#{value}"]
+                      
+  h3 OAI harvester
+  div class="divdot inputf"
+    form id="change_rdfstore_form" autocomplete="off"
+    table class="genform"
+      - repo.repository_skeleton['oai'].each do |key,value|
+        tr
+          td
+            td #{key}
+            - if key == "follow_redirects"
+              td: input[type="radio" id="#{key}" value="#{value}" checked="true"] #{value}
+            - elsif key == "preserve_on_update"
+              - value.each do |v|
+                tr
+                  td
+                    td
+                      td: input[type="text" id="#{key}" value="#{v}"]
+            - else
+              td: input[type="text" id="#{key}" value="#{value}"]
+                                  
   == render :slim, :'_footer'

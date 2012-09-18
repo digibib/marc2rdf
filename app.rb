@@ -50,8 +50,9 @@ get '/harvester' do
 end
 
 get '/settings' do
-  # Misc. settings
-  slim(:settings)  
+  # Misc. repository settings
+  r = Repo.new('dummy.yml')
+  slim :settings, :locals => {:repo => r}
 end
 
 get '/about' do
