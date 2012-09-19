@@ -1,7 +1,7 @@
 == render :slim, :'_header'
 
 div class="main"
-  h2 Settings
+  h2 Repository Settings
   h3 Rdfstore
   
   div class="divdot inputf"  
@@ -19,19 +19,26 @@ div class="main"
                 td: input[type="radio" id="#{key}" value="basic" ] basic
             - else
                 td: input[type="text" id="#{key}" value="#{value}"]
-    button[type='button' id="rdfstore_settings_save" class="gen"]  = "Save"
-  
+        tr
+          td: button[type="button" id="rdfstore_settings_save" class="gen"]  = "Save"
+          td
+            span[id="rdfstore_info" class="info" style="margin-left:48px"]
+            span[id="rdfstore_error" class="error" style="margin-left:48px"]
+          
   h3 Resource
  
   div class="divdot inputf"
     table class="genform"
-      form id="change_resource_settings_form" autocomplete="off"
+      form id="change_resource_settings_form" 
         - repo.repository_skeleton['resource'].each do |key,value|
           tr
-            td
-              td #{key}
-              td: input[type="text" id="#{key}" value="#{value}"]
-    button[type='button' id="resource_settings_save" class="gen"]  = "Save"
+            td #{key}
+            td: input[type="text" id="#{key}" value="#{value}"]
+        tr
+          td: button[type="button" id="resource_settings_save" class="gen"]  = "Save"
+          td
+            span[id="resource_info" class="info" style="margin-left:48px"]
+            span[id="resource_error" class="error" style="margin-left:48px"]
                       
   h3 OAI harvester
   div class="divdot inputf"
@@ -54,16 +61,23 @@ div class="main"
                     td
                       td
                         td: input[type="radio" id="#{key}" value="false" ] false
+              // needs to parse as array, so need to use class instead of id
               - elsif key == "preserve_on_update"
-                - value.each do |v|
+                - value.each_with_index do |v, index|
                   tr
                     td
                       td
-                        td: input[type="text" id="#{key}" value="#{v}"]
+                        td: input[type="text" name="#{key}[#{index}]" class="#{key}" value="#{v}"]
               - else
                 td: input[type="text" id="#{key}" value="#{value}"]
-    button[type='button' id="oai_settings_save" class="gen"]  = "Save"
-    button[type='button' id="settings_save" class="gen"]  = "Save all"
+        tr
+          td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
+          td: button[type='button' id="settings_save" class="gen"]  = "Save all"
+          td
+            span[id="oai_info" class="info" style="margin-left:48px"]
+            span[id="oai_error" class="error" style="margin-left:48px"]
+            span[id="all_info" class="info" style="margin-left:48px"]
+            span[id="all_error" class="error" style="margin-left:48px"]
   
   javascript:
     $(document).ready(function () {
@@ -87,11 +101,11 @@ div class="main"
         });
 
         request.done(function(data) {
-          $('span').html(msg).show().fadeOut(5000);
+          $('span#rdfstore_info').html("Saved rdfstore settings !").show().fadeOut(3000);
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#rdfstore_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
       
@@ -113,12 +127,45 @@ div class="main"
         });
 
         request.done(function(data) {
-          $('span').html(msg).show().fadeOut(5000);
+          $('span#resource_info').html("Saved resource settings !").show().fadeOut(3000);
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#resource_info').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
+      
+      // ** save oai settings
+      $('button#oai_settings_save').on('click', function() {
+        var data = $('input:text[name=preserve_on_update[]]');
+        var json = data.serializeArray();
+        var preserve_array = [];
+        $.each(json, function(i,v) {
+          preserve_array.push(v.value);
+        });
+        //alert(preserve_array);
+        request = $.ajax({
+          url: '/settings',
+          type: 'PUT',
+          cache: false,
+          data: { 
+              oai: {
+              repository_url: $('input#repository_url').val(),
+              follow_redirects: $('input#follow_redirects').val(),
+              parser: $('input#parser').val(),
+              timeout: $('input#timeout').val(),
+              preserve_on_update: preserve_array
+              }},
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span#oai_info').html("Saved oai settings !").show().fadeOut(5000);
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });      
     });
   == render :slim, :'_footer'
