@@ -4,47 +4,121 @@ div class="main"
   h2 Settings
   h3 Rdfstore
   
-  div class="divdot inputf"
-    form id="change_rdfstore_form" autocomplete="off"
+  div class="divdot inputf"  
     table class="genform"
-      - repo.repository_skeleton['rdfstore'].each do |key,value|
-        tr
-          td
+      form id="change_rdfstore_settings_form" 
+        - repo.repository_skeleton['rdfstore'].each do |key,value|
+          tr
             td #{key}
             - if key == "store"
               td: input[type="text" id="#{key}" value="#{value}" disabled="true"]
             - elsif key == "auth_method"
               td: input[type="radio" id="#{key}" value="#{value}" checked="true"] #{value}
+              tr
+                td
+                td: input[type="radio" id="#{key}" value="basic" ] basic
             - else
-              td: input[type="text" id="#{key}" value="#{value}"]
+                td: input[type="text" id="#{key}" value="#{value}"]
+    button[type='button' id="rdfstore_settings_save" class="gen"]  = "Save"
   
   h3 Resource
+ 
   div class="divdot inputf"
-    form id="change_rdfstore_form" autocomplete="off"
     table class="genform"
-      - repo.repository_skeleton['resource'].each do |key,value|
-        tr
-          td
-            td #{key}
-            td: input[type="text" id="#{key}" value="#{value}"]
+      form id="change_resource_settings_form" autocomplete="off"
+        - repo.repository_skeleton['resource'].each do |key,value|
+          tr
+            td
+              td #{key}
+              td: input[type="text" id="#{key}" value="#{value}"]
+    button[type='button' id="resource_settings_save" class="gen"]  = "Save"
                       
   h3 OAI harvester
   div class="divdot inputf"
-    form id="change_rdfstore_form" autocomplete="off"
-    table class="genform"
-      - repo.repository_skeleton['oai'].each do |key,value|
-        tr
-          td
-            td #{key}
-            - if key == "follow_redirects"
-              td: input[type="radio" id="#{key}" value="#{value}" checked="true"] #{value}
-            - elsif key == "preserve_on_update"
-              - value.each do |v|
-                tr
-                  td
+    form id="change_harvester_settings_form" autocomplete="off"
+      table class="genform"
+        - repo.repository_skeleton['oai'].each do |key,value|
+          tr
+            td
+              td #{key}
+              - if key == "follow_redirects"
+                - if value == false
+                  td: input[type="radio" id="#{key}" value="true" ] true 
+                  tr
                     td
-                      td: input[type="text" id="#{key}" value="#{v}"]
-            - else
-              td: input[type="text" id="#{key}" value="#{value}"]
-                                  
+                      td
+                        td: input[type="radio" id="#{key}" value="#{value}" checked="true"] #{value}
+                - else
+                  td: input[type="radio" id="#{key}" value="#{value}" checked="true"] #{value}
+                  tr
+                    td
+                      td
+                        td: input[type="radio" id="#{key}" value="false" ] false
+              - elsif key == "preserve_on_update"
+                - value.each do |v|
+                  tr
+                    td
+                      td
+                        td: input[type="text" id="#{key}" value="#{v}"]
+              - else
+                td: input[type="text" id="#{key}" value="#{value}"]
+    button[type='button' id="oai_settings_save" class="gen"]  = "Save"
+    button[type='button' id="settings_save" class="gen"]  = "Save all"
+  
+  javascript:
+    $(document).ready(function () {
+      // ** save rdfstore settings
+      $('button#rdfstore_settings_save').on('click', function() {
+        request = $.ajax({
+          url: '/settings',
+          type: 'PUT',
+          cache: false,
+          data: { 
+              rdfstore: {
+              sparql_endpoint: $('input#sparql_endpoint').val(),
+              sparul_endpoint: $('input#sparul_endpoint').val(),
+              default_prefix: $('input#default_prefix').val(),
+              default_graph: $('input#default_graph').val(),
+              username: $('input#username').val(),
+              password: $('input#password').val(),
+              auth_method: $('input#auth_method').val()
+              }},
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span').html(msg).show().fadeOut(5000);
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+      
+      // ** save resource settings
+      $('button#resource_settings_save').on('click', function() {
+        request = $.ajax({
+          url: '/settings',
+          type: 'PUT',
+          cache: false,
+          data: { 
+              resource: {
+              base: $('input#base').val(),
+              resource_path: $('input#resource_path').val(),
+              resource_prefix: $('input#resource_prefix').val(),
+              resource_identifier_field: $('input#resource_identifier_field').val(),
+              resource_type: $('input#resource_type').val()
+              }},
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span').html(msg).show().fadeOut(5000);
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+    });
   == render :slim, :'_footer'

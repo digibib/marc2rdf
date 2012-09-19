@@ -51,8 +51,18 @@ end
 
 get '/settings' do
   # Misc. repository settings
-  r = Repo.new('dummy.yml')
-  slim :settings, :locals => {:repo => r}
+  session[:settings] = Repo.new('dummy.yml')
+  #puts session[:settings]['repository_skeleton'].inspect
+  slim :settings, :locals => {:repo => session[:settings]}
+end
+
+put '/settings' do
+  # Save/update repository settings
+  
+  session[:settings].rdfstore = params['rdfstore'] if params['rdfstore']
+  session[:settings].resource = params['resource'] if params['resource']
+  session[:settings].oai = params['oai'] if params['oai']
+  session[:settings].save
 end
 
 get '/about' do
