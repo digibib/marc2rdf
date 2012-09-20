@@ -8,10 +8,10 @@ resource:
 
 rdfstore:
   store: virtuoso
-  sparql_endpoint: http://localhost:8890/sparql
-  sparul_endpoint: http://localhost:8890/sparql-auth
   default_prefix:  http://example.com/
   default_graph:   http://example.com/books
+  sparql_endpoint: http://localhost:8890/sparql
+  sparul_endpoint: http://localhost:8890/sparql-auth
   username:    
   password:    
   auth_method: digest

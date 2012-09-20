@@ -14,9 +14,9 @@ class Repo
   
   def save
     @repo.transaction do
-      @repo['resource'] = @resource
-      @repo['rdfstore'] = @rdfstore
-      @repo['oai']      = @oai
+      @repo['resource'] = @resource if @resource
+      @repo['rdfstore'] = @rdfstore if @rdfstore
+      @repo['oai']      = @oai      if @rdfstore
     end
   end
 end

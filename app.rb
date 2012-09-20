@@ -51,7 +51,7 @@ end
 
 get '/settings' do
   # Misc. repository settings
-  session[:settings] = Repo.new('dummy.yml')
+  session[:settings] = Repo.new('repository.yml')
   #puts session[:settings]['repository_skeleton'].inspect
   slim :settings, :locals => {:repo => session[:settings]}
 end
@@ -61,7 +61,7 @@ put '/settings' do
   
   session[:settings].rdfstore = params['rdfstore'] if params['rdfstore']
   session[:settings].resource = params['resource'] if params['resource']
-  session[:settings].oai = params['oai'] if params['oai']
+  session[:settings].oai      = params['oai']      if params['oai']
   session[:settings].save
 end
 
