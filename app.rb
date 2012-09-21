@@ -1,4 +1,6 @@
 #encoding: UTF-8
+$stdout.sync = true
+
 if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 require "rubygems"
 require "bundler/setup"
@@ -50,19 +52,25 @@ get '/harvester' do
 end
 
 get '/settings' do
-  # Misc. repository settings
-  session[:settings] = Repo.new('repository.yml')
+  # General settings
+  session[:settings] = YAML::Store.new( File.join(File.dirname(__FILE__), 'config/settings.yml'), :Indent => 2 )
   #puts session[:settings]['repository_skeleton'].inspect
-  slim :settings, :locals => {:repo => session[:settings]}
+  slim :settings, :locals => {:settings => session[:settings]}
 end
 
-put '/settings' do
+get '/repository' do
+  # Misc. repository settings
+  session[:repository] = Repo.new('repository.yml')
+  #puts session[:settings]['repository_skeleton'].inspect
+  slim :repository, :locals => {:repo => session[:repository]}
+end
+
+put '/repository' do
   # Save/update repository settings
-  
-  session[:settings].rdfstore = params['rdfstore'] if params['rdfstore']
-  session[:settings].resource = params['resource'] if params['resource']
-  session[:settings].oai      = params['oai']      if params['oai']
-  session[:settings].save
+  session[:repository].rdfstore = params['rdfstore'] if params['rdfstore']
+  session[:repository].resource = params['resource'] if params['resource']
+  session[:repository].oai      = params['oai']      if params['oai']
+  session[:repository].save
 end
 
 get '/about' do

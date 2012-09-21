@@ -1,215 +1,24 @@
 == render :slim, :'_header'
-
+// This file contains advanced settings for rdf store and harvesting
 div class="main"
-  h2 Repository Settings
-  h3 Rdfstore
+  h2 General Settings
   
-  // This form contains RDF store settings
+  h3 Config Files
+  // This form contains config filename paths
   div class="divdot inputf"  
     table class="genform"
-      form id="change_rdfstore_settings_form" 
+      form id="change_filenames_settings_form" 
         tr
-          td store
-          td: input[type="text" id="store" value="virtuoso" disabled="true"]
-          td no alternatives here...
+          td mapping filename
+          td: input[type="text" id="mapping_filename" value=(settings['config']['mapping_filename'])]
+          td 
         tr
-          td sparql_endpoint
-          td: input[type="text" id="sparql_endpoint" value=(repo.repository_skeleton['rdfstore']['sparql_endpoint'])]
-          td url to sparql endpoint
+          td repository filename
+          td: input[type="text" id="repository_filename" value=(settings['config']['repository_filename'])]
+          td   
         tr
-          td sparul_endpoint
-          td: input[type="text" id="sparul_endpoint" value=(repo.repository_skeleton['rdfstore']['sparul_endpoint'])]
-          td url to sparql update endpoint    
-        tr
-          td username
-          td: input[type="text" id="username" value=(repo.repository_skeleton['rdfstore']['username'])]
-          td username to sparql update
-        tr
-          td password
-          td: input[type="text" id="password" value=(repo.repository_skeleton['rdfstore']['password'])]
-          td password to sparql update   
-        tr
-          td auth_method
-          td: input[type="radio" id="auth_method" name="auth_method" value="digest" checked=(repo.repository_skeleton['rdfstore']['auth_method'] == "digest" ? "true" : "false")] digest
-        tr
-          td
-          td: input[type="radio" id="auth_method" name="auth_method" value="digest" checked=(repo.repository_skeleton['rdfstore']['auth_method'] == "basic" ? "true" : "false")] basic
-          td sparql update authentication
-        tr
-          td default_prefix
-          td: input[type="text" id="default_prefix" value=(repo.repository_skeleton['rdfstore']['default_prefix'])]
-          td default prefix used to generate resource id's
-        tr
-          td default_graph
-          td: input[type="text" id="default_graph" value=(repo.repository_skeleton['rdfstore']['default_graph'])]
-          td default graph used to store resources in          
-        tr
-          td: button[type="button" id="rdfstore_settings_save" class="gen"]  = "Save"
-          td
-            span[id="rdfstore_info" class="info" style="margin-left:48px"]
-            span[id="rdfstore_error" class="error" style="margin-left:48px"]
-  
-  // This form contains RDF resource settings        
-  h3 Resource
- 
-  div class="divdot inputf"
-    table class="genform"
-      form id="change_resource_settings_form" 
-        - repo.repository_skeleton['resource'].each do |key,value|
-          tr
-            td #{key}
-            td: input[type="text" id="#{key}" value="#{value}"]
-        tr
-          td: button[type="button" id="resource_settings_save" class="gen"]  = "Save"
-          td
-            span[id="resource_info" class="info" style="margin-left:48px"]
-            span[id="resource_error" class="error" style="margin-left:48px"]
-                    
-  // This form contains OAI-PMH harvester settings                    
-  h3 OAI harvester
-  div class="divdot inputf"
-    form id="change_harvester_settings_form" autocomplete="off"
-      table class="genform"
-        tr
-          td repository_url
-          td: input[type="text" id="repository_url" value=(repo.repository_skeleton['oai']['repository_url'])]
-          td url to OAI repository for harvesting
-        tr
-          td follow_redirects
-          td: input[type="radio" id="follow_redirects" name="follow_redirects" value="true" checked=(repo.repository_skeleton['oai']['follow_redirects'] == "true" ? "true" : "false")] true
-        tr
-          td
-          td: input[type="radio" id="follow_redirects" name="follow_redirects" value="false" checked=(repo.repository_skeleton['oai']['follow_redirects'] == "false" ? "true" : "false")] false
-          td follow http redirects from OAI repository?
-        tr
-          td parser
-          td: input[type="text" id="parser" value=(repo.repository_skeleton['oai']['parser']) disabled="true"]
-          td parser for OAI XML response (libxml to come)          
-        tr
-          td timeout
-          td: input[type="text" id="timeout" value=(repo.repository_skeleton['oai']['timeout']) ]
-          td timeout for OAI response in ms           
-        tr
-          td format
-          td: input[type="text" id="format" value=(repo.repository_skeleton['oai']['format']) ]
-          td format for OAI response (marcexchange/bibliofilmarc)
-          
-        // NB! to parse preserve predicates as array, we need to use class instead of id
-        - repo.repository_skeleton['oai']['preserve_on_update'].each_with_index do |v, index|
-          tr
-            - if index == 0
-              td preserve_on_update 
-              td: input[type="text" name="preserve_on_update[#{index}]" class="preserve_on_update" value="#{v}"]
-              td properties to keep from being deleted on update
-            - else
-              td
-              td: input[type="text" name="preserve_on_update[#{index}]" class="preserve_on_update" value="#{v}"]
-
-        tr
-          td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
-          td: button[type='button' id="settings_save" class="gen"]  = "Save all"
-          td
-            span[id="oai_info" class="info" style="margin-left:48px"]
-            span[id="oai_error" class="error" style="margin-left:48px"]
-            span[id="all_info" class="info" style="margin-left:48px"]
-            span[id="all_error" class="error" style="margin-left:48px"]
-  
-  javascript:
-    $(document).ready(function () {
-      // ** save rdfstore settings
-      $('button#rdfstore_settings_save').on('click', function() {
-        request = $.ajax({
-          url: '/settings',
-          type: 'PUT',
-          cache: false,
-          data: { 
-              rdfstore: {
-              store: $('input#store').val(),
-              sparql_endpoint: $('input#sparql_endpoint').val(),
-              sparul_endpoint: $('input#sparul_endpoint').val(),
-              username: $('input#username').val(),
-              password: $('input#password').val(),
-              auth_method: $('input#auth_method:checked').val(),
-              default_prefix: $('input#default_prefix').val(),
-              default_graph: $('input#default_graph').val()
-              }},
-          dataType: 'json'
-        });
-
-        request.done(function(data) {
-          $('span#rdfstore_info').html("Saved rdfstore settings !").show().fadeOut(3000);
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#rdfstore_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-      
-      // ** save resource settings
-      $('button#resource_settings_save').on('click', function() {
-        request = $.ajax({
-          url: '/settings',
-          type: 'PUT',
-          cache: false,
-          data: { 
-              resource: {
-              base: $('input#base').val(),
-              resource_path: $('input#resource_path').val(),
-              resource_prefix: $('input#resource_prefix').val(),
-              resource_identifier_field: $('input#resource_identifier_field').val(),
-              resource_type: $('input#resource_type').val()
-              }},
-          dataType: 'json'
-        });
-
-        request.done(function(data) {
-          $('span#resource_info').html("Saved resource settings !").show().fadeOut(3000);
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#resource_info').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-      
-      // ** save oai settings
-      $('button#oai_settings_save').on('click', function() {
-        var preserve_data = $('input:text[name=preserve_on_update[]]');
-        var json = preserve_data.serializeArray();
-        var preserve_array = [];
-        $.each(json, function(i,v) {
-          preserve_array.push(v.value);
-        });
-        //alert(preserve_array);
-        request = $.ajax({
-          url: '/settings',
-          type: 'PUT',
-          cache: false,
-          data: { 
-              oai: {
-              repository_url: $('input#repository_url').val(),
-              follow_redirects: $('input#follow_redirects:checked').val(),
-              parser: $('input#parser').val(),
-              timeout: $('input#timeout').val(),
-              format: $('input#format').val(),
-              preserve_on_update: preserve_array
-              }},
-          dataType: 'json'
-        });
-
-        request.done(function(data) {
-          $('span#oai_info').html("Saved oai settings !").show().fadeOut(3000);
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-      
-      // ** save all settings
-      $('button#settings_save').on('click', function() {
-        $('button#rdfstore_settings_save').click();
-        $('button#resource_settings_save').click();
-        $('button#oai_settings_save').click();
-      });            
-    });
+          td harvesting filename
+          td: input[type="text" id="harvesting_filename" value=(settings['config']['harvesting_filename'])]
+          td   
   == render :slim, :'_footer'
+          
