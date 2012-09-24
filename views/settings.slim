@@ -20,5 +20,38 @@ div class="main"
           td harvesting filename
           td: input[type="text" id="harvesting_filename" value=(settings['config']['harvesting_filename'])]
           td   
+        tr
+          td: button[type="button" id="settings_save" class="gen"]  = "Save"
+          td
+            span[id="settings_info" class="info" style="margin-left:48px"]
+            span[id="settings_error" class="error" style="margin-left:48px"]
+                      
+  javascript:
+    $(document).ready(function () {
+      // ** save rdfstore settings
+      $('button#settings_save').on('click', function() {
+        request = $.ajax({
+          url: '/settings',
+          type: 'PUT',
+          cache: false,
+          data: { 
+              config: {
+              mapping_filename: $('input#mapping_filename').val(),
+              repository_filename: $('input#repository_filename').val(),
+              harvesting_filename: $('input#harvesting_filename').val()
+              }},
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span#settings_info').html("Saved settings OK!").show().fadeOut(3000);
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#settings_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+    });
+          
   == render :slim, :'_footer'
           

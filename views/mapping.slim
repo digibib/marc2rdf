@@ -1,7 +1,67 @@
 == render :slim, :'_header'
-
+// This file contains entire mapping from MARC to RDF
+// This mapping must be well thought through
+// Split screen or test convertion feedback for user:
+// tag > mapping > "test" > result
 div class="main"
   h2 Mapping
-  p info here
+
+  // This form contains mapping
+  div class="divdot inputf"  
+    table class="genform"
+      form id="change_mapping_form"
+        tr 
+          th tag
+          th marcexample
+          th mappingname
+          th predicate
+          th object_prefix
+          th object_datatype
+          th test?
+          th result
+        - skeleton['tags'].each do |tagnumber, values|
+          - values.each do | value, content |
+            - unless values.has_key?('subfield')
+              tr
+                td #{tagnumber}
+                td 0124051
+                td #{value}
+                td: input[type="text" id=("predicate" + tagnumber) value=(skeleton['tags'][tagnumber][value]['predicate']) ]
+                td: input[type="text" id=("prefix" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['prefix']) ]
+                td: input[type="text" id=("datatype" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['datatype']) ]
+                td: button[type="button" id=(tagnumber) class="gen"]  = "test"
+                td
+                  span[id="tag_001_info" class="info" ]
+                  span[id="tag_001_error" class="error" ]           
+        tr
+          td: button[type="button" id="mapping_save" class="gen"]  = "Save"
+          td
+            span[id="mapping_info" class="info" style="margin-left:48px"]
+            span[id="mapping_error" class="error" style="margin-left:48px"]  
   
+  javascript:
+    $(document).ready(function () {
+      // ** save mapping
+      $('button#mapping_save').on('click', function() {
+        request = $.ajax({
+          url: '/mapping',
+          type: 'PUT',
+          cache: false,
+          data: { 
+              tags: {
+              tag: $('input#tag').val()
+              }},
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span#mapping_info').html("Saved mapping !").show().fadeOut(3000);
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+    });
+    
   == render :slim, :'_footer'

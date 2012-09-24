@@ -120,7 +120,7 @@ div class="main"
       // ** save rdfstore settings
       $('button#rdfstore_settings_save').on('click', function() {
         request = $.ajax({
-          url: '/settings',
+          url: '/repository',
           type: 'PUT',
           cache: false,
           data: { 
@@ -149,7 +149,7 @@ div class="main"
       // ** save resource settings
       $('button#resource_settings_save').on('click', function() {
         request = $.ajax({
-          url: '/settings',
+          url: '/repository',
           type: 'PUT',
           cache: false,
           data: { 
@@ -182,7 +182,7 @@ div class="main"
         });
         //alert(preserve_array);
         request = $.ajax({
-          url: '/settings',
+          url: '/repository',
           type: 'PUT',
           cache: false,
           data: { 

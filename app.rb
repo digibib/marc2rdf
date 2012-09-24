@@ -1,5 +1,5 @@
 #encoding: UTF-8
-$stdout.sync = true
+$stdout.sync = true # gives foreman full stdout
 
 if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
 require "rubygems"
@@ -38,9 +38,12 @@ get '/' do
 end
 
 get '/mapping' do
-  # Mapping tool
-  slim(:mapping)  
+  # Primary mapping
+  session[:mapping] = Mapping.new('mapping.yml')
+  skeleton = YAML::load( File.open( File.join(File.dirname(__FILE__), './db/templates/', 'mapping_skeleton.yml')))
+  slim :mapping, :locals => {:mapping => session[:mapping], :skeleton => skeleton}
 end
+
 get '/converter' do
   # Main conversion tool
   slim(:converter)  
@@ -53,15 +56,22 @@ end
 
 get '/settings' do
   # General settings
-  session[:settings] = YAML::Store.new( File.join(File.dirname(__FILE__), 'config/settings.yml'), :Indent => 2 )
-  #puts session[:settings]['repository_skeleton'].inspect
+  session[:settings] = YAML::load( File.open( File.join(File.dirname(__FILE__), './config/', 'settings.yml')))
   slim :settings, :locals => {:settings => session[:settings]}
+end
+
+put '/settings' do
+  # Save general settings
+  settings = YAML::Store.new( File.join(File.dirname(__FILE__), 'config/settings.yml'), :Indent => 2 )
+  puts params
+  settings.transaction do
+    settings['config'] = params['config'] if params['config']
+  end
 end
 
 get '/repository' do
   # Misc. repository settings
   session[:repository] = Repo.new('repository.yml')
-  #puts session[:settings]['repository_skeleton'].inspect
   slim :repository, :locals => {:repo => session[:repository]}
 end
 
