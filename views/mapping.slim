@@ -26,9 +26,11 @@ div class="main"
                 td #{tagnumber}
                 td 0124051
                 td #{value}
-                td: input[type="text" id=("predicate" + tagnumber) value=(skeleton['tags'][tagnumber][value]['predicate']) ]
+                td: input[type="text" style="width:120px" id=("predicate" + tagnumber) value=(skeleton['tags'][tagnumber][value]['predicate']) ]
                 td: input[type="text" id=("prefix" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['prefix']) ]
-                td: input[type="text" id=("datatype" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['datatype']) ]
+                td 
+                  input[type="radio" id=("datatype" + tagnumber) value="uri" checked=(skeleton['tags'][tagnumber][value]['object']['datatype'] == "uri" ? "true" : "false")] uri
+                  input[type="radio" id=("datatype" + tagnumber) value="literal" checked=(skeleton['tags'][tagnumber][value]['object']['datatype'] == "literal" ? "true" : "false")] literal
                 td: button[type="button" id=(tagnumber) class="gen"]  = "test"
                 td
                   span[id="tag_001_info" class="info" ]
