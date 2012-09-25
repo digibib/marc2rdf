@@ -99,7 +99,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
     rdfrecord = RDFModeler.new(record)
     rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
     
-	  rdfrecord.marc2rdf_convert(record)
+	  rdfrecord.marc2rdf_convert_record(record)
     # and do sparql update, preserving harvested resources
     OAIUpdate.sparql_update(titlenumber, :preserve => RDFModeler::CONFIG['oai']['preserve_on_update'])
     

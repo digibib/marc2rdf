@@ -59,7 +59,7 @@ if $recordlimit then break if i > $recordlimit end
   # initiate record and set type
   rdfrecord = RDFModeler.new(record)
   rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
-  rdfrecord.marc2rdf_convert(record)
+  rdfrecord.marc2rdf_convert_record(record)
 
 ## finally ... write processed record 
 rdfrecord.write_record

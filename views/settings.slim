@@ -10,15 +10,15 @@ div class="main"
       form id="change_filenames_settings_form" 
         tr
           td mapping filename
-          td: input[type="text" id="mapping_filename" value=(settings['config']['mapping_filename'])]
+          td: input[type="text" id="mapping_filename" value=(settings['files']['mapping_filename'])]
           td 
         tr
           td repository filename
-          td: input[type="text" id="repository_filename" value=(settings['config']['repository_filename'])]
+          td: input[type="text" id="repository_filename" value=(settings['files']['repository_filename'])]
           td   
         tr
           td harvesting filename
-          td: input[type="text" id="harvesting_filename" value=(settings['config']['harvesting_filename'])]
+          td: input[type="text" id="harvesting_filename" value=(settings['files']['harvesting_filename'])]
           td   
         tr
           td: button[type="button" id="settings_save" class="gen"]  = "Save"
@@ -30,12 +30,11 @@ div class="main"
     $(document).ready(function () {
       // ** save rdfstore settings
       $('button#settings_save').on('click', function() {
-        request = $.ajax({
+        var request = $.ajax({
           url: '/settings',
           type: 'PUT',
           cache: false,
-          data: { 
-              config: {
+          data: { files: {
               mapping_filename: $('input#mapping_filename').val(),
               repository_filename: $('input#repository_filename').val(),
               harvesting_filename: $('input#harvesting_filename').val()

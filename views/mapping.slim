@@ -15,8 +15,8 @@ div class="main"
           th marcexample
           th mappingname
           th predicate
-          th object_prefix
-          th object_datatype
+          th prefix
+          th datatype
           th test?
           th result
         - skeleton['tags'].each do |tagnumber, values|
@@ -26,33 +26,56 @@ div class="main"
                 td #{tagnumber}
                 td 0124051
                 td #{value}
-                td: input[type="text" style="width:120px" id=("predicate" + tagnumber) value=(skeleton['tags'][tagnumber][value]['predicate']) ]
-                td: input[type="text" id=("prefix" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['prefix']) ]
-                td 
-                  input[type="radio" id=("datatype" + tagnumber) value="uri" checked=(skeleton['tags'][tagnumber][value]['object']['datatype'] == "uri" ? "true" : "false")] uri
-                  input[type="radio" id=("datatype" + tagnumber) value="literal" checked=(skeleton['tags'][tagnumber][value]['object']['datatype'] == "literal" ? "true" : "false")] literal
+                td: input[type="text" style="width:120px" name=(tagnumber + ".predicate") value=(skeleton['tags'][tagnumber][value]['predicate']) ]
+                td: input[type="text" name=("prefix" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['prefix']) ]
+                td
+                  select[name=("datatype" + tagnumber)]
+                    option[selected=("selected" if skeleton['tags'][tagnumber][value]['object']['datatype'] == "uri")] uri
+                    option[selected=("selected" if skeleton['tags'][tagnumber][value]['object']['datatype'] == "literal")] literal
                 td: button[type="button" id=(tagnumber) class="gen"]  = "test"
                 td
-                  span[id="tag_001_info" class="info" ]
-                  span[id="tag_001_error" class="error" ]           
+                  span[id=(tagnumber + "_info") class="info" style="margin-left:48px"]
+                  span[id=(tagnumber + "_error") class="error" ]           
         tr
           td: button[type="button" id="mapping_save" class="gen"]  = "Save"
           td
             span[id="mapping_info" class="info" style="margin-left:48px"]
             span[id="mapping_error" class="error" style="margin-left:48px"]  
-  
+        
   javascript:
     $(document).ready(function () {
+      // second function to make JSON
+      function getFormData($form){
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+    
+        $.map(unindexed_array, function(n, i){
+          if(n['value']) {
+            indexed_array[n['name']] = n['value'];
+          };
+        });
+        return indexed_array;
+      };
+      // ** test conversion
+      $('button#001').on('click', function(evt) {
+        evt.preventDefault();
+        $('span#001_info').html('testing...').show().fadeOut(3000);
+      });
       // ** save mapping
-      $('button#mapping_save').on('click', function() {
-        request = $.ajax({
+      
+      $('button#mapping_save').on('click', function(e) {
+        e.preventDefault();
+        //var formData = $("#change_mapping_form").serializeArray().JSON.stringify();
+        var $form = $("#change_mapping_form");
+        var formData = getFormData($form);
+        
+        var request = $.ajax({
           url: '/mapping',
           type: 'PUT',
           cache: false,
           data: { 
-              tags: {
-              tag: $('input#tag').val()
-              }},
+              tags: formData
+              },
           dataType: 'json'
         });
 

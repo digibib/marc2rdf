@@ -44,6 +44,13 @@ get '/mapping' do
   slim :mapping, :locals => {:mapping => session[:mapping], :skeleton => skeleton}
 end
 
+put '/mapping' do
+  # Save mapping
+  puts params
+  session[:mapping].tags = params['tags'] if params['tags']
+  session[:mapping].save
+end
+
 get '/converter' do
   # Main conversion tool
   slim(:converter)  
@@ -63,9 +70,8 @@ end
 put '/settings' do
   # Save general settings
   settings = YAML::Store.new( File.join(File.dirname(__FILE__), 'config/settings.yml'), :Indent => 2 )
-  puts params
   settings.transaction do
-    settings['config'] = params['config'] if params['config']
+    settings['files'] = params['files'] if params['files']
   end
 end
 

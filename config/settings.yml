@@ -1,5 +1,5 @@
 ---
-config:
+files:
   mapping_filename: mapping.yml
   repository_filename: repository.yml
   harvesting_filename: harvesting.yml

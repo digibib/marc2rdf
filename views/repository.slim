@@ -31,10 +31,10 @@ div class="main"
           td password for sparql update   
         tr
           td auth_method
-          td: input[type="radio" id="auth_method" name="auth_method" value="digest" checked=(repo.repository_skeleton['rdfstore']['auth_method'] == "digest" ? "true" : "false")] digest
-        tr
-          td
-          td: input[type="radio" id="auth_method" name="auth_method" value="digest" checked=(repo.repository_skeleton['rdfstore']['auth_method'] == "basic" ? "true" : "false")] basic
+          td 
+            select[id="auth_method"]
+              option[selected=("selected" if repo.repository_skeleton['rdfstore']['auth_method'] == "digest")] digest
+              option[selected=("selected" if repo.repository_skeleton['rdfstore']['auth_method'] == "basic")] basic
           td sparql update authentication method
         tr
           td default_prefix
@@ -77,11 +77,10 @@ div class="main"
           td url to OAI repository for harvesting
         tr
           td follow_redirects
-          td: input[type="radio" id="follow_redirects" name="follow_redirects" value="true" checked=(repo.repository_skeleton['oai']['follow_redirects'] == "true" ? "true" : "false")] true
-        tr
           td
-          td: input[type="radio" id="follow_redirects" name="follow_redirects" value="false" checked=(repo.repository_skeleton['oai']['follow_redirects'] == "false" ? "true" : "false")] false
-          td follow http redirects from OAI repository?
+            select[id="follow_redirects"]
+              option[selected=("selected" if repo.repository_skeleton['oai']['follow_redirects'] == "false")] false
+              option[selected=("selected" if repo.repository_skeleton['oai']['follow_redirects'] == "true")] true
         tr
           td parser
           td: input[type="text" id="parser" value=(repo.repository_skeleton['oai']['parser']) disabled="true"]
@@ -119,7 +118,7 @@ div class="main"
     $(document).ready(function () {
       // ** save rdfstore settings
       $('button#rdfstore_settings_save').on('click', function() {
-        request = $.ajax({
+        var request = $.ajax({
           url: '/repository',
           type: 'PUT',
           cache: false,
@@ -130,7 +129,7 @@ div class="main"
               sparul_endpoint: $('input#sparul_endpoint').val(),
               username: $('input#username').val(),
               password: $('input#password').val(),
-              auth_method: $('input#auth_method:checked').val(),
+              auth_method: $('select#auth_method" option:selected').val(),
               default_prefix: $('input#default_prefix').val(),
               default_graph: $('input#default_graph').val()
               }},
@@ -188,7 +187,7 @@ div class="main"
           data: { 
               oai: {
               repository_url: $('input#repository_url').val(),
-              follow_redirects: $('input#follow_redirects:checked').val(),
+              follow_redirects: $('select#follow_redirects" option:selected').val(),
               parser: $('input#parser').val(),
               timeout: $('input#timeout').val(),
               format: $('input#format').val(),

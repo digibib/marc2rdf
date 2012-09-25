@@ -14,8 +14,9 @@ require_relative './sparql.rb'
 require_relative './string_replace.rb'
 
 class RDFModeler
-CONFIG      = YAML::load_file('config/config.yml')
-MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
+SETTINGS    = YAML::load_file('config/settings.yml')
+MAPPINGFILE = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/mapping/', SETTINGS['files']['mapping_filename']) ) )
+REPOSITORY  = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/repository/', SETTINGS['files']['repository_filename']) ) )
 @@yamltags = MAPPINGFILE['tags']
 
   attr_reader :record, :statements, :uri
@@ -26,8 +27,8 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
   end
     
   def construct_uri
-    @uri = RDF::URI.intern(CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'])
-    id = @record[CONFIG['resource']['resource_identifier_field']]
+    @uri = RDF::URI.intern(REPOSITORY['resource']['base'] + REPOSITORY['resource']['resource_path'] + REPOSITORY['resource']['resource_prefix'])
+    id = @record[REPOSITORY['resource']['resource_identifier_field']]
     @uri += id.value.to_i
   end
 
@@ -133,7 +134,7 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
       end
   end
   
-  def marc2rdf_convert(record)
+  def marc2rdf_convert_record(record)
   # start graph handle, one graph per record, else graph will grow too large to parse
   record.tags.each do | marctag | 
     # put all marc tag fields into array object 'marcfields' for later use

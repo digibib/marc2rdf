@@ -6,14 +6,14 @@ require 'bundler/setup'
 require 'grape'
 require_relative '../lib/rdfmodeler.rb'
 
-SPARQL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparql_endpoint']
-SPARUL_ENDPOINT  = RDFModeler::CONFIG['rdfstore']['sparul_endpoint']
-DEFAULT_PREFIX   = RDFModeler::CONFIG['rdfstore']['default_prefix']
-DEFAULT_GRAPH    = RDF::URI(RDFModeler::CONFIG['rdfstore']['default_graph'])
+SPARQL_ENDPOINT  = RDFModeler::REPOSITORY['rdfstore']['sparql_endpoint']
+SPARUL_ENDPOINT  = RDFModeler::REPOSITORY['rdfstore']['sparul_endpoint']
+DEFAULT_PREFIX   = RDFModeler::REPOSITORY['rdfstore']['default_prefix']
+DEFAULT_GRAPH    = RDF::URI(RDFModeler::REPOSITORY['rdfstore']['default_graph'])
 
-@username    = RDFModeler::CONFIG['rdfstore']['username']
-@password    = RDFModeler::CONFIG['rdfstore']['password']
-@auth_method = RDFModeler::CONFIG['rdfstore']['auth_method']
+@username    = RDFModeler::REPOSITORY['rdfstore']['username']
+@password    = RDFModeler::REPOSITORY['rdfstore']['password']
+@auth_method = RDFModeler::REPOSITORY['rdfstore']['auth_method']
 
 REPO  = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
 QUERY = RDF::Virtuoso::Query
