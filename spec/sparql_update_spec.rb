@@ -44,9 +44,22 @@ describe SparqlUpdate do
       response.should_not match(/NULL/)
     end
     
+    it "should actually insert correct data when updating a book" do
+      response = OAIUpdate.sparql_purge(@book_id)
+      response = OAIUpdate.sparql_update(@book_id)
+
+      repo = @repo.new(@sparql_endpoint)
+      query = @query.select(:type)
+      query.where([RDF::URI(@uri + @book_id), RDF::type, :type])
+      #puts query.to_s
+      solutions = repo.select(query)
+      solutions.bindings[:type].first.should eql(RDF::BIBO.Document)
+    end
+    
     it "should support updating a book while preserving harvested info" do
       preserve = ["FOAF.depiction", "REV.hasReview"]
       response = OAIUpdate.sparql_update(@book_id, :preserve => preserve)
+      #p response
       response.should match(/(done|nothing)/)
       response.should_not match(/NULL/)
     end
