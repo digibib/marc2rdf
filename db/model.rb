@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'sinatra'
 require 'yaml/store'
 # yaml/store main method:
@@ -13,7 +14,7 @@ class Repo
   end
   
   def save
-    @repo.transaction do
+    @repo.transaction true do
       @repo['resource'] = @resource if @resource
       @repo['rdfstore'] = @rdfstore if @rdfstore
       @repo['oai']      = @oai      if @rdfstore
@@ -22,16 +23,19 @@ class Repo
 end
 
 class Mapping
+  ## Should change to JSON mapping using jsonschema
+  ## https://github.com/marianoguerra/json-edit
+  ## https://github.com/Constellation/ruby-jsonchema
   attr_reader   :mapping_skeleton
   attr_accessor :filename, :tags
 
   def initialize(filename)
-    @mapping_skeleton    = YAML::load( File.open( File.join(File.dirname(__FILE__), '../db/templates/', 'mapping_skeleton.yml') ) )
+    @mapping_skeleton  = YAML::load( File.open( File.join(File.dirname(__FILE__), '../db/templates/', 'mapping_skeleton.yml') ) )
     @map = YAML::Store.new( File.join(File.dirname(__FILE__), '../db/mapping/', filename), :Indent => 2 )
   end
   
   def save
-    @map.transaction do
+    @map.transaction true do
       @map['tags'] = @tags if @tags
     end
   end
@@ -47,7 +51,7 @@ class Harvest
   end
   
   def save
-    @repo.transaction do
+    @harvest.transaction true do
       @harvest['sources'] = @sources
       @harvest['options'] = @options
     end

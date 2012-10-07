@@ -21,15 +21,15 @@ div class="main"
           th result
         - skeleton['tags'].each do |tagnumber, values|
           - values.each do | value, content |
-            - unless values.has_key?('subfield')
+            - if values.has_key?('subfield')
               tr
                 td #{tagnumber}
                 td 0124051
                 td #{value}
                 td: input[type="text" style="width:120px" name=(tagnumber + ".predicate") value=(skeleton['tags'][tagnumber][value]['predicate']) ]
-                td: input[type="text" name=("prefix" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['prefix']) ]
+                td: input[type="text" name=(tagnumber + ".prefix") value=(skeleton['tags'][tagnumber][value]['object']['prefix']) ]
                 td
-                  select[name=("datatype" + tagnumber)]
+                  select[name=(tagnumber + ".datatype")]
                     option[selected=("selected" if skeleton['tags'][tagnumber][value]['object']['datatype'] == "uri")] uri
                     option[selected=("selected" if skeleton['tags'][tagnumber][value]['object']['datatype'] == "literal")] literal
                 td: button[type="button" id=(tagnumber) class="gen"]  = "test"
