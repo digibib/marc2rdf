@@ -1,8 +1,8 @@
 require 'rdf/virtuoso'
-require_relative './rdfmodeler.rb'
+#require_relative './rdfmodeler.rb'
 
 module SparqlUpdate
-  CONFIG           = YAML::load_file('config/config.yml')
+  CONFIG          = YAML::load_file('config/config.yml')
   STORE           = CONFIG['rdfstore']['store']
   SPARQL_ENDPOINT = CONFIG['rdfstore']['sparql_endpoint']
   SPARUL_ENDPOINT = CONFIG['rdfstore']['sparul_endpoint']
@@ -15,11 +15,11 @@ module SparqlUpdate
   @key             = CONFIG['rdfstore']['key']
   
   if STORE == 'virtuoso'
-    UPDATE_CLIENT = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
+    REPO = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
     QUERY  = RDF::Virtuoso::Query
   else
     # TODO: implement generic RestClient
-    UPDATE_CLIENT = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password)
+    REPO = RestClient::Resource.new(SPARUL_ENDPOINT, :user => @username, :password => @password)
     QUERY  = RDF::Virtuoso::Query    
   end
 
@@ -62,18 +62,18 @@ class OAIUpdate
       puts query.to_s if $debug
       
       if STORE == 'virtuoso'
-        response = UPDATE_CLIENT.delete(query)
+        response = REPO.delete(query)
       else
-        response = UPDATE_CLIENT.post :query => query.to_s, :key => @key
+        response = REPO.post :query => query.to_s, :key => @key
       end
     else
       query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).prefixes(@prefixes)
       puts query.to_s if $debug
 
       if STORE == 'virtuoso'
-        response = UPDATE_CLIENT.delete(query)
+        response = REPO.delete(query)
       else
-        response = UPDATE_CLIENT.post :query => query.to_s, :key => @key
+        response = REPO.post :query => query.to_s, :key => @key
       end
 
     end
@@ -86,18 +86,18 @@ class OAIUpdate
     puts query.to_s if $debug
 
     if STORE == 'virtuoso'
-      response = UPDATE_CLIENT.delete(query)
+      response = REPO.delete(query)
     else
-      response = UPDATE_CLIENT.post :query => query.to_s, :key => @key
+      response = REPO.post :query => query.to_s, :key => @key
     end
     
     query = QUERY.delete([:s, :p, resource]).graph(DEFAULT_GRAPH).where([:s, :p, resource]).prefixes(@prefixes)
     puts query.to_s if $debug
 
     if STORE == 'virtuoso'
-      response = UPDATE_CLIENT.delete(query)
+      response = REPO.delete(query)
     else
-      response = UPDATE_CLIENT.post :query => query.to_s, :key => @key
+      response = REPO.post :query => query.to_s, :key => @key
     end
 
   end
@@ -113,9 +113,9 @@ class OAIUpdate
     puts query.to_s if $debug
 
     if STORE == 'virtuoso'
-      response = UPDATE_CLIENT.insert_data(query)
+      response = REPO.insert_data(query)
     else
-      response = UPDATE_CLIENT.post :query => query.to_s, :key => @key
+      response = REPO.post :query => query.to_s, :key => @key
     end
     
   end  

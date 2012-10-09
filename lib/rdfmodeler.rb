@@ -14,26 +14,25 @@ require_relative './sparql.rb'
 require_relative './string_replace.rb'
 
 class RDFModeler
-SETTINGS    = YAML::load_file('config/settings.yml')
-MAPPINGFILE = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/mapping/', SETTINGS['files']['mapping_filename']) ) )
-REPOSITORY  = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/repository/', SETTINGS['files']['repository_filename']) ) )
-@@yamltags = MAPPINGFILE['tags']
-
-  attr_reader :record, :statements, :uri
+  attr_reader   :record, :statements, :uri, :tags
+  
   def initialize(record)
+    # load settings and mapping
+    settings   = YAML::load_file('config/settings.yml')
+    mapping    = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/mapping/', settings['files']['mapping_filename']) ) )
+    repository = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/repository/', settings['files']['repository_filename']) ) )
+
+    # populate class attributes
     @record = record
-    construct_uri
-    $statements = []
+    @uri    = RDF::URI.intern(repository['resource']['base'] + repository['resource']['resource_path'] + repository['resource']['resource_prefix'])
+    id      = @record[repository['resource']['resource_identifier_field']]
+    @uri   += id.value.to_i    
+    @statements = []
+    @tags   = mapping['tags']
   end
     
-  def construct_uri
-    @uri = RDF::URI.intern(REPOSITORY['resource']['base'] + REPOSITORY['resource']['resource_path'] + REPOSITORY['resource']['resource_prefix'])
-    id = @record[REPOSITORY['resource']['resource_identifier_field']]
-    @uri += id.value.to_i
-  end
-
   def set_type(t)
-    $statements << RDF::Statement.new(@uri, RDF.type, RDF.module_eval("#{t}"))
+    @statements << RDF::Statement.new(@uri, RDF.type, RDF.module_eval("#{t}"))
   end
   
   def generate_uri(s, prefix=nil)
@@ -120,15 +119,15 @@ REPOSITORY  = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../d
   end
   
   def assert(p, o)
-    $statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+    @statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
   end
   
   def relate(s, p, o)
-    $statements << RDF::Statement.new(RDF::URI(s), p, o)
+    @statements << RDF::Statement.new(RDF::URI(s), p, o)
   end
 
   def write_record
-      $statements.each do | statement |
+      @statements.each do | statement |
       #p statement
         @@writer << statement
       end
@@ -139,8 +138,8 @@ REPOSITORY  = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../d
   record.tags.each do | marctag | 
     # put all marc tag fields into array object 'marcfields' for later use
     marcfields = record.find_all { |field| field.tag == marctag }
-    # start matching MARC tags against yamltags, put results in match array
-    match = @@yamltags.select { |k,v| marctag  =~ /#{k}/ }
+    # start matching MARC tags against @tags from mapping, put results in match array
+    match = @tags.select { |k,v| marctag  =~ /#{k}/ }
     match.each do |yamlkey,yamlvalue|
     # iterate each marc tag array object to catch multiple marc fields 
       marcfields.each do | marcfield | 

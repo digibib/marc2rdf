@@ -22,7 +22,11 @@
 
 ## FEATURES
 
-The toolkit consists of three parts:
+The marc2rdf toolkit consists of a web frontend and three parts:
+
+mapping - in which the mapping of MARC tags are made
+repository - in which the RDF repository settings are made
+harvesting - in which the automated harvesting is set up
 
 * marc2rdf.rb      -- a ruby script to convert binary MARC records to RDF (ntriples, turtle or rdf/xml)
 * oai_harvester.rb -- a ruby script (cronjob) to harvest and convert MARC records from an OAI_PMH repository 

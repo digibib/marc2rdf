@@ -6,19 +6,19 @@ require 'bundler/setup'
 require 'grape'
 require_relative '../lib/rdfmodeler.rb'
 
-SPARQL_ENDPOINT  = RDFModeler::REPOSITORY['rdfstore']['sparql_endpoint']
-SPARUL_ENDPOINT  = RDFModeler::REPOSITORY['rdfstore']['sparul_endpoint']
-DEFAULT_PREFIX   = RDFModeler::REPOSITORY['rdfstore']['default_prefix']
-DEFAULT_GRAPH    = RDF::URI(RDFModeler::REPOSITORY['rdfstore']['default_graph'])
+#DEFAULT_PREFIX   = RDFModeler::REPOSITORY['rdfstore']['default_prefix']
+#DEFAULT_GRAPH    = RDF::URI(RDFModeler::REPOSITORY['rdfstore']['default_graph'])
 
-@username    = RDFModeler::REPOSITORY['rdfstore']['username']
-@password    = RDFModeler::REPOSITORY['rdfstore']['password']
-@auth_method = RDFModeler::REPOSITORY['rdfstore']['auth_method']
+#@username    = RDFModeler::REPOSITORY['rdfstore']['username']
+#@password    = RDFModeler::REPOSITORY['rdfstore']['password']
+#@auth_method = RDFModeler::REPOSITORY['rdfstore']['auth_method']
 
-REPO  = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
-QUERY = RDF::Virtuoso::Query
+#REPO  = Repo.endpoint
+#QUERY = RDF::Virtuoso::Query
 
 class RDFModeler
+  include SparqlUpdate
+ 
   class API < Grape::API
     prefix 'api'
     format :json

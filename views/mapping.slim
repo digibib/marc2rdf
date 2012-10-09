@@ -3,90 +3,26 @@
 // This mapping must be well thought through
 // Split screen or test convertion feedback for user:
 // tag > mapping > "test" > result
+
 div class="main"
   h2 Mapping
 
   // This form contains mapping
   div class="divdot inputf"  
-    table class="genform"
-      form id="change_mapping_form"
-        tr 
-          th tag
-          th marcexample
-          th mappingname
-          th predicate
-          th prefix
-          th datatype
-          th test?
-          th result
-        - skeleton['tags'].each do |tagnumber, values|
-          - values.each do | value, content |
-            - unless values.has_key?('subfield')
-              tr
-                td #{tagnumber}
-                td 0124051
-                td #{value}
-                td: input[type="text" style="width:120px" name=(tagnumber + ".predicate") value=(skeleton['tags'][tagnumber][value]['predicate']) ]
-                td: input[type="text" name=("prefix" + tagnumber) value=(skeleton['tags'][tagnumber][value]['object']['prefix']) ]
-                td
-                  select[name=("datatype" + tagnumber)]
-                    option[selected=("selected" if skeleton['tags'][tagnumber][value]['object']['datatype'] == "uri")] uri
-                    option[selected=("selected" if skeleton['tags'][tagnumber][value]['object']['datatype'] == "literal")] literal
-                td: button[type="button" id=(tagnumber) class="gen"]  = "test"
-                td
-                  span[id=(tagnumber + "_info") class="info" style="margin-left:48px"]
-                  span[id=(tagnumber + "_error") class="error" ]           
-        tr
-          td: button[type="button" id="mapping_save" class="gen"]  = "Save"
-          td
-            span[id="mapping_info" class="info" style="margin-left:48px"]
-            span[id="mapping_error" class="error" style="margin-left:48px"]  
-        
+    //div style="overflow-y:auto;position:fixed;top:0;bottom:0;padding:10px 0;height:*;width:400px;border-right:1px solid black;padding-right:50px;"
+    div id="jform"
+    //div style="height:*;width:*;position:absolute;top:0;bottom:0;left:450px;right:0;padding:10px 49px;" id="tree"
+    div style="height:*;width:*;position:absolute;top:0;bottom:0;left:450px;right:0;padding:150px 49px;" id="tree"
+      #{mapping}      
   javascript:
-    $(document).ready(function () {
-      // second function to make JSON
-      function getFormData($form){
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
+    onload=function(){
+      JSONeditor.start('tree','jform',"#{mapping}",true)
+      Opera=(navigator.userAgent.toLowerCase().indexOf("opera")!=-1)
+      Safari=(navigator.userAgent.toLowerCase().indexOf("safari")!=-1)
+      Explorer=(document.all && (!(Opera || Safari)))
+      Explorer7=(Explorer && (navigator.userAgent.indexOf("MSIE 7.0")>=0))
     
-        $.map(unindexed_array, function(n, i){
-          if(n['value']) {
-            indexed_array[n['name']] = n['value'];
-          };
-        });
-        return indexed_array;
-      };
-      // ** test conversion
-      $('button#001').on('click', function(evt) {
-        evt.preventDefault();
-        $('span#001_info').html('testing...').show().fadeOut(3000);
-      });
-      // ** save mapping
-      
-      $('button#mapping_save').on('click', function(e) {
-        e.preventDefault();
-        //var formData = $("#change_mapping_form").serializeArray().JSON.stringify();
-        var $form = $("#change_mapping_form");
-        var formData = getFormData($form);
-        
-        var request = $.ajax({
-          url: '/mapping',
-          type: 'PUT',
-          cache: false,
-          data: { 
-              tags: formData
-              },
-          dataType: 'json'
-        });
-
-        request.done(function(data) {
-          $('span#mapping_info').html("Saved mapping !").show().fadeOut(3000);
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-    });
+      if(Explorer7 && location.href.indexOf("file:")!=0){prompt("This is just to get input boxes started in IE7 - who deems them unsecure.","I like input boxes...")}
+    };
     
   == render :slim, :'_footer'
