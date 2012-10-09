@@ -13,7 +13,7 @@ describe Sparql do
     it "should support connecting to a SPARQL endpoint" do
       repo = @repo.new(@sparql_endpoint)
     end
-      end
+  end
   
   context "when doing a SPARQL query against repository" do
     before(:all) do
