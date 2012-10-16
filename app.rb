@@ -39,18 +39,22 @@ end
 
 get '/mapping' do
   # Primary mapping
-  #session[:mapping] = Mapping.new('mapping.yml')
-  #slim :mapping, :locals => {:map => session[:mapping]}
+  slim :mapping
+end
+
+get '/mapping/json' do
+  :json
   file = File.read( File.join(File.dirname(__FILE__), './db/mapping/', 'test.json'))
-  json = JSON.parse(file)
-  slim :mapping, :locals => {:mapping => json.to_json }
+  session[:mapping] = JSON.parse(file).to_json
 end
 
 put '/mapping' do
   # Save mapping
-  puts params
-  session[:mapping].mapping['tags'] = params['tags'] if params['tags']
-  session[:mapping].save
+  session[:mapping] = JSON.parse(request.body.read)
+  File.open( File.join(File.dirname(__FILE__), './db/mapping/', 'test2.json'), 'w') do |f| 
+    f.write(JSON.pretty_generate(session[:mapping])) 
+  end
+  #{ :msg => "saved!" }
 end
 
 get '/converter' do

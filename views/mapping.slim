@@ -7,22 +7,81 @@
 div class="main"
   h2 Mapping
 
-  // This form contains mapping
-  div class="divdot inputf"  
-    //div style="overflow-y:auto;position:fixed;top:0;bottom:0;padding:10px 0;height:*;width:400px;border-right:1px solid black;padding-right:50px;"
-    div id="jform"
-    //div style="height:*;width:*;position:absolute;top:0;bottom:0;left:450px;right:0;padding:10px 49px;" id="tree"
-    div style="height:*;width:*;position:absolute;top:0;bottom:0;left:450px;right:0;padding:150px 49px;" id="tree"
-      #{mapping}      
+  // The mapping div
+  div id="auto"
+    div id="contents"
+      div id="jsoneditor" 
+      div id="splitter" 
+      div id="jsonformatter"
+  
   javascript:
-    onload=function(){
-      JSONeditor.start('tree','jform',"#{mapping}",true)
-      Opera=(navigator.userAgent.toLowerCase().indexOf("opera")!=-1)
-      Safari=(navigator.userAgent.toLowerCase().indexOf("safari")!=-1)
-      Explorer=(document.all && (!(Opera || Safari)))
-      Explorer7=(Explorer && (navigator.userAgent.indexOf("MSIE 7.0")>=0))
+    // disable Firefox spellcheck
+    document.body.spellcheck = false;
+
+    var editor_div = document.getElementById("jsoneditor");
+    var text_div = document.getElementById("jsonformatter");
+    var domSplitter = document.getElementById('splitter');
+    var editor = new JSONEditor(editor_div);
+    var formatter = new JSONFormatter(text_div);
+
+    domSplitter.appendChild(document.createElement('br'));
+    var toJSON = document.createElement('button');
+    domSplitter.appendChild(document.createElement('br'));
+    domSplitter.appendChild(document.createElement('br'));
+
+    toJSON.id = 'toJSON';
+    toJSON.title = 'Editor to JSON';
+    toJSON.className = 'convert';
+    toJSON.innerHTML = '<div class="convert-right"></div>';
+    domSplitter.appendChild(toJSON);
     
-      if(Explorer7 && location.href.indexOf("file:")!=0){prompt("This is just to get input boxes started in IE7 - who deems them unsecure.","I like input boxes...")}
-    };
+    var toForm = document.createElement('button');
+    toForm.id = 'toForm';
+    toForm.title = 'JSON to Editor';
+    toForm.className = 'convert';
+    toForm.innerHTML = '<div class="convert-left"></div>';
+    domSplitter.appendChild(document.createElement('br'));
+    domSplitter.appendChild(document.createElement('br'));    
+    domSplitter.appendChild(toForm);    
     
+    var saveJSON = document.createElement('button');
+    saveJSON.id = 'saveJSON';
+    saveJSON.title = 'Save JSON to file';
+    saveJSON.className = 'save';
+    saveJSON.innerHTML = '<div class="save">save<br/>JSON</div>';
+    domSplitter.appendChild(document.createElement('br'));
+    domSplitter.appendChild(document.createElement('br'));        
+    domSplitter.appendChild(saveJSON);    
+    
+    $(document).ready(function () {
+
+      var json = $.getJSON('/mapping/json', function() {
+     		editor.set(JSON.parse(json.responseText));
+        formatter.set(editor.get());
+      });
+      // conversions
+      toForm.onclick = function () {
+        editor.set(formatter.get());
+      };
+      toJSON.onclick = function () {
+        formatter.set(editor.get());
+        //console.log(JSON.stringify(editor.get(), null, 2));
+      };  
+      saveJSON.onclick = function () {
+        //console.log(JSON.stringify(editor.get(), null, 2));
+        request = $.ajax({
+          url: '/mapping',
+          type: 'PUT',
+          cache: false,
+          contentType: 'application/json',
+          dataType: 'json',
+          data: JSON.stringify(editor.get(), null, 2)
+        });
+        request.success(function ( data ) {
+          if( console && console.log ) {
+            console.log("Sample of data:", data.slice(0, 100));
+          }
+        });
+      };          
+    });
   == render :slim, :'_footer'

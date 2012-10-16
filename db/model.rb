@@ -44,7 +44,7 @@ class Mapping
 
   def initialize(filename)
     # local variables
-    mapping_skeleton = YAML::load( File.open( File.join(File.dirname(__FILE__), '../db/templates/', 'mapping_skeleton.yml') ) )
+    mapping_skeleton = File.open( File.join(File.dirname(__FILE__), '../db/templates/', 'mapping_skeleton.json') ) )
     mapping          = File.join(File.dirname(__FILE__), '../db/mapping/', filename)
     # serialize skeleton into mapping file if not found
     unless File.exist?(mapping)

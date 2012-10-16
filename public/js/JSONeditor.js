@@ -25,37 +25,46 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 
 JSONeditor={
-	start:function(treeDivName,formDivName,json,showExamples){
+	start:function(treeDivName,formDivName,json,showExamples,imgPath,onchange){
 		if(this.examples.length<6){
-			var e=this.treeBuilder.JSONstring.make(this)
-			eval("this.examples[5]={JSONeditor:"+e+"}")
+			var e=this.treeBuilder.JSONstring.make(this);
+			eval("this.examples[5]={JSONeditor:"+e+"}");
 		}
-		this.treeDivName=treeDivName
-		var t=this.treeBuilder, $=t.$
-		treeBuilder=t
-		var s=$(treeDivName).style
-		var f=$(formDivName)
-		var fs=f.style
-		f.innerHTML=this.formHTML
+		this.treeDivName=treeDivName;
+		if(imgPath) this.treeBuilder.images.path = imgPath;
+		var t=this.treeBuilder, $=t.$;
+		treeBuilder=t;
+		treeBuilder.onchange = onchange;
+		var s=$(treeDivName).style;
+		var f=$(formDivName);
+		var fs=f.style;
+		f.appendChild(this.createForm());
 		if(!showExamples){$('jExamples').style.display="none"}
-		fs.fontSize=s.fontSize="11px"
-		fs.fontFamily=s.fontFamily="Verdana,Arial,Helvetica,sans-serif"
-		var e=f.getElementsByTagName("*")
+		fs.fontSize=s.fontSize="11px";
+		fs.fontFamily=s.fontFamily="Verdana,Arial,Helvetica,sans-serif";
+		e=f.getElementsByTagName("*");
 		for(var i=0;i<e.length;i++){
-			var s=e[i].style
+			s=e[i].style;
 			if(s){
-				s.fontSize="11px"
-				s.fontFamily="Verdana,Arial,Helvetica,sans-serif"
+				s.fontSize="11px";
+				s.fontFamily="Verdana,Arial,Helvetica,sans-serif";
 			}
 		}
-		json=json||{}
-		t.JSONbuild(treeDivName,json)
+		json=json||{};
+		t.JSONbuild(treeDivName,json);
 	},
 	loadExample:function(x){
-		treeBuilder.hasRunJSONbuildOnce=false
-		treeBuilder.JSONbuild(this.treeDivName,this.examples[x/1])
+		treeBuilder.hasRunJSONbuildOnce=false;
+		treeBuilder.JSONbuild(this.treeDivName,this.examples[x/1]);
 	},
-	formHTML:"<form name=\"jsoninput\" onsubmit=\"return treeBuilder.jsonChange(this)\"><div id=\"jExamples\">Load an example:&nbsp;<select name=\"jloadExamples\" onchange=\"JSONeditor.loadExample(this.value)\"><option value=\"0\">None/empty</option><option value=\"1\">Employee data</option><option value=\"2\">Sample Konfabulator Widget</option><option value=\"3\">Member data</option><option value=\"4\">A menu system</option><option value=\"5\">The source code of this JSON editor</option></select><br><br></div>\nLabel:<br><input name=\"jlabel\" type=\"text\" value=\"\" size=\"60\" style=\"width:400px\"><br><br>\nValue: <br><textarea name=\"jvalue\" rows=\"10\" cols=\"50\" style=\"width:400px;max-width:400px;\"></textarea><br><br>\nData type: <select onchange=\"treeBuilder.changeJsonDataType(this.value,this.parentNode)\" name=\"jtype\">\n<option value=\"object\">object</option>\n<option value=\"array\">array</option>\n<option value=\"function\">function</option>\n<option value=\"string\">string</option>\n<option value=\"number\">number</option>\n<option value=\"boolean\">boolean</option>\n<option value=\"null\">null</option>\n<option value=\"undefined\">undefined</option>\n</select>&nbsp;&nbsp;&nbsp;&nbsp;\n<input name=\"orgjlabel\" type=\"hidden\" value=\"\" size=\"50\" style=\"width:300px\">\n<input onfocus=\"this.blur()\" type=\"submit\" value=\"Save\">&nbsp;\n<br><br>\n<input name=\"jAddChild\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonAddChild(this.parentNode)\" value=\"Add child\">\n<input name=\"jAddSibling\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonAddSibling(this.parentNode)\" value=\"Add sibling\">\n<br><br>\n<input name=\"jRemove\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonRemove(this.parentNode)\" value=\"Delete\">&nbsp;\n<input name=\"jRename\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonRename(this.parentNode)\" value=\"Rename\">&nbsp;\n<input name=\"jCut\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonCut(this.parentNode)\" value=\"Cut\">&nbsp;\n<input name=\"jCopy\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonCopy(this.parentNode)\" value=\"Copy\">&nbsp;\n<input name=\"jPaste\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonPaste(this.parentNode)\" value=\"Paste\">&nbsp;\n<br><br>\n<input type=\"checkbox\" name=\"jbefore\">Add children first/siblings before\n<br>\n<input type=\"checkbox\" name=\"jPasteAsChild\">Paste as child on objects & arrays\n<br><br><div id=\"jformMessage\"></div>\n</form>",
+	createForm:function(){
+		var form = document.createElement('form');
+		form.name = "jsoninput";
+		form.onsubmit = function() { return treeBuilder.jsonChange(this); };
+		form.innerHTML = this.formHTML;
+		return form;
+	},
+	formHTML:"<div id=\"jExamples\">Load an example:&nbsp;<select name=\"jloadExamples\" onchange=\"JSONeditor.loadExample(this.value)\"><option value=\"0\">None/empty</option><option value=\"1\">Employee data</option><option value=\"2\">Sample Konfabulator Widget</option><option value=\"3\">Member data</option><option value=\"4\">A menu system</option><option value=\"5\">The source code of this JSON editor</option></select><br><br></div>\nLabel:<br><input name=\"jlabel\" type=\"text\" value=\"\" size=\"60\" style=\"width:400px\"><br><br>\nValue: <br><textarea name=\"jvalue\" rows=\"10\" cols=\"50\" style=\"width:400px\"></textarea><br><br>\nData type: <select onchange=\"treeBuilder.changeJsonDataType(this.value,this.parentNode)\" name=\"jtype\">\n<option value=\"object\">object</option>\n<option value=\"array\">array</option>\n<option value=\"function\">function</option>\n<option value=\"string\">string</option>\n<option value=\"number\">number</option>\n<option value=\"boolean\">boolean</option>\n<option value=\"null\">null</option>\n<option value=\"undefined\">undefined</option>\n</select>&nbsp;&nbsp;&nbsp;&nbsp;\n<input name=\"orgjlabel\" type=\"hidden\" value=\"\" size=\"50\" style=\"width:300px\">\n<input onfocus=\"this.blur()\" type=\"submit\" value=\"Save\">&nbsp;\n<br><br>\n<input name=\"jAddChild\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonAddChild(this.parentNode)\" value=\"Add child\">\n<input name=\"jAddSibling\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonAddSibling(this.parentNode)\" value=\"Add sibling\">\n<br><br>\n<input name=\"jRemove\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonRemove(this.parentNode)\" value=\"Delete\">&nbsp;\n<input name=\"jRename\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonRename(this.parentNode)\" value=\"Rename\">&nbsp;\n<input name=\"jCut\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonCut(this.parentNode)\" value=\"Cut\">&nbsp;\n<input name=\"jCopy\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonCopy(this.parentNode)\" value=\"Copy\">&nbsp;\n<input name=\"jPaste\" onfocus=\"this.blur()\" type=\"button\" onclick=\"treeBuilder.jsonPaste(this.parentNode)\" value=\"Paste\">&nbsp;\n<br><br>\n<input type=\"checkbox\" name=\"jbefore\">Add children first/siblings before\n<br>\n<input type=\"checkbox\" name=\"jPasteAsChild\">Paste as child on objects & arrays\n<br><br><div id=\"jformMessage\"></div>\n",
 	examples:[{},
 {employee:{gid:102, companyID:121, defaultActionID:444,names:{firstName:"Stive", middleInitial:"Jr",lastName:"Martin"},address:{city:"Albany",state:"NY",zipCode:"14410-585",addreess:"41 State Street"},job:{departmentID:102,jobTitleID:100,hireDate:"1/02/2000",terminationDate:"1/12/2007"},contact:{phoneHome:"12-123-2133", beeper:"5656",email1:"info@soft-amis.com",fax:"21-321-23223",phoneMobile:"32-434-3433",phoneOffice:"82-900-8993"},login:{employeeID:"eID102",password:"password",superUser:true,lastLoginDate:"1/12/2007",text:"text", regexp:/^mmm/, date: new Date() },comment:{PCDATA:"comment"},roles:[{role:102},{role:103}]}},
 {"widget": {"debug": true,"window": {"title": "Sample Konfabulator Widget","name": "main_window","width": 500,"height": 500},"Pairs": [ {"src": "Images/Sun.png","name": "sun1"},{"hOffset": 250,"vOffset": 200},null,{"alignment": "center"}],"text": {"a very long item label here": "Click Here","size": 36,"style": "null","name": "text1","hOffset": 250,"vOffset": 100,"alignment": "center","onmouseover": function(){alert("Hello World");},"onMouseUp": "sun1.opacity = (sun1.opacity / 100) * 90;"}}},
@@ -86,7 +95,7 @@ JSONeditor.treeBuilder={
 		folderNodeOpenFirst:'',
 		folderNodeLastFirst:'',
 		folderNodeOpenLastFirst:'',
-		path:'/img/treeBuilderImages/',
+		path:'treeBuilderImages/',
 		nodeWidth:16
 	},
 	$:function(x){return document.getElementById(x)},
@@ -127,7 +136,7 @@ JSONeditor.treeBuilder={
 		this.jTypeChanged=false
 		treeBuilder.jSyncTree(x)
 		var t=treeBuilder
-		eval("var a=treeBuilder."+x)
+    eval("var a=treeBuilder."+x)
 		eval("var ap=treeBuilder."+treeBuilder.jsonParent(x))
 		var b=t.JSONstring.make(a)
 		var t=(a && treeBuilder.isArray(a))?"array":typeof a
@@ -185,7 +194,7 @@ JSONeditor.treeBuilder={
 			if(!nl){return}
 			if(nl/1==nl){nl="$"+nl}
 			nl=this.jsonAlreadyExists(o,nl)
-			var n=nl.replace(/\w/g,'')===""?l+"."+nl:l+'["'+nl+'"]'
+			var n=nl.replace(/[A-Za-z_][A-Za-z0-9_]*/,'')===""?l+"."+nl:l+'["'+nl+'"]'
 			eval('this.'+n+'={}')
 			if(first){
 				eval("var t=this."+l+";this."+l+"={};var s=this."+l)
@@ -223,7 +232,7 @@ JSONeditor.treeBuilder={
 			if(!nl){return}
 			if(nl/1==nl){nl="$"+nl}
 			nl=this.jsonAlreadyExists(o,nl)
-			var n=nl.replace(/\w/g,'')===""?"."+nl:'["'+nl+'"]'
+			var n=nl.replace(/[A-Za-z_][A-Za-z0-9_]*/,'')===""?"."+nl:'["'+nl+'"]'
 			s=s.join('null,"'+nl+'":{},')
 			lp+=n
 		}
@@ -260,7 +269,7 @@ JSONeditor.treeBuilder={
 		var nl=prompt("Label (without path):",l)
 		if(!nl){return}
 		this.jsonResponder(orgl)
-		var nl=nl.replace(/\w/g,'')===""?"."+nl:'["'+nl+'"]'
+		var nl=nl.replace(/[A-Za-z_][A-Za-z0-9_]*/,'')===""?"."+nl:'["'+nl+'"]'
 		f.jlabel.value=this.jsonParent(orgl)+nl
 		this.jsonChange(f,false,true)
 	},
@@ -335,6 +344,15 @@ JSONeditor.treeBuilder={
 		v=x=='undefined'?'undefined':v
 		f.jvalue.value=v		
 	},
+	triggerChange:function(){	
+		if(this.onchange) {
+			try {
+				this.onchange(this.json);
+			} catch(e) {
+				alert("onchange method failed "+e+" "+e.description);
+			}
+		}
+	},
 	jsonChange:function(f,remove,rename){
 		try {
 			var l=f.jlabel.value
@@ -352,8 +370,9 @@ JSONeditor.treeBuilder={
 				eval("v="+v)
 				this.JSONbuild(this.baseDiv,v)
 				for(var i in this.stateMem){this.openAndClose(i,true)}
-				this.setJsonMessage('Saved!')
-				return false
+				this.setJsonMessage('Saved!');
+				this.triggerChange();
+				return false;
 			}
 			eval("var json="+this.JSONstring.make(this.json))
 			var randi=Math.random()
@@ -391,6 +410,7 @@ JSONeditor.treeBuilder={
 			if(remove){l=""}
 			this.setJsonMessage(remove?'Deleted!':rename?'Renamed!':'Saved!')
 			if(!remove){this.jsonResponder(l)}
+			this.triggerChange();
   		}
 		catch(err){
 			alert(err+"\n\n"+"Save error!")
@@ -408,7 +428,7 @@ JSONeditor.treeBuilder={
 		y=y===undefined?"json":y
 		z=z||0
 		this.partMem[z]='["'+y+'"]'
-		if(typeof y!="number" && y.replace(/\w/g,'')===""){this.partMem[z]="."+y}
+		if(typeof y!="number" && y.replace(/[A-Za-z_][A-Za-z0-9_]*/,'')===""){this.partMem[z]="."+y}
 		if(typeof y=="number"){this.partMem[z]="["+y+"]"}
 		if(z===0){this.partMem[z]="json"}
 		this.partMem=this.partMem.slice(0,z+1)
@@ -672,8 +692,8 @@ JSONeditor.treeBuilder.JSONstring={
 				this.restoreCode.push('this.myObj.'+this.path.join(".")+"="+arg.split("JSONcircRef:").join("this.myObj."));
 			};
 			out.push('"');
-			var a=['\n','\\n','\r','\\r','"','\\"'];
-			arg+=""; for(var i=0;i<6;i+=2){arg=arg.split(a[i]).join(a[i+1])};
+			var a=['\n','\\n','\r','\\r','"','\\"','\.','\\.','\'','\\\'','\t','\\t','\b','\\b','\f','\\f'];
+			arg+=""; for(var i=0;i<a.length;i+=2){arg=arg.split(a[i]).join(a[i+1])};
 			out.push(arg);
 			out.push('"');
 			return out;

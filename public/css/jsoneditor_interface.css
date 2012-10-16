@@ -1,0 +1,58 @@
+#auto {
+    width: 100%;
+    height: 100%;
+
+    margin: -40px 0 -24px 0;
+    padding: 40px 0  24px 0;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+#contents {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+#jsonformatter, #jsoneditor {
+    float: left;
+    height: 100%;
+    width: 600px;
+    height: 500px;
+    padding: 15px;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#splitter {
+    float: left;
+    height: 100%;
+    /*cursor: col-resize;*/
+}
+
+a.header {
+    color: white;
+    text-decoration: none;
+}
+
+
+div.convert-right, div.convert-left {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+}
+
+div.convert-right {
+    background: url('/img/jsoneditor-icons.png') -168px 0;
+}
+
+div.convert-left {
+    background: url('/img/jsoneditor-icons.png') -192px 0;
+}
