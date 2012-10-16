@@ -39,21 +39,27 @@ end
 
 get '/mapping' do
   # Primary mapping
+  :json
+  session[:mapping] = Map.new('mapping.json')
   slim :mapping
 end
 
 get '/mapping/json' do
   :json
-  file = File.read( File.join(File.dirname(__FILE__), './db/mapping/', 'test.json'))
-  session[:mapping] = JSON.parse(file).to_json
+  session[:mapping].reload
+  #file = File.read( File.join(File.dirname(__FILE__), './db/mapping/', 'mapping.json'))
+  #session[:mapping] = JSON.parse(file).to_json
 end
 
 put '/mapping' do
-  # Save mapping
-  session[:mapping] = JSON.parse(request.body.read)
-  File.open( File.join(File.dirname(__FILE__), './db/mapping/', 'test2.json'), 'w') do |f| 
-    f.write(JSON.pretty_generate(session[:mapping])) 
-  end
+  # Save modified mapping
+  
+  session[:mapping].mapping = JSON.parse(request.body.read).to_json
+  puts session[:mapping]
+  session[:mapping].save
+  #File.open( File.join(File.dirname(__FILE__), './db/mapping/', 'test2.json'), 'w') do |f| 
+  #  f.write(JSON.pretty_generate(session[:mapping])) 
+  #end
   #{ :msg => "saved!" }
 end
 

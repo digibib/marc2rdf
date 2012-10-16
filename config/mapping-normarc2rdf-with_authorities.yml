@@ -1051,8 +1051,8 @@ tags:
             '1':
               predicate: SKOS.notation
               object: 
-                datatype: literal				
-
+                datatype: literal
+                
   '650':
     subfield: 
       '3':

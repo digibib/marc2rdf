@@ -39,24 +39,30 @@ class Repo
   end
 end
 
-class Mapping
+class Map
   attr_accessor :file, :mapping
 
   def initialize(filename)
     # local variables
-    mapping_skeleton = File.open( File.join(File.dirname(__FILE__), '../db/templates/', 'mapping_skeleton.json') ) )
+    mapping_skeleton = File.read( File.join(File.dirname(__FILE__), 'templates', 'mapping_skeleton.json'))
     mapping          = File.join(File.dirname(__FILE__), '../db/mapping/', filename)
     # serialize skeleton into mapping file if not found
     unless File.exist?(mapping)
-      open(mapping, 'w') {|f| YAML.dump(mapping_skeleton, f)}
+      open(mapping, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(mapping_skeleton))) } 
     end
-    @file       = YAML::Store.new(mapping, :Indent => 2)
-    @mapping    = YAML::load(File.open(mapping))
+    @file       = mapping
+    @mapping    = JSON.parse(IO.read(@file)).to_json
+  end
+  
+  def reload
+    if @mapping
+      @mapping    = JSON.parse(IO.read(@file)).to_json
+    end  
   end
   
   def save
-    @file.transaction do
-      @file['tags'] = @mapping['tags'] if @mapping['tags']
+    if @mapping
+      open(@file, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(@mapping))) } 
     end
   end
 end
