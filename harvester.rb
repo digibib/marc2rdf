@@ -67,7 +67,7 @@ loop do
   # let's harvest!
   @limit  = HARVEST_CONFIG['options']['limit']
   minuses = HARVEST_CONFIG['options']['minuses']
-  rdf_result = Sparql::rdfstore_isbnlookup(:offset => $offset, :limit => @limit, :minuses => minuses)
+  rdf_result = Sparql::rdfstore_lookup(:offset => $offset, :limit => @limit, :minuses => minuses, :predicate => HARVEST_CONFIG['options']['predicate'])
   
   # iterate SPARQL results
   rdf_result.each do | solution |
@@ -82,7 +82,7 @@ loop do
         @apikey = sourcevalue['apikey']
         @namespaces = sourcevalue['namespaces']
         @http_persistent = Net::HTTP::Persistent.new "#{source}"
-        http_response = fetch_xpath_results(solution.isbn.value)
+        http_response = fetch_xpath_results(solution.object.value)
         sourcevalue['harvest'].each do | predicate, conditions |
        
           objects = xml_harvest(http_response, :xpath => conditions['xpath'], :gsub => conditions['gsub'], :namespaces => @namespaces)
