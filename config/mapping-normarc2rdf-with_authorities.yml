@@ -442,6 +442,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                
 
 
   '110':
@@ -479,6 +483,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '111':
     subfield: 
@@ -514,6 +522,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '130|730':
     subfield: 
@@ -526,7 +538,7 @@ tags:
         relation: 
           class: FABIO.Work
           subfield:
-            '3':
+            'a':
               predicate: DC.title
               object:
                 combine:
@@ -538,6 +550,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '240':
     subfield:
@@ -801,7 +817,7 @@ tags:
                 u: DEICHMAN.publisher
                 utg: DEICHMAN.publisher
                 utøv: DEICHMAN.performer
-              default: 'DC.contributor'
+              default: 'DC.creator'
         object:
           prefix: http://data.deichman.no/person/x
           datatype: uri
@@ -834,6 +850,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '700|700':
     subfield: 
@@ -898,6 +918,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
       v: 
         predicate: DEICHMAN.volumeNumber
         object: 
@@ -969,6 +993,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '610|611':
     subfield: 
@@ -1005,6 +1033,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '630':
     subfield: 
@@ -1016,7 +1048,7 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            '3':
+            'a':
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1029,6 +1061,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '630|630':
     subfield: 
@@ -1040,7 +1076,7 @@ tags:
         relation: 
           class: FABIO.Work
           subfield:
-            '3':
+            'a':
               predicate: DC.title
               object:
                 combine:
@@ -1051,7 +1087,11 @@ tags:
             '1':
               predicate: SKOS.notation
               object: 
-                datatype: literal				
+                datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                			
 
   '650':
     subfield: 
@@ -1063,7 +1103,7 @@ tags:
         relation:
           class: SKOS.Concept
           subfield:
-            '3':
+            'a':
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1078,6 +1118,10 @@ tags:
               predicate: SKOS.notation
               object:
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal 
                 
   '653':
     subfield: 
@@ -1089,7 +1133,7 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            '3': 
+            'a': 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1104,6 +1148,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal 
 
   '690':
     subfield: 
@@ -1115,7 +1163,7 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            '3': 
+            'a': 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1130,6 +1178,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal 
 
   '691':
     subfield: 
@@ -1141,7 +1193,7 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            '3': 
+            'a': 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1156,6 +1208,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
 # Place as subject
   '651':
@@ -1178,6 +1234,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '692':
     subfield: 
@@ -1189,7 +1249,7 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            '3': 
+            'a': 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1204,6 +1264,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '694':
     subfield: 
@@ -1215,7 +1279,7 @@ tags:
         relation: 
           class: SKOS.Concept
           subfield:
-            '3': 
+            'a': 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1230,6 +1294,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '699':
     subfield: 
@@ -1264,6 +1332,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
 
   '652':
@@ -1285,6 +1357,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '655':
     subfield: 
@@ -1309,6 +1385,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '693':
     subfield: 
@@ -1333,6 +1413,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
                 
   '695':
     subfield: 
@@ -1375,6 +1459,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '711':
     subfield: 
@@ -1394,6 +1482,10 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
+            '3':
+              predicate: DC.identifier
+              object:
+                datatype: literal                 
 
   '740':
     subfield:
