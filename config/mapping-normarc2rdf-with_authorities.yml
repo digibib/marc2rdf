@@ -817,7 +817,7 @@ tags:
                 u: DEICHMAN.publisher
                 utg: DEICHMAN.publisher
                 utøv: DEICHMAN.performer
-              default: 'DC.creator'
+              default: 'DC.contributor'
         object:
           prefix: http://data.deichman.no/person/x
           datatype: uri
