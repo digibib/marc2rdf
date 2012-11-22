@@ -144,6 +144,7 @@ tags:
         prefix: http://lexvo.org/id/iso639-3/
         substr_offset: 35
         substr_length: 3
+        regex_strip: '[\W]+'
         datatype: uri
       relation: 
         class: LEXVO.Language
