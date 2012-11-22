@@ -96,7 +96,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
       i += 1    
       # limit number of records for testing purpose
       if $recordlimit then break if i > $recordlimit end
-      
+      titlenumber = "#{record['001'].value}"
       # initiate record and set type
       rdfrecord = RDFModeler.new(record)
       rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
