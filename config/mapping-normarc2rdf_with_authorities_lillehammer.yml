@@ -295,6 +295,7 @@ tags:
         predicate: DEICHMAN.ageLimit
         object: 
           prefix: http://data.deichman.no/ageLimit/
+          regex_strip: '[\D]+'
           datatype: uri                     
 
   '020':
