@@ -144,11 +144,15 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
   end
   
   def assert(p, o)
-    $statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+    unless p.empty? || o.nil?
+      $statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+    end
   end
   
   def relate(s, p, o)
-    $statements << RDF::Statement.new(RDF::URI(s), p, o)
+    unless p.nil? || s.nil? || o.nil?
+      $statements << RDF::Statement.new(RDF::URI(s), p, o)
+    end
   end
 
   def write_record
@@ -224,7 +228,7 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
                     end
                     if @predicate.empty? then @predicate = value['default'] end
                   else
-                    @predicate = value['default']
+                    @predicate = value['default'] if value['default'] 
                   end
                 end
               ### condition by indicators                   ###

@@ -14,8 +14,8 @@ def usage(s)
     $stderr.puts("  -r [number] stops processing after given number of records\n")
     $stderr.puts("  -f 'date' harvests records starting from the given date. Default is yesterday.\n")
     $stderr.puts("  -d debug output to stdout.\n")
-    $stderr.puts("  -o [output filename] output to file instead of harvest directly to catalogue.\n")
     $stderr.puts("  -i [input filename] harvest to catalogue from file.\n")
+    $stderr.puts("  -o [output filename] output to file instead of harvest directly to catalogue.\n")
     exit(2)
 end
 
@@ -26,8 +26,8 @@ loop { case ARGV[0]
     when '-f' then  ARGV.shift; $fromdate = ARGV.shift
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when '-d' then  ARGV.shift; $debug = true
-    when '-o' then  ARGV.shift; $output_file = ARGV.shift
     when '-i' then  ARGV.shift; $input_file = ARGV.shift
+    when '-o' then  ARGV.shift; $output_file = ARGV.shift    
     when '-h' then  usage("help")
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
@@ -90,7 +90,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
  could be formal argument in ruby < 1.9 
 =end
 @@writer = writer
-  if $input_file
+  if $input_file # harvest from previously dumped output file 
     xmlreader = MARC::XMLReader.new(StringIO.new(File.open($input_file, 'r') {|f| f.read } ))
     xmlreader.each do | record |
       i += 1    
