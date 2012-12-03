@@ -7,8 +7,9 @@ require_relative './lib/rdfmodeler.rb'
 def usage(s)
     $stderr.puts(s)
     $stderr.puts("Usage: \n")
-    $stderr.puts("#{File.basename($0)} -i input_file -o output_file [-r recordlimit]\n")
-    $stderr.puts("  -i input_file must be marc binary\n")
+    $stderr.puts("#{File.basename($0)} -i|x input_file -o output_file [-r recordlimit]\n")
+    $stderr.puts("  -i input_file \(marc binary\)\n")
+    $stderr.puts("  -x input_file \(marcxml\)\n")
     $stderr.puts("  -o output_file extension can be either .rdf (slooow) or .nt (very fast)\n")
     $stderr.puts("  -r [number] stops processing after given number of records\n")
     $stderr.puts("  -d output debug info\n")
@@ -17,12 +18,13 @@ end
 
 loop { case ARGV[0]
     when '-i' then  ARGV.shift; $input_file  = ARGV.shift
+    when '-x' then  ARGV.shift; $xmlinput_file  = ARGV.shift
     when '-o' then  ARGV.shift; $output_file = ARGV.shift
     when '-d' then  ARGV.shift; $debug = true    
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when /^-/ then  usage("Unknown option: #{ARGV[0].inspect}")
     else 
-      if !$input_file || !$output_file then usage("Missing argument!\n") end
+      if $input_file.nil? && $xmlinput_file.nil? && $output_file.nil? then usage("Missing argument!\n") end
     break
 end; }
 
@@ -35,7 +37,12 @@ end; }
   - write processed record according to output given on command line
 =end
 
-reader = MARC::ForgivingReader.new($input_file)
+if $xmlinput_file
+  reader = MARC::XMLReader.new($xmlinput_file)
+else
+  reader = MARC::ForgivingReader.new($input_file)
+end
+
 i = 0
 
 # start writer handle
