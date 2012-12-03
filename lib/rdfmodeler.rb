@@ -14,7 +14,7 @@ require_relative './sparql.rb'
 require_relative './string_replace.rb'
 
 class RDFModeler
-  attr_reader   :record, :statements, :uri, :tags
+  attr_reader :record, :statements, :uri, :tags
   
   def initialize(record)
     # load settings and mapping
@@ -119,11 +119,15 @@ class RDFModeler
   end
   
   def assert(p, o)
-    @statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+    unless p.empty? || o.nil?
+      @statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+    end
   end
   
   def relate(s, p, o)
-    @statements << RDF::Statement.new(RDF::URI(s), p, o)
+    unless p.nil? || s.nil? || o.nil?
+      @statements << RDF::Statement.new(RDF::URI(s), p, o)
+    end
   end
 
   def write_record

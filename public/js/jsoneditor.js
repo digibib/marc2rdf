@@ -27,7 +27,7 @@
  * Copyright (c) 2011-2012 Jos de Jong, http://jsoneditoronline.org
  *
  * @author  Jos de Jong, <wjosdejong@gmail.com>
- * @date    2012-10-02
+ * @date    2012-11-03
  */
 
 
@@ -63,8 +63,12 @@ var JSON;
  * JSONEditor
  * @param {Element} container    Container element
  * @param {Object}  [options]    Object with options. available options:
- *                                   {Boolean} enableSearch   true by default
- *                                   {Boolean} enableHistory  true by default
+ *                               {Boolean} search   Enable search box.
+ *                                                  True by default
+ *                               {Boolean} history  Enable history (undo/redo).
+ *                                                  True by default
+ *                               {function} change  Callback method, triggered
+ *                                                  on change of contents
  * @param {Object | undefined} json JSON object
  */
 JSONEditor = function (container, options, json) {
@@ -83,7 +87,7 @@ JSONEditor = function (container, options, json) {
 
     this._setOptions(options);
 
-    if (this.options.enableHistory) {
+    if (this.options.history) {
         this.history = new JSONEditor.History(this);
     }
 
@@ -95,15 +99,19 @@ JSONEditor = function (container, options, json) {
 
 /**
  * Initialize and set default options
- * @param {Object}  [options]      Object with options. available options:
- *                                   {Boolean} enableSearch   true by default
- *                                   {Boolean} enableHistory  true by default
+ * @param {Object}  [options]    Object with options. available options:
+ *                               {Boolean} search   Enable search box.
+ *                                                  True by default
+ *                               {Boolean} history  Enable history (undo/redo).
+ *                                                  True by default
+ *                               {function} change  Callback method, triggered
+ *                                                  on change of contents
  * @private
  */
 JSONEditor.prototype._setOptions = function (options) {
     this.options = {
-        'enableSearch': true,
-        'enableHistory': true
+        'search': true,
+        'history': true
     };
 
     // copy all options
@@ -112,6 +120,18 @@ JSONEditor.prototype._setOptions = function (options) {
             if (options.hasOwnProperty(prop)) {
                 this.options[prop] = options[prop];
             }
+        }
+
+        // check for deprecated options
+        if (options.enableSearch) {
+            // deprecated since version 1.6.0, 2012-11-03
+            this.options.search = options.enableSearch;
+            console.log('WARNING: Option "enableSearch" is deprecated. Use "search" instead.');
+        }
+        if (options.enableHistory) {
+            // deprecated since version 1.6.0, 2012-11-03
+            this.options.search = options.enableHistory;
+            console.log('WARNING: Option "enableHistory" is deprecated. Use "history" instead.');
         }
     }
 };
@@ -262,8 +282,19 @@ JSONEditor.prototype.collapseAll = function () {
  *                         needed to undo or redo the action.
  */
 JSONEditor.prototype.onAction = function (action, params) {
+    // add an action to the history
     if (this.history) {
         this.history.add(action, params);
+    }
+
+    // trigger the onChange callback
+    if (this.options.change) {
+        try {
+            this.options.change();
+        }
+        catch (err) {
+            console.log('Error in change callback: ', err);
+        }
     }
 };
 
@@ -1104,24 +1135,12 @@ JSONEditor.Node.prototype.focus = function(field) {
 };
 
 /**
- * Remove focus from the value or field of this node
+ * Update the values from the DOM field and value of this node
  */
 JSONEditor.Node.prototype.blur = function() {
-    if (this.dom.tr && this.dom.tr.parentNode) {
-        var domValue = this.dom.value;
-        if (domValue) {
-            domValue.blur();
-        }
-        var domField = this.dom.field;
-        if (domField) {
-            domField.blur();
-        }
-    }
-
-    // retrieve the field and value from the DOM. A little redundant but
-    // it cannot do harm.
-    this._getDomValue(true);
-    this._getDomField(true);
+    // retrieve the actual field and value from the DOM.
+    this._getDomValue(false);
+    this._getDomField(false);
 };
 
 /**
@@ -1371,16 +1390,18 @@ JSONEditor.Node.prototype._getDomValue = function(silent) {
                 value = this._stringCast(str);
             }
             if (value !== this.value) {
+                var oldValue = this.value;
+                this.value = value;
                 this.getEditor().onAction('editValue', {
                     'node': this,
-                    'oldValue': this.value,
+                    'oldValue': oldValue,
                     'newValue': value
                 });
             }
-            this.value = value;
         }
         catch (err) {
             this.value = undefined;
+            // TODO: sent an action with the new, invalid value?
             if (silent != true) {
                 throw err;
             }
@@ -1506,16 +1527,18 @@ JSONEditor.Node.prototype._getDomField = function(silent) {
             var field = this._unescapeHTML(this.fieldInnerText);
 
             if (field !== this.field) {
+                var oldField = this.field;
+                this.field = field;
                 this.getEditor().onAction('editField', {
                     'node': this,
-                    'oldValue': this.field,
+                    'oldValue': oldField,
                     'newValue': field
                 });
             }
-            this.field = field;
         }
         catch (err) {
             this.field = undefined;
+            // TODO: sent an action here, with the new, invalid value?
             if (silent != true) {
                 throw err;
             }
@@ -1606,11 +1629,6 @@ JSONEditor.Node.prototype.getDom = function() {
  */
 JSONEditor.Node.prototype._onDragStart = function (event) {
     event = event || window.event;
-
-    // remove focus from currently edited node
-    if (JSONEditor.focusNode) {
-        JSONEditor.focusNode.blur();
-    }
 
     var node = this;
     if (!this.mousemove) {
@@ -1725,7 +1743,7 @@ JSONEditor.Node.prototype._onDragEnd = function (event) {
     };
     if ((params.startParent != params.endParent) ||
             (params.startIndex != params.endIndex)) {
-        // only register this action if the node is actually moved to anothe place
+        // only register this action if the node is actually moved to another place
         this.getEditor().onAction('moveNode', params);
     }
 
@@ -2334,7 +2352,7 @@ JSONEditor.Node.prototype._onRemove = function() {
         'parent': this.parent,
         'index': index
     });
-}
+};
 
 /**
  * Handle a click on the Type-button
@@ -2576,7 +2594,7 @@ JSONEditor.Node.prototype._escapeHTML = function (text) {
  */
 JSONEditor.Node.prototype._unescapeHTML = function (escapedText) {
     var json = '"' + this._escapeJSON(escapedText) + '"';
-    var htmlEscaped = JSON.parse(json);
+    var htmlEscaped = JSONEditor.parse(json);
     return htmlEscaped
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
@@ -2761,7 +2779,7 @@ JSONEditor.prototype._createFrame = function () {
         //       Requires knowing whether the JSONEditor has focus or not
         //       (use a global event listener for that?)
         // Check for search quickkeys, Ctrl+F and F3
-        if (editor.options.enableSearch) {
+        if (editor.options.search) {
             if (event.type == 'keydown') {
                 var keynum = event.which || event.keyCode;
                 if (keynum == 70 && event.ctrlKey) { // Ctrl+F
@@ -2843,11 +2861,9 @@ JSONEditor.prototype._createFrame = function () {
     this.menu.appendChild(collapseAll);
 
     // create expand/collapse buttons
-    if (this.options.enableHistory) {
+    if (this.options.history) {
         // create separator
         var separator = document.createElement('span');
-        //separator.style.width = '5px';
-        //separator.style.display = 'inline';
         separator.innerHTML = '&nbsp;';
         this.menu.appendChild(separator);
 
@@ -2856,7 +2872,13 @@ JSONEditor.prototype._createFrame = function () {
         undo.className = 'jsoneditor-menu jsoneditor-undo';
         undo.title = 'Undo last action';
         undo.onclick = function () {
+            // undo last action
             editor.history.undo();
+
+            // trigger change callback
+            if (editor.options.change) {
+                editor.options.change();
+            }
         };
         this.menu.appendChild(undo);
         this.dom.undo = undo;
@@ -2866,7 +2888,13 @@ JSONEditor.prototype._createFrame = function () {
         redo.className = 'jsoneditor-menu jsoneditor-redo';
         redo.title = 'Redo';
         redo.onclick = function () {
+            // redo last action
             editor.history.redo();
+
+            // trigger change callback
+            if (editor.options.change) {
+                editor.options.change();
+            }
         };
         this.menu.appendChild(redo);
         this.dom.redo = redo;
@@ -2880,7 +2908,7 @@ JSONEditor.prototype._createFrame = function () {
     }
 
     // create search box
-    if (this.options.enableSearch) {
+    if (this.options.search) {
         this.searchBox = new JSONEditor.SearchBox(this, this.menu);
     }
 };
@@ -2956,8 +2984,14 @@ JSONEditor.getNodeFromTarget = function (target) {
  * Create a JSONFormatter and attach it to given container
  * @constructor JSONFormatter
  * @param {Element} container
+ * @param {Object} [options]         Object with options. available options:
+ *                                   {Number} indentation  Number of indentation
+ *                                                         spaces. 4 by default.
+ *                                   {function} change     Callback method
+ *                                                         triggered on change
+ * @param {JSON | String} [json]     initial contents of the formatter
  */
-JSONFormatter = function (container) {
+JSONFormatter = function (container, options, json) {
     // check availability of JSON parser (not available in IE7 and older)
     if (!JSON) {
         throw new Error('Your browser does not support JSON. \n\n' +
@@ -2966,6 +3000,7 @@ JSONFormatter = function (container) {
     }
 
     this.container = container;
+    this.indentation = 4; // number of spaces
 
     this.width = container.clientWidth;
     this.height = container.clientHeight;
@@ -3008,37 +3043,33 @@ JSONFormatter = function (container) {
     this.content.appendChild(this.textarea);
 
     var textarea = this.textarea;
-    /* TODO: register onchange
-    var formatter = this;
-    var onChange = function () {
-        formatter._checkChange();
-    };
-    this.textarea.onchange = onChange;
-    this.textarea.onkeyup = onChange;
-    this.textarea.oncut = onChange;
-    this.textarea.oncopy = onChange;
-    this.textarea.onpaste = onChange;
-    this.textarea.onchange = function () {
-        console.log('onchange');
+
+    // read the options
+    if (options) {
+        if (options.change) {
+            // register on change event
+            if (this.textarea.oninput === null) {
+                this.textarea.oninput = function () {
+                    options.change();
+                }
+            }
+            else {
+                // oninput is undefined. For IE8-
+                this.textarea.onchange = function () {
+                    options.change();
+                }
+            }
+        }
+        if (options.indentation) {
+            this.indentation = Number(options.indentation);
+        }
     }
-    this.textarea.ondomcharacterdatamodified = function () {
-        console.log('DOMCharacterDataModified');
-    }
-    this.textarea.ondomattrmodified = function () {
-        console.log('DOMAttrModified');
-    }
-    addEventListener(this.textarea, 'DOMAttrModified', function (event) {
-        console.log('DOMAttrModified', event);
-    });
-    addEventListener(this.textarea, 'DOMCharacterDataModified', function (event) {
-        console.log('DOMCharacterDataModified', event);
-    });
-    */
 
     var me = this;
     buttonFormat.onclick = function () {
         try {
-            textarea.value = JSON.stringify(JSON.parse(textarea.value), null, '  ');
+            var json = JSONEditor.parse(textarea.value);
+            textarea.value = JSON.stringify(json, null, me.indentation);
         }
         catch (err) {
             me.onError(err);
@@ -3046,7 +3077,8 @@ JSONFormatter = function (container) {
     };
     buttonCompact.onclick = function () {
         try {
-            textarea.value = JSON.stringify(JSON.parse(textarea.value));
+            var json = JSONEditor.parse(textarea.value);
+            textarea.value = JSON.stringify(json);
         }
         catch (err) {
             me.onError(err);
@@ -3054,6 +3086,14 @@ JSONFormatter = function (container) {
     };
 
     this.container.appendChild(this.frame);
+
+    // load initial json object or string
+    if (typeof(json) == 'string') {
+        this.setText(json);
+    }
+    else {
+        this.set(json);
+    }
 };
 
 /**
@@ -3066,27 +3106,11 @@ JSONFormatter.prototype.onError = function(err) {
 };
 
 /**
- * Check if the contents are changed
- * @private
- */
-JSONFormatter.prototype._checkChange = function() {
-    var content = this.textarea.value;
-
-    if (content != this.lastContent) {
-        this.lastContent = content;
-        // TODO: implement onChangeCallback
-        if (this.onChangeCallback) {
-            this.onChangeCallback();
-        }
-    }
-};
-
-/**
  * Set json data in the formatter
  * @param {Object} json
  */
 JSONFormatter.prototype.set = function(json) {
-    this.textarea.value = JSON.stringify(json, null, '  ');
+    this.textarea.value = JSON.stringify(json, null, this.indentation);
 };
 
 /**
@@ -3094,24 +3118,29 @@ JSONFormatter.prototype.set = function(json) {
  * @return {Object} json
  */
 JSONFormatter.prototype.get = function() {
-    return JSON.parse(this.textarea.value);
+    return JSONEditor.parse(this.textarea.value);
 };
 
 /**
- * Set a callback method for the onchange event
- * @return {function} callback
+ * Get the text contents of the JSONFormatter
+ * @return {String} text
  */
-/* TODO: setOnChangeCallback
- JSONFormatter.prototype.setOnChangeCallback = function(callback) {
- this.onChangeCallback = callback;
- console.log(this.onChangeCallback, callback)
- }
- */
+JSONFormatter.prototype.getText = function() {
+    return this.textarea.value;
+};
 
+/**
+ * Set the text contents of the JSONFormatter
+ * @param {String} text
+ */
+JSONFormatter.prototype.setText = function(text) {
+    this.textarea.value = text;
+};
 
 /**
  * @constructor JSONEditor.SearchBox
  * Create a search box in given HTML container
+ * @param {JSONEditor} editor   The JSON Editor to attach to
  * @param {Element} container   HTML container element of where to create the
  *                              search box
  */
@@ -3707,3 +3736,53 @@ JSONEditor.getInternetExplorerVersion = function() {
 };
 
 JSONEditor.ieVersion = JSONEditor.getInternetExplorerVersion();
+
+/**
+ * Parse JSON using the parser built-in in the browser.
+ * On exception, the jsonString is validated and a detailed error is thrown.
+ * @param {String} jsonString
+ */
+JSONEditor.parse = function (jsonString) {
+    try {
+        return JSON.parse(jsonString);
+    }
+    catch (err) {
+        // get a detailed error message using validate
+        var message = JSONEditor.validate(jsonString) || err;
+        throw new Error(message);
+    }
+};
+
+/**
+ * Validate a string containing a JSON object
+ * This method uses JSONLint to validate the String. If JSONLint is not
+ * available, the built-in JSON parser of the browser is used.
+ * @param {String} jsonString   String with an (invalid) JSON object
+ * @return {String | undefined} Returns undefined when the string is valid JSON,
+ *                              returns a string with an error message when
+ *                              the data is invalid
+ */
+JSONEditor.validate = function (jsonString) {
+    var message = undefined;
+
+    try {
+        if (window.jsonlint) {
+            window.jsonlint.parse(jsonString);
+        }
+        else {
+            JSON.parse(jsonString);
+        }
+    }
+    catch (err) {
+        message = '<pre class="error">' + err.toString() + '</pre>';
+        if (window.jsonlint) {
+            message +=
+                '<a class="error" href="http://zaach.github.com/jsonlint/" target="_blank">' +
+                'validated by jsonlint' +
+                '</a>';
+        }
+    }
+
+    return message;
+};
+

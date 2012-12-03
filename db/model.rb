@@ -6,7 +6,6 @@ require 'yaml/store'
 # initialize( file_name, yaml_opts = {} )
 
 class Repo
-  
   attr_accessor :file, :repository, :endpoint
 
   def initialize(filename)
@@ -56,7 +55,7 @@ class Map
   
   def reload
     if @mapping
-      @mapping    = JSON.parse(IO.read(@file)).to_json
+      @mapping  = JSON.parse(IO.read(@file)).to_json
     end  
   end
   
