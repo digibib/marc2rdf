@@ -104,9 +104,27 @@ class OAIUpdate
   
   def self.sparql_update(titlenumber, options={})
     preserve = options[:preserve] || nil
-    ## delete resource first!
+    ## 1. delete resource first!
     self.sparql_delete(titlenumber, :preserve => preserve)
 
+    ## 2. then delete authorities!
+    tempgraph = RDF::Graph.new('temp')
+    $statements.each {|s| tempgraph << s }
+    
+    solutions = RDF::Query.execute(graph, {
+      :persons        => { RDF.type => RDF::FOAF.Person },
+      :organizations  => { RDF.type => RDF::FOAF.Organization },
+      :subjects       => { RDF.type => RDF::SKOS.Concept }, 
+      :geonames       => { RDF.type => RDF::GEONAMES.Feature }, 
+      :series         => { RDF.type => RDF::BIBO.Series },
+      :literaryGenres => { RDF.type => RDF::YAGO.LiteraryGenres }
+    })
+    
+    authority_ids.each do | auth |
+      deleteauth = QUERY.delete.where([auth, :p, :o])
+      result = REPO.delete(deleteauth).graph(DEFAULT_GRAPH)
+    end
+    
     ## then insert new triples
 
     query = QUERY.insert_data($statements).graph(DEFAULT_GRAPH)
