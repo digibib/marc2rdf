@@ -1134,7 +1134,29 @@ tags:
               predicate: DC.identifier
               object:
                 datatype: literal 
-                
+
+  '650|650':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/subject/x'
+                datatype: uri
+                                
   '653':
     subfield: 
       '3':
@@ -1164,6 +1186,28 @@ tags:
               predicate: DC.identifier
               object:
                 datatype: literal 
+
+  '653|653':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/subject/x'
+                datatype: uri
 
   '690':
     subfield: 
@@ -1195,6 +1239,28 @@ tags:
               object:
                 datatype: literal 
 
+  '690|690':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/subject/x'
+                datatype: uri
+
   '691':
     subfield: 
       '3':
@@ -1225,6 +1291,28 @@ tags:
               object:
                 datatype: literal                 
 
+  '691|691':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/subject/x'
+                datatype: uri
+                
 # Place as subject
   '651':
     subfield:
@@ -1281,6 +1369,28 @@ tags:
               object:
                 datatype: literal                 
 
+  '692|692':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/subject/x'
+                datatype: uri
+                
   '694':
     subfield: 
       '3':
@@ -1311,6 +1421,28 @@ tags:
               object:
                 datatype: literal                 
 
+  '694|694':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/subject/x'
+                datatype: uri
+                
   '699':
     subfield: 
       a:
