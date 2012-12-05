@@ -144,8 +144,10 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
   end
   
   def assert(p, o)
-    unless p.empty? || o.nil?
-      $statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+    if p
+      unless p.empty? || o.nil?
+        $statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+      end
     end
   end
   
