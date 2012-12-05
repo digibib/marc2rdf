@@ -123,7 +123,7 @@ class OAIUpdate
     
     authority_ids.each do | auth |
       deleteauthquery = QUERY.delete.where([auth, :p, :o])
-      puts "Delete authorities:\n #{deleteauthqueryquery.to_s}" if $debug
+      puts "Delete authorities:\n #{deleteauthquery.to_s}" if $debug
       result = REPO.delete(deleteauthquery).graph(DEFAULT_GRAPH)
     end
     
