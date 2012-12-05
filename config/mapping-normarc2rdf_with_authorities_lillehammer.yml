@@ -144,7 +144,6 @@ tags:
         prefix: http://lexvo.org/id/iso639-3/
         substr_offset: 35
         substr_length: 3
-        regex_strip: '[\W]+'
         datatype: uri
       relation: 
         class: LEXVO.Language
@@ -180,8 +179,7 @@ tags:
               subs: 
                 bibbi: DEICHMAN.bsID
                 bibliofilid: DEICHMAN.bibliofilID
-                dugnadsbasenibibliofil: DEICHMAN.dugnadsbasenibibliofilID
-              default: DEICHMAN.bibliofilID
+                dugnadsbasenibibliofil: DEICHMAN.dugnadsbaseID
         object: 
           datatype: literal
 
@@ -296,7 +294,6 @@ tags:
         predicate: DEICHMAN.ageLimit
         object: 
           prefix: http://data.deichman.no/ageLimit/
-          regex_strip: '[\D]+'
           datatype: uri                     
 
   '020':
@@ -435,6 +432,7 @@ tags:
               object:
                 datatype: uri
                 prefix: 'http://data.deichman.no/nationality/'
+                regex_split: '[\-]+'
                 regex_strip: '[\W]+'
             q:
               predicate: FOAF.givenName
@@ -592,12 +590,51 @@ tags:
           regex_strip: '[\W]+'
           datatype: literal
 
-  '(245|246)':
+  '245':
     subfield: 
       a: 
         predicate: DC.title
         object: 
           regex_strip: '[\.:,;\/\s]\s*$'
+          datatype: literal
+      b: 
+        predicate: FABIO.hasSubtitle
+        object: 
+          regex_strip: '[\.:,;\/\s]\s*$'
+          datatype: literal
+      c: 
+        predicate: RDA.statementOfResponsibility
+        object: 
+          regex_strip: '[\.:,;\/\s]\s*$'
+          datatype: literal
+      n: 
+        predicate: BIBO.number
+        object: 
+          datatype: literal
+      p: 
+        predicate: FABIO.hasSubtitle
+        object: 
+          regex_strip: '[\.:,;\/\s]\s*$'
+          datatype: literal
+
+  '245|245':
+    subfield: 
+      a: 
+        predicate: DEICHMAN.titleURLized
+        object: 
+          urlize: true
+          regex_strip: '[\W]+'
+          datatype: literal
+
+  '246':
+    subfield: 
+      a: 
+        predicate: RDA.variantTitleForTheWork
+        object: 
+          combine:
+            - a
+            - b
+          combinestring: '. '
           datatype: literal
       b: 
         predicate: RDA.variantTitleForTheWork
@@ -617,15 +654,6 @@ tags:
         predicate: RDA.variantTitleForTheWork
         object: 
           regex_strip: '[\.:,;\/\s]\s*$'
-          datatype: literal
-
-  '245|245|246':
-    subfield: 
-      a: 
-        predicate: DEICHMAN.titleURLized
-        object: 
-          urlize: true
-          regex_strip: '[\W]+'
           datatype: literal
 
   '250':
@@ -697,10 +725,10 @@ tags:
         object: 
           datatype: literal          
 
-  '^5(?!03|21|46|71|72|73|74|90|92|95|99)':
+  '^5(?!03|20|21|46|71|72|73|74|90|92|95|99)':
     subfield: 
       a: 
-        predicate: DC.description
+        predicate: RDFS.comment
         object: 
           datatype: literal
           lang: :no
@@ -709,6 +737,13 @@ tags:
     subfield: 
       a: 
         predicate: DEICHMAN.publicationHistory
+        object: 
+          datatype: literal
+
+  '520':
+    subfield: 
+      a: 
+        predicate: DC.description
         object: 
           datatype: literal
 
@@ -847,6 +882,7 @@ tags:
               object:
                 datatype: uri
                 prefix: 'http://data.deichman.no/nationality/'
+                regex_split: '[\-]+'
                 regex_strip: '[\W]+'
             '1':
               predicate: SKOS.notation
@@ -986,6 +1022,7 @@ tags:
               object:
                 datatype: uri
                 prefix: 'http://data.deichman.no/nationality/'
+                regex_split: '[\-]+'
                 regex_strip: '[\W]+'
             q:
               predicate: 'FOAF.givenName'
@@ -1045,13 +1082,13 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/lillehammer/subject/x
+          prefix: 'http://data.deichman.no/lillehammer/work/x'
           datatype: uri
         relation: 
-          class: SKOS.Concept
+          class: FABIO.Work
           subfield:
             'a':
-              predicate: SKOS.prefLabel
+              predicate: DC.title
               object:
                 combine:
                   - a
@@ -1066,34 +1103,7 @@ tags:
             '3':
               predicate: DC.identifier
               object:
-                datatype: literal                 
-
-  '630|630':
-    subfield: 
-      '3':
-        predicate: FOAF.focus
-        object:
-          prefix: 'http://data.deichman.no/lillehammer/work/x'
-          datatype: uri
-        relation: 
-          class: FABIO.Work
-          subfield:
-            'a':
-              predicate: DC.title
-              object:
-                combine:
-                  - a
-                  - p
-                combinestring: '. '
                 datatype: literal
-            '1':
-              predicate: SKOS.notation
-              object: 
-                datatype: literal
-            '3':
-              predicate: DC.identifier
-              object:
-                datatype: literal                			
 
   '650':
     subfield: 
@@ -1124,18 +1134,48 @@ tags:
               predicate: DC.identifier
               object:
                 datatype: literal 
-                
-  '653':
+
+  '650|650':
     subfield: 
-      '3':
+      'a':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/lillehammer/keyword/x
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
+                datatype: uri
+
+  '653':
+    subfield: 
+      a:
+        predicate: DC.subject
+        object:
+          combine:
+            - a
+            - q
+            - x
+            - '0'
+          combinestring: '_'
+          urlize: true
+          regex_strip: '[^\w\-]+'
+          prefix: http://data.deichman.no/keyword/
           datatype: uri
         relation: 
           class: SKOS.Concept
           subfield:
-            'a': 
+            a: 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1153,7 +1193,50 @@ tags:
             '3':
               predicate: DC.identifier
               object:
-                datatype: literal 
+                datatype: literal
+                                
+  '653|653':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+
+  '653|653|653':
+    subfield:
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield: 
+            'a':
+              predicate: SKOS.narrower
+              object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - '0'
+                combinestring: '_'
+                urlize: true
+                regex_strip: '[^\w\-]+'
+                prefix: http://data.deichman.no/keyword/
+                datatype: uri
 
   '690':
     subfield: 
@@ -1185,6 +1268,28 @@ tags:
               object:
                 datatype: literal 
 
+  '690|690':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
+                datatype: uri
+
   '691':
     subfield: 
       '3':
@@ -1215,6 +1320,28 @@ tags:
               object:
                 datatype: literal                 
 
+  '691|691':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
+                datatype: uri
+                
 # Place as subject
   '651':
     subfield:
@@ -1271,6 +1398,28 @@ tags:
               object:
                 datatype: literal                 
 
+  '692|692':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
+                datatype: uri
+                
   '694':
     subfield: 
       '3':
@@ -1301,6 +1450,28 @@ tags:
               object:
                 datatype: literal                 
 
+  '694|694':
+    subfield: 
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield:
+            'a':
+              predicate: SKOS.prefLabel
+              object:
+                datatype: literal
+            '3':
+              predicate: SKOS.narrower
+              object:
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
+                datatype: uri
+                
   '699':
     subfield: 
       a:
@@ -1337,7 +1508,7 @@ tags:
             '3':
               predicate: DC.identifier
               object:
-                datatype: literal                 
+                datatype: literal
 
 
   '652':
@@ -1511,7 +1682,7 @@ tags:
         predicate: DC.isPartOf
         object:
           regex_strip: '[\W]+'
-          prefix: http://data.deichman.no/lillehammer/resource/tnr_
+          prefix: http://data.deichman.no/resource/tnr_
           datatype: uri
 
   '780':
@@ -1520,7 +1691,7 @@ tags:
         predicate: DBO.previousWork
         object:
           regex_strip: '[\W]+'
-          prefix: http://data.deichman.no/lillehammer/resource/tnr_
+          prefix: http://data.deichman.no/resource/tnr_
           datatype: uri
 
   '785':
@@ -1529,7 +1700,7 @@ tags:
         predicate: DBO.subsequentWork
         object:
           regex_strip: '[\W]+'
-          prefix: http://data.deichman.no/lillehammer/resource/tnr_
+          prefix: http://data.deichman.no/resource/tnr_
           datatype: uri
 
   '856':
