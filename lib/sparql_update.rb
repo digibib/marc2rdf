@@ -54,10 +54,10 @@ class OAIUpdate
       minus = options[:preserve].collect { |p| [RDF::URI("#{resource}"), RDF.module_eval("#{p}"), :o] }
       # if :preserve contains an array of :minuses?
       if minus.first.is_a?(Array)
-        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).prefixes(@prefixes)
+        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o])
         minus.each {|m| query.minus(m) }
       else
-        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).minus(minus).prefixes(@prefixes)
+        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).minus(minus)
       end
       puts query.to_s if $debug
       
@@ -67,7 +67,7 @@ class OAIUpdate
         response = UPDATE_CLIENT.post :query => query.to_s, :key => @key
       end
     else
-      query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).prefixes(@prefixes)
+      query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o])
       puts query.to_s if $debug
 
       if STORE == 'virtuoso'
@@ -82,7 +82,7 @@ class OAIUpdate
   def self.sparql_purge(titlenumber)
     resource = RDF::URI(CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber)
 
-    query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).prefixes(@prefixes)
+    query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o])
     puts query.to_s if $debug
 
     if STORE == 'virtuoso'
@@ -91,7 +91,7 @@ class OAIUpdate
       response = UPDATE_CLIENT.post :query => query.to_s, :key => @key
     end
     
-    query = QUERY.delete([:s, :p, resource]).graph(DEFAULT_GRAPH).where([:s, :p, resource]).prefixes(@prefixes)
+    query = QUERY.delete([:s, :p, resource]).graph(DEFAULT_GRAPH).where([:s, :p, resource])
     puts query.to_s if $debug
 
     if STORE == 'virtuoso'
@@ -122,9 +122,13 @@ class OAIUpdate
     })
     
     authority_ids.each do | auth |
-      deleteauthquery = QUERY.delete.where([auth, :p, :o])
+      deleteauthquery = QUERY.delete([auth, :p, :o]).graph(DEFAULT_GRAPH).where([auth, :p, :o])
       puts "Delete authorities:\n #{deleteauthquery.to_s}" if $debug
-      result = REPO.delete(deleteauthquery).graph(DEFAULT_GRAPH)
+      if STORE == 'virtuoso'
+        response = UPDATE_CLIENT.delete(deleteauthquery)
+      else
+        response = UPDATE_CLIENT.post :query => deleteauthquery.to_s, :key => @key
+      end
     end
     
     ## then insert new triples
