@@ -111,7 +111,7 @@ class OAIUpdate
     tempgraph = RDF::Graph.new('temp')
     $statements.each {|s| tempgraph << s }
     
-    solutions = RDF::Query.execute(tempgraph, {
+    authority_ids = RDF::Query.execute(tempgraph, {
       :persons        => { RDF.type => RDF::FOAF.Person },
       :organizations  => { RDF.type => RDF::FOAF.Organization },
       :subjects       => { RDF.type => RDF::SKOS.Concept }, 
