@@ -111,18 +111,20 @@ class OAIUpdate
     tempgraph = RDF::Graph.new('temp')
     $statements.each {|s| tempgraph << s }
     
-    solutions = RDF::Query.execute(graph, {
+    solutions = RDF::Query.execute(tempgraph, {
       :persons        => { RDF.type => RDF::FOAF.Person },
       :organizations  => { RDF.type => RDF::FOAF.Organization },
       :subjects       => { RDF.type => RDF::SKOS.Concept }, 
       :geonames       => { RDF.type => RDF::GEONAMES.Feature }, 
       :series         => { RDF.type => RDF::BIBO.Series },
+      :mogenres       => { RDF.type => RDF::MO.Genre },
       :literaryGenres => { RDF.type => RDF::YAGO.LiteraryGenres }
     })
     
     authority_ids.each do | auth |
-      deleteauth = QUERY.delete.where([auth, :p, :o])
-      result = REPO.delete(deleteauth).graph(DEFAULT_GRAPH)
+      deleteauthquery = QUERY.delete.where([auth, :p, :o])
+      puts "Delete authorities:\n #{deleteauthqueryquery.to_s}" if $debug
+      result = REPO.delete(deleteauthquery).graph(DEFAULT_GRAPH)
     end
     
     ## then insert new triples
