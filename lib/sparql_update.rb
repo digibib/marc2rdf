@@ -117,8 +117,8 @@ class OAIUpdate
       :subjects       => { RDF.type => RDF::SKOS.Concept }, 
       :geonames       => { RDF.type => RDF::GEONAMES.Feature }, 
       :series         => { RDF.type => RDF::BIBO.Series },
-      :mogenres       => { RDF.type => RDF::MO.Genre },
-      :literaryGenres => { RDF.type => RDF::YAGO.LiteraryGenres }
+      :literaryGenres => { RDF.type => RDF::YAGO.LiteraryGenres },
+      #:mogenre        => { RDF.type => RDF::MO.Genre } # not working for some weird reason ?
     })
     
     authority_ids.each do | auth |
