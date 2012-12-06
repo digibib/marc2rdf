@@ -142,6 +142,7 @@ tags:
       predicate: DC.language
       object:
         prefix: http://lexvo.org/id/iso639-3/
+        regex_strip: '[\W]+'
         substr_offset: 35
         substr_length: 3
         datatype: uri
