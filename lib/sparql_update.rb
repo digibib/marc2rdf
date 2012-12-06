@@ -108,18 +108,30 @@ class OAIUpdate
     self.sparql_delete(titlenumber, :preserve => preserve)
 
     ## 2. then delete authorities!
+    ## do this by making temporary graph with converted record
+    ## and do queries on this to find authorities to delete
+    
+    
     tempgraph = RDF::Graph.new('temp')
     $statements.each {|s| tempgraph << s }
     
-    authority_ids = RDF::Query.execute(tempgraph, {
-      :persons        => { RDF.type => RDF::FOAF.Person },
-      :organizations  => { RDF.type => RDF::FOAF.Organization },
-      :subjects       => { RDF.type => RDF::SKOS.Concept }, 
-      :geonames       => { RDF.type => RDF::GEONAMES.Feature }, 
-      :series         => { RDF.type => RDF::BIBO.Series },
-      :literaryGenres => { RDF.type => RDF::YAGO.LiteraryGenres },
-      #:mogenre        => { RDF.type => RDF::MO.Genre } # not working for some weird reason ?
-    })
+    ## NB: OPTIONAL is not implemented on RDF::Query yet, so we need to do nested queries
+    auths = [RDF::FOAF.Person, 
+            RDF::FOAF.Organization, 
+            RDF::SKOS.Concept, 
+            RDF::GEONAMES.Feature, 
+            RDF::BIBO.Series, 
+            RDF::YAGO.LiteraryGenres, 
+            RDF::MO.Genre]
+    
+    authority_ids = []
+    auths.each do |auth|
+      authority_ids << RDF::Query.execute(tempgraph, {
+        :auth => { RDF.type => auth }
+      })
+    end
+    # clean results before iterating
+    authority_ids.delete_if {|s| s.empty? }.flatten!
     
     authority_ids.each do | auth |
       deleteauthquery = QUERY.delete([auth, :p, :o]).graph(DEFAULT_GRAPH).where([auth, :p, :o])
