@@ -135,6 +135,8 @@ class OAIUpdate
     
     authority_ids.each do | auth |
       deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(DEFAULT_GRAPH).where([auth[:id], :p, :o])
+      deleteauthquery.minus([auth[:id], RDF::SKOS.broader, :o])
+      deleteauthquery.minus([auth[:id], RDF::OWL.sameAs, :o])
       puts "Delete authorities:\n #{deleteauthquery.to_s}" if $debug
       if STORE == 'virtuoso'
         response = UPDATE_CLIENT.delete(deleteauthquery)
