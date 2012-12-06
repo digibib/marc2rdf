@@ -127,14 +127,14 @@ class OAIUpdate
     authority_ids = []
     auths.each do |auth|
       authority_ids << RDF::Query.execute(tempgraph, {
-        :auth => { RDF.type => auth }
+        :id => { RDF.type => auth }
       })
     end
     # clean results before iterating
     authority_ids.delete_if {|s| s.empty? }.flatten!
     
-    authority_ids[:auth].each do | auth |
-      deleteauthquery = QUERY.delete([auth, :p, :o]).graph(DEFAULT_GRAPH).where([auth, :p, :o])
+    authority_ids.each do | auth |
+      deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(DEFAULT_GRAPH).where([auth[:id], :p, :o])
       puts "Delete authorities:\n #{deleteauthquery.to_s}" if $debug
       if STORE == 'virtuoso'
         response = UPDATE_CLIENT.delete(deleteauthquery)
