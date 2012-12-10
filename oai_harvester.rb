@@ -48,9 +48,9 @@ require_relative './lib/rdfmodeler.rb'
 
 # unless input file is given, start http harvesting
 unless $input_file
-  faraday = Faraday.new :request => { :open_timeout => 20, :timeout => RDFModeler::config['oai']['timeout'] } 
-  client = OAI::Client.new(RDFModeler::config['oai']['repository_url'], {:redirects => RDFModeler::config['oai']['follow_redirects'], :parser => RDFModeler::config['oai']['parser'], :timeout => RDFModeler::config['oai']['timeout'], :debug => true, :http => faraday})
-  response = client.list_records :metadata_prefix => RDFModeler::config['oai']['format'], :from => $fromdate, :until => Date.today.to_s
+  faraday = Faraday.new :request => { :open_timeout => 20, :timeout => SparqlUpdate::CONFIG['oai']['timeout'] } 
+  client = OAI::Client.new(SparqlUpdate::CONFIG['oai']['repository_url'], {:redirects => SparqlUpdate::CONFIG['oai']['follow_redirects'], :parser => SparqlUpdate::CONFIG['oai']['parser'], :timeout => SparqlUpdate::CONFIG['oai']['timeout'], :debug => true, :http => faraday})
+  response = client.list_records :metadata_prefix => SparqlUpdate::CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
   
   num_records = 0
   
