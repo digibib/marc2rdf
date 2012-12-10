@@ -39,20 +39,20 @@ module RDF
 end
 
 class RDFModeler
-CONFIG      = YAML::load_file('config/config.yml')
-MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
-@@yamltags = MAPPINGFILE['tags']
 
-  attr_reader :record, :statements, :uri
+  attr_reader :config, :yamltags, :record, :statements, :uri
   def initialize(record)
+    @config     = YAML::load_file($config_file)
+    mappingfile = YAML::load_file(@config['mapping']['file'])
+    @yamltags   = mappingfile['tags']
     @record = record
     construct_uri
     $statements = []
   end
     
   def construct_uri
-    @uri = RDF::URI.intern(CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'])
-    id = @record[CONFIG['resource']['resource_identifier_field']]
+    @uri = RDF::URI.intern(self::config['resource']['base'] + self::config['resource']['resource_path'] + self::config['resource']['resource_prefix'])
+    id = @record[self::config['resource']['resource_identifier_field']]
     @uri += id.value.to_i
   end
 
@@ -170,7 +170,7 @@ MAPPINGFILE = YAML::load_file(CONFIG['mapping']['file'])
     # put all marc tag fields into array object 'marcfields' for later use
     marcfields = record.find_all { |field| field.tag == marctag }
     # start matching MARC tags against yamltags, put results in match array
-    match = @@yamltags.select { |k,v| marctag  =~ /#{k}/ }
+    match = self.yamltags.select { |k,v| marctag  =~ /#{k}/ }
     match.each do |yamlkey,yamlvalue|
     # iterate each marc tag array object to catch multiple marc fields 
       marcfields.each do | marcfield | 

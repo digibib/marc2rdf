@@ -1,18 +1,18 @@
 require 'rdf/virtuoso'
-require_relative './rdfmodeler.rb'
+#require_relative './rdfmodeler.rb'
 
 module SparqlUpdate
-  CONFIG           = YAML::load_file('config/config.yml')
+  CONFIG          = YAML::load_file($config_file)
   STORE           = CONFIG['rdfstore']['store']
   SPARQL_ENDPOINT = CONFIG['rdfstore']['sparql_endpoint']
   SPARUL_ENDPOINT = CONFIG['rdfstore']['sparul_endpoint']
   DEFAULT_GRAPH   = RDF::URI(CONFIG['rdfstore']['default_graph'])
   DEFAULT_PREFIX  = CONFIG['rdfstore']['default_prefix']
   
-  @username        = CONFIG['rdfstore']['username']
-  @password        = CONFIG['rdfstore']['password']
-  @auth_method     = CONFIG['rdfstore']['auth_method']
-  @key             = CONFIG['rdfstore']['key']
+  @username       = CONFIG['rdfstore']['username']
+  @password       = CONFIG['rdfstore']['password']
+  @auth_method    = CONFIG['rdfstore']['auth_method']
+  @key            = CONFIG['rdfstore']['key']
   
   if STORE == 'virtuoso'
     UPDATE_CLIENT = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
