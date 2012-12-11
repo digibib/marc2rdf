@@ -730,7 +730,7 @@ tags:
   '^5(?!03|20|21|46|71|72|73|74|90|92|95|99)':
     subfield: 
       a: 
-        predicate: RDFS.comment
+        predicate: DC.description
         object: 
           datatype: literal
           lang: :no
@@ -745,7 +745,7 @@ tags:
   '520':
     subfield: 
       a: 
-        predicate: DC.description
+        predicate: DC.abstract
         object: 
           datatype: literal
 
