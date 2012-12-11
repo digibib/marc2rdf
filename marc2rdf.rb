@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby 
 # encoding: UTF-8
 if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
-
-require_relative './lib/rdfmodeler.rb'
+require 'rubygems'
+require 'bundler/setup'
 
 def usage(s)
     $stderr.puts(s)
     $stderr.puts("Usage: \n")
     $stderr.puts("#{File.basename($0)} -i|x input_file -o output_file [-r recordlimit]\n")
+    $stderr.puts("  -c [config_file] load config file different than config/config.yml\n")    
     $stderr.puts("  -i input_file \(marc binary\)\n")
     $stderr.puts("  -x input_file \(marcxml\)\n")
     $stderr.puts("  -o output_file extension can be either .rdf (slooow) or .nt (very fast)\n")
@@ -17,6 +18,7 @@ def usage(s)
 end
 
 loop { case ARGV[0]
+    when '-c' then  ARGV.shift; $config_file = ARGV.shift
     when '-i' then  ARGV.shift; $input_file  = ARGV.shift
     when '-x' then  ARGV.shift; $xmlinput_file  = ARGV.shift
     when '-o' then  ARGV.shift; $output_file = ARGV.shift
@@ -27,6 +29,11 @@ loop { case ARGV[0]
       if $input_file.nil? && $xmlinput_file.nil? && $output_file.nil? then usage("Missing argument!\n") end
     break
 end; }
+
+# Defaults
+$config_file = 'config/config.yml' unless $config_file
+
+require_relative './lib/rdfmodeler.rb'
 
 =begin
   Start processing
@@ -65,7 +72,7 @@ if $recordlimit then break if i > $recordlimit end
 
   # initiate record and set type
   rdfrecord = RDFModeler.new(record)
-  rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
+  rdfrecord.set_type(SparqlUpdate::CONFIG['resource']['resource_type'])
   rdfrecord.marc2rdf_convert(record)
 
 ## finally ... write processed record 
