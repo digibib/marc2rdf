@@ -1207,7 +1207,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subject/x'
+                prefix: 'http://data.deichman.no/keyword/x'
                 datatype: uri
 
   '690':
@@ -1259,7 +1259,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subject/x'
+                prefix: 'http://data.deichman.no/subjectMultilingual/x'
                 datatype: uri
 
   '691':
@@ -1311,7 +1311,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subject/x'
+                prefix: 'http://data.deichman.no/subjectFiction/x'
                 datatype: uri
                 
 # Place as subject
@@ -1389,7 +1389,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subject/x'
+                prefix: 'http://data.deichman.no/subjectJuvenileFiction/x'
                 datatype: uri
                 
   '694':
@@ -1441,7 +1441,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subject/x'
+                prefix: 'http://data.deichman.no/keywordJuvenile/x'
                 datatype: uri
                 
   '699':
