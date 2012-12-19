@@ -1207,8 +1207,8 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/keyword/x'
                 datatype: uri
+                prefix: http://data.deichman.no/keyword/x                
 
   '690':
     subfield: 
