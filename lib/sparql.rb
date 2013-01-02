@@ -12,8 +12,8 @@ QUERY  = RDF::Virtuoso::Query
 
   def self.count(type)
     query    = QUERY.select.where([:s, RDF.type, type]).distinct
-      .count(:s)
-      .from(DEFAULT_GRAPH)
+    query.count(:s)
+    query.from(DEFAULT_GRAPH)
     puts query.to_s if $debug
     solutions = REPO.select(query)
     count = solutions.first[:s].to_i
