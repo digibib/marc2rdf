@@ -142,6 +142,7 @@ tags:
       predicate: DC.language
       object:
         prefix: http://lexvo.org/id/iso639-3/
+        regex_strip: '[\W]+'
         substr_offset: 35
         substr_length: 3
         datatype: uri
@@ -411,7 +412,7 @@ tags:
       '3':
         predicate: DC.creator
         object:
-          prefix: 'http://data.deichman.no/person/x'
+          prefix: 'http://data.deichman.no/lillehammer/person/x'
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -454,7 +455,7 @@ tags:
       '3':
         predicate: DC.creator
         object:
-          prefix: 'http://data.deichman.no/organization/x' 
+          prefix: 'http://data.deichman.no/lillehammer/organization/x' 
           datatype: uri    
         relation: 
           class: FOAF.Organization
@@ -494,7 +495,7 @@ tags:
       '3':
         predicate: DC.creator 
         object: 
-          prefix: 'http://data.deichman.no/conference/x'
+          prefix: 'http://data.deichman.no/lillehammer/conference/x'
           datatype: uri    
         relation: 
           class: BIBO.Conference
@@ -533,7 +534,7 @@ tags:
       '3':
         predicate: FABIO.isManifestationOf 
         object: 
-          prefix: 'http://data.deichman.no/work/x'
+          prefix: 'http://data.deichman.no/lillehammer/work/x'
           regex_strip: '[^\w\-]+'
           datatype: uri    
         relation: 
@@ -857,7 +858,7 @@ tags:
                 utøv: DEICHMAN.performer
               default: 'DC.contributor'
         object:
-          prefix: http://data.deichman.no/person/x
+          prefix: http://data.deichman.no/lillehammer/person/x
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -903,7 +904,7 @@ tags:
             - '3'
             - 't'
           combinestring: '_'
-          prefix: http://data.deichman.no/work/x
+          prefix: http://data.deichman.no/lillehammer/work/x
           urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
@@ -914,7 +915,7 @@ tags:
               predicate: DC.creator
               object:
                 datatype: uri
-                prefix: http://data.deichman.no/person/x
+                prefix: http://data.deichman.no/lillehammer/person/x
             t:
               predicate: DC.title
               object:
@@ -929,7 +930,7 @@ tags:
       '3': 
         predicate: DC.isPartOf
         object:
-          prefix: http://data.deichman.no/series/x
+          prefix: http://data.deichman.no/lillehammer/series/x
           datatype: uri
         relation: 
           class: BIBO.Series
@@ -975,7 +976,7 @@ tags:
             - '3'
             - t
           combinestring: '_' 
-          prefix: http://data.deichman.no/work/x
+          prefix: http://data.deichman.no/lillehammer/work/x
           urlize: true
           regex_strip: '[^\w\-]+'
           datatype: uri
@@ -985,7 +986,7 @@ tags:
             '3':
               predicate: DC.creator
               object:
-                prefix: 'http://data.deichman.no/person/x'
+                prefix: 'http://data.deichman.no/lillehammer/person/x'
                 datatype: uri
             t:
               predicate: 'DC.title'
@@ -1001,7 +1002,7 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/person/x
+          prefix: http://data.deichman.no/lillehammer/person/x
           datatype: uri
         relation: 
           class: FOAF.Person
@@ -1043,7 +1044,7 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: 'http://data.deichman.no/organization/x' 
+          prefix: 'http://data.deichman.no/lillehammer/organization/x' 
           datatype: uri    
         relation: 
           class: FOAF.Organization
@@ -1083,7 +1084,7 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: 'http://data.deichman.no/work/x'
+          prefix: 'http://data.deichman.no/lillehammer/work/x'
           datatype: uri
         relation: 
           class: FABIO.Work
@@ -1101,24 +1102,9 @@ tags:
               predicate: SKOS.notation
               object: 
                 datatype: literal
-
-  '630|630':
-    subfield: 
-      '3':
-        predicate: FOAF.focus
-        object:
-          prefix: 'http://data.deichman.no/work/x'
-          datatype: uri
-        relation: 
-          class: FABIO.Work
-          subfield:
             '3':
               predicate: DC.identifier
               object:
-                combine:
-                  - a
-                  - p
-                combinestring: '. '
                 datatype: literal
 
   '650':
@@ -1126,7 +1112,7 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: 'http://data.deichman.no/subject/x'
+          prefix: 'http://data.deichman.no/lillehammer/subject/x'
           datatype: uri
         relation:
           class: SKOS.Concept
@@ -1170,20 +1156,28 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subject/x'
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
                 datatype: uri
-                                
+
   '653':
     subfield: 
-      '3':
+      a:
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/keyword/x
+          combine:
+            - a
+            - q
+            - x
+            - '0'
+          combinestring: '_'
+          urlize: true
+          regex_strip: '[^\w\-]+'
+          prefix: http://data.deichman.no/keyword/
           datatype: uri
         relation: 
           class: SKOS.Concept
           subfield:
-            'a': 
+            a: 
               predicate: SKOS.prefLabel
               object:
                 combine:
@@ -1201,8 +1195,8 @@ tags:
             '3':
               predicate: DC.identifier
               object:
-                datatype: literal 
-
+                datatype: literal
+                                
   '653|653':
     subfield: 
       'a':
@@ -1219,18 +1213,39 @@ tags:
               predicate: SKOS.prefLabel
               object:
                 datatype: literal
-            '3':
+
+  '653|653|653':
+    subfield:
+      'a':
+        predicate: DC.subject
+        object:
+          prefix: 'http://data.deichman.no/subject/'
+          datatype: uri
+          urlize: true
+          regex_strip: '[\W]+'
+        relation:
+          class: SKOS.Concept
+          subfield: 
+            'a':
               predicate: SKOS.narrower
               object:
+                combine:
+                  - a
+                  - q
+                  - x
+                  - '0'
+                combinestring: '_'
+                urlize: true
+                regex_strip: '[^\w\-]+'
+                prefix: http://data.deichman.no/keyword/
                 datatype: uri
-                prefix: http://data.deichman.no/keyword/x                
 
   '690':
     subfield: 
       '3':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/subjectMultilingual/x
+          prefix: http://data.deichman.no/lillehammer/subjectMultilingual/x
           datatype: uri
         relation: 
           class: SKOS.Concept
@@ -1274,7 +1289,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subjectMultilingual/x'
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
                 datatype: uri
 
   '691':
@@ -1282,7 +1297,7 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/subjectFiction/x
+          prefix: http://data.deichman.no/lillehammer/subjectFiction/x
           datatype: uri
         relation: 
           class: SKOS.Concept
@@ -1326,7 +1341,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subjectFiction/x'
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
                 datatype: uri
                 
 # Place as subject
@@ -1335,7 +1350,7 @@ tags:
       '3':
         predicate: DEICHMAN.geographicalSubject
         object:
-          prefix: http://data.deichman.no/geographicalSubject/x
+          prefix: http://data.deichman.no/lillehammer/geographicalSubject/x
           datatype: uri
         relation: 
           class: GEONAMES.Feature
@@ -1360,7 +1375,7 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/subjectJuvenileFiction/x
+          prefix: http://data.deichman.no/lillehammer/subjectJuvenileFiction/x
           datatype: uri
         relation: 
           class: SKOS.Concept
@@ -1404,7 +1419,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/subjectJuvenileFiction/x'
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
                 datatype: uri
                 
   '694':
@@ -1412,7 +1427,7 @@ tags:
       '3':
         predicate: DC.subject
         object:
-          prefix: http://data.deichman.no/keywordJuvenile/x
+          prefix: http://data.deichman.no/lillehammer/keywordJuvenile/x
           datatype: uri
         relation: 
           class: SKOS.Concept
@@ -1456,7 +1471,7 @@ tags:
             '3':
               predicate: SKOS.narrower
               object:
-                prefix: 'http://data.deichman.no/keywordJuvenile/x'
+                prefix: 'http://data.deichman.no/lillehammer/subject/x'
                 datatype: uri
                 
   '699':
@@ -1495,7 +1510,7 @@ tags:
             '3':
               predicate: DC.identifier
               object:
-                datatype: literal                 
+                datatype: literal
 
 
   '652':
@@ -1503,7 +1518,7 @@ tags:
       '3': 
         predicate: MO.genre
         object: 
-          prefix: http://data.deichman.no/mogenre/x
+          prefix: http://data.deichman.no/lillehammer/mogenre/x
           datatype: uri
         relation: 
           class: MO.Genre
@@ -1527,7 +1542,7 @@ tags:
       '3': 
         predicate: DBO.literaryGenre
         object: 
-          prefix: http://data.deichman.no/genre/x
+          prefix: http://data.deichman.no/lillehammer/genre/x
           datatype: uri
         relation: 
           class: YAGO.LiteraryGenres
@@ -1555,7 +1570,7 @@ tags:
       '3': 
         predicate: DBO.literaryGenre
         object: 
-          prefix: http://data.deichman.no/genreJuvenile/x
+          prefix: http://data.deichman.no/lillehammer/genreJuvenile/x
           datatype: uri
         relation: 
           class: YAGO.LiteraryGenres
@@ -1606,7 +1621,7 @@ tags:
       '3': 
         predicate: DC.contributor
         object: 
-          prefix: http://data.deichman.no/organization/x
+          prefix: http://data.deichman.no/lillehammer/organization/x
           datatype: uri
         relation: 
           class: FOAF.Organization
@@ -1629,7 +1644,7 @@ tags:
       '3':
         predicate: DC.contributor
         object: 
-          prefix: 'http://data.deichman.no/conference/x'
+          prefix: 'http://data.deichman.no/lillehammer/conference/x'
           datatype: uri    
         relation:
           class: BIBO.Conference

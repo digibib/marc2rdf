@@ -2,17 +2,17 @@ require 'rdf/virtuoso'
 #require_relative './rdfmodeler.rb'
 
 module SparqlUpdate
-  CONFIG          = YAML::load_file('config/config.yml')
+  CONFIG          = YAML::load_file($config_file)
   STORE           = CONFIG['rdfstore']['store']
   SPARQL_ENDPOINT = CONFIG['rdfstore']['sparql_endpoint']
   SPARUL_ENDPOINT = CONFIG['rdfstore']['sparul_endpoint']
   DEFAULT_GRAPH   = RDF::URI(CONFIG['rdfstore']['default_graph'])
   DEFAULT_PREFIX  = CONFIG['rdfstore']['default_prefix']
   
-  @username        = CONFIG['rdfstore']['username']
-  @password        = CONFIG['rdfstore']['password']
-  @auth_method     = CONFIG['rdfstore']['auth_method']
-  @key             = CONFIG['rdfstore']['key']
+  @username       = CONFIG['rdfstore']['username']
+  @password       = CONFIG['rdfstore']['password']
+  @auth_method    = CONFIG['rdfstore']['auth_method']
+  @key            = CONFIG['rdfstore']['key']
   
   if STORE == 'virtuoso'
     REPO = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT, :update_uri => SPARUL_ENDPOINT, :username => @username, :password => @password, :auth_method => @auth_method)
@@ -54,10 +54,10 @@ class OAIUpdate
       minus = options[:preserve].collect { |p| [RDF::URI("#{resource}"), RDF.module_eval("#{p}"), :o] }
       # if :preserve contains an array of :minuses?
       if minus.first.is_a?(Array)
-        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).prefixes(@prefixes)
+        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o])
         minus.each {|m| query.minus(m) }
       else
-        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).minus(minus).prefixes(@prefixes)
+        query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).minus(minus)
       end
       puts query.to_s if $debug
       
@@ -67,7 +67,7 @@ class OAIUpdate
         response = REPO.post :query => query.to_s, :key => @key
       end
     else
-      query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).prefixes(@prefixes)
+      query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o])
       puts query.to_s if $debug
 
       if STORE == 'virtuoso'
@@ -82,7 +82,7 @@ class OAIUpdate
   def self.sparql_purge(titlenumber)
     resource = RDF::URI(CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'] + titlenumber)
 
-    query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o]).prefixes(@prefixes)
+    query = QUERY.delete([resource, :p, :o]).graph(DEFAULT_GRAPH).where([resource, :p, :o])
     puts query.to_s if $debug
 
     if STORE == 'virtuoso'
@@ -91,7 +91,7 @@ class OAIUpdate
       response = REPO.post :query => query.to_s, :key => @key
     end
     
-    query = QUERY.delete([:s, :p, resource]).graph(DEFAULT_GRAPH).where([:s, :p, resource]).prefixes(@prefixes)
+    query = QUERY.delete([:s, :p, resource]).graph(DEFAULT_GRAPH).where([:s, :p, resource])
     puts query.to_s if $debug
 
     if STORE == 'virtuoso'
@@ -104,9 +104,47 @@ class OAIUpdate
   
   def self.sparql_update(titlenumber, options={})
     preserve = options[:preserve] || nil
-    ## delete resource first!
+    ## 1. delete resource first!
     self.sparql_delete(titlenumber, :preserve => preserve)
 
+    ## 2. then delete authorities!
+    ## do this by making temporary graph with converted record
+    ## and do queries on this to find authorities to delete
+    
+    
+    tempgraph = RDF::Graph.new('temp')
+    $statements.each {|s| tempgraph << s }
+    
+    ## NB: OPTIONAL is not implemented on RDF::Query yet, so we need to do nested queries
+    auths = [RDF::FOAF.Person, 
+            RDF::FOAF.Organization, 
+            RDF::SKOS.Concept, 
+            RDF::GEONAMES.Feature, 
+            RDF::BIBO.Series, 
+            RDF::YAGO.LiteraryGenres, 
+            RDF::MO.Genre]
+    
+    authority_ids = []
+    auths.each do |auth|
+      authority_ids << RDF::Query.execute(tempgraph, {
+        :id => { RDF.type => auth }
+      })
+    end
+    # clean results before iterating
+    authority_ids.delete_if {|s| s.empty? }.flatten!
+    
+    authority_ids.each do | auth |
+      deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(DEFAULT_GRAPH).where([auth[:id], :p, :o])
+      deleteauthquery.minus([auth[:id], RDF::SKOS.broader, :o])
+      deleteauthquery.minus([auth[:id], RDF::OWL.sameAs, :o])
+      puts "Delete authorities:\n #{deleteauthquery.to_s}" if $debug
+      if STORE == 'virtuoso'
+        response = UPDATE_CLIENT.delete(deleteauthquery)
+      else
+        response = UPDATE_CLIENT.post :query => deleteauthquery.to_s, :key => @key
+      end
+    end
+    
     ## then insert new triples
 
     query = QUERY.insert_data($statements).graph(DEFAULT_GRAPH)

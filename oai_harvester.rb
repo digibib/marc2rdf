@@ -5,27 +5,26 @@ require 'rubygems'
 require 'bundler/setup'
 require 'oai'
 
-require_relative './lib/rdfmodeler.rb'
-
 def usage(s)
     $stderr.puts(s)
     $stderr.puts("Usage: \n")
     $stderr.puts("#{File.basename($0)} [-f fromdate] [-r recordlimit]\n")
+    $stderr.puts("  -c [config_file] load config file different than config/config.yml\n")    
     $stderr.puts("  -r [number] stops processing after given number of records\n")
     $stderr.puts("  -f 'date' harvests records starting from the given date. Default is yesterday.\n")
     $stderr.puts("  -d debug output to stdout.\n")
     $stderr.puts("  -i [input filename] harvest to catalogue from file.\n")
     $stderr.puts("  -o [output filename] output to file instead of harvest directly to catalogue.\n")
+    $stderr.puts("  -t test! do not actually write to repository.\n")
     exit(2)
 end
 
-# Defaults
-$fromdate = Date.today.prev_day.to_s
-
 loop { case ARGV[0]
     when '-f' then  ARGV.shift; $fromdate = ARGV.shift
+    when '-c' then  ARGV.shift; $config_file = ARGV.shift
     when '-r' then  ARGV.shift; $recordlimit = ARGV.shift.to_i # force integer
     when '-d' then  ARGV.shift; $debug = true
+    when '-t' then  ARGV.shift; $test = true
     when '-i' then  ARGV.shift; $input_file = ARGV.shift
     when '-o' then  ARGV.shift; $output_file = ARGV.shift    
     when '-h' then  usage("help")
@@ -33,6 +32,12 @@ loop { case ARGV[0]
     else 
     break
 end; }
+
+# Defaults
+$fromdate = Date.today.prev_day.to_s unless $fromdate
+$config_file = 'config/config.yml' unless $config_file
+
+require_relative './lib/rdfmodeler.rb'
 
 =begin
   Start processing
@@ -42,11 +47,12 @@ end; }
   - write processed record to OAI-PMH repository given in the config file
 =end
 
+
 # unless input file is given, start http harvesting
 unless $input_file
-  faraday = Faraday.new :request => { :open_timeout => 20, :timeout => RDFModeler::CONFIG['oai']['timeout'] } 
-  client = OAI::Client.new(RDFModeler::CONFIG['oai']['repository_url'], {:redirects => RDFModeler::CONFIG['oai']['follow_redirects'], :parser => RDFModeler::CONFIG['oai']['parser'], :timeout => RDFModeler::CONFIG['oai']['timeout'], :debug => true, :http => faraday})
-  response = client.list_records :metadata_prefix => RDFModeler::CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
+  faraday = Faraday.new :request => { :open_timeout => 20, :timeout => SparqlUpdate::CONFIG['oai']['timeout'] } 
+  client = OAI::Client.new(SparqlUpdate::CONFIG['oai']['repository_url'], {:redirects => SparqlUpdate::CONFIG['oai']['follow_redirects'], :parser => SparqlUpdate::CONFIG['oai']['parser'], :timeout => SparqlUpdate::CONFIG['oai']['timeout'], :debug => true, :http => faraday})
+  response = client.list_records :metadata_prefix => SparqlUpdate::CONFIG['oai']['format'], :from => $fromdate, :until => Date.today.to_s
   
   num_records = 0
   
@@ -90,23 +96,59 @@ RDF::Writer.for(:ntriples).buffer do |writer|
  could be formal argument in ruby < 1.9 
 =end
 @@writer = writer
-  if $input_file # harvest from previously dumped output file 
-    xmlreader = MARC::XMLReader.new(StringIO.new(File.open($input_file, 'r') {|f| f.read } ))
-    xmlreader.each do | record |
+  if $input_file # import from previously harvested output file 
+    #oairecords = MARC::XMLReader.new(StringIO.new(File.open($input_file, 'r') {|f| f.read } ))
+     
+    # make faraday dummy connection
+    oai          = "http://example.com/oai"
+    path         = "/oai"
+    #IO.read('./spec/example.bibliofilmarc.xml')
+    oaixml       = IO.read($input_file).force_encoding('ASCII-8BIT')
+    oaitest        = Faraday.new(:url => "http://example.com") do |builder|
+      builder.adapter :test do |stub|
+        stub.get(path) {[200, {}, oaixml]}
+      end
+    end
+    oaiclient    = OAI::Client.new(oai, :http => oaitest)
+    oairesponse  = oaiclient.list_records :metadata_prefix => 'bibliofilmarc', :from=> "1970-01-01"
+    oairecords   = oairesponse.entries
+      
+    oairecords.each do | oairecord |
       i += 1    
       # limit number of records for testing purpose
-      if $recordlimit then break if i > $recordlimit end
-      titlenumber = "#{record['001'].value}"
-      # initiate record and set type
-      rdfrecord = RDFModeler.new(record)
-      rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
-      
-      rdfrecord.marc2rdf_convert(record)
-      # and do sparql update, preserving harvested resources
-      OAIUpdate.sparql_update(titlenumber, :preserve => RDFModeler::CONFIG['oai']['preserve_on_update'])
-    end # end oairecord loop
+      if $recordlimit then break if i > $recordlimit end    
 
-  else # process harvested records
+      ## OAI SPECIFIC PARSING ##
+      titlenumber = oairecord.header.identifier.split(':').last
+    
+      ## deleted record? ##
+      #if oairecord.header.status == "deleted" 
+      if oairecord.deleted?
+        puts "deleted: #{titlenumber}"
+        OAIUpdate.sparql_purge(titlenumber) unless $test
+        next # deleted records have no metadata in oai
+      else 
+        puts "modified: #{titlenumber}"
+        ## read metadata into MARCXML object
+        xmlreader = MARC::XMLReader.new(StringIO.new(oairecord.metadata.to_s))
+    
+        #start parsing MARC records
+        xmlreader.each do | record |
+
+         # limit number of records for testing purpose
+          if $recordlimit then break if i > $recordlimit end
+      
+          # initiate record and set type
+          rdfrecord = RDFModeler.new(record)
+          rdfrecord.set_type(rdfrecord::config['resource']['resource_type'])
+          
+          rdfrecord.marc2rdf_convert(record)
+          # and do sparql update, preserving harvested resources
+          OAIUpdate.sparql_update(titlenumber, :preserve => rdfrecord::config['oai']['preserve_on_update']) unless $test
+        end # end oairecord loop
+      end # end oairecords.deleted?
+    end
+  else # process harvested records from online harvest
     oairecords.each do | oairecord |
       i += 1
       ### offset and breaks for testing subset of marc records
@@ -121,7 +163,7 @@ RDF::Writer.for(:ntriples).buffer do |writer|
       #if oairecord.header.status == "deleted" 
       if oairecord.deleted?
         puts "deleted: #{titlenumber}"
-        OAIUpdate.sparql_purge(titlenumber)
+        OAIUpdate.sparql_purge(titlenumber) unless $test
         next # deleted records have no metadata in oai
       else 
         puts "modified: #{titlenumber}"
@@ -136,11 +178,11 @@ RDF::Writer.for(:ntriples).buffer do |writer|
       
           # initiate record and set type
           rdfrecord = RDFModeler.new(record)
-          rdfrecord.set_type(RDFModeler::CONFIG['resource']['resource_type'])
+          rdfrecord.set_type(rdfrecord::config['resource']['resource_type'])
       
           rdfrecord.marc2rdf_convert(record)
           # and do sparql update, preserving harvested resources
-          OAIUpdate.sparql_update(titlenumber, :preserve => RDFModeler::CONFIG['oai']['preserve_on_update'])
+          OAIUpdate.sparql_update(titlenumber, :preserve => rdfrecord::config['oai']['preserve_on_update']) unless $test
         
         end # end oairecord loop
       end # end oairecords.deleted?

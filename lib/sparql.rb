@@ -19,11 +19,13 @@ QUERY  = RDF::Virtuoso::Query
     count = solutions.first[:s].to_i
   end
 
-  def self.rdfstore_isbnlookup(options={})
+  def self.rdfstore_lookup(options={})
     # lookup in RDF repository with options from config file
-    minuses = options[:minuses] || nil
-    limit   = options[:limit]   || nil
-    offset  = options[:offset]  || nil
+    minuses   = options[:minuses]   || nil
+    limit     = options[:limit]     || nil
+    offset    = options[:offset]    || nil
+    # predicate to lookup, defaults to isbn
+    predicate = options[:predicate] || "RDF::BIBO.isbn"
   
     if $debug then puts "offset: #{offset}" end
 
@@ -31,11 +33,11 @@ QUERY  = RDF::Virtuoso::Query
       minus = minuses.map { |m| [:book, RDF.module_eval("#{m}"), :object] }
     end
 
-    query = QUERY.select(:work, :book, :isbn)
+    query = QUERY.select(:work, :book, :object)
     query.from(DEFAULT_GRAPH)
     query.where(
-      [:book, RDF::type, RDF::BIBO.Document],
-      [:book, RDF::BIBO.isbn, :isbn],
+      [:book, RDF.type, RDF::BIBO.Document],
+      [:book, RDF.module_eval("#{predicate}"), :object],
       [:work, RDF::FABIO.hasManifestation, :book])
       minus.each {|m| query.minus(m) } if minuses
     query.offset(offset) if offset
