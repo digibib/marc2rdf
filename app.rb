@@ -12,7 +12,7 @@ require "json"
 # RDFmodeler loads all other classes in marc2rdf
 require_relative './lib/rdfmodeler.rb'
 
-class APP < Sinatra::Application
+class APP < Sinatra::Base
   # Global constants
   
   # Sinatra configs
@@ -37,12 +37,17 @@ class APP < Sinatra::Application
       slim(:about)
     end
   end
-  
+
+  get '/libraries' do
+    # Library selection
+    :json
+    slim :libraries, :locals => {:library => session[:library]}
+  end
+    
   get '/mapping' do
     # Primary mapping
     :json
-    session[:mapping] = Map.new('mapping.json')
-    slim :mapping
+    slim :mapping, :locals => {:library => session[:library]}
   end
   
   get '/mapping/json' do

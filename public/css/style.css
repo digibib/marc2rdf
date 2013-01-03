@@ -22,7 +22,7 @@ span.error  { display: none; color: #c03019; font-weight: bold; }
 span.bold   { font-weight: bold;}
 .inputmissing { background: yellow;}
 span.inherited { color:#c03019; }
-div.inputf  { font-size:12px; font-family: monospace; margin-left: 30px; margin-right: 30px;}
+div.inputf  { font-size:12px; font-family: "Consolas", Courier, monospace; margin-left: 30px; margin-right: 30px;}
 
 div.divdot    { border: 1px dotted #ccc; padding:14px; background-color: #f8f8f8;}
 button        { background-color: #e8e8e8; border: 1px solid #888; border-radius: 2px;
@@ -35,9 +35,14 @@ button.gen    { margin-right:10px;}
 ul            { list-style: none; }
 li.header     { padding:10px; margin-right:13px; border: 1px solid #eee; color:#fff;
 				background-color: #999; letter-spacing: 0.15em; display:inline-block;
-				font-family: monospace; font-size: 12px; border-radius: 2px;}
+				font-family: "Consolas", Courier, monospace; font-size: 14px; border-radius: 2px;}
+li.header a    {color:#fff;}
+li.header a:hover {text-decoration:none;}
 li.header:hover { background-color: #88a; }
 
 table.genform  {  }
 .genform td    { padding: 5px; font-weight: bold;}
 .genform input { width:250px ; }
+
+table.libraries { width: 100%; }
+table.libraries tr:hover {background-color:#f5f5f5;}

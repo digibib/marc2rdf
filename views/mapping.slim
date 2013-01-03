@@ -55,7 +55,7 @@ div class="main"
     
     $(document).ready(function () {
 
-      var json = $.getJSON('/api/mapping/1', function() {
+      var json = $.getJSON('/api/library/1/mapping', function() {
      		editor.set(JSON.parse(json.responseText));
         formatter.set(editor.get());
       });

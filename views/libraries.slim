@@ -1,0 +1,77 @@
+== render :slim, :'_header'
+// This file contains library overview
+div class="main"
+  h2 Libraries
+  
+  - if library
+    h3 #{library['name']} 
+    // This form contains config filename paths
+    div class="divdot inputf"  
+      table class="genform"
+        form id="change_library_settings_form" 
+          tr
+            td library name
+            td: input[type="text" id="library_name" value=(library['name'])]
+            td 
+          tr
+            td library configfile
+            td: input[type="text" id="library_configfile" value=(library['config'])]
+            td   
+          tr
+            td: button[type="button" id="settings_save" class="gen"]  = "Save"
+            td
+              span[id="settings_info" class="info" style="margin-left:48px"]
+              span[id="settings_error" class="error" style="margin-left:48px"]    
+  - else
+    
+    h3 Select another library or create a new one
+    
+    table id="libraries" class="libraries active tablesorter"
+      thead
+        tr
+          th[style="width:40px"] id
+          th navn
+          th config
+          th mapping
+          th oai
+          th harvester
+      tbody
+        - for library in Library.new.all['libraries']
+          tr id="#{library['id']}"
+            td #{library['id']}
+            td #{library['name']}
+            td #{library['config']}
+            td #{library['mapping']}
+            td #{library['oai']}
+            td #{library['harvester']}
+    
+
+                        
+  javascript:
+    $(document).ready(function () {
+      // ** save library settings
+      $('button#settings_save').on('click', function() {
+        var request = $.ajax({
+          url: '/api/library/settings',
+          type: 'PUT',
+          cache: false,
+          data: { files: {
+              mapping_filename: $('input#mapping_filename').val(),
+              repository_filename: $('input#repository_filename').val(),
+              harvesting_filename: $('input#harvesting_filename').val()
+              }},
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span#settings_info').html("Saved settings OK!").show().fadeOut(3000);
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#settings_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+    });
+          
+  == render :slim, :'_footer'
+          

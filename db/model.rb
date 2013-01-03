@@ -4,6 +4,7 @@ require 'yaml/store'
 
 # yaml/store main method:
 # initialize( file_name, yaml_opts = {} )
+Library = Struct.new(:id, :name, :config, :mapping, :oai, :harvesting)
 
 class Repo
   attr_accessor :file, :repository, :endpoint
@@ -38,6 +39,33 @@ class Repo
   end
 end
 
+
+class Library
+  def all
+    libraries = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'libraries.json')))
+  end
+  
+  def find_by_id(id)
+  end
+
+  def create(args={})
+    ids = []
+    self.all['libraries'].each {|ll| ids << ll['id']}
+    library = Library.new(
+      ids.max + 1,
+      args[:name],
+      args[:config],
+      args[:mapping],
+      args[:oai],
+      args[:harvesting]
+      )
+  end
+  
+  def save
+    open('libraries.json', 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(Library.new.all))) } 
+  end
+end
+
 class Map
   attr_accessor :file, :mapping
 
@@ -53,7 +81,7 @@ class Map
     @mapping    = JSON.parse(IO.read(@file))
   end
   
-  def find_by_id(id)
+  def find_by_library(id)
     mappingdir = id + '/mapping/'
     if File.directory? mappingdir
       @file    = File.join(File.dirname(__FILE__), mappingdir, 'mapping.json')
@@ -90,5 +118,25 @@ class Harvest
       @harvest['sources'] = @sources
       @harvest['options'] = @options
     end
+  end
+end
+
+# patched Struct and Hash classes to allow easy conversion to/from JSON and Hash
+class Struct
+  def to_map
+    map = Hash.new
+    self.members.each { |m| map[m] = self[m] }
+    # strip out empty struct values
+    map.reject! {|k,v| v.strip.empty? if v.is_a?(String) && v.respond_to?('empty?')}
+    map
+  end
+  def to_json(*a)
+    to_map.to_json(*a)
+  end
+end
+
+class Hash
+  def to_struct(name)
+    Struct.new(name, *keys).new(*values)
   end
 end

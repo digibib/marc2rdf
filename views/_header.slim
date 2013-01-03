@@ -20,6 +20,7 @@ html
         div id="header-buttons"
           ul
             - if admin? 
+              a[href="/libraries"]: li[class="header"] libraries 
               a[href="/mapping"]: li[class="header"] mapping 
               a[href="/converter"]: li[class="header"] converter
               a[href="/harvester"]: li[class="header"] harvester
