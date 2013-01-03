@@ -41,7 +41,7 @@ end
 class Map
   attr_accessor :file, :mapping
 
-  def initialize(filename)
+  def initialize(filename = 'mapping.json')
     # local variables
     mapping_skeleton = File.read( File.join(File.dirname(__FILE__), 'templates', 'mapping_skeleton.json'))
     mapping          = File.join(File.dirname(__FILE__), '../db/mapping/', filename)
@@ -50,12 +50,22 @@ class Map
       open(mapping, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(mapping_skeleton))) } 
     end
     @file       = mapping
-    @mapping    = JSON.parse(IO.read(@file)).to_json
+    @mapping    = JSON.parse(IO.read(@file))
+  end
+  
+  def find_by_id(id)
+    mappingdir = id + '/mapping/'
+    if File.directory? mappingdir
+      @file    = File.join(File.dirname(__FILE__), mappingdir, 'mapping.json')
+      @mapping = JSON.parse(IO.read(@file))
+    else
+      return nil
+    end
   end
   
   def reload
     if @mapping
-      @mapping  = JSON.parse(IO.read(@file)).to_json
+      @mapping = JSON.parse(IO.read(@file))
     end  
   end
   
