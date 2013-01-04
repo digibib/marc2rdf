@@ -55,7 +55,19 @@ class API < Grape::API
       logger.info "POST: params: #{params} - created library: #{library}"
       { :library => library }
     end
-    
+
+    desc "delete a library"
+      params do
+        requires :id, type: Integer, desc: "ID of library"
+      end
+    delete "/" do
+      content_type 'json'
+      library = Library.new.find_by_id(params[:id])
+      Library.new.delete(params[:id])
+      logger.info "DELETE: params: #{params} - deleted library: #{library}"
+      { :library => library }
+    end
+        
     desc "return a certain mapping from library id"
     get "/mapping" do
       map = Map.new

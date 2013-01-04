@@ -1,0 +1,10 @@
+[
+    {
+        "id": 1,
+        "name": "Test Library",
+        "config": {},
+        "mapping": {},
+        "oai": "http://example.com/oai",
+        "harvesting": {}
+    }
+]

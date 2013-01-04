@@ -43,7 +43,14 @@ Library = Struct.new(:id, :name, :config, :mapping, :oai, :harvesting)
 class Library
   def all
     libraries = []
-    data = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'libraries.json')))
+    file     = File.join(File.dirname(__FILE__), 'libraries.json')
+    template = File.join(File.dirname(__FILE__), 'templates/', 'libraries.json')
+    # first create library file from template if it doesn't exist already
+    unless File.exist?(file)
+      open(file, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(IO.read(template))))}
+    end
+    File.copy(template, file) unless File.exist?(file)
+    data = JSON.parse(IO.read(file))
     data.each {|lib| libraries << lib.to_struct("Library") }
     libraries
   end
@@ -70,13 +77,21 @@ class Library
     # update if matching id, else append
     match = self.find_by_id(library.id)
     if match
-      libraries.map! { |oldlib| oldlib.id == library.id ? library : oldlib}
+      libraries.map! { |lib| lib.id == library.id ? library : lib}
     else
       libraries << library
     end
     open(File.join(File.dirname(__FILE__), 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
     libraries
   end
+  
+  def delete(id)
+    libraries = self.all
+    libraries.delete_if {|lib| lib.id == id }
+    open(File.join(File.dirname(__FILE__), 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
+    libraries
+  end
+  
 end
 
 class Map
