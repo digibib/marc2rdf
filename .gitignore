@@ -3,4 +3,6 @@ config/harvesting.yml
 db/repository/
 db/mapping/
 db/harvesting/
+db/libraries.json
 oai_updates/
+logs/*

@@ -1,20 +1,34 @@
-{
-    "libraries": [
-        {
-            "id": 1,
-            "name": "Deichmanske bibliotek",
-            "config": "config.yml",
-            "mapping": "mapping.json",
-            "oai": "http://oai.org",
-            "harvesting": "harvesting.json"
-        },
-        {
-            "id": 2,
-            "name": "Deichmanske 2",
-            "config": "config.yml",
-            "mapping": "mapping.json",
-            "oai": "http://oai.org",
-            "harvesting": "harvesting.json"
-        }        
-    ]
-}
+[
+  {
+    "id": 1,
+    "name": "Deichmanske bibliotek",
+    "config": "hope",
+    "mapping": "mapping.json",
+    "oai": "http://oai.org",
+    "harvesting": "harvesting.json"
+  },
+  {
+    "id": 2,
+    "name": "Deichmanske bibliotek",
+    "config": "hope",
+    "mapping": "mapping.json",
+    "oai": "http://oai.org",
+    "harvesting": "harvesting.json"
+  },
+  {
+    "id": 3,
+    "name": "Deichmanske bibliotek",
+    "config": "hope",
+    "mapping": "mapping.json",
+    "oai": "http://oai.org",
+    "harvesting": "harvesting.json"
+  },
+  {
+    "id": 4,
+    "name": "trifle",
+    "config": "fjodor",
+    "mapping": "mappe",
+    "oai": "oaioai",
+    "harvesting": "hash"
+  }
+]

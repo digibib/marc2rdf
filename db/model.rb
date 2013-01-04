@@ -4,7 +4,6 @@ require 'yaml/store'
 
 # yaml/store main method:
 # initialize( file_name, yaml_opts = {} )
-Library = Struct.new(:id, :name, :config, :mapping, :oai, :harvesting)
 
 class Repo
   attr_accessor :file, :repository, :endpoint
@@ -39,18 +38,23 @@ class Repo
   end
 end
 
-
+# Struct for Libraries saved in json
+Library = Struct.new(:id, :name, :config, :mapping, :oai, :harvesting)
 class Library
   def all
-    libraries = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'libraries.json')))
+    libraries = []
+    data = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'libraries.json')))
+    data.each {|lib| libraries << lib.to_struct("Library") }
+    libraries
   end
   
   def find_by_id(id)
+    library = self.all.detect {|lib| lib['id'] == id.to_i }
   end
 
   def create(args={})
     ids = []
-    self.all['libraries'].each {|ll| ids << ll['id']}
+    self.all.each {|lib| ids << lib['id']}
     library = Library.new(
       ids.max + 1,
       args[:name],
@@ -61,8 +65,17 @@ class Library
       )
   end
   
-  def save
-    open('libraries.json', 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(Library.new.all))) } 
+  def save(library)
+    libraries = self.all
+    # update if matching id, else append
+    match = self.find_by_id(library.id)
+    if match
+      libraries.map! { |oldlib| oldlib.id == library.id ? library : oldlib}
+    else
+      libraries << library
+    end
+    open(File.join(File.dirname(__FILE__), 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
+    libraries
   end
 end
 
@@ -137,6 +150,7 @@ end
 
 class Hash
   def to_struct(name)
-    Struct.new(name, *keys).new(*values)
+    cls = Struct.const_get(name) rescue Struct.new(name, *keys)
+    cls.new *values
   end
 end
