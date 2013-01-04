@@ -2,15 +2,16 @@
 
 div class="main"
   h2 login
-  form action="/login" method="POST"
   
-  form action="/login" method="POST"
-    label for='username' Username:
-    input type="text" name="username"
-    br
-    label for='password' Password:
-    input type="text" name="password"
-    br
-    input.button type="submit" value="Login"
+  div class="divdot inputf"  
+    table class="genform"
+    form action="/login" method="POST"
+      label for='username' Username:
+      input type="text" name="username"
+      br
+      label for='password' Password:
+      input type="text" name="password"
+      br
+      input.button type="submit" value="Login"
 
   == render :slim, :'_footer'

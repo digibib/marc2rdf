@@ -32,18 +32,25 @@ class APP < Sinatra::Base
   get '/' do
     # Front page
     if admin?
-      slim(:index)  
+      slim :index, :locals => {:library => session[:library]}
     else
-      slim(:about)
+      slim :about, :locals => {:library => session[:library]}
     end
   end
 
   get '/libraries' do
     # Library selection
     :json
-    slim :libraries, :locals => {:library => session[:library]}
+    slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
   end
-    
+
+  get '/libraries/:id' do
+    # Library settings
+    :json
+    session[:library] = Library.new.find_by_id(params[:id])
+    slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
+  end
+      
   get '/mapping' do
     # Primary mapping
     :json
@@ -71,18 +78,18 @@ class APP < Sinatra::Base
   
   get '/converter' do
     # Main conversion tool
-    slim(:converter)  
+    slim :converter, :locals => {:library => session[:library]}
   end
   
   get '/harvester' do
     # Harvesting sources
-    slim(:harvester)  
+    slim :harvester, :locals => {:library => session[:library]}
   end
   
   get '/settings' do
     # General settings
     session[:settings] = YAML::load( File.open( File.join(File.dirname(__FILE__), './config/', 'settings.yml')))
-    slim :settings, :locals => {:settings => session[:settings]}
+    slim :settings, :locals => {:library => session[:library], :settings => session[:settings]}
   end
   
   put '/settings' do
@@ -96,7 +103,7 @@ class APP < Sinatra::Base
   get '/repository' do
     # Misc. repository settings
     session[:repository] = Repo.new('repository.yml')
-    slim :repository, :locals => {:repo => session[:repository]}
+    slim :repository, :locals => {:library => session[:library], :repo => session[:repository]}
   end
   
   put '/repository' do
@@ -109,12 +116,12 @@ class APP < Sinatra::Base
   
   get '/about' do
     # Front page
-    slim(:about)  
+    slim :about, :locals => {:library => session[:library]}
   end
   
   get '/login' do
     # Login page
-    slim(:login)
+    slim :login
   end
   
   post '/login' do

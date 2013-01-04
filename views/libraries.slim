@@ -1,76 +1,138 @@
-== render :slim, :'_header'
+== render :slim, :'_header', :locals => {:library => library}
 // This file contains library overview
 div class="main"
   h2 Libraries
   
+  // if session[:library] is set, show edit form
   - if library
-    h3 #{library['name']} 
+    h3 Selected Library: #{library.name} 
     // This form contains config filename paths
     div class="divdot inputf"  
       table class="genform"
         form id="change_library_settings_form" 
-          tr
+          tr id="#{library.id}" 
             td library name
-            td: input[type="text" id="library_name" value=(library['name'])]
+            td: input[type="text" id="library_name" value=(library.name)]
             td 
           tr
-            td library configfile
-            td: input[type="text" id="library_configfile" value=(library['config'])]
+            td library oai repository
+            td: input[type="text" id="library_oai" value=(library.oai)]
             td   
           tr
-            td: button[type="button" id="settings_save" class="gen"]  = "Save"
+            td 
+              button[type="button" id="library_save" class="gen"]  = "Save"
+              button[type="button" id="library_delete" class="gen"]  = "Delete"
             td
               span[id="settings_info" class="info" style="margin-left:48px"]
               span[id="settings_error" class="error" style="margin-left:48px"]    
-  - else
-    
-    h3 Select another library or create a new one
-    
-    table id="libraries" class="libraries active tablesorter"
-      thead
-        tr
-          th[style="width:40px"] id
-          th navn
-          th config
-          th mapping
-          th oai
-          th harvester
-      tbody
-        - for library in Library.new.all['libraries']
-          tr id="#{library['id']}"
-            td #{library['id']}
-            td #{library['name']}
-            td #{library['config']}
-            td #{library['mapping']}
-            td #{library['oai']}
-            td #{library['harvester']}
-    
+  
+  h3 Select another library
+  
+  table id="libraries" class="libraries active tablesorter"
+    tbody
+      - for library in libraries
+        tr id="#{library.id}"
+          td #{library.id}
+          td
+            a href="/libraries/#{library.id}" #{library.name}
 
-                        
+  h3 ...Or create a new one
+
+  div class="divdot inputf"
+    span[class='info' id="add_library_info" style="margin-left:20px"]
+    form id="add_library_form"
+      table class="genform"
+        tr
+          td library name
+          td: input[type="text" id="library_name" class="required"]
+        tr
+          td library oai repository
+          td: input[type="text" id="library_oai"]
+        tr
+          td
+          td[id="library_form"]
+            span[class='error']
+        tr
+          td: button[type="button" id="library_create" class="gen"]  = "Create new library"
+          td
+            span[id="library_create_info" class="info" style="margin-left:48px"]
+            span[id="library_create_error" class="error" style="margin-left:48px"]            
+    
   javascript:
     $(document).ready(function () {
-      // ** save library settings
-      $('button#settings_save').on('click', function() {
+      // ** create library
+      $('button#library_create').on('click', function() {
         var request = $.ajax({
-          url: '/api/library/settings',
-          type: 'PUT',
+          url: '/api/library',
+          type: 'POST',
           cache: false,
-          data: { files: {
-              mapping_filename: $('input#mapping_filename').val(),
-              repository_filename: $('input#repository_filename').val(),
-              harvesting_filename: $('input#harvesting_filename').val()
-              }},
+          data: { 
+              name: $('input#library_name').val(),
+              oai: $('input#library_oai').val(),
+              },
           dataType: 'json'
         });
 
         request.done(function(data) {
-          $('span#settings_info').html("Saved settings OK!").show().fadeOut(3000);
+          $('span#library_create_info').html("Saved library OK!").show().fadeOut(3000);
+          window.location.reload();
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#settings_error').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#library_create_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
+
+      // ** edit library
+      $('button#library_save').on('click', function() {
+        // get id of library
+        var id = $('tr:first-child', $(this).parents()).attr('id');
+        var request = $.ajax({
+          url: '/api/library',
+          type: 'PUT',
+          cache: false,
+          data: { 
+              id: id,
+              name: $('input#library_name').val(),
+              oai: $('input#library_oai').val(),
+              },
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span#library_create_info').html("Saved library OK!").show().fadeOut(3000);
+          window.location.reload();
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#library_create_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+            
+      // ** delete library
+      $('button#library_delete').on('click', function() {
+        // get id of library
+        var id = $('tr:first-child', $(this).parents()).attr('id');
+        var request = $.ajax({
+          url: '/api/library',
+          type: 'DELETE',
+          cache: false,
+          data: { 
+              id: id
+              },
+          dataType: 'json'
+        });
+
+        request.done(function(data) {
+          $('span#library_delete_info').html("Deleted library OK!").show().fadeOut(3000);
+          window.location.reload();
+        });
+
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#library_delete_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      }); 
+
     });
           
   == render :slim, :'_footer'

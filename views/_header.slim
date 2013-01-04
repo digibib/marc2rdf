@@ -16,18 +16,20 @@ html
     div class="main"
       div id="header"
         a href="/": img src="/img/logo.png" class="logo"
-        
+ 
         div id="header-buttons"
           ul
             - if admin? 
+              span[class="header" style="margin-right:48px"] #{library.name if library}
               a[href="/libraries"]: li[class="header"] libraries 
               a[href="/mapping"]: li[class="header"] mapping 
               a[href="/converter"]: li[class="header"] converter
               a[href="/harvester"]: li[class="header"] harvester
-              a[href="/about"]: li[class="header"] about
               a[href="/repository"]: li[class="header"] repository              
-              a[href="/settings"]: li[class="header"] settings
+              //a[href="/settings"]: li[class="header"] settings
+              a[href="/about"]: li[class="header"] about
               a[href="/logout"]: li[class="header"] log out
+              
             - else
               a[href="/about"]: li[class="header"] about
               a[href="/login"]: li[class="header"] log in

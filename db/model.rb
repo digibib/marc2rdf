@@ -59,17 +59,28 @@ class Library
     library = self.all.detect {|lib| lib['id'] == id.to_i }
   end
 
-  def create(args={})
+  def create(params={})
     ids = []
     self.all.each {|lib| ids << lib['id']}
     library = Library.new(
       ids.max + 1,
-      args[:name],
-      args[:config],
-      args[:mapping],
-      args[:oai],
-      args[:harvesting]
+      params[:name],
+      params[:config],
+      params[:mapping],
+      params[:oai],
+      params[:harvesting]
       )
+  end
+  
+  def update(params={})
+    libraries = self.all
+    library   = self.find_by_id(params[:id])
+    # remove unwanted params
+    unwanted_params = ['uri', 'api_key', 'route_info', 'method', 'path']
+    unwanted_params.each {|d| params.delete(d)}
+    # update review with new params
+    params.each{|k,v| library[k] = v}
+    library
   end
   
   def save(library)

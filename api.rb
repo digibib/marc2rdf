@@ -43,10 +43,10 @@ class API < Grape::API
     desc "create new library"
       params do
         requires :name,       type: String, desc: "Name of library"
-        requires :config,     type: String, desc: "Config file"
-        requires :mapping,    type: String, desc: "Mapping file"
-        requires :oai,        type: String, desc: "OAI settings"
-        requires :harvesting, type: String, desc: "Harvesting settings file" 
+        optional :config,     type: String, desc: "Config file"
+        optional :mapping,    type: String, desc: "Mapping file"
+        optional :oai,        type: String, desc: "OAI settings"
+        optional :harvesting, type: String, desc: "Harvesting settings file" 
       end
     post "/" do
       content_type 'json'
@@ -56,6 +56,36 @@ class API < Grape::API
       { :library => library }
     end
 
+    desc "edit library"
+      params do
+        requires :id,         type: Integer, desc: "ID of library"
+        optional :name,       type: String,  desc: "Name of library"
+        optional :config,     type: String,  desc: "Config file"
+        optional :mapping,    type: String,  desc: "Mapping file"
+        optional :oai,        type: String,  desc: "OAI settings"
+        optional :harvesting, type: String,  desc: "Harvesting settings file" 
+      end
+    put "/" do
+      content_type 'json'
+      valid_params = ['id','name','config','mapping','oai','harvesting']
+      # do we have a valid parameter?
+      if valid_params.any? {|p| params.has_key?(p) }
+        # delete params not listed in valid_params
+        logger.info "params before: #{params}"
+        params.delete_if {|p| !valid_params.include?(p) }
+        logger.info "params after: #{params}"
+        
+        before  = Library.new.find_by_id(params[:id])
+        after   = Library.new.update(params)
+        Library.new.save(after)
+        logger.info "updated library: #{after}"
+        { :before => before, :after => after }
+      else
+        logger.error "invalid or missing params"   
+        error!("Need at least one param of id|name|config|mapping|oai|harvesting", 400)      
+      end
+    end
+    
     desc "delete a library"
       params do
         requires :id, type: Integer, desc: "ID of library"
