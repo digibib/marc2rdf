@@ -6,7 +6,7 @@
 
 div class="main"
   h2 Mapping
-
+  button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Mapping Template"
   // The mapping div
   div id="auto"
     div id="contents"
@@ -54,8 +54,9 @@ div class="main"
     domSplitter.appendChild(saveJSON);    
     
     $(document).ready(function () {
-
-      var json = $.getJSON('/api/library/1/mapping', function() {
+      // get id of active library
+      var id = #{library.id};
+      var json = $.getJSON('/api/library/'+id+'/mapping', function() {
      		editor.set(JSON.parse(json.responseText));
         formatter.set(editor.get());
       });
@@ -69,18 +70,27 @@ div class="main"
       saveJSON.onclick = function () {
         //console.log(JSON.stringify(editor.get(), null, 2));
         request = $.ajax({
-          url: '/mapping',
+          url: '/api/library/'+id+'/mapping',
           type: 'PUT',
           cache: false,
-          contentType: 'application/json',
-          dataType: 'json',
-          data: JSON.stringify(editor.get(), null, 2)
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(editor.get(), null, 2),
+          dataType: 'json'
         });
         request.success(function ( data ) {
           if( console && console.log ) {
-            console.log("Sample of data:", data.slice(0, 100));
+            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
           }
         });
-      };          
+      }; 
+      
+      // ** load template into editor
+      $('button#load_template').on('click', function() {
+        var json = $.getJSON('/api/mapping', function() {
+          editor.set(JSON.parse(json.responseText));
+          formatter.set(editor.get());
+        });
+      }); 
+               
     });
   == render :slim, :'_footer'

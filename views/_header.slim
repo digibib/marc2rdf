@@ -20,7 +20,10 @@ html
         div id="header-buttons"
           ul
             - if admin? 
-              span[class="header" style="margin-right:48px"] #{library.name if library}
+              - if library
+                // needed for javascript referencing to active library
+                //span[id="#{library.id}" style="display:none"]
+                span[class="header" style="margin-right:48px"] #{library.name}
               a[href="/libraries"]: li[class="header"] libraries 
               a[href="/mapping"]: li[class="header"] mapping 
               a[href="/converter"]: li[class="header"] converter

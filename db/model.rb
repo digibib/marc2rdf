@@ -63,7 +63,7 @@ class Library
     ids = []
     self.all.each {|lib| ids << lib['id']}
     library = Library.new(
-      ids.max + 1,
+      ids.empty? ? 1 : ids.max + 1,
       params[:name],
       params[:config],
       params[:mapping],
