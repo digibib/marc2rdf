@@ -1,11 +1,10 @@
-#encoding: UTF-8
-$stdout.sync = true # gives foreman full stdout
+# coding: utf-8
 
-if RUBY_VERSION <= "1.8.7" then $KCODE = 'u' end #needed for string conversion in ruby 1.8.7
+$stdout.sync = true # gives foreman full stdout
 require "rubygems"
 require "bundler/setup"
-require "sinatra"
-require "sinatra/reloader" if development?
+require "sinatra/base"
+#require "sinatra/reloader" if development?
 require "slim"
 require "json"
 
@@ -14,14 +13,22 @@ require_relative './lib/rdfmodeler.rb'
 
 class APP < Sinatra::Base
   # Global constants
-  
+  configure do
   # Sinatra configs
-  session = {}
-  set :server, 'thin'
-  set :username,'bob'
-  set :token,'schabogaijk13@[]5fukkksiur!&&%&%'
-  set :password,'secret'
+    set :app_file, __FILE__
+    set :port, ENV['PORT']
+    set :server, 'thin'
+    set :username,'bob'
+    set :token,'schabogaijk13@[]5fukkksiur!&&%&%'
+    set :password,'secret'
+    enable :logging, :dump_errors, :raise_errors
+  end  
   
+
+  session = {}
+
+  
+
   # Very simple authentication
   helpers do
     def admin? ; request.cookies[settings.username] == settings.token ; end
@@ -134,4 +141,7 @@ class APP < Sinatra::Base
   end
   
   get('/logout'){ response.set_cookie(settings.username, false) ; redirect '/' }
+
+  # start the server if ruby file executed directly
+  run! if app_file == $0
 end
