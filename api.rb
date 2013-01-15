@@ -39,7 +39,32 @@ class API < Grape::API
     get ":id" do
       { :library => Library.new.find_by_id(params[:id]) }
     end
-    
+
+    desc "get specific library mapping"
+    get ":id/mapping" do
+      library = Library.new.find_by_id(params[:id])
+      if library
+        { :mapping => library.mapping }
+      else
+        logger.error "library mapping not found"   
+        error!("library mapping not found", 400)
+      end
+    end
+
+    desc "save specific library mapping"
+      params do
+        requires :mapping, desc: "Mapping file"
+      end
+    put ":id/mapping" do
+      content_type 'json'
+      logger.info "PUT: params: #{params}"
+      library = Library.new.find_by_id(params[:id])
+      library.mapping = params[:mapping]
+      Library.new.save(library)
+      logger.info "PUT: params: #{params} - updated mapping: #{library.mapping}"
+      { :mapping => library.mapping }
+    end
+            
     desc "create new library"
       params do
         requires :name,       type: String, desc: "Name of library"
@@ -97,18 +122,13 @@ class API < Grape::API
       logger.info "DELETE: params: #{params} - deleted library: #{library}"
       { :library => library }
     end
-        
-    desc "return a certain mapping from library id"
-    get "/mapping" do
-      map = Map.new
-      map.find_by_library(params[:id].to_s)
-      unless map 
-        logger.error "Invalid ID"
-        error!("\"#{params[:id]}\" is not a valid ID", 400)
-      else
-        { :mapping => map.mapping }
-      end
-    end
-
   end # end library namespace
+  
+  resource :mapping do
+    desc "return mapping template"
+    get "/" do
+      mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'db/templates', 'mapping_skeleton.json')))
+      { :mapping => mapping }
+    end
+  end # end mapping namespace
 end

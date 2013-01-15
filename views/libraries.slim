@@ -5,18 +5,18 @@ div class="main"
   
   // if session[:library] is set, show edit form
   - if library
-    h3 Selected Library: #{library.name} 
+    h3 Edit Library: #{library.name} 
     // This form contains config filename paths
     div class="divdot inputf"  
       table class="genform"
         form id="change_library_settings_form" 
-          tr id="#{library.id}" 
+          tr 
             td library name
-            td: input[type="text" id="library_name" value=(library.name)]
+            td: input[type="text" id="save_library_name" value=(library.name)]
             td 
           tr
             td library oai repository
-            td: input[type="text" id="library_oai" value=(library.oai)]
+            td: input[type="text" id="save_library_oai" value=(library.oai)]
             td   
           tr
             td 
@@ -26,7 +26,7 @@ div class="main"
               span[id="settings_info" class="info" style="margin-left:48px"]
               span[id="settings_error" class="error" style="margin-left:48px"]    
   
-  h3 Select another library
+  h3 ...or select library
   
   table id="libraries" class="libraries active tablesorter"
     tbody
@@ -36,65 +36,65 @@ div class="main"
           td
             a href="/libraries/#{library.id}" #{library.name}
 
-  h3 ...Or create a new one
+  h3 ...or create a new library
 
   div class="divdot inputf"
-    span[class='info' id="add_library_info" style="margin-left:20px"]
+    span[class='info' id="create_library_info" style="margin-left:20px"]
     form id="add_library_form"
       table class="genform"
         tr
           td library name
-          td: input[type="text" id="library_name" class="required"]
+          td: input[type="text" id="create_library_name" class="required"]
         tr
           td library oai repository
-          td: input[type="text" id="library_oai"]
+          td: input[type="text" id="create_library_oai"]
         tr
           td
           td[id="library_form"]
             span[class='error']
         tr
-          td: button[type="button" id="library_create" class="gen"]  = "Create new library"
+          td: button[type="button" id="create_library" class="gen"]  = "Create new library"
           td
-            span[id="library_create_info" class="info" style="margin-left:48px"]
-            span[id="library_create_error" class="error" style="margin-left:48px"]            
+            span[id="create_library_info" class="info" style="margin-left:48px"]
+            span[id="create_library_error" class="error" style="margin-left:48px"]            
     
   javascript:
     $(document).ready(function () {
-      // ** create library
-      $('button#library_create').on('click', function() {
+      // get id of active library
+      var id = #{library.id};
+      // ** create new library
+      $('button#create_library').on('click', function() {
         var request = $.ajax({
           url: '/api/library',
           type: 'POST',
           cache: false,
           data: { 
-              name: $('input#library_name').val(),
-              oai: $('input#library_oai').val(),
+              name: $('input#create_library_name').val(),
+              oai: $('input#create_library_oai').val(),
               },
           dataType: 'json'
         });
 
         request.done(function(data) {
-          $('span#library_create_info').html("Saved library OK!").show().fadeOut(3000);
+          $('span#create_library_info').html("Saved library OK!").show().fadeOut(3000);
           window.location.reload();
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#library_create_error').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#create_library_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
 
       // ** edit library
       $('button#library_save').on('click', function() {
-        // get id of library
-        var id = $('tr:first-child', $(this).parents()).attr('id');
         var request = $.ajax({
           url: '/api/library',
           type: 'PUT',
           cache: false,
           data: { 
               id: id,
-              name: $('input#library_name').val(),
-              oai: $('input#library_oai').val(),
+              name: $('input#save_library_name').val(),
+              oai: $('input#save_library_oai').val(),
               },
           dataType: 'json'
         });
@@ -111,8 +111,6 @@ div class="main"
             
       // ** delete library
       $('button#library_delete').on('click', function() {
-        // get id of library
-        var id = $('tr:first-child', $(this).parents()).attr('id');
         var request = $.ajax({
           url: '/api/library',
           type: 'DELETE',
