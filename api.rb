@@ -5,6 +5,10 @@ $stdout.sync = true
 require 'rubygems'
 require 'bundler/setup'
 require 'grape'
+require "json"
+
+# RDFmodeler loads all other classes in marc2rdf
+require_relative './lib/rdfmodeler.rb'
 
 # trap all exceptions and fail gracefuly with a 500 and a proper message
 class ApiErrorHandler < Grape::Middleware::Base
@@ -16,6 +20,14 @@ class ApiErrorHandler < Grape::Middleware::Base
       throw :error, :message => e.message || options[:default_message], :status => 500
     end
   end  
+end
+
+class Length < Grape::Validations::SingleOptionValidator
+  def validate_param!(attr_name, params)
+    unless params[attr_name].length >= @option
+      throw :error, :status => 400, :message => "#{attr_name}: must be at the most #{@option} characters long"
+    end
+  end
 end
 
 class API < Grape::API
@@ -30,16 +42,20 @@ class API < Grape::API
   default_format :json
 
   resource :library do
-    desc "get all libraries"
+    
+    desc "get library by id or all libraries"
     get "/" do
-      { :libraries => Library.new.all }
+      if params[:id]
+        library = Library.new.find_by_id(params[:id])
+        throw :error, :status => 404,
+              :message => "No library with id: " +
+                          "#{params[:id]}" unless library
+        { :library => Library.new.find_by_id(params[:id]) }
+      else
+        { :libraries => Library.new.all }
+      end
     end
     
-    desc "get specific library config"
-    get ":id" do
-      { :library => Library.new.find_by_id(params[:id]) }
-    end
-
     desc "get specific library mapping"
     get ":id/mapping" do
       library = Library.new.find_by_id(params[:id])
@@ -67,7 +83,7 @@ class API < Grape::API
             
     desc "create new library"
       params do
-        requires :name,       type: String, desc: "Name of library"
+        requires :name,       type: String, length: 6, desc: "Name of library"
         optional :config,     type: String, desc: "Config file"
         optional :mapping,    type: String, desc: "Mapping file"
         optional :oai,        type: String, desc: "OAI settings"
@@ -84,7 +100,7 @@ class API < Grape::API
     desc "edit library"
       params do
         requires :id,         type: Integer, desc: "ID of library"
-        optional :name,       type: String,  desc: "Name of library"
+        optional :name,       type: String,  length: 6, desc: "Name of library"
         optional :config,     type: String,  desc: "Config file"
         optional :mapping,    type: String,  desc: "Mapping file"
         optional :oai,        type: String,  desc: "OAI settings"

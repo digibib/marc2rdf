@@ -13,7 +13,7 @@ div class="main"
           tr 
             td library name
             td: input[type="text" id="save_library_name" value=(library.name)]
-            td 
+            td: input[type="hidden" id="save_library_id" vlue=(library.id)]
           tr
             td library oai repository
             td: input[type="text" id="save_library_oai" value=(library.oai)]
@@ -23,8 +23,8 @@ div class="main"
               button[type="button" id="library_save" class="gen"]  = "Save"
               button[type="button" id="library_delete" class="gen"]  = "Delete"
             td
-              span[id="settings_info" class="info" style="margin-left:48px"]
-              span[id="settings_error" class="error" style="margin-left:48px"]    
+              span[id="save_library_info" class="info" style="margin-left:48px"]
+              span[id="save_library_error" class="error" style="margin-left:48px"]    
   
   h3 ...or select library
   
@@ -55,13 +55,13 @@ div class="main"
         tr
           td: button[type="button" id="create_library" class="gen"]  = "Create new library"
           td
-            span[id="create_library_info" class="info" style="margin-left:48px"]
-            span[id="create_library_error" class="error" style="margin-left:48px"]            
+            span[id="library_info" class="info" style="margin-left:48px"]
+            span[id="library_error" class="error" style="margin-left:48px"]            
     
   javascript:
     $(document).ready(function () {
       // get id of active library
-      var id = #{library.id};
+      var id = $('#active_library_id').html();
       // ** create new library
       $('button#create_library').on('click', function() {
         var request = $.ajax({
@@ -76,12 +76,12 @@ div class="main"
         });
 
         request.done(function(data) {
-          $('span#create_library_info').html("Saved library OK!").show().fadeOut(3000);
+          $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
           window.location.reload();
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#create_library_error').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
 
@@ -98,19 +98,21 @@ div class="main"
               },
           dataType: 'json'
         });
-
+        
         request.done(function(data) {
-          $('span#library_create_info').html("Saved library OK!").show().fadeOut(3000);
+          console.log("updated library: "+id);
+          $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
           window.location.reload();
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#library_create_error').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
             
       // ** delete library
       $('button#library_delete').on('click', function() {
+        // get id of active library
         var request = $.ajax({
           url: '/api/library',
           type: 'DELETE',
@@ -122,12 +124,12 @@ div class="main"
         });
 
         request.done(function(data) {
-          $('span#library_delete_info').html("Deleted library OK!").show().fadeOut(3000);
+          $('span#library_info').html("Deleted library OK!").show().fadeOut(3000);
           window.location.reload();
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#library_delete_error').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       }); 
 

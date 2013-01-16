@@ -4,19 +4,33 @@ $stdout.sync = true # gives foreman full stdout
 require "rubygems"
 require "bundler/setup"
 require "sinatra/base"
-#require "sinatra/reloader" if development?
+require "sinatra/reloader"
+#require "rack/proxy"
 require "slim"
 require "json"
 
 # RDFmodeler loads all other classes in marc2rdf
 require_relative './lib/rdfmodeler.rb'
 
+
+#use Rack::ReverseProxy do 
+#  # Forward the path /test* to http://example.com/test*
+#  reverse_proxy '/api', 'http://localhost:3001/api'
+#end
+
+#use Rack::Proxy do |req|
+#  if req.path =~ %r{^api}
+#    URI.parse("http://localhost:3001/#{req.fullpath}")
+#  end
+#end
+
 class APP < Sinatra::Base
   # Global constants
+  
   configure do
   # Sinatra configs
     set :app_file, __FILE__
-    set :port, ENV['PORT']
+    set :port, 3000
     set :server, 'thin'
     set :username,'bob'
     set :token,'schabogaijk13@[]5fukkksiur!&&%&%'
@@ -24,10 +38,12 @@ class APP < Sinatra::Base
     enable :logging, :dump_errors, :raise_errors
   end  
   
-
-  session = {}
-
+  configure :development do
+    register Sinatra::Reloader
+  end
   
+  # use internal session hash, not cookies
+  session = {}
 
   # Very simple authentication
   helpers do
@@ -44,9 +60,10 @@ class APP < Sinatra::Base
       slim :about, :locals => {:library => session[:library]}
     end
   end
-
+  
   get '/libraries' do
     # Library selection
+    pass if params[:id]
     :json
     slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
   end
@@ -63,7 +80,9 @@ class APP < Sinatra::Base
     :json
     slim :mapping, :locals => {:library => session[:library]}
   end
-  
+
+=begin
+### moved to API ###  
   get '/mapping/json' do
     :json
     session[:mapping].reload
@@ -73,7 +92,6 @@ class APP < Sinatra::Base
   
   put '/mapping' do
     # Save modified mapping
-    
     session[:mapping].mapping = JSON.parse(request.body.read).to_json
     puts session[:mapping]
     session[:mapping].save
@@ -82,7 +100,8 @@ class APP < Sinatra::Base
     #end
     #{ :msg => "saved!" }
   end
-  
+=end
+
   get '/converter' do
     # Main conversion tool
     slim :converter, :locals => {:library => session[:library]}
@@ -140,7 +159,11 @@ class APP < Sinatra::Base
       end
   end
   
-  get('/logout'){ response.set_cookie(settings.username, false) ; redirect '/' }
+  get '/logout' do
+    response.set_cookie(settings.username, false) 
+    session = {}
+    redirect '/'
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
