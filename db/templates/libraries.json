@@ -4,7 +4,19 @@
         "name": "Test Library",
         "config": {},
         "mapping": {},
-        "oai": "http://example.com/oai",
+        "oai": {
+            "preserve_on_update": [
+                "FOAF.depiction",
+                "REV.hasReview",
+                "OWL.sameAs",
+                "BIBO.isbn"
+            ],
+            "timeout": 60,
+            "format": "marcxchange",
+            "url": "http://example.com/cgi-bin/oai",
+            "follow_redirects": false,
+            "parser": "rexml"
+        },
         "harvesting": {}
     }
 ]

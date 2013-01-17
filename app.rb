@@ -28,10 +28,10 @@ class APP < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
     log = File.new("logs/development.log", "a+") 
-    STDOUT.reopen(log)
-    STDERR.reopen(log)
-    STDOUT.sync = true
-    STDERR.sync = true
+    #STDOUT.reopen(log)
+    #STDERR.reopen(log)
+    #STDOUT.sync = true
+    #STDERR.sync = true
   end
   
   # use internal session hash, not cookies
@@ -73,6 +73,12 @@ class APP < Sinatra::Base
     slim :mapping, :locals => {:library => session[:library]}
   end
 
+  get '/oai' do
+    # oai settings
+    :json
+    slim :oai, :locals => {:library => session[:library]}
+  end
+  
 =begin
 ### moved to API ###  
   get '/mapping/json' do

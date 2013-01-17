@@ -119,7 +119,7 @@ class API < Grape::API
       { :library => library }
     end
 
-    desc "edit library"
+    desc "edit/update library"
       params do
         requires :id,         type: Integer, desc: "ID of library"
         optional :name,       type: String,  length: 6, desc: "Name of library"

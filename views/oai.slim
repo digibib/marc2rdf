@@ -1,136 +1,105 @@
 == render :slim, :'_header', :locals => {:library => library}
-// This file contains advanced settings for rdf store and harvesting
+// This file contains settings for OAI harvesting
 div class="main"
-  h2 OAI harvesting settings
-  
   // This form contains OAI-PMH harvester settings                    
   h3 OAI harvester
   div class="divdot inputf"
     form id="change_harvester_settings_form" autocomplete="off"
-      table class="genform"
+      table[id="oai_settings" class="genform"]
         tr
-          td repository_url
-          td: input[type="text" id="repository_url" value=(repo.repository['oai']['repository_url'])]
+          td url
+          td: input[type="text" id="url" value=(library.oai['url'])]
           td url to OAI repository for harvesting
         tr
           td follow_redirects
           td
             select[id="follow_redirects"]
-              option[selected=("selected" if repo.repository['oai']['follow_redirects'] == "false")] false
-              option[selected=("selected" if repo.repository['oai']['follow_redirects'] == "true")] true
+              option[selected=("selected" if library.oai['follow_redirects'] == "false")] false
+              option[selected=("selected" if library.oai['follow_redirects'] == "true")] true
         tr
           td parser
-          td: input[type="text" id="parser" value=(repo.repository['oai']['parser']) disabled="true"]
+          td: input[type="text" id="parser" value=(library.oai['parser']) disabled="true"]
           td parser for OAI XML response (libxml to come)          
         tr
           td timeout
-          td: input[type="text" id="timeout" value=(repo.repository['oai']['timeout']) ]
+          td: input[type="text" id="timeout" value=(library.oai['timeout']) ]
           td timeout for OAI response in ms           
         tr
           td format
-          td: input[type="text" id="format" value=(repo.repository['oai']['format']) disabled="true"]
-          td format for OAI response (marcexchange/bibliofilmarc)
+          td
+            select[id="format"]
+              option[selected=("selected" if library.oai['format'] == "marcexchange")] marcexchange
+              option[selected=("selected" if library.oai['format'] == "bibliofilmarc")] bibliofilmarc         
+          td format for OAI response (bibliofilmarc for bibliofil libraries)
           
         // NB! to parse preserve predicates as array, we need to use class instead of id
-        - repo.repository['oai']['preserve_on_update'].each_with_index do |v, index|
+      table[id="preserve" class="genform"]
+        tr
+          td preserve_on_update 
+          td
+          td properties to keep during update. Delete with '-'
+        - library.oai['preserve_on_update'].each_with_index do |v, index|
           tr
             - if index == 0
-              td preserve_on_update 
-              td: input[type="text" name="preserve_on_update[#{index}]" class="preserve_on_update" value="#{v}"]
-              td properties to keep from being deleted on update
+              td 
+              td: input[type="text" class="preserve_on_update" value="#{v}"]
+              td: button[type='button' class="add_table_row"]  = "+"
             - else
               td
-              td: input[type="text" name="preserve_on_update[#{index}]" class="preserve_on_update" value="#{v}"]
-
+              td: input[type="text" class="preserve_on_update" value="#{v}"]
+              td: button[type='button' class="remove_table_row"]  = "-"
         tr
           td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
-          td: button[type='button' id="settings_save" class="gen"]  = "Save all"
           td
             span[id="oai_info" class="info" style="margin-left:48px"]
             span[id="oai_error" class="error" style="margin-left:48px"]
-            span[id="all_info" class="info" style="margin-left:48px"]
-            span[id="all_error" class="error" style="margin-left:48px"]
   
   javascript:
     $(document).on('ready', function () {
-    //$('change_rdfstore_settings_form').remotize({spinner: $('img/ajax-loader.gif')});
-    // ** save rdfstore settings
-      $('button#rdfstore_settings_save').on('click', function() {
-        var request = $.ajax({
-          url: '/repository',
-          type: 'PUT',
-          cache: false,
-          data: { 
-              rdfstore: {
-              store: $('input#store').val(),
-              sparql_endpoint: $('input#sparql_endpoint').val(),
-              sparul_endpoint: $('input#sparul_endpoint').val(),
-              username: $('input#username').val(),
-              password: $('input#password').val(),
-              auth_method: $('select#auth_method" option:selected').val(),
-              default_prefix: $('input#default_prefix').val(),
-              default_graph: $('input#default_graph').val()
-              }},
-          dataType: 'json'
-        });
-  
-        request.success(function(data) {
-          $('span#rdfstore_info').html("Saved rdfstore settings !").show().fadeOut(3000);
-        });
-  
-        request.error(function(jqXHR, textStatus, errorThrown) {
-          $('span#rdfstore_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
+      //$('change_rdfstore_settings_form').remotize({spinner: $('/img/ajax-loader.gif')});
       
-      // ** save resource settings
-      $('button#resource_settings_save').on('click', function() {
-        request = $.ajax({
-          url: '/repository',
-          type: 'PUT',
-          cache: false,
-          data: { 
-              resource: {
-              base: $('input#base').val(),
-              resource_path: $('input#resource_path').val(),
-              resource_prefix: $('input#resource_prefix').val(),
-              resource_identifier_field: $('input#resource_identifier_field').val(),
-              resource_type: $('input#resource_type').val()
-              }},
-          dataType: 'json'
-        });
-  
-        request.success(function(data) {
-          $('span#resource_info').html("Saved resource settings !").show().fadeOut(3000);
-        });
-  
-        request.error(function(jqXHR, textStatus, errorThrown) {
-          $('span#resource_info').html(jqXHR.responseText).show().fadeOut(5000);
-        });
+      // ** functions to add/remove table row, class "remove_table_row"
+      $("table#preserve").delegate(".remove_table_row", "click", function(){
+        $(this).closest("tr").remove();
+        return false;
+      });
+      $("table#preserve").delegate(".add_table_row", "click", function(){
+        var data = '<tr><td></td><td>' + 
+           '<input type="text" class="preserve_on_update" /></td>' +
+           '<td><button class="remove_table_row">-</button></td></tr>';
+           
+        $("table#preserve").append(data);
+        return false;
       });
       
       // ** save oai settings
       $('button#oai_settings_save').on('click', function() {
-        var preserve_data = $('input:text[name=preserve_on_update[]]');
-        var json = preserve_data.serializeArray();
+        // get id of active library
+        var id = $('#active_library_id').html();
+      
+        // make preserve table inputs into array
         var preserve_array = [];
-        $.each(json, function(i,v) {
-          preserve_array.push(v.value);
+        $("table#preserve input:text").each(function() { 
+          var val=$(this).attr('value');
+          preserve_array.push(val);
         });
         //alert(preserve_array);
+        
         request = $.ajax({
-          url: '/repository',
+          url: '/api/library',
           type: 'PUT',
           cache: false,
-          data: { 
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify({
+              id: id,
               oai: {
-              repository_url: $('input#repository_url').val(),
-              follow_redirects: $('select#follow_redirects" option:selected').val(),
-              parser: $('input#parser').val(),
-              timeout: $('input#timeout').val(),
-              format: $('input#format').val(),
-              preserve_on_update: preserve_array
-              }},
+                url: $('input#url').val(),
+                follow_redirects: $('select#follow_redirects option:selected').val(),
+                parser: $('input#parser').val(),
+                timeout: $('input#timeout').val(),
+                format: $('select#format option:selected').val(),
+                preserve_on_update: preserve_array
+              }}),
           dataType: 'json'
         });
   
@@ -143,11 +112,5 @@ div class="main"
         });
       });
       
-      // ** save all settings
-      $('button#settings_save').on('click', function() {
-        $('button#rdfstore_settings_save').click();
-        $('button#resource_settings_save').click();
-        $('button#oai_settings_save').click();
-      });            
     });
   == render :slim, :'_footer'
