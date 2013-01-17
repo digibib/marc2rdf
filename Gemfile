@@ -7,7 +7,8 @@ gem "rdf"
 gem "rdf-rdfxml"
 gem "rdf-n3"
 gem "rdf-virtuoso"
-gem "oai", '0.2.0'
+#gem "oai", '0.2.0'
+gem "oai"
 gem "rest-client"
 gem "grape"
 gem "sinatra"

@@ -5,24 +5,11 @@ require "rubygems"
 require "bundler/setup"
 require "sinatra/base"
 require "sinatra/reloader"
-#require "rack/proxy"
 require "slim"
 require "json"
 
 # RDFmodeler loads all other classes in marc2rdf
 require_relative './lib/rdfmodeler.rb'
-
-
-#use Rack::ReverseProxy do 
-#  # Forward the path /test* to http://example.com/test*
-#  reverse_proxy '/api', 'http://localhost:3001/api'
-#end
-
-#use Rack::Proxy do |req|
-#  if req.path =~ %r{^api}
-#    URI.parse("http://localhost:3001/#{req.fullpath}")
-#  end
-#end
 
 class APP < Sinatra::Base
   # Global constants
@@ -40,6 +27,11 @@ class APP < Sinatra::Base
   
   configure :development do
     register Sinatra::Reloader
+    log = File.new("logs/development.log", "a+") 
+    STDOUT.reopen(log)
+    STDERR.reopen(log)
+    STDOUT.sync = true
+    STDERR.sync = true
   end
   
   # use internal session hash, not cookies

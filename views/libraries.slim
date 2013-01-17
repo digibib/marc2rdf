@@ -16,7 +16,7 @@ div class="main"
             td: input[type="hidden" id="save_library_id" vlue=(library.id)]
           tr
             td library oai repository
-            td: input[type="text" id="save_library_oai" value=(library.oai)]
+            td: input[type="text" id="save_library_oai_url" value=(library.oai['url'])]
             td   
           tr
             td 
@@ -47,7 +47,7 @@ div class="main"
           td: input[type="text" id="create_library_name" class="required"]
         tr
           td library oai repository
-          td: input[type="text" id="create_library_oai"]
+          td: input[type="text" id="create_library_oai_url"]
         tr
           td
           td[id="library_form"]
@@ -68,10 +68,11 @@ div class="main"
           url: '/api/library',
           type: 'POST',
           cache: false,
-          data: { 
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify({ 
               name: $('input#create_library_name').val(),
-              oai: $('input#create_library_oai').val(),
-              },
+              oai: { url: $('input#create_library_oai_url').val() },
+              }),
           dataType: 'json'
         });
 
@@ -90,19 +91,22 @@ div class="main"
         var request = $.ajax({
           url: '/api/library',
           type: 'PUT',
+          contentType: "application/json; charset=utf-8",
           cache: false,
-          data: { 
-              id: id,
-              name: $('input#save_library_name').val(),
-              oai: $('input#save_library_oai').val(),
-              },
+          data: JSON.stringify({ 
+                id: id,
+                name: $('input#save_library_name').val(),
+                oai: { 
+                     url: $('input#save_library_oai_url').val() 
+                     },
+                }),
           dataType: 'json'
         });
         
         request.done(function(data) {
           console.log("updated library: "+id);
           $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
-          window.location.reload();
+          //window.location.reload();
         });
 
         request.fail(function(jqXHR, textStatus, errorThrown) {

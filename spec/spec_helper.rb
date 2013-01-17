@@ -11,6 +11,7 @@ require 'sinatra/spec'
 #require_relative '../../rdf-virtuoso/lib/rdf/virtuoso'
 require_relative '../lib/rdfmodeler.rb'
 require File.join(File.dirname(__FILE__), '..', 'app.rb')
+require File.join(File.dirname(__FILE__), '..', 'api.rb')
 
 if ENV['COVERAGE']
   require 'simplecov'

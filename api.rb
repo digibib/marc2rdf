@@ -22,6 +22,7 @@ class ApiErrorHandler < Grape::Middleware::Base
   end  
 end
 
+# custom option validator :length
 class Length < Grape::Validations::SingleOptionValidator
   def validate_param!(attr_name, params)
     unless params[attr_name].length >= @option
@@ -33,29 +34,50 @@ end
 class API < Grape::API
   helpers do
     def logger
-      logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
+      logger = API.logger #Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
     end
   end
   
   prefix 'api'
   format :json
   default_format :json
+  use ApiErrorHandler
+  
+  before do
+    # Of course this makes the request.body unavailable afterwards.
+    # You can just use a helper method to store it away for later if needed. 
+    logger.info "#{env['REMOTE_ADDR']} #{env['HTTP_USER_AGENT']} #{env['REQUEST_METHOD']} #{env['REQUEST_PATH']} -- Request: #{request.body.read}"
+  end
 
-  resource :library do
+  # Rescue and log validation errors gracefully
+  rescue_from Grape::Exceptions::ValidationError do |e|
+    logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
+    logger.error "#{e.message}"
+    Rack::Response.new({
+        'status' => e.status,
+        'message' => e.message,
+        #'param' => e.param,
+    }.to_json, e.status) 
+  end
     
-    desc "get library by id or all libraries"
+  resource :library do
+    desc "all libraries"
     get "/" do
-      if params[:id]
-        library = Library.new.find_by_id(params[:id])
+      { :libraries => Library.new.all }
+    end
+    
+    desc "get library by id"
+    get "/:id" do
+      content_type 'json'
+      logger.info params
+      
+      library = Library.new.find_by_id(params[:id])
         throw :error, :status => 404,
               :message => "No library with id: " +
                           "#{params[:id]}" unless library
-        { :library => Library.new.find_by_id(params[:id]) }
-      else
-        { :libraries => Library.new.all }
-      end
+        { :library => library }
     end
-    
+ 
     desc "get specific library mapping"
     get ":id/mapping" do
       library = Library.new.find_by_id(params[:id])
@@ -86,7 +108,7 @@ class API < Grape::API
         requires :name,       type: String, length: 6, desc: "Name of library"
         optional :config,     type: String, desc: "Config file"
         optional :mapping,    type: String, desc: "Mapping file"
-        optional :oai,        type: String, desc: "OAI settings"
+        optional :oai,        desc: "OAI settings"
         optional :harvesting, type: String, desc: "Harvesting settings file" 
       end
     post "/" do
@@ -103,7 +125,7 @@ class API < Grape::API
         optional :name,       type: String,  length: 6, desc: "Name of library"
         optional :config,     type: String,  desc: "Config file"
         optional :mapping,    type: String,  desc: "Mapping file"
-        optional :oai,        type: String,  desc: "OAI settings"
+        optional :oai,        desc: "OAI settings"
         optional :harvesting, type: String,  desc: "Harvesting settings file" 
       end
     put "/" do
