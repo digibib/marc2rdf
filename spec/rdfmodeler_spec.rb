@@ -24,7 +24,7 @@ describe RDFModeler do
     before(:each) do
       @oai          = "http://example.com/oai"
       @path         = "/oai"
-      @oaixml       = IO.read('./spec/example.bibliofilmarc.xml').force_encoding('ASCII-8BIT')
+      @oaixml       = IO.read('./spec/example.oairesponse.xml').force_encoding('ASCII-8BIT')
       @oaitest        = Faraday.new(:url => "http://example.com") do |builder|
         builder.adapter :test do |stub|
           stub.get(@path) {[200, {}, @oaixml]}

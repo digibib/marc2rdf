@@ -7,6 +7,9 @@ require 'rdf/rdfxml'
 require 'rdf/n3'
 require 'rdf/ntriples'
 
+# Defaults
+$config_file = 'config/config.yml' unless $config_file
+
 require_relative './sparql_update.rb'
 require_relative './sparql.rb'
 require_relative './string_replace.rb'

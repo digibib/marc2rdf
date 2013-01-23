@@ -31,15 +31,13 @@ describe SparqlUpdate do
       #$debug = true
       @book_id = "1234567890"
       $statements = [
-        RDF::URI(@uri + @book_id),
-        RDF.type,
-        RDF::URI(RDF::BIBO.Document)
+        RDF::Statement.new(RDF::URI(@uri + @book_id), RDF.type, RDF::URI(RDF::BIBO.Document))
         ]
     end
     
     it "should support updating a book" do
       response = OAIUpdate.sparql_update(@book_id)
-      #p response
+      p response
       response.should match(/(done|nothing)/)
       response.should_not match(/NULL/)
     end
