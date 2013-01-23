@@ -2,7 +2,16 @@
     {
         "id": 1,
         "name": "Test Library",
-        "config": {},
+        "config": {
+          "resource": {
+            "base": "http://example.com",
+            "prefix": "id_", 
+            "identifier_tag": "001", 
+            "type": "BIBO.Document", 
+            "default_prefix": "http://example.com/",
+            "default_graph": "http://example.com/default_graph/"
+            },
+        },
         "mapping": {},
         "oai": {
             "preserve_on_update": [

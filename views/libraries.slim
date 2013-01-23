@@ -15,9 +15,34 @@ div class="main"
             td: input[type="text" id="save_library_name" value=(library.name)]
             td: input[type="hidden" id="save_library_id" vlue=(library.id)]
           tr
-            td library oai repository
+            td oai repository
             td: input[type="text" id="save_library_oai_url" value=(library.oai['url'])]
-            td   
+            td the url to the oai repository
+          tr
+            td resource base
+            td: input[type="text" id="save_resource_base" value=(library.config['resource']['base'])]
+            td base url to use when creating resources
+          tr
+            td resource prefix
+            td: input[type="text" id="save_resource_prefix" value=(library.config['resource']['prefix'])]
+            td prefix to use on resources
+          tr
+            td resource type
+            td: input[type="text" id="save_resource_type" value=(library.config['resource']['type'])]
+            td rdf type of resources
+          tr
+            td identifier tag
+            td: input[type="text" id="save_identifier_tag" value=(library.config['resource']['identifier_tag'])]
+            td tag used to identify and name resources
+          tr
+            td default graph
+            td: input[type="text" id="save_default_graph" value=(library.config['resource']['default_graph'])]
+            td default graph for saving resources
+          tr
+            td default prefix
+            td: input[type="text" id="save_default_prefix" value=(library.config['resource']['default_prefix'])]
+            td default prefix to use on different resources            
+          // save and delete button
           tr
             td 
               button[type="button" id="library_save" class="gen"]  = "Save"
@@ -26,7 +51,7 @@ div class="main"
               span[id="save_library_info" class="info" style="margin-left:48px"]
               span[id="save_library_error" class="error" style="margin-left:48px"]    
   
-  h3 ...or select library
+  h3 select library
   
   table id="libraries" class="libraries active tablesorter"
     tbody
@@ -36,7 +61,7 @@ div class="main"
           td
             a href="/libraries/#{library.id}" #{library.name}
 
-  h3 ...or create a new library
+  h3 create a new library
 
   div class="divdot inputf"
     span[class='info' id="create_library_info" style="margin-left:20px"]
@@ -45,9 +70,6 @@ div class="main"
         tr
           td library name
           td: input[type="text" id="create_library_name" class="required"]
-        tr
-          td library oai repository
-          td: input[type="text" id="create_library_oai_url"]
         tr
           td
           td[id="library_form"]
@@ -71,7 +93,7 @@ div class="main"
           contentType: "application/json; charset=utf-8",
           data: JSON.stringify({ 
               name: $('input#create_library_name').val(),
-              oai: { url: $('input#create_library_oai_url').val() },
+              //oai: { url: $('input#create_library_oai_url').val() },
               }),
           dataType: 'json'
         });
@@ -96,9 +118,17 @@ div class="main"
           data: JSON.stringify({ 
                 id: id,
                 name: $('input#save_library_name').val(),
-                oai: { 
-                     url: $('input#save_library_oai_url').val() 
-                     },
+                oai: { url: $('input#save_library_oai_url').val() },
+                config: {
+                  resource: {
+                    base: $('input#save_resource_base').val(),
+                    prefix: $('input#save_resource_prefix').val(),
+                    identifier_tag: $('input#save_identifier_tag').val(),
+                    type: $('input#save_resource_type').val(),
+                    default_prefix: $('input#save_default_prefix').val(),
+                    default_graph: $('input#save_default_graph').val(),
+                    },
+                  },
                 }),
           dataType: 'json'
         });

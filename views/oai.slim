@@ -2,115 +2,118 @@
 // This file contains settings for OAI harvesting
 div class="main"
   // This form contains OAI-PMH harvester settings                    
-  h3 OAI harvester
-  div class="divdot inputf"
-    form id="change_harvester_settings_form" autocomplete="off"
-      table[id="oai_settings" class="genform"]
-        tr
-          td url
-          td: input[type="text" id="url" value=(library.oai['url'])]
-          td url to OAI repository for harvesting
-        tr
-          td follow_redirects
-          td
-            select[id="follow_redirects"]
-              option[selected=("selected" if library.oai['follow_redirects'] == "false")] false
-              option[selected=("selected" if library.oai['follow_redirects'] == "true")] true
-        tr
-          td parser
-          td: input[type="text" id="parser" value=(library.oai['parser']) disabled="true"]
-          td parser for OAI XML response (libxml to come)          
-        tr
-          td timeout
-          td: input[type="text" id="timeout" value=(library.oai['timeout']) ]
-          td timeout for OAI response in ms           
-        tr
-          td format
-          td
-            select[id="format"]
-              option[selected=("selected" if library.oai['format'] == "marcexchange")] marcexchange
-              option[selected=("selected" if library.oai['format'] == "bibliofilmarc")] bibliofilmarc         
-          td format for OAI response (bibliofilmarc for bibliofil libraries)
-          
-        // NB! to parse preserve predicates as array, we need to use class instead of id
-      table[id="preserve" class="genform"]
-        tr
-          td preserve_on_update 
-          td
-          td properties to keep during update. Delete with '-'
-        - library.oai['preserve_on_update'].each_with_index do |v, index|
+  h2 OAI harvester
+  - unless library
+    pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+  - else
+    div class="divdot inputf"
+      form id="change_harvester_settings_form" autocomplete="off"
+        table[id="oai_settings" class="genform"]
           tr
-            - if index == 0
-              td 
-              td: input[type="text" class="preserve_on_update" value="#{v}"]
-              td: button[type='button' class="add_table_row"]  = "+"
-            - else
-              td
-              td: input[type="text" class="preserve_on_update" value="#{v}"]
-              td: button[type='button' class="remove_table_row"]  = "-"
-        tr
-          td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
-          td
-            span[id="oai_info" class="info" style="margin-left:48px"]
-            span[id="oai_error" class="error" style="margin-left:48px"]
-  
-  javascript:
-    $(document).on('ready', function () {
-      //$('change_rdfstore_settings_form').remotize({spinner: $('/img/ajax-loader.gif')});
-      
-      // ** functions to add/remove table row, class "remove_table_row"
-      $("table#preserve").delegate(".remove_table_row", "click", function(){
-        $(this).closest("tr").remove();
-        return false;
-      });
-      $("table#preserve").delegate(".add_table_row", "click", function(){
-        var data = '<tr><td></td><td>' + 
-           '<input type="text" class="preserve_on_update" /></td>' +
-           '<td><button class="remove_table_row">-</button></td></tr>';
-           
-        $("table#preserve").append(data);
-        return false;
-      });
-      
-      // ** save oai settings
-      $('button#oai_settings_save').on('click', function() {
-        // get id of active library
-        var id = $('#active_library_id').html();
-      
-        // make preserve table inputs into array
-        var preserve_array = [];
-        $("table#preserve input:text").each(function() { 
-          var val=$(this).attr('value');
-          preserve_array.push(val);
-        });
-        //alert(preserve_array);
+            td url
+            td: input[type="text" id="url" value=(library.oai['url'])]
+            td url to OAI repository for harvesting
+          tr
+            td follow_redirects
+            td
+              select[id="follow_redirects"]
+                option[selected=("selected" if library.oai['follow_redirects'] == "false")] false
+                option[selected=("selected" if library.oai['follow_redirects'] == "true")] true
+          tr
+            td parser
+            td: input[type="text" id="parser" value=(library.oai['parser']) disabled="true"]
+            td parser for OAI XML response (libxml to come)          
+          tr
+            td timeout
+            td: input[type="text" id="timeout" value=(library.oai['timeout']) ]
+            td timeout for OAI response in ms           
+          tr
+            td format
+            td
+              select[id="format"]
+                option[selected=("selected" if library.oai['format'] == "marcexchange")] marcexchange
+                option[selected=("selected" if library.oai['format'] == "bibliofilmarc")] bibliofilmarc         
+            td format for OAI response (bibliofilmarc for bibliofil libraries)
+            
+          // NB! to parse preserve predicates as array, we need to use class instead of id
+        table[id="preserve" class="genform"]
+          tr
+            td preserve_on_update 
+            td
+            td properties to keep during update. Delete with '-'
+          - library.oai['preserve_on_update'].each_with_index do |v, index|
+            tr
+              - if index == 0
+                td 
+                td: input[type="text" class="preserve_on_update" value="#{v}"]
+                td: button[type='button' class="add_table_row"]  = "+"
+              - else
+                td
+                td: input[type="text" class="preserve_on_update" value="#{v}"]
+                td: button[type='button' class="remove_table_row"]  = "-"
+          tr
+            td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
+            td
+              span[id="oai_info" class="info" style="margin-left:48px"]
+              span[id="oai_error" class="error" style="margin-left:48px"]
+    
+    javascript:
+      $(document).on('ready', function () {
+        //$('change_rdfstore_settings_form').remotize({spinner: $('/img/ajax-loader.gif')});
         
-        request = $.ajax({
-          url: '/api/library',
-          type: 'PUT',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({
-              id: id,
-              oai: {
-                url: $('input#url').val(),
-                follow_redirects: $('select#follow_redirects option:selected').val(),
-                parser: $('input#parser').val(),
-                timeout: $('input#timeout').val(),
-                format: $('select#format option:selected').val(),
-                preserve_on_update: preserve_array
-              }}),
-          dataType: 'json'
+        // ** functions to add/remove table row, class "remove_table_row"
+        $("table#preserve").delegate(".remove_table_row", "click", function(){
+          $(this).closest("tr").remove();
+          return false;
         });
-  
-        request.success(function(data) {
-          $('span#oai_info').html("Saved oai settings !").show().fadeOut(3000);
+        $("table#preserve").delegate(".add_table_row", "click", function(){
+          var data = '<tr><td></td><td>' + 
+             '<input type="text" class="preserve_on_update" /></td>' +
+             '<td><button class="remove_table_row">-</button></td></tr>';
+             
+          $("table#preserve").append(data);
+          return false;
         });
-  
-        request.error(function(jqXHR, textStatus, errorThrown) {
-          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+        
+        // ** save oai settings
+        $('button#oai_settings_save').on('click', function() {
+          // get id of active library
+          var id = $('#active_library_id').html();
+        
+          // make preserve table inputs into array
+          var preserve_array = [];
+          $("table#preserve input:text").each(function() { 
+            var val=$(this).attr('value');
+            preserve_array.push(val);
+          });
+          //alert(preserve_array);
+          
+          request = $.ajax({
+            url: '/api/library',
+            type: 'PUT',
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                id: id,
+                oai: {
+                  url: $('input#url').val(),
+                  follow_redirects: $('select#follow_redirects option:selected').val(),
+                  parser: $('input#parser').val(),
+                  timeout: $('input#timeout').val(),
+                  format: $('select#format option:selected').val(),
+                  preserve_on_update: preserve_array
+                }}),
+            dataType: 'json'
+          });
+    
+          request.success(function(data) {
+            $('span#oai_info').html("Saved oai settings !").show().fadeOut(3000);
+          });
+    
+          request.error(function(jqXHR, textStatus, errorThrown) {
+            $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+          });
         });
+        
       });
-      
-    });
   == render :slim, :'_footer'

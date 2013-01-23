@@ -105,9 +105,9 @@ class API < Grape::API
             
     desc "create new library"
       params do
-        requires :name,       type: String, length: 6, desc: "Name of library"
-        optional :config,     type: String, desc: "Config file"
-        optional :mapping,    type: String, desc: "Mapping file"
+        requires :name,       type: String, length: 5, desc: "Name of library"
+        optional :config,     desc: "Config file"
+        optional :mapping,    desc: "Mapping file"
         optional :oai,        desc: "OAI settings"
         optional :harvesting, type: String, desc: "Harvesting settings file" 
       end
@@ -122,9 +122,9 @@ class API < Grape::API
     desc "edit/update library"
       params do
         requires :id,         type: Integer, desc: "ID of library"
-        optional :name,       type: String,  length: 6, desc: "Name of library"
-        optional :config,     type: String,  desc: "Config file"
-        optional :mapping,    type: String,  desc: "Mapping file"
+        optional :name,       type: String,  length: 5, desc: "Name of library"
+        optional :config,     desc: "Config file"
+        optional :mapping,    desc: "Mapping file"
         optional :oai,        desc: "OAI settings"
         optional :harvesting, type: String,  desc: "Harvesting settings file" 
       end

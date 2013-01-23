@@ -55,7 +55,7 @@ class APP < Sinatra::Base
   
   get '/libraries' do
     # Library selection
-    pass if params[:id]
+    #pass if params[:id]
     :json
     slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
   end
@@ -109,7 +109,9 @@ class APP < Sinatra::Base
     # Harvesting sources
     slim :harvester, :locals => {:library => session[:library]}
   end
-  
+
+=begin
+  settings per library disabled  
   get '/settings' do
     # General settings
     session[:settings] = YAML::load( File.open( File.join(File.dirname(__FILE__), './config/', 'settings.yml')))
@@ -123,7 +125,8 @@ class APP < Sinatra::Base
       settings['files'] = params['files'] if params['files']
     end
   end
-  
+=end
+
   get '/repository' do
     # Misc. repository settings
     session[:repository] = Repo.new('repository.yml')
