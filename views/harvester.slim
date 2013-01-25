@@ -2,6 +2,9 @@
 
 div class="main"
   h2 Harvester
-  p info here
+  - unless library
+      pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+  - else  
+    p info here
   
   == render :slim, :'_footer'

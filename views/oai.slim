@@ -41,21 +41,27 @@ div class="main"
             td preserve_on_update 
             td
             td properties to keep during update. Delete with '-'
-          - library.oai['preserve_on_update'].each_with_index do |v, index|
-            tr
-              - if index == 0
+            - unless library.oai['preserve_on_update']
+              tr
                 td 
-                td: input[type="text" class="preserve_on_update" value="#{v}"]
-                td: button[type='button' class="add_table_row"]  = "+"
-              - else
-                td
-                td: input[type="text" class="preserve_on_update" value="#{v}"]
-                td: button[type='button' class="remove_table_row"]  = "-"
-          tr
-            td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
-            td
-              span[id="oai_info" class="info" style="margin-left:48px"]
-              span[id="oai_error" class="error" style="margin-left:48px"]
+                td: input[type="text" class="preserve_on_update"]
+                td: button[type='button' class="add_table_row"]  = "+"            
+            - else
+              - library.oai['preserve_on_update'].each_with_index do |v, index|
+                tr
+                  - if index == 0
+                    td 
+                    td: input[type="text" class="preserve_on_update" value="#{v}"]
+                    td: button[type='button' class="add_table_row"]  = "+"
+                  - else
+                    td
+                    td: input[type="text" class="preserve_on_update" value="#{v}"]
+                    td: button[type='button' class="remove_table_row"]  = "-"
+        tr
+          td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
+          td
+            span[id="oai_info" class="info" style="margin-left:48px"]
+            span[id="oai_error" class="error" style="margin-left:48px"]
     
     javascript:
       $(document).on('ready', function () {

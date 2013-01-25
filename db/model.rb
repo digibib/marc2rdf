@@ -63,12 +63,13 @@ class Library
     ids = []
     self.all.each {|lib| ids << lib['id']}
     library = Library.new(
+      # find highest id and increase by one
       ids.empty? ? 1 : ids.max + 1,
       params[:name],
-      params[:config],
-      params[:mapping],
-      params[:oai],
-      params[:harvesting]
+      params[:config]     ||= {:resource => {} },
+      params[:mapping]    ||= {},
+      params[:oai]        ||= {:preserve_on_update => [] },
+      params[:harvesting] ||= {}
       )
   end
   
@@ -101,62 +102,6 @@ class Library
     libraries.delete_if {|lib| lib.id == id }
     open(File.join(File.dirname(__FILE__), 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
     libraries
-  end
-  
-end
-
-class Map
-  attr_accessor :file, :mapping
-
-  def initialize(filename = 'mapping.json')
-    # local variables
-    mapping_skeleton = File.read( File.join(File.dirname(__FILE__), 'templates', 'mapping_skeleton.json'))
-    mapping          = File.join(File.dirname(__FILE__), '../db/mapping/', filename)
-    # serialize skeleton into mapping file if not found
-    unless File.exist?(mapping)
-      open(mapping, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(mapping_skeleton))) } 
-    end
-    @file       = mapping
-    @mapping    = JSON.parse(IO.read(@file))
-  end
-  
-  def find_by_library(id)
-    mappingdir = id + '/mapping/'
-    if File.directory? mappingdir
-      @file    = File.join(File.dirname(__FILE__), mappingdir, 'mapping.json')
-      @mapping = JSON.parse(IO.read(@file))
-    else
-      return nil
-    end
-  end
-  
-  def reload
-    if @mapping
-      @mapping = JSON.parse(IO.read(@file))
-    end  
-  end
-  
-  def save
-    if @mapping
-      open(@file, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(@mapping))) } 
-    end
-  end
-end
-
-class Harvest
-  attr_reader   :harvesting_skeleton
-  attr_accessor :filename, :sources, :options
-
-  def initialize(filename)
-    @harvesting_skeleton = YAML::load( File.open( File.join(File.dirname(__FILE__), '../db/templates/', 'harvesting_skeleton.yml') ) )
-    @harvest = YAML::Store.new( File.join(File.dirname(__FILE__), '../db/harvesting/', filename), :Indent => 2 )
-  end
-  
-  def save
-    @harvest.transaction do
-      @harvest['sources'] = @sources
-      @harvest['options'] = @options
-    end
   end
 end
 
