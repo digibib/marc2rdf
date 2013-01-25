@@ -37,4 +37,7 @@ oai:
     - FOAF.isPrimaryTopicOf
     - BIBO.lccn
     - BIBO.oclcnum
-    - BIBO.isbn  
+    - BIBO.isbn
+    - DEICH.bkDummy
+    - DEICH.bokhyllaID
+    - DC.hasVersion
