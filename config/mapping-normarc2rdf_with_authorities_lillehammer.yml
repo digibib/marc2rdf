@@ -1712,3 +1712,4 @@ tags:
         object:
           datatype: uri
           regex_strip: '^.*?(?=http)'
+          urlize: true
