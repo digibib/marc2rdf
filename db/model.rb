@@ -98,10 +98,15 @@ class Library
   end
   
   def delete(id)
+    # reads in all libraries and deletes library 'id' from json store
     libraries = self.all
     libraries.delete_if {|lib| lib.id == id }
     open(File.join(File.dirname(__FILE__), 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
     libraries
+  end
+  
+  def reload
+    self.find_by_id(self.id)
   end
 end
 

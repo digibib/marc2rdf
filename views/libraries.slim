@@ -16,7 +16,7 @@ div class="main"
             td: input[type="hidden" id="save_library_id" vlue=(library.id)]
           tr
             td oai repository
-            td: input[type="text" id="save_library_oai_url" value=(library.oai['url'])]
+            td: input[type="text" id="save_library_oai_url" value=(library.oai['url']) disabled="true"]
             td the url to the oai repository
           tr
             td resource base
@@ -118,7 +118,7 @@ div class="main"
           data: JSON.stringify({ 
                 id: id,
                 name: $('input#save_library_name').val(),
-                oai: { url: $('input#save_library_oai_url').val() },
+                //oai: { url: $('input#save_library_oai_url').val() },
                 config: {
                   resource: {
                     base: $('input#save_resource_base').val(),

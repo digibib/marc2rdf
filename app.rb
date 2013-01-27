@@ -55,8 +55,9 @@ class APP < Sinatra::Base
   
   get '/libraries' do
     # Library selection
-    #pass if params[:id]
     :json
+    # reload session if updated, can be optimzed!
+    session[:library] = session[:library].reload if session[:library] 
     slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
   end
 
@@ -76,30 +77,11 @@ class APP < Sinatra::Base
   get '/oai' do
     # oai settings
     :json
+    # reload session if updated, can be optimzed!
+    session[:library] = session[:library].reload if session[:library] 
     slim :oai, :locals => {:library => session[:library]}
   end
   
-=begin
-### moved to API ###  
-  get '/mapping/json' do
-    :json
-    session[:mapping].reload
-    #file = File.read( File.join(File.dirname(__FILE__), './db/mapping/', 'mapping.json'))
-    #session[:mapping] = JSON.parse(file).to_json
-  end
-  
-  put '/mapping' do
-    # Save modified mapping
-    session[:mapping].mapping = JSON.parse(request.body.read).to_json
-    puts session[:mapping]
-    session[:mapping].save
-    #File.open( File.join(File.dirname(__FILE__), './db/mapping/', 'test2.json'), 'w') do |f| 
-    #  f.write(JSON.pretty_generate(session[:mapping])) 
-    #end
-    #{ :msg => "saved!" }
-  end
-=end
-
   get '/converter' do
     # Main conversion tool
     slim :converter, :locals => {:library => session[:library]}
@@ -109,23 +91,6 @@ class APP < Sinatra::Base
     # Harvesting sources
     slim :harvester, :locals => {:library => session[:library]}
   end
-
-=begin
-  settings per library disabled  
-  get '/settings' do
-    # General settings
-    session[:settings] = YAML::load( File.open( File.join(File.dirname(__FILE__), './config/', 'settings.yml')))
-    slim :settings, :locals => {:library => session[:library], :settings => session[:settings]}
-  end
-  
-  put '/settings' do
-    # Save general settings
-    settings = YAML::Store.new( File.join(File.dirname(__FILE__), 'config/settings.yml'), :Indent => 2 )
-    settings.transaction do
-      settings['files'] = params['files'] if params['files']
-    end
-  end
-=end
 
   get '/repository' do
     # Misc. repository settings
