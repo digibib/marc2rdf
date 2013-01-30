@@ -1,0 +1,85 @@
+/*
+ verk fra manifestasjoner UTEN originaltittel (dvs. IKKE oversatt)
+*/
+
+SPARQL 
+DEFINE sql:log-enable 2
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX fabio: <http://purl.org/spar/fabio/>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX deichman: <http://data.deichman.no/>
+
+INSERT INTO GRAPH <http://data.deichman.no/lillehammer> { 
+`iri(bif:concat("http://data.deichman.no/lillehammer/work/x", str(?sum), "_", str(?titleURLized)))` a fabio:Work ;
+   dct:title ?title ;
+   fabio:hasManifestation ?book .
+?book a fabio:Manifestation ;
+   fabio:isManifestationOf `iri(bif:concat("http://data.deichman.no/lillehammer/work/x", str(?sum), "_", str(?titleURLized)))` . }
+
+WHERE { GRAPH <http://data.deichman.no/lillehammer>
+   {{ SELECT sum(xsd:int(?id)) as ?sum ?titleURLized ?title ?book  WHERE
+     { ?book a bibo:Document ;
+          dct:title ?title ;
+          deichman:titleURLized ?titleURLized ;
+          dct:creator ?creator .
+       ?creator dct:identifier ?id . 
+       MINUS { ?book deichman:originalTitle ?originalTitle }
+     }
+   }}
+};
+
+
+/*
+  verk fra manifestasjoner MED originaltittel 
+*/
+
+SPARQL 
+DEFINE sql:log-enable 2
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX fabio: <http://purl.org/spar/fabio/>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX deichman: <http://data.deichman.no/>
+
+INSERT INTO GRAPH <http://data.deichman.no/lillehammer> { 
+`iri(bif:concat("http://data.deichman.no/work/lillehammer/x", str(?sum), "_", str(?originalTitleURLized)))` a fabio:Work ;
+   dct:title ?originalTitle ;
+   fabio:hasManifestation ?book .
+?book a fabio:Manifestation ;
+   fabio:isManifestationOf `iri(bif:concat("http://data.deichman.no/work/lillehammer/x", str(?sum), "_", str(?originalTitleURLized)))` . }
+
+WHERE { GRAPH <http://data.deichman.no/lillehammer>
+   {{ SELECT sum(xsd:int(?id)) as ?sum ?originalTitleURLized ?originalTitle ?book  WHERE
+     { ?book a bibo:Document ;
+          deichman:originalTitle ?originalTitle ;
+          deichman:originalTitleURLized ?originalTitleURLized ;
+          dct:creator ?creator .
+       ?creator dct:identifier ?id .
+     }
+   }}
+};
+
+
+/*
+  Legg informasjon om opphavspersoner og ISBN på verk
+*/
+
+SPARQL 
+DEFINE sql:log-enable 2
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX fabio: <http://purl.org/spar/fabio/>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX deichman: <http://data.deichman.no/>
+
+INSERT INTO GRAPH <http://data.deichman.no/lillehammer> { 
+?work dct:creator ?creator ;
+   bibo:isbn ?isbn . }
+   
+WHERE { GRAPH <http://data.deichman.no/lillehammer> {
+?book a bibo:Document ;
+   fabio:isManifestationOf ?work ;
+   dct:creator ?creator ;
+   bibo:isbn ?isbn . }
+};
