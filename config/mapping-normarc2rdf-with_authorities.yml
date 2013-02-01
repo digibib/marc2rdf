@@ -1153,6 +1153,7 @@ tags:
               predicate: SKOS.prefLabel
               object:
                 datatype: literal
+                lang: :no
             '3':
               predicate: SKOS.narrower
               object:
@@ -1205,6 +1206,7 @@ tags:
               predicate: SKOS.prefLabel
               object:
                 datatype: literal
+                lang: :no
             '3':
               predicate: SKOS.narrower
               object:
@@ -1257,6 +1259,7 @@ tags:
               predicate: SKOS.prefLabel
               object:
                 datatype: literal
+                lang: :no
             '3':
               predicate: SKOS.narrower
               object:
@@ -1309,6 +1312,7 @@ tags:
               predicate: SKOS.prefLabel
               object:
                 datatype: literal
+                lang: :no
             '3':
               predicate: SKOS.narrower
               object:
@@ -1387,6 +1391,7 @@ tags:
               predicate: SKOS.prefLabel
               object:
                 datatype: literal
+                lang: :no
             '3':
               predicate: SKOS.narrower
               object:
@@ -1439,6 +1444,7 @@ tags:
               predicate: SKOS.prefLabel
               object:
                 datatype: literal
+                lang: :no
             '3':
               predicate: SKOS.narrower
               object:
