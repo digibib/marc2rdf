@@ -1,20 +1,4 @@
-require 'rubygems'
-require 'bundler/setup'
-require 'marc'
-require 'yaml'
-require 'rdf'
-require 'rdf/rdfxml'
-require 'rdf/n3'
-require 'rdf/ntriples'
-
-# Defaults
-$config_file = 'config/config.yml' unless $config_file
-
-require_relative './vocabularies.rb'
-require_relative '../db/model.rb'
-require_relative './sparql_update.rb'
-require_relative './sparql.rb'
-require_relative './string_replace.rb'
+#encoding: utf-8
 
 class RDFModeler
   attr_reader :record, :statements, :uri, :tags

@@ -20,6 +20,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
+### Architecture
+![API architecture](https://github.com/digibib/marc2rdf/raw/sinatra_app/doc/schematics.png)
+
 ## FEATURES
 
 The marc2rdf toolkit consists of a web frontend and three parts:

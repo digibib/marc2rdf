@@ -1,15 +1,13 @@
-# coding: utf-8
+#encoding: utf-8
 
 $stdout.sync = true # gives foreman full stdout
-require "rubygems"
-require "bundler/setup"
+require_relative "./config/init.rb"
 require "sinatra/base"
 require "sinatra/reloader"
 require "slim"
 require "json"
 
-# RDFmodeler loads all other classes in marc2rdf
-require_relative './lib/rdfmodeler.rb'
+
 
 class APP < Sinatra::Base
   # Global constants

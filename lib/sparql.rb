@@ -1,5 +1,4 @@
-require 'rdf/virtuoso'
-require_relative './rdfmodeler.rb'
+#encoding: utf-8
 
 module Sparql
 CONFIG           = YAML::load_file('config/config.yml')

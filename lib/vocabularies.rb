@@ -1,4 +1,5 @@
-require 'rdf'
+#encoding: utf-8
+
 # Initialize additional vocabularies we will be drawing from
 # Existing vocabularies are listed on http://rdf.rubyforge.org/
 # NB! protected methods must be overridden! (with e.g. property :name)
@@ -24,4 +25,6 @@ module RDF
   class YAGO < RDF::Vocabulary("http://dbpedia.org/class/yago/");end 
   class CTAG < RDF::Vocabulary("http://commontag.org/ns#");end 
   class RADATANA < RDF::Vocabulary("http://def.bibsys.no/xmlns/radatana/1.0#");end 
+  class SIOC < RDF::Vocabulary("http://rdfs.org/sioc/ns#");end
+  class ACC < RDF::Vocabulary("http://purl.org/NET/acc#");end  
 end

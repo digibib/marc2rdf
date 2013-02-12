@@ -1,14 +1,11 @@
 #!/usr/bin/env ruby 
-# encoding: UTF-8
+#encoding: utf-8
 $stdout.sync = true
 
-require 'rubygems'
-require 'bundler/setup'
+require_relative "./config/init.rb"
 require 'grape'
-require "json"
+require 'json'
 
-# RDFmodeler loads all other classes in marc2rdf
-require_relative './lib/rdfmodeler.rb'
 
 # trap all exceptions and fail gracefuly with a 500 and a proper message
 class ApiErrorHandler < Grape::Middleware::Base

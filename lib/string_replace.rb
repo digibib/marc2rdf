@@ -1,3 +1,4 @@
+#encoding: utf-8
 # RemoveAccents version 1.0.3 (c) 2008-2009 Solutions Informatiques Techniconseils inc.
 # 
 # This module adds 2 methods to the string class. 
