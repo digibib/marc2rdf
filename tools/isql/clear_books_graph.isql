@@ -25,5 +25,6 @@ FILTER (?p != bibo:lccn)
 FILTER (?p != local:bkDummy) 
 FILTER (?p != local:bokhyllaID) 
 FILTER (?p != dct:hasVersion) 
-FILTER (?p != skos:broader) 
+FILTER (?p != skos:broader)
+FILTER (?p != skos:narrower) 
 } };

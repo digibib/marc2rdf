@@ -17,51 +17,43 @@ class Library
   end
   
   def find_by_id(id)
-    library = self.all.detect {|lib| lib['id'] == id.to_i }
+    self.all.detect {|lib| lib['id'] == id.to_i }
   end
 
   def create(params={})
     ids = []
     self.all.each {|lib| ids << lib['id']}
-    library = Library.new(
-      # find highest id and increase by one
-      ids.empty? ? 1 : ids.max + 1,
-      params[:name],
-      params[:config]     ||= {:resource => {} },
-      params[:mapping]    ||= {},
-      params[:oai]        ||= {:preserve_on_update => [] },
-      params[:harvesting] ||= {}
-      )
+    # populate Library Struct    
+    self.members.each {|name| self[name] = params[name] unless params[name].nil? }  
+    # find highest id and increase by one
+    ids.empty? ? self.id = 1 : self.id = ids.max + 1
+    self
   end
   
   def update(params={})
-    libraries = self.all
-    library   = self.find_by_id(params[:id])
-    # remove unwanted params
-    unwanted_params = ['uri', 'api_key', 'route_info', 'method', 'path']
-    unwanted_params.each {|d| params.delete(d)}
-    # update review with new params
-    params.each{|k,v| library[k] = v}
-    library
+    return nil unless self.id
+    self.members.each {|name| self[name] = params[name] unless params[name].nil? }
+    save
+    self
   end
   
-  def save(library)
+  def save
+    return nil unless self.id
     libraries = self.all
-    # update if matching id, else append
-    match = self.find_by_id(library.id)
+    match = self.find_by_id(self.id)
     if match
-      libraries.map! { |lib| lib.id == library.id ? library : lib}
+      libraries.map! { |lib| lib.id == self.id ? self : lib}
     else
-      libraries << library
-    end
+      libraries << self
+    end 
     open(File.join(File.dirname(__FILE__), '../db/', 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
-    libraries
+    self
   end
   
-  def delete(id)
-    # reads in all libraries and deletes library 'id' from json store
+  def delete
+    return nil unless self.id
     libraries = self.all
-    libraries.delete_if {|lib| lib.id == id }
+    libraries.delete_if {|lib| lib.id == self.id }
     open(File.join(File.dirname(__FILE__), '../db/', 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
     libraries
   end

@@ -58,25 +58,24 @@ class API < Grape::API
   end
     
   resource :library do
-    desc "all libraries"
+    desc "returns all libraries or specific library"
     get "/" do
-      { :libraries => Library.new.all }
-    end
-    
-    desc "get library by id"
-    get "/:id" do
       content_type 'json'
-      logger.info params
-      
-      library = Library.new.find_by_id(params[:id])
+      unless params[:id]
+        { :libraries => Library.new.all }
+      else
+        logger.info params
+        library = Library.new.find_by_id(params[:id])
         throw :error, :status => 404,
               :message => "No library with id: " +
                           "#{params[:id]}" unless library
-        { :library => library }
+        { :library => library }        
+      end
     end
- 
+    
     desc "get specific library mapping"
     get ":id/mapping" do
+      content_type 'json'
       library = Library.new.find_by_id(params[:id])
       if library
         { :mapping => library.mapping }
@@ -85,21 +84,7 @@ class API < Grape::API
         error!("library mapping not found", 400)
       end
     end
-
-    desc "save specific library mapping"
-      params do
-        requires :mapping, desc: "Mapping file"
-      end
-    put ":id/mapping" do
-      content_type 'json'
-      logger.info "PUT: params: #{params}"
-      library = Library.new.find_by_id(params[:id])
-      library.mapping = params[:mapping]
-      Library.new.save(library)
-      logger.info "PUT: params: #{params} - updated mapping: #{library.mapping}"
-      { :mapping => library.mapping }
-    end
-            
+    
     desc "create new library"
       params do
         requires :name,       type: String, length: 5, desc: "Name of library"
@@ -111,11 +96,25 @@ class API < Grape::API
     post "/" do
       content_type 'json'
       library = Library.new.create(params)
-      Library.new.save(library)
+      library.save
       logger.info "POST: params: #{params} - created library: #{library}"
       { :library => library }
     end
-
+    
+    desc "save specific library mapping"
+      params do
+        requires :mapping, desc: "Mapping file"
+      end
+    put ":id/mapping" do
+      content_type 'json'
+      logger.info "PUT: params: #{params}"
+      library = Library.new.find_by_id(params[:id])
+      library.mapping = params[:mapping]
+      library.update
+      logger.info "PUT: params: #{params} - updated mapping: #{library.mapping}"
+      { :mapping => library.mapping }
+    end
+            
     desc "edit/update library"
       params do
         requires :id,         type: Integer, desc: "ID of library"
@@ -130,16 +129,10 @@ class API < Grape::API
       valid_params = ['id','name','config','mapping','oai','harvesting']
       # do we have a valid parameter?
       if valid_params.any? {|p| params.has_key?(p) }
-        # delete params not listed in valid_params
-        logger.info "params before: #{params}"
-        params.delete_if {|p| !valid_params.include?(p) }
-        logger.info "params after: #{params}"
-        
-        before  = Library.new.find_by_id(params[:id])
-        after   = Library.new.update(params)
-        Library.new.save(after)
-        logger.info "updated library: #{after}"
-        { :before => before, :after => after }
+        library = Library.new.find_by_id(params[:id])
+        library.update(params)
+        logger.info "updated library: #{library}"
+        { :before => library}
       else
         logger.error "invalid or missing params"   
         error!("Need at least one param of id|name|config|mapping|oai|harvesting", 400)      
@@ -153,7 +146,7 @@ class API < Grape::API
     delete "/" do
       content_type 'json'
       library = Library.new.find_by_id(params[:id])
-      Library.new.delete(params[:id])
+      library.delete
       logger.info "DELETE: params: #{params} - deleted library: #{library}"
       { :library => library }
     end
@@ -162,6 +155,7 @@ class API < Grape::API
   resource :mapping do
     desc "return mapping template"
     get "/" do
+      content_type 'json'
       mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'db/templates', 'mapping_skeleton.json')))
       { :mapping => mapping }
     end

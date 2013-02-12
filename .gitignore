@@ -1,4 +1,5 @@
 config/config.yml
+config/repository.yml
 config/harvesting.yml
 db/repository/
 db/mapping/
