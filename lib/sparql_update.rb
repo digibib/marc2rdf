@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 module SparqlUpdate
+=begin
   CONFIG          = YAML::load_file($config_file)
   STORE           = CONFIG['rdfstore']['store']
   SPARQL_ENDPOINT = CONFIG['rdfstore']['sparql_endpoint']
@@ -29,10 +30,11 @@ module SparqlUpdate
 "owl: <http://www.w3.org/2002/07/owl#>",
 "bibo: <http://purl.org/ontology/bibo/>",
     ]
+=end    
 end
 
 class SPARUL
-  include SparqlUpdate
+  #include SparqlUpdate
   def self.sparul_insert(statements)
     unless statements.empty?
       query = QUERY.insert_data(statements).graph(DEFAULT_GRAPH)

@@ -80,28 +80,21 @@ class APP < Sinatra::Base
     slim :oai, :locals => {:library => session[:library]}
   end
   
-  get '/converter' do
+  get '/convert' do
     # Main conversion tool
-    slim :converter, :locals => {:library => session[:library]}
+    slim :convert, :locals => {:library => session[:library]}
   end
   
-  get '/harvester' do
+  get '/harvest' do
     # Harvesting sources
-    slim :harvester, :locals => {:library => session[:library]}
+    slim :harvest, :locals => {:library => session[:library]}
   end
 
   get '/repository' do
     # Misc. repository settings
-    session[:repository] = Repo.new('repository.yml')
+    #session[:repository] = Repo.new('repository.yml')
+    session[:repository] = SETTINGS["repository"]
     slim :repository, :locals => {:library => session[:library], :repo => session[:repository]}
-  end
-  
-  put '/repository' do
-    # Save/update repository settings
-    session[:repository].repository['rdfstore'] = params['rdfstore'] if params['rdfstore']
-    session[:repository].repository['resource'] = params['resource'] if params['resource']
-    session[:repository].repository['oai']      = params['oai']      if params['oai']
-    session[:repository].save
   end
   
   get '/about' do

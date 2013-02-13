@@ -11,29 +11,29 @@ div class="main"
         tr
           td store
           td: input[type="text" id="store" value="virtuoso" disabled="true"]
-          td no alternatives yet...
+          td why alternatives ...?
         tr
           td sparql_endpoint
-          td: input[type="text" id="sparql_endpoint" value=(repo.repository['rdfstore']['sparql_endpoint'])]
+          td: input[type="text" id="sparql_endpoint" value=(repo['sparql_endpoint'])]
           td url to sparql endpoint
         tr
           td sparul_endpoint
-          td: input[type="text" id="sparul_endpoint" value=(repo.repository['rdfstore']['sparul_endpoint'])]
+          td: input[type="text" id="sparul_endpoint" value=(repo['sparul_endpoint'])]
           td url to sparql update endpoint    
         tr
           td username
-          td: input[type="text" id="username" value=(repo.repository['rdfstore']['username'])]
+          td: input[type="text" id="username" value=(repo['username'])]
           td username for sparql update
         tr
           td password
-          td: input[type="text" id="password" value=(repo.repository['rdfstore']['password'])]
+          td: input[type="text" id="password" value=(repo['password'])]
           td password for sparql update   
         tr
           td auth_method
           td 
             select[id="auth_method"]
-              option[selected=("selected" if repo.repository['rdfstore']['auth_method'] == "digest")] digest
-              option[selected=("selected" if repo.repository['rdfstore']['auth_method'] == "basic")] basic
+              option[selected=("selected" if repo['auth_method'] == "digest")] digest
+              option[selected=("selected" if repo['auth_method'] == "basic")] basic
           td sparql update authentication method
         tr
           td: button[type="button" id="rdfstore_settings_save" class="gen"]  = "Save"
