@@ -44,13 +44,13 @@ tags:
 
   '008':
     cataloguingDate:
-      predicate: DEICHMAN.cataloguingDate
+      predicate: DEICH.cataloguingDate
       object:
         substr_offset: 0
         substr_length: 6
         datatype: literal
     periodicaType:
-      predicate: DEICHMAN.literaryFormat
+      predicate: DEICH.literaryFormat
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 21
@@ -78,7 +78,7 @@ tags:
           default: adult
         datatype: uri
     contentCode:
-      predicate: DEICHMAN.literaryFormat
+      predicate: DEICH.literaryFormat
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 24
@@ -105,7 +105,7 @@ tags:
           default: Document
         datatype: uri        
     literaryformat:
-      predicate: DEICHMAN.literaryFormat
+      predicate: DEICH.literaryFormat
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 33
@@ -120,7 +120,7 @@ tags:
           default: Fiction
         datatype: uri
     biocontent:
-      predicate: DEICHMAN.bioContent
+      predicate: DEICH.bioContent
       object:
         prefix: http://data.deichman.no/bioContent/
         substr_offset: 34
@@ -149,7 +149,7 @@ tags:
       relation: 
         class: LEXVO.Language
     script:
-      predicate: DEICHMAN.script
+      predicate: DEICH.script
       object:
         prefix: http://dbpedia.org/resource/
         substr_offset: 38
@@ -178,9 +178,9 @@ tags:
             b: 
               orig: 'bibbi|bibliofilid|dugnadsbasenibibliofil'
               subs: 
-                bibbi: DEICHMAN.bsID
-                bibliofilid: DEICHMAN.bibliofilID
-                dugnadsbasenibibliofil: DEICHMAN.dugnadsbaseID
+                bibbi: DEICH.bsID
+                bibliofilid: DEICH.bibliofilID
+                dugnadsbasenibibliofil: DEICH.dugnadsbaseID
         object: 
           datatype: literal
 
@@ -254,7 +254,7 @@ tags:
             default: Document           
           datatype: uri
       d: 
-        predicate: DEICHMAN.literaryFormat
+        predicate: DEICH.literaryFormat
         object: 
           prefix: http://dbpedia.org/resource/
           regex_split: '(\w{1})'
@@ -274,7 +274,7 @@ tags:
             default: Novel 
           datatype: uri
       e: 
-        predicate: DEICHMAN.facilitation
+        predicate: DEICH.facilitation
         object: 
           prefix: http://data.deichman.no/facilitation/
           regex_split: '(\w{2})'
@@ -292,7 +292,7 @@ tags:
             default: simpleText           
           datatype: uri
       s: 
-        predicate: DEICHMAN.ageLimit
+        predicate: DEICH.ageLimit
         object: 
           prefix: http://data.deichman.no/ageLimit/
           regex_strip: '[\D]+'
@@ -306,13 +306,13 @@ tags:
           regex_strip: '[\D]+'
           datatype: literal
       b: 
-        predicate: DEICHMAN.bindingInfo
+        predicate: DEICH.bindingInfo
         object: 
           prefix: http://data.deichman.no/bindingInfo/        
           regex_strip: '[\W]+'
           datatype: uri
       c: 
-        predicate: DEICHMAN.priceInfo
+        predicate: DEICH.priceInfo
         object: 
           datatype: literal
 
@@ -343,7 +343,7 @@ tags:
           datatype: uri 
 
       b: 
-        predicate: DEICHMAN.subTitles
+        predicate: DEICH.subTitles
         object:
           prefix: http://lexvo.org/id/iso639-3/
           regex_strip: '[\W]+'
@@ -351,7 +351,7 @@ tags:
           datatype: uri 
 
       h: 
-        predicate: DEICHMAN.originalLanguage
+        predicate: DEICH.originalLanguage
         object: 
           prefix: http://lexvo.org/id/iso639-3/
           regex_strip: '[\W]+'
@@ -363,14 +363,14 @@ tags:
       a:
         conditions: 
           indicator:
-            default: DEICHMAN.dewey
+            default: DEICH.dewey
             indicator1: 
               orig: '3| '
               subs:
                 ? " "
-                : DEICHMAN.localCode
+                : DEICH.localCode
                 ? "3"
-                : DEICHMAN.dewey
+                : DEICH.dewey
         object: 
           regex_strip: '[\.:,;\/\s]\s*$'
           datatype: literal
@@ -378,19 +378,19 @@ tags:
   '090':
     subfield: 
       a:
-        predicate: DEICHMAN.location_category
+        predicate: DEICH.location_category
         object:
           datatype: literal
       b:
-        predicate: DEICHMAN.location_format
+        predicate: DEICH.location_format
         object:
           datatype: literal
       c:
-        predicate: DEICHMAN.location_dewey
+        predicate: DEICH.location_dewey
         object:
           datatype: literal
       d:
-        predicate: DEICHMAN.location_signature
+        predicate: DEICH.location_signature
         object:
           datatype: literal
 
@@ -403,7 +403,7 @@ tags:
   '099':
     subfield: 
       a:
-        predicate: DEICHMAN.listCode
+        predicate: DEICH.listCode
         object: 
           datatype: literal
 
@@ -426,7 +426,7 @@ tags:
               object:
                 datatype: literal
             d:
-              predicate: DEICHMAN.lifespan
+              predicate: DEICH.lifespan
               object:
                 datatype: literal
             j:
@@ -470,15 +470,15 @@ tags:
                 combinestring: '. '              
                 datatype: literal
             c: 
-              predicate: DEICHMAN.conferencePlace
+              predicate: DEICH.conferencePlace
               object: 
                 datatype: literal
             d: 
-              predicate: DEICHMAN.conferenceDate
+              predicate: DEICH.conferenceDate
               object: 
                 datatype: literal
             n: 
-              predicate: DEICHMAN.corporationNumber
+              predicate: DEICH.corporationNumber
               object: 
                 datatype: literal
             '1':
@@ -505,15 +505,15 @@ tags:
               object: 
                 datatype: literal
             c: 
-              predicate: DEICHMAN.conferencePlace
+              predicate: DEICH.conferencePlace
               object: 
                 datatype: literal
             d: 
-              predicate: DEICHMAN.conferenceDate
+              predicate: DEICH.conferenceDate
               object: 
                 datatype: literal
             n: 
-              predicate: DEICHMAN.corporationNumber
+              predicate: DEICH.corporationNumber
               object: 
                 datatype: literal
             q: 
@@ -562,14 +562,14 @@ tags:
       a:
         conditions: 
           indicator:
-            default: DEICHMAN.originalTitle
+            default: DEICH.originalTitle
             indicator1:
               orig: '0|1'
               subs: 
                 ? "0"
-                : DEICHMAN.uniformTitle
+                : DEICH.uniformTitle
                 ? "1"
-                : DEICHMAN.originalTitle
+                : DEICH.originalTitle
         object: 
           regex_strip: '[\.:,;\/\s]\s*$'
           datatype: literal
@@ -579,14 +579,14 @@ tags:
       a:
         conditions: 
           indicator:
-            default: DEICHMAN.originalTitleURLized
+            default: DEICH.originalTitleURLized
             indicator1:
               orig: '0|1'
               subs:
                 ? "0"
-                : DEICHMAN.uniformTitleURLized
+                : DEICH.uniformTitleURLized
                 ? "1"
-                : DEICHMAN.originalTitleURLized
+                : DEICH.originalTitleURLized
         object: 
           urlize: true
           regex_strip: '[\W]+'
@@ -622,7 +622,7 @@ tags:
   '245|245':
     subfield: 
       a: 
-        predicate: DEICHMAN.titleURLized
+        predicate: DEICH.titleURLized
         object: 
           urlize: true
           regex_strip: '[\W]+'
@@ -673,7 +673,7 @@ tags:
   '260':
     subfield: 
       a: 
-        predicate: DEICHMAN.publicationPlace
+        predicate: DEICH.publicationPlace
         object: 
           urlize: true
           regex_strip: '[\W]+'
@@ -715,15 +715,15 @@ tags:
           regex_strip: '[\s]*s[\.\s]*$'
           datatype: literal
       b:
-        predicate: DEICHMAN.physicalDescription
+        predicate: DEICH.physicalDescription
         object: 
           datatype: literal
       c:
-        predicate: DEICHMAN.physicalDescription
+        predicate: DEICH.physicalDescription
         object: 
           datatype: literal
       e:
-        predicate: DEICHMAN.physicalDescription
+        predicate: DEICH.physicalDescription
         object: 
           datatype: literal          
 
@@ -738,7 +738,7 @@ tags:
   '503':
     subfield: 
       a: 
-        predicate: DEICHMAN.publicationHistory
+        predicate: DEICH.publicationHistory
         object: 
           datatype: literal
 
@@ -752,14 +752,14 @@ tags:
   '521':
     subfield: 
       a: 
-        predicate: DEICHMAN.ageLimit
+        predicate: DEICH.ageLimit
         object: 
           datatype: literal
 
   '546':
     subfield: 
       a: 
-        predicate: DEICHMAN.languageNote
+        predicate: DEICH.languageNote
         object: 
           datatype: literal
 
@@ -773,49 +773,49 @@ tags:
   '572':
     subfield:
       a: 
-        predicate: DEICHMAN.variantTitleNote
+        predicate: DEICH.variantTitleNote
         object: 
           datatype: literal
 
   '573':
     subfield:
       a: 
-        predicate: DEICHMAN.titleSourceNote
+        predicate: DEICH.titleSourceNote
         object: 
           datatype: literal
 
   '574':
     subfield:
       a: 
-        predicate: DEICHMAN.originalTitleNote
+        predicate: DEICH.originalTitleNote
         object: 
           datatype: literal                    
 
   '590':
     subfield:
       a: 
-        predicate: DEICHMAN.listNote
+        predicate: DEICH.listNote
         object: 
           datatype: literal                     
 
   '592':
     subfield:
       a: 
-        predicate: DEICHMAN.volumePartNote
+        predicate: DEICH.volumePartNote
         object: 
           datatype: literal 
 
   '595':
     subfield:
       a: 
-        predicate: DEICHMAN.periodicalCoverage
+        predicate: DEICH.periodicalCoverage
         object: 
           datatype: literal 
 
   '599':
     subfield:
       a: 
-        predicate: DEICHMAN.signatureNote
+        predicate: DEICH.signatureNote
         object: 
           datatype: literal 
 
@@ -827,35 +827,35 @@ tags:
             e:
               orig: 'arr|bearb|biogr|dir|fort|foto|gjendikt|ill|innl|komm|komp|manusforf|medarb|medforf|medf|oppl|overs|red|reg|sang|skuesp|tekstf|utg|utøv|forf|eks|k|t|u'
               subs: 
-                arr: DEICHMAN.musicalArranger
+                arr: DEICH.musicalArranger
                 bearb: DC.contributor
-                biogr: DEICHMAN.biographer
-                dir: DEICHMAN.director
-                eks: DEICHMAN.performer
+                biogr: DEICH.biographer
+                dir: DEICH.director
+                eks: DEICH.performer
                 forf: DC.creator
                 fort: DC.narrator
-                foto: DEICHMAN.photographer
+                foto: DEICH.photographer
                 gjendikt: BIBO.translator
                 ill: BIBO.illustrator
-                innl: DEICHMAN.reader
-                k: DEICHMAN.composer
-                komm: DEICHMAN.commentator
-                komp: DEICHMAN.composer
-                manusforf: DEICHMAN.scriptWriter
+                innl: DEICH.reader
+                k: DEICH.composer
+                komm: DEICH.commentator
+                komp: DEICH.composer
+                manusforf: DEICH.scriptWriter
                 medarb: DC.contributor
                 medf: DC.creator
                 medforf: DC.creator
                 oppl: DC.narrator
                 overs: BIBO.translator
                 red: BIBO.editor
-                reg: DEICHMAN.director
-                sang: DEICHMAN.singer
-                skuesp: DEICHMAN.actor
-                t: DEICHMAN.lyricist
-                tekstf: DEICHMAN.lyricist
-                u: DEICHMAN.publisher
-                utg: DEICHMAN.publisher
-                utøv: DEICHMAN.performer
+                reg: DEICH.director
+                sang: DEICH.singer
+                skuesp: DEICH.actor
+                t: DEICH.lyricist
+                tekstf: DEICH.lyricist
+                u: DEICH.publisher
+                utg: DEICH.publisher
+                utøv: DEICH.performer
               default: 'DC.contributor'
         object:
           prefix: http://data.deichman.no/lillehammer/person/x
@@ -876,7 +876,7 @@ tags:
               object:
                 datatype: literal
             d:
-              predicate: DEICHMAN.lifespan
+              predicate: DEICH.lifespan
               object:
                 datatype: literal
             j:
@@ -963,7 +963,7 @@ tags:
               object:
                 datatype: literal                 
       v: 
-        predicate: DEICHMAN.volumeNumber
+        predicate: DEICH.volumeNumber
         object: 
           datatype: literal
 
@@ -1016,7 +1016,7 @@ tags:
               object:
                 datatype: literal
             d:
-              predicate: 'DEICHMAN.lifespan'
+              predicate: 'DEICH.lifespan'
               object:
                 datatype: literal
             j:
@@ -1059,15 +1059,15 @@ tags:
                 combinestring: '. '              
                 datatype: literal
             c: 
-              predicate: DEICHMAN.conferencePlace
+              predicate: DEICH.conferencePlace
               object: 
                 datatype: literal
             d: 
-              predicate: DEICHMAN.conferenceDate
+              predicate: DEICH.conferenceDate
               object: 
                 datatype: literal
             'n': 
-              predicate: DEICHMAN.corporationNumber
+              predicate: DEICH.corporationNumber
               object: 
                 datatype: literal
             '1':
@@ -1348,7 +1348,7 @@ tags:
   '651':
     subfield:
       '3':
-        predicate: DEICHMAN.geographicalSubject
+        predicate: DEICH.geographicalSubject
         object:
           prefix: http://data.deichman.no/lillehammer/geographicalSubject/x
           datatype: uri
@@ -1477,7 +1477,7 @@ tags:
   '699':
     subfield: 
       a:
-        predicate: DEICHMAN.bibsubject
+        predicate: DEICH.bibsubject
         object:
           combine:
             - a
