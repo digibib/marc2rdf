@@ -1,0 +1,7 @@
+/* import ntriples from conversion into books-graph */
+
+delete from DB.DBA.load_list;
+
+ld_dir ('./import', '*', 'http://data.deichman.no/books') ;
+
+rdf_loader_run ();
