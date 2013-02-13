@@ -16,31 +16,31 @@ div class="main"
             td: input[type="hidden" id="save_library_id" vlue=(library.id)]
           tr
             td oai repository
-            td: input[type="text" id="save_library_oai_url" value=(library.oai['url']) disabled="true"]
+            td: input[type="text" id="save_library_oai_url" value=(library.oai['url'] if library.oai) disabled="true"]
             td the url to the oai repository
           tr
             td resource base
-            td: input[type="text" id="save_resource_base" value=(library.config['resource']['base'])]
+            td: input[type="text" id="save_resource_base" value=(library.config['resource']['base'] if library.config)]
             td base url to use when creating resources
           tr
             td resource prefix
-            td: input[type="text" id="save_resource_prefix" value=(library.config['resource']['prefix'])]
+            td: input[type="text" id="save_resource_prefix" value=(library.config['resource']['prefix'] if library.config)]
             td prefix to use on resources
           tr
             td resource type
-            td: input[type="text" id="save_resource_type" value=(library.config['resource']['type'])]
+            td: input[type="text" id="save_resource_type" value=(library.config['resource']['type'] if library.config)]
             td rdf type of resources
           tr
             td identifier tag
-            td: input[type="text" id="save_identifier_tag" value=(library.config['resource']['identifier_tag'])]
+            td: input[type="text" id="save_identifier_tag" value=(library.config['resource']['identifier_tag'] if library.config)]
             td tag used to identify and name resources
           tr
             td default graph
-            td: input[type="text" id="save_default_graph" value=(library.config['resource']['default_graph'])]
+            td: input[type="text" id="save_default_graph" value=(library.config['resource']['default_graph'] if library.config)]
             td default graph for saving resources
           tr
             td default prefix
-            td: input[type="text" id="save_default_prefix" value=(library.config['resource']['default_prefix'])]
+            td: input[type="text" id="save_default_prefix" value=(library.config['resource']['default_prefix'] if library.config)]
             td default prefix to use when creating resources            
           // save and delete button
           tr
@@ -84,7 +84,7 @@ div class="main"
     $(document).ready(function () {
       // get id of active library
       var id = $('#active_library_id').html();
-      // ** create new library
+      // ** create new library with some reasonable defaults
       $('button#create_library').on('click', function() {
         var request = $.ajax({
           url: '/api/library',
@@ -93,7 +93,14 @@ div class="main"
           contentType: "application/json; charset=utf-8",
           data: JSON.stringify({ 
               name: $('input#create_library_name').val(),
-              //oai: { url: $('input#create_library_oai_url').val() },
+              oai: { 
+                  url: $('input#create_library_oai_url').val(),
+                  preserve_on_update: [ "FOAF.depiction" ],
+                  timeout: 60,
+                  format: "marcxchange",
+                  follow_redirects: false,
+                  parser: "rexml"
+                  },
               }),
           dataType: 'json'
         });

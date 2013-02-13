@@ -62,7 +62,8 @@ class APP < Sinatra::Base
   get '/libraries/:id' do
     # Library settings
     :json
-    session[:library] = Library.new.find_by_id(params[:id])
+    puts params
+    session[:library] = Library.new.find(:id => params[:id].to_i)
     slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
   end
       

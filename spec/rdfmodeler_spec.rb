@@ -7,31 +7,35 @@ describe RDFModeler do
     end
     
     it "should support creating a RDF record from an binary MARC record" do
-      rdfrecord = RDFModeler.new(@reader.first)
+      r = RDFModeler.new(1, @reader.first)
+      r.library_id.should == 1
     end
     
     it "should support converting a MARC record to RDF" do
       record = @reader.first
-      rdfrecord = RDFModeler.new(record)
-      rdfrecord.set_type("BIBO.Document")
-      rdfrecord.marc2rdf_convert(record)
+      r = RDFModeler.new(1, record)
+      r.set_type("BIBO.Document")
+      r.convert
+      r.statements.count.should >= 1
     end
         
   end
   
   context "when doing OAI harvesting" do
 
+
+
     before(:each) do
       @oai          = "http://example.com/oai"
       @path         = "/oai"
-      @oaixml       = IO.read('./spec/example.bibliofilmarc.xml').force_encoding('ASCII-8BIT')
+      @oaixml       = IO.read('./spec/example.oairesponse.xml').force_encoding('ASCII-8BIT')
       @oaitest        = Faraday.new(:url => "http://example.com") do |builder|
         builder.adapter :test do |stub|
           stub.get(@path) {[200, {}, @oaixml]}
         end
       end
       @oaiclient    = OAI::Client.new(@oai, :http => @oaitest)
-      @oairesponse  = @oaiclient.list_records :metadata_prefix => 'bibliofilmarc', :from=> "2012-02-09", :until=> "2012-02-09"
+      @oairesponse  = @oaiclient.list_records :metadata_prefix => 'bibliofilmarc', :from=> "1970-01-01"
       @oairecords   = @oairesponse.entries
       @marcxml      = MARC::XMLReader.new(StringIO.new(@oairecords.first.metadata.to_s))
     end
@@ -65,26 +69,25 @@ describe RDFModeler do
             
                
     it "should support creating a RDF record from an OAI response" do
-      RDFModeler.new(@marcxml.first)
+      RDFModeler.new(1, @marcxml.first)
     end
     
     it "should support creating a RDF::Statement from an OAI response" do
-      rdf = RDFModeler.new(@marcxml.first)
-      rdf.set_type("BIBO.Document")
-      $statements.first.should be_a_kind_of(RDF::Statement)
+      r = RDFModeler.new(1, @marcxml.first)
+      r.set_type("BIBO.Document")
+      r.statements.first.should be_a_kind_of(RDF::Statement)
     end
 
     it "should support converting a MARCXML record to a RDF statements array" do
-      $statements = nil
       record = @marcxml.first
       rdf = RDF::Writer.for(:ntriples).buffer do |writer|
         RDFModeler.class_variable_set(:@@writer, writer)
-        rdfrecord = RDFModeler.new(record)
-        rdfrecord.set_type("BIBO.Document")        
-        rdfrecord.marc2rdf_convert(record)
-        rdfrecord.write_record
+        r = RDFModeler.new(1, record)
+        r.set_type("BIBO.Document")        
+        r.convert
+        r.write_record
+        r.statements[1].to_s.should == "<http://data.deichman.no/resource/tnr_103215> <http://purl.org/dc/terms/identifier> 103215 ."
       end
-      $statements[1].to_s.should == "<http://data.deichman.no/resource/tnr_103215> <http://purl.org/dc/terms/identifier> 103215 ."
     end
     
   end

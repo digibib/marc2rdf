@@ -65,7 +65,7 @@ class API < Grape::API
         { :libraries => Library.new.all }
       else
         logger.info params
-        library = Library.new.find_by_id(params[:id])
+        library = Library.new.find(params)
         throw :error, :status => 404,
               :message => "No library with id: " +
                           "#{params[:id]}" unless library
@@ -73,10 +73,12 @@ class API < Grape::API
       end
     end
     
+    ### Mapping ###
+     
     desc "get specific library mapping"
-    get ":id/mapping" do
+    get "/:id/mapping" do
       content_type 'json'
-      library = Library.new.find_by_id(params[:id])
+      library = Library.new.find(:id=> params[:id].to_i)
       if library
         { :mapping => library.mapping }
       else
@@ -91,7 +93,7 @@ class API < Grape::API
         optional :config,     desc: "Config file"
         optional :mapping,    desc: "Mapping file"
         optional :oai,        desc: "OAI settings"
-        optional :harvesting, type: String, desc: "Harvesting settings file" 
+        optional :harvesting, desc: "Harvesting settings file" 
       end
     post "/" do
       content_type 'json'
@@ -105,16 +107,24 @@ class API < Grape::API
       params do
         requires :mapping, desc: "Mapping file"
       end
-    put ":id/mapping" do
+    put "/:id/mapping" do
       content_type 'json'
-      logger.info "PUT: params: #{params}"
-      library = Library.new.find_by_id(params[:id])
-      library.mapping = params[:mapping]
-      library.update
+      logger.info "PUT: mapping: #{params[:mapping]}"
+      library = Library.new.find(:id => params[:id].to_i)
+      puts params
+      library.update(:mapping => params[:mapping])
       logger.info "PUT: params: #{params} - updated mapping: #{library.mapping}"
       { :mapping => library.mapping }
     end
             
+    ### Conversion ###
+    desc "convert records"
+    get "/:id/convert" do
+      content_type 'json'
+      library = Library.new.find(:id => params[:id])
+      { :record => record }
+    end
+  
     desc "edit/update library"
       params do
         requires :id,         type: Integer, desc: "ID of library"
@@ -122,17 +132,17 @@ class API < Grape::API
         optional :config,     desc: "Config file"
         optional :mapping,    desc: "Mapping file"
         optional :oai,        desc: "OAI settings"
-        optional :harvesting, type: String,  desc: "Harvesting settings file" 
+        optional :harvesting, desc: "Harvesting settings file" 
       end
     put "/" do
       content_type 'json'
       valid_params = ['id','name','config','mapping','oai','harvesting']
       # do we have a valid parameter?
       if valid_params.any? {|p| params.has_key?(p) }
-        library = Library.new.find_by_id(params[:id])
+        library = Library.new.find(:id => params[:id])
         library.update(params)
         logger.info "updated library: #{library}"
-        { :before => library}
+        { :library => library}
       else
         logger.error "invalid or missing params"   
         error!("Need at least one param of id|name|config|mapping|oai|harvesting", 400)      
@@ -145,7 +155,7 @@ class API < Grape::API
       end
     delete "/" do
       content_type 'json'
-      library = Library.new.find_by_id(params[:id])
+      library = Library.new.find(:id => params[:id])
       library.delete
       logger.info "DELETE: params: #{params} - deleted library: #{library}"
       { :library => library }
@@ -153,11 +163,29 @@ class API < Grape::API
   end # end library namespace
   
   resource :mapping do
-    desc "return mapping template"
+    desc "return mapping template or id"
     get "/" do
       content_type 'json'
       mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'db/templates', 'mapping_skeleton.json')))
       { :mapping => mapping }
     end
   end # end mapping namespace
+
+  resource :convert do
+    desc "convert resource"
+      params do
+        requires :id,         type: Integer, desc: "ID of library"
+      end
+    put "/" do
+      content_type 'json'
+      library = Library.new.find(:id => params[:id])
+      reader = MARC::XMLReader.new('./spec/example.normarc.xml')
+      record = Marshal.load(Marshal.dump(reader.first))
+      rdf = RDFModeler.new(library.id, record)
+      rdf.convert
+      #mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'spec', 'example.normarc.xml')))
+      { :resource => rdf.statements }
+    end
+  end # end mapping namespace
+    
 end

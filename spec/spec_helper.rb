@@ -8,8 +8,7 @@ require 'rdf/virtuoso'
 require 'sinatra/base'
 require 'sinatra/spec'
 
-#require_relative '../../rdf-virtuoso/lib/rdf/virtuoso'
-require_relative '../lib/rdfmodeler.rb'
+require File.join(File.dirname(__FILE__), '../config/', 'init.rb')
 require File.join(File.dirname(__FILE__), '..', 'app.rb')
 require File.join(File.dirname(__FILE__), '..', 'api.rb')
 
@@ -20,4 +19,6 @@ end
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
+  config.mock_with :rspec
+  config.expect_with :rspec
 end

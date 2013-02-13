@@ -72,12 +72,16 @@ div class="main"
         };  
         saveJSON.onclick = function () {
           //console.log(JSON.stringify(editor.get(), null, 2));
+          mapping = editor.get();
           request = $.ajax({
-            url: '/api/library/'+id+'/mapping',
+            url: '/api/library',
             type: 'PUT',
             cache: false,
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(editor.get(), null, 2),
+            data: JSON.stringify({
+                id: id,
+                mapping: mapping["mapping"]
+                }),
             dataType: 'json'
           });
           request.success(function ( data ) {

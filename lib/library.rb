@@ -16,8 +16,13 @@ class Library
     libraries
   end
   
-  def find_by_id(id)
-    self.all.detect {|lib| lib['id'] == id.to_i }
+  def find(params)
+    return nil unless params[:id] || params[:name]
+    if params[:id]
+      self.all.detect {|lib| lib['id'] == params[:id] }
+    elsif params[:name]
+      self.all.detect {|lib| lib['name'] == params[:name] } 
+    end
   end
 
   def create(params={})
@@ -40,10 +45,12 @@ class Library
   def save
     return nil unless self.id
     libraries = self.all
-    match = self.find_by_id(self.id)
+    match = self.find(:id => self.id)
     if match
+      # overwrite library if match
       libraries.map! { |lib| lib.id == self.id ? self : lib}
     else
+      # new library if no match
       libraries << self
     end 
     open(File.join(File.dirname(__FILE__), '../db/', 'libraries.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(libraries.to_json))) } 
@@ -59,6 +66,6 @@ class Library
   end
   
   def reload
-    self.find_by_id(self.id)
+    self.find(:id => self.id)
   end
 end

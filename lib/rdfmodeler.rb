@@ -1,38 +1,31 @@
 #encoding: utf-8
-
+# Struct for Libraries saved in json
+RDFModeler = Struct.new(:library_id, :record, :uri, :tags, :statements)
 class RDFModeler
-  attr_reader :record, :statements, :uri, :tags
   
-  def initialize(record)
-    # load settings and mapping
-    settings   = YAML::load_file('config/settings.yml')
-    mapping    = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/mapping/', settings['files']['mapping_filename']) ) )
-    repository = YAML::load_file(File.open( File.join(File.dirname(__FILE__), '../db/repository/', settings['files']['repository_filename']) ) )
-
-    # populate class attributes
-    @record = record
-    @uri    = RDF::URI.intern(repository['resource']['base'] + repository['resource']['resource_path'] + repository['resource']['resource_prefix'])
-    id      = @record[repository['resource']['resource_identifier_field']]
-    @uri   += id.value.to_i    
-    @statements = []
-    @tags   = mapping['tags']
+  def initialize(library_id, record)
+    # populate reocord
+    library = Library.new.find(:id=> library_id)
+    self.library_id = library_id
+    self.record  = record
+    id            = self.record[library.config["resource"]["identifier_tag"]]
+    self.uri     = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{id.value}")
+    self.tags    = library.mapping["tags"]
+    self.statements = []
   end
-    
-  def construct_uri
-    @uri = RDF::URI.intern(CONFIG['resource']['base'] + CONFIG['resource']['resource_path'] + CONFIG['resource']['resource_prefix'])
-    id = @record[CONFIG['resource']['resource_identifier_field']]
-    @uri += id.value.to_i
+  
+  def populate(record)
   end
-
+  
   def set_type(t)
-    @statements << RDF::Statement.new(@uri, RDF.type, RDF.module_eval("#{t}"))
+    self.statements << RDF::Statement.new(self.uri, RDF.type, RDF.module_eval("#{t}"))
   end
   
   def generate_uri(s, prefix=nil)
     u = RDF::URI("#{prefix}#{s}")
   end
   
-  def generate_objects(o, options)
+  def generate_objects(o, options={})
 =begin
  function to split and clean object(s) by optional parameters fed from yaml file
  options are:
@@ -113,30 +106,30 @@ class RDFModeler
   
   def assert(p, o)
     unless p.empty? || o.nil?
-      @statements << RDF::Statement.new(@uri, RDF.module_eval("#{p}"), o)
+      self.statements << RDF::Statement.new(self.uri, RDF.module_eval("#{p}"), o)
     end
   end
   
   def relate(s, p, o)
     unless p.nil? || s.nil? || o.nil?
-      @statements << RDF::Statement.new(RDF::URI(s), p, o)
+      self.statements << RDF::Statement.new(RDF::URI(s), p, o)
     end
   end
 
   def write_record
-      @statements.each do | statement |
+      self.statements.each do | statement |
       #p statement
         @@writer << statement
       end
   end
   
-  def marc2rdf_convert_record(record)
+  def convert
   # start graph handle, one graph per record, else graph will grow too large to parse
-  record.tags.each do | marctag | 
+  self.record.tags.each do | marctag | 
     # put all marc tag fields into array object 'marcfields' for later use
-    marcfields = record.find_all { |field| field.tag == marctag }
+    marcfields = self.record.find_all { |field| field.tag == marctag }
     # start matching MARC tags against @tags from mapping, put results in match array
-    match = @tags.select { |k,v| marctag  =~ /#{k}/ }
+    match = self.tags.select { |k,v| marctag  =~ /#{k}/ }
     match.each do |yamlkey,yamlvalue|
     # iterate each marc tag array object to catch multiple marc fields 
       marcfields.each do | marcfield | 

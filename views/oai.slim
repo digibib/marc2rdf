@@ -3,8 +3,10 @@
 div class="main"
   // This form contains OAI-PMH harvester settings                    
   h2 OAI harvester
-  - unless library
+  - if !library
     pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+  - elsif !library.oai
+    pre No OAI repository entered, you must go to <a href="/libraries">libraries</a> and write in a URL for the OAI-PMH first 
   - else
     div class="divdot inputf"
       form id="change_harvester_settings_form" autocomplete="off"

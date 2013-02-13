@@ -1,0 +1,49 @@
+== render :slim, :'_header', :locals => {:library => library}
+// Main file for conversion
+div class="main"
+  // This form contains OAI-PMH harvester settings                    
+  h2 MARC2RDF converter
+  - if !library
+    pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+  - else
+    h3 test the conversion module:
+    
+    button[type="button" id="conversion_test" class="gen" style="margin-left:48px"]  = "Test conversion"
+    // The content div
+    div id="auto"
+      br
+      div id="contents"
+      
+              
+
+  javascript:
+    $(document).on('ready', function () {
+      var id = $('#active_library_id').html();
+      // ** test conversion
+      $('button#conversion_test').on('click', function() {
+        // get id of active library
+      
+        request = $.ajax({
+          url: '/api/convert',
+          type: 'PUT',
+          cache: false,
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify({ 
+            id: id 
+            }),
+          dataType: 'json'
+        });
+  
+        request.success(function ( data ) {
+          if( console && console.log ) {
+            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+          }
+          $('#contents').html(JSON.stringify(data));
+        });
+        request.error(function(jqXHR, textStatus, errorThrown) {
+          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+      
+    });
+  == render :slim, :'_footer'
