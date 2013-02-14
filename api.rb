@@ -183,7 +183,6 @@ class API < Grape::API
       record = Marshal.load(Marshal.dump(reader.first))
       rdf = RDFModeler.new(library.id, record)
       rdf.convert
-      #mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'spec', 'example.normarc.xml')))
       { :resource => rdf.statements }
     end
   end # end mapping namespace

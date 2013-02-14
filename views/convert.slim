@@ -10,12 +10,8 @@ div class="main"
     
     button[type="button" id="conversion_test" class="gen" style="margin-left:48px"]  = "Test conversion"
     // The content div
-    div id="auto"
-      br
-      div id="contents"
-      
-              
-
+    div id="converted_content"
+        
   javascript:
     $(document).on('ready', function () {
       var id = $('#active_library_id').html();
@@ -38,7 +34,8 @@ div class="main"
           if( console && console.log ) {
             console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
           }
-          $('#contents').html(JSON.stringify(data));
+          var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+          $("#converted_content").html('<br/><pre>' + result + '</pre>');
         });
         request.error(function(jqXHR, textStatus, errorThrown) {
           $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);

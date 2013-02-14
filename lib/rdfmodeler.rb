@@ -1,6 +1,6 @@
 #encoding: utf-8
 # Struct for Libraries saved in json
-RDFModeler = Struct.new(:library_id, :record, :uri, :tags, :statements)
+RDFModeler = Struct.new(:library_id, :record, :uri, :tags, :statements, :rdf)
 class RDFModeler
   
   def initialize(library_id, record)
@@ -117,10 +117,12 @@ class RDFModeler
   end
 
   def write_record
+    self.rdf = RDF::Writer.for(:ntriples).buffer do |writer|
       self.statements.each do | statement |
       #p statement
-        @@writer << statement
+        writer << statement
       end
+    end
   end
   
   def convert
