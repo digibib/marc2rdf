@@ -1,0 +1,89 @@
+/*
+ Koble manifestasjoner via ISBN
+*/
+
+SPARQL 
+DEFINE sql:log-enable 2
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+INSERT INTO <http://data.deichman.no/lillehammer> {
+ ?doc1 owl:sameAs ?doc2 .
+} WHERE {
+ GRAPH <http://data.deichman.no/lillehammer> {
+  ?doc1 a bibo:Document ;
+   bibo:isbn ?isbn .
+ }
+ GRAPH <http://data.deichman.no/books> {
+  ?doc2 a bibo:Document ;
+   bibo:isbn ?isbn .
+ }
+};
+
+
+/*
+  koble manifestasjoner via Bibliofil-id 
+*/
+
+SPARQL 
+DEFINE sql:log-enable 2
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX deich: <http://data.deichman.no/>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+INSERT INTO <http://data.deichman.no/lillehammer> {
+ ?doc1 owl:sameAs ?doc2 .
+} WHERE {
+ GRAPH <http://data.deichman.no/lillehammer> {
+  ?doc1 a bibo:Document ;
+   deich:bibliofilID ?bibid .
+ }
+ GRAPH <http://data.deichman.no/books> {
+  ?doc2 a bibo:Document ;
+   deich:bibliofilID ?bibid .
+ }
+};
+
+
+/*
+ Koble verk via ISBN
+*/
+
+SPARQL 
+DEFINE sql:log-enable 2
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX bibo: <http://purl.org/ontology/bibo/>
+PREFIX fabio: <http://purl.org/spar/fabio/>
+INSERT INTO <http://data.deichman.no/lillehammer> {
+ ?work1 owl:sameAs ?work2 .
+} WHERE {
+ GRAPH <http://data.deichman.no/lillehammer> {
+  ?work1 a fabio:Work ;
+   bibo:isbn ?isbn .
+ }
+ GRAPH <http://data.deichman.no/books> {
+  ?work2 a fabio:Work ;
+   bibo:isbn ?isbn .
+ }
+};
+
+
+/*
+ Koble verk via Bibliofil-id
+*/
+
+SPARQL 
+DEFINE sql:log-enable 2
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX deich: <http://data.deichman.no/>
+PREFIX fabio: <http://purl.org/spar/fabio/>
+INSERT INTO <http://data.deichman.no/lillehammer> {
+ ?work1 owl:sameAs ?work2 .
+} WHERE {
+ GRAPH <http://data.deichman.no/lillehammer> {
+  ?work1 a fabio:Work ;
+   fabio:hasManifestation [deich:bibliofilID ?bibid] .
+ }
+ GRAPH <http://data.deichman.no/books> {
+  ?work2 a fabio:Work ;
+   fabio:hasManifestation [deich:bibliofilID ?bibid] .
+ }
+};
