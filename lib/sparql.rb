@@ -30,7 +30,7 @@ QUERY  = RDF::Virtuoso::Query
     if $debug then puts "offset: #{offset}" end
 
     if minuses
-      minus = minuses.map { |m| [:book, RDF.module_eval("#{m}"), :object] }
+      minus = minuses.map { |m| [:book, RDF.module_eval("#{m}"), :value] }
     end
 
     query = QUERY.select(:work, :book, :object)
