@@ -1,0 +1,9 @@
+{
+  "repository": {
+    "sparql_endpoint": "http://localhost:8890/sparql/", 
+    "sparul_endpoint": "http://localhost:8890/sparql-auth/", 
+    "username": "dba", 
+    "password": "dba", 
+    "auth_method": "digest"
+  }
+}

@@ -23,28 +23,25 @@ describe RDFModeler do
   
   context "when doing OAI harvesting" do
 
-
-
     before(:each) do
-      @oai          = "http://example.com/oai"
-      @path         = "/oai"
-      @oaixml       = IO.read('./spec/example.oairesponse.xml').force_encoding('ASCII-8BIT')
-      @oaitest        = Faraday.new(:url => "http://example.com") do |builder|
+      @url         = "http://example.com/oai"
+      @path        = "/oai"
+      @xml         = IO.read('./spec/example.oairesponse.xml').force_encoding('ASCII-8BIT')
+      @oaitest     = Faraday.new(:url => "http://example.com") do |builder|
         builder.adapter :test do |stub|
-          stub.get(@path) {[200, {}, @oaixml]}
+          stub.get(@path) {[200, {}, @xml]}
         end
       end
-      @oaiclient    = OAI::Client.new(@oai, :http => @oaitest)
-      @oairesponse  = @oaiclient.list_records :metadata_prefix => 'bibliofilmarc', :from=> "1970-01-01"
-      @oairecords   = @oairesponse.entries
-      @marcxml      = MARC::XMLReader.new(StringIO.new(@oairecords.first.metadata.to_s))
+      @oai         = OAIClient.new(@url, :http => @oaitest, :format => 'bibliofilmarc')
+      @oairesponse = @oai.query :from => "1970-01-01"
+      @oairecords  = @oairesponse.entries
+      @marcxml     = MARC::XMLReader.new(StringIO.new(@oairecords.first.metadata.to_s))
     end
     
     it "should support timeout option sent to Faraday request" do
-      timeout = 80
-      faraday = Faraday.new :request => { :timeout => timeout }
-      client  = OAI::Client.new(@oai, :http => faraday)
-      client.instance_variable_get(:@http_client).instance_variable_get(:@options)[:timeout].should == 80
+      faraday = Faraday.new :request => { :timeout => 80 }
+      oai  = OAIClient.new(@url, :format => 'bibliofilmarc', :timeout => 80)
+      oai.client.instance_variable_get(:@http_client).instance_variable_get(:@options)[:timeout].should == 80
     end
     
     it "should support checking if OAI response contains records" do
@@ -86,7 +83,7 @@ describe RDFModeler do
         r.set_type("BIBO.Document")        
         r.convert
         r.write_record
-        r.statements[1].to_s.should == "<http://data.deichman.no/resource/tnr_103215> <http://purl.org/dc/terms/identifier> 103215 ."
+        r.statements[1].to_s.should == "<http://example.com/id_103215> <http://purl.org/dc/terms/identifier> 103215 ."
       end
     end
     

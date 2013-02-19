@@ -37,6 +37,7 @@ GEM
       multi_json (~> 1.0)
       multi_xml
     i18n (0.6.1)
+    libxml-ruby (2.6.0)
     marc (0.5.0)
     method_source (0.8.1)
     mime-types (1.21)
@@ -129,6 +130,7 @@ DEPENDENCIES
   bundler
   foreman
   grape (= 0.2.4)
+  libxml-ruby
   marc
   nokogiri
   oai

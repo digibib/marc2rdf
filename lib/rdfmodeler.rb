@@ -5,10 +5,10 @@ class RDFModeler
   
   def initialize(library_id, record)
     # populate reocord
-    library = Library.new.find(:id=> library_id)
+    library = Library.new.find(:id => library_id)
     self.library_id = library_id
     self.record  = record
-    id            = self.record[library.config["resource"]["identifier_tag"]]
+    id           = self.record[library.config["resource"]["identifier_tag"]]
     self.uri     = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{id.value}")
     self.tags    = library.mapping["tags"]
     self.statements = []

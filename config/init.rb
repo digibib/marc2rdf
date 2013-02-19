@@ -17,7 +17,6 @@ require 'json'
 
 # Defaults
 # Can be deleted when App settings is finished
-#$config_file = File.join(File.dirname(__FILE__), '..', '/config/config.yml') unless $config_file
 # read configuration file into constants
 $config_file  = File.join(File.dirname(__FILE__), '../config/', 'settings.json')
 SETTINGS      = JSON.parse(IO.read($config_file))
