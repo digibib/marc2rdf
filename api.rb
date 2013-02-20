@@ -31,7 +31,8 @@ end
 class API < Grape::API
   helpers do
     def logger
-      logger = API.logger #Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
+      #logger = API.logger #Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
+      logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
     end
   end
   
@@ -66,9 +67,7 @@ class API < Grape::API
       else
         logger.info params
         library = Library.new.find(params)
-        throw :error, :status => 404,
-              :message => "No library with id: " +
-                          "#{params[:id]}" unless library
+        error!("No library with id: #{params[:id]}", 404) unless library
         { :library => library }        
       end
     end
@@ -172,11 +171,11 @@ class API < Grape::API
   end # end mapping namespace
 
   resource :convert do
-    desc "convert resource"
+    desc "test convert resource"
       params do
-        requires :id,         type: Integer, desc: "ID of library"
+        requires :id, type: Integer, desc: "ID of library"
       end
-    put "/" do
+    get "/test" do
       content_type 'json'
       library = Library.new.find(:id => params[:id])
       reader = MARC::XMLReader.new('./spec/example.normarc.xml')
@@ -186,5 +185,20 @@ class API < Grape::API
       { :resource => rdf.statements }
     end
   end # end mapping namespace
-    
+  
+  resource :oai do
+    desc "validate a OAI repository"
+      params do
+        requires :id, type: Integer, desc: "ID of library"
+      end
+    get "/validate" do
+      content_type 'json'
+      library = Library.new.find(:id => params[:id].to_i)
+      logger.info "library: #{library.oai}"
+      oai = OAIClient.new(library.oai["url"])
+      oai.client.identify
+      { :result => oai.client }
+    end  
+  end # end oai namespace
+  
 end
