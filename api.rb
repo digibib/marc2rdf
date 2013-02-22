@@ -195,10 +195,48 @@ class API < Grape::API
       content_type 'json'
       library = Library.new.find(:id => params[:id].to_i)
       logger.info "library: #{library.oai}"
-      oai = OAIClient.new(library.oai["url"])
+      oai = OAIClient.new(library.oai["url"], 
+        :format => library.oai["format"], 
+        :parser => library.oai["parser"], 
+        :timeout => library.oai["timeout"],
+        :redirects => library.oai["timeout"])
       oai.client.identify
       { :result => oai.client }
-    end  
+    end 
+    
+    desc "fetch a record batch"
+      params do
+        requires :id, type: Integer, desc: "ID of library"
+      end
+    get "/fetch" do
+      content_type 'json'
+      library = Library.new.find(:id => params[:id].to_i)
+      logger.info "library: #{library.oai}"
+      oai = OAIClient.new(library.oai["url"], 
+        :format => library.oai["format"], 
+        :parser => library.oai["parser"], 
+        :timeout => library.oai["timeout"],
+        :redirects => library.oai["redirects"])
+      oai.query
+      logger.info "oai response: #{oai.response}"
+      rdfrecords = []
+      oai.response.entries.each do |record| 
+        unless record.deleted?
+          xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
+          xmlreader.each do |marc|
+            rdf = RDFModeler.new(library.id, marc)
+            rdf.set_type("BIBO.Document")        
+            rdf.convert
+            rdfrecords << rdf.statements
+          end
+        else
+          logger.info "deleted record: #{record.header.identifier.split(':').last}"
+        end
+      end
+      
+      logger.info "converted records: #{rdfrecords}"
+      { :result => rdfrecords }
+    end 
   end # end oai namespace
   
 end

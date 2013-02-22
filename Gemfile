@@ -14,6 +14,7 @@ gem "rest-client"
 gem "grape", "0.2.4" # json parameter parse broken after 0.3.4
 gem "sinatra"
 gem "sinatra-contrib"
+gem "sinatra-synchrony"
 gem "slim"
 gem "thin"
 gem "foreman"

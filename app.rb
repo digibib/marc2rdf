@@ -4,6 +4,8 @@ $stdout.sync = true # gives foreman full stdout
 require_relative "./config/init.rb"
 require "sinatra/base"
 require "sinatra/reloader"
+require "sinatra/synchrony"
+require "sinatra/streaming"
 require "slim"
 require "json"
 
@@ -14,6 +16,7 @@ class APP < Sinatra::Base
   
   configure do
   # Sinatra configs
+    register Sinatra::Synchrony
     set :app_file, __FILE__
     set :port, 3000
     set :server, 'thin'
@@ -25,6 +28,7 @@ class APP < Sinatra::Base
   
   configure :development do
     register Sinatra::Reloader
+    #Faraday.default_adapter = :em_synchrony
     log = File.new("logs/development.log", "a+") 
     #STDOUT.reopen(log)
     #STDERR.reopen(log)
@@ -37,6 +41,7 @@ class APP < Sinatra::Base
 
   # Very simple authentication
   helpers do
+    Sinatra::Streaming
     def admin? ; request.cookies[settings.username] == settings.token ; end
     def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
   end

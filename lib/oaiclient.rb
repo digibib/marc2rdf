@@ -9,14 +9,13 @@ class OAIClient
   # initialize OAI client with optional parameters. 
   # faraday connection can be overridden by passing a faraday object as :http arg
   def initialize(repo, args={}) 
-    faraday = Faraday.new :request => {:open_timeout => 20, :timeout => args[:timeout] }
+    faraday = Faraday.new :request => {:open_timeout => 20, :timeout => args[:timeout].to_i }
     self.format = args[:format] ||= 'bibliofilmarc'
     self.parser = args[:parser] ||= 'libxml'
     self.http   = args[:http]   ||= faraday
     self.client = OAI::Client.new(repo, { 
-      :redirects => args[:redirects] ||= false, 
-      :timeout   => args[:timeout]   ||= 60,
-      :debug     => args[:debug]     ||= false,
+      :redirects => args[:redirects]    ||= false, 
+      :debug     => args[:debug]        ||= false,
       :parser    => self.parser,
       :http      => self.http
       }
@@ -27,7 +26,7 @@ class OAIClient
   def query(args={})
     from_date = args[:from]  ||= Date.today.prev_day.to_s
     to_date   = args[:until] ||= Date.today.to_s
-    response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
+    self.response  = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
   end  
   
   # get library OAI identifier

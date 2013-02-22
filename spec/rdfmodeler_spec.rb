@@ -39,7 +39,7 @@ describe RDFModeler do
     end
     
     it "should support timeout option sent to Faraday request" do
-      faraday = Faraday.new :request => { :timeout => 80 }
+      #faraday = Faraday.new :request => { :timeout => 80 }
       oai  = OAIClient.new(@url, :format => 'bibliofilmarc', :timeout => 80)
       oai.client.instance_variable_get(:@http_client).instance_variable_get(:@options)[:timeout].should == 80
     end
