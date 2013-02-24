@@ -9,6 +9,7 @@ describe APP do
   describe "GET '/'" do
     it "should be successful" do
       get '/'
+      puts last_response.body
       last_response.should be_ok
     end
   end

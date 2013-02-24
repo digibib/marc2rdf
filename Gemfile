@@ -7,11 +7,10 @@ gem "rdf"
 gem "rdf-rdfxml"
 gem "rdf-n3"
 gem "rdf-virtuoso"
-#gem "oai", '0.2.0'
-gem "oai"
+gem "oai"#, '0.2.0'
 gem "libxml-ruby" # faster OAI processing
 gem "rest-client"
-gem "grape", "0.2.4" # json parameter parse broken after 0.3.4
+gem "grape", "0.2.4" # json parameter parse broken after 0.2.4
 gem "sinatra"
 gem "sinatra-contrib"
 gem "sinatra-synchrony"

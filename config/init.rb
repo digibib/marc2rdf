@@ -6,20 +6,11 @@ require 'bundler'
 Bundler.setup
 Bundler.require(:default, ENV["RACK_ENV"].to_sym)
 
-require 'marc'
-require 'yaml'
-require 'rdf'
-require 'rdf/rdfxml'
-require 'rdf/n3'
-require 'rdf/ntriples'
-require 'rdf/virtuoso'
 require 'json'
 
-# Defaults
-# Can be deleted when App settings is finished
 # read configuration file into constants
-$config_file  = File.join(File.dirname(__FILE__), '../config/', 'settings.json')
-SETTINGS      = JSON.parse(IO.read($config_file))
+CONFIG_FILE   = File.join(File.dirname(__FILE__), '../config/', 'settings.json')
+SETTINGS      = JSON.parse(IO.read(CONFIG_FILE))
 REPO          = RDF::Virtuoso::Repository.new(
               SETTINGS["repository"]["sparql_endpoint"],
               :update_uri => SETTINGS["repository"]["sparul_endpoint"],
@@ -27,11 +18,7 @@ REPO          = RDF::Virtuoso::Repository.new(
               :password => SETTINGS["repository"]["password"],
               :auth_method => SETTINGS["repository"]["auth_method"])
 
-#REVIEWGRAPH        = RDF::URI(repository["reviewgraph"])
-#BOOKGRAPH          = RDF::URI(repository["bookgraph"])
-#APIGRAPH           = RDF::URI(repository["apigraph"])
 QUERY              = RDF::Virtuoso::Query
-#BASE_URI           = repository["base_uri"]
 SECRET_SESSION_KEY = "alongandveryshortstring"
 
 # load all library files

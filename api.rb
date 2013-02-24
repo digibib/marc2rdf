@@ -3,9 +3,8 @@
 $stdout.sync = true
 
 require_relative "./config/init.rb"
-require 'grape'
+#require 'grape'
 require 'json'
-
 
 # trap all exceptions and fail gracefuly with a 500 and a proper message
 class ApiErrorHandler < Grape::Middleware::Base
@@ -175,7 +174,7 @@ class API < Grape::API
       params do
         requires :id, type: Integer, desc: "ID of library"
       end
-    get "/test" do
+    put "/test" do
       content_type 'json'
       library = Library.new.find(:id => params[:id])
       reader = MARC::XMLReader.new('./spec/example.normarc.xml')
@@ -208,7 +207,7 @@ class API < Grape::API
       params do
         requires :id, type: Integer, desc: "ID of library"
       end
-    get "/fetch" do
+    put "/fetch" do
       content_type 'json'
       library = Library.new.find(:id => params[:id].to_i)
       logger.info "library: #{library.oai}"
