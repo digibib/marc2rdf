@@ -2,9 +2,6 @@ config/config.yml
 config/settings.json
 config/repository.yml
 config/harvesting.yml
-db/repository/
-db/mapping/
-db/harvesting/
-db/libraries.json
-oai_updates/
+db/*
+oai_updates/*
 logs/*

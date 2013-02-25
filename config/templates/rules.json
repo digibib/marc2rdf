@@ -1,0 +1,13 @@
+[
+  {
+    "rule": {
+      "id": 1,   
+      "tag": "global", 
+      "frequency": "0 22 * * 1-5", 
+      "description": "A rule is a SPARQL script to be run once or at intervals", 
+      "script": "The actual isql SPARQL script", 
+      "start_time": "Now", 
+      "name": "Example Rule"
+    }
+  }
+]

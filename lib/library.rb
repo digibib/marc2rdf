@@ -5,7 +5,7 @@ class Library
   def all
     libraries = []
     file     = File.join(File.dirname(__FILE__), '../db/', 'libraries.json')
-    template = File.join(File.dirname(__FILE__), '../db/templates/', 'libraries.json')
+    template = File.join(File.dirname(__FILE__), '../config/templates/', 'libraries.json')
     # first create library file from template if it doesn't exist already
     unless File.exist?(file)
       open(file, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(IO.read(template))))}

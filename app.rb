@@ -7,7 +7,7 @@ class APP < Sinatra::Base
   #Faraday.default_adapter = :em_synchrony  
   configure do
   # Sinatra configs
-    register Sinatra::Synchrony
+    #register Sinatra::Synchrony
     #Sinatra::Synchrony.overload_tcpsocket!
     set :app_file, __FILE__
     set :port, 3000
@@ -32,7 +32,7 @@ class APP < Sinatra::Base
 
   # Very simple authentication
   helpers do
-    Sinatra::Streaming
+    #Sinatra::Streaming
     def admin? ; request.cookies[settings.username] == settings.token ; end
     def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
   end
