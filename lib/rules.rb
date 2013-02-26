@@ -1,15 +1,15 @@
 #encoding: utf-8
 # Struct for OAImodeler class 
-require "rufus/scheduler"
 
-Rule = Struct.new(:id, :scheduler, :job_id, :cron_id, :tag, :name, :description, :start_time, :frequency, :script)
+Rule = Struct.new(:id, :scheduler, :job, :cronjob, :tag, :name, :description, :start_time, :frequency, :script)
 class Rule
 
   # a Rule is a SPARQL script to be run, either at intervals or at specified time
   # faraday connection can be overridden by passing a faraday object as :http arg
   
-  def initialize
-    self.scheduler = Rufus::Scheduler.start_new
+  # start Rufus::Scheduler if not already done
+  def initialize(scheduler=nil)
+    self.scheduler = scheduler ||= Rufus::Scheduler.start_new(:frequency => 10.0)
   end
   
   def all
@@ -76,30 +76,31 @@ class Rule
     self.find(:id => self.id)
   end  
   
+  #private
   # routines to start/pause/stop and lookup Rufus::Scheduler rules
-  def start
-    self.job_id = self.scheduler.at "#{self.start_time}" do
-      # run script here
+  def activate
+    self.job = self.scheduler.at "#{self.start_time}", :tags => self.tag do 
+      puts self.script if self.script # run script here
     end
   end
   
   # make job into schedule
   def schedule
-    self.job_id.scheduler.cron "#{self.frequency}" do
-      # run script here
+    self.cronjob = self.scheduler.cron "#{self.frequency}", :tags => self.tag do 
+      puts self.script if self.script # run script here
     end
   end
   
   def pause
-    self.job_id.pause
+    self.job.pause
   end
 
   def resume
-    self.job_id.resume
+    self.job.resume
   end
     
   def unschedule
-    self.job_id.unschedule
+    self.cronjob.unschedule
   end
   
   # returns a map job_id => job of at/in/every jobs  
@@ -107,7 +108,7 @@ class Rule
     self.scheduler.jobs
   end
 
-  def find_cron_jobs
+  def find_cronjobs
     self.scheduler.cron_jobs
   end
   
