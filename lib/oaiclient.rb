@@ -8,14 +8,14 @@ OAIClient = Struct.new(:client, :http, :oai_id, :parser, :format, :identify_resp
 class OAIClient
   # initialize OAI client with optional parameters. 
   # faraday connection can be overridden by passing a faraday object as :http arg
-  def initialize(repo, args={}) 
-    faraday = Faraday.new :request => {:open_timeout => 20, :timeout => args[:timeout].to_i }
-    self.format = args[:format] ||= 'bibliofilmarc'
-    self.parser = args[:parser] ||= 'libxml'
-    self.http   = args[:http]   ||= faraday
+  def initialize(repo, params={}) 
+    faraday = Faraday.new :request => {:open_timeout => 20, :timeout => params[:timeout].to_i }
+    self.format = params[:format] ||= 'bibliofilmarc'
+    self.parser = params[:parser] ||= 'libxml'
+    self.http   = params[:http]   ||= faraday
     self.client = OAI::Client.new(repo, { 
-      :redirects => args[:redirects]    ||= false, 
-      :debug     => args[:debug]        ||= false,
+      :redirects => params[:redirects]    ||= false, 
+      :debug     => params[:debug]        ||= false,
       :parser    => self.parser,
       :http      => self.http
       }
@@ -23,9 +23,9 @@ class OAIClient
   end
 
   # query OAI
-  def query(args={})
-    from_date = args[:from]  ||= Date.today.prev_day.to_s
-    to_date   = args[:until] ||= Date.today.to_s
+  def query(params={})
+    from_date = params[:from]  ||= Date.today.prev_day.to_s
+    to_date   = params[:until] ||= Date.today.to_s
     self.response  = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
   end  
   
@@ -66,4 +66,5 @@ class OAIClient
   def get_all
     self.records = self.client.list_records.full
   end
+  
 end

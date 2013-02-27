@@ -1,13 +1,13 @@
 #encoding: utf-8
-# Struct for OAImodeler class 
+# Struct for Rule class 
+require 'rufus/scheduler'
 
 Rule = Struct.new(:id, :scheduler, :job, :cronjob, :tag, :name, :description, :start_time, :frequency, :script)
 class Rule
 
   # a Rule is a SPARQL script to be run, either at intervals or at specified time
-  # faraday connection can be overridden by passing a faraday object as :http arg
   
-  # start Rufus::Scheduler if not already done
+  # start a Rufus::Scheduler object if not already done
   def initialize(scheduler=nil)
     self.scheduler = scheduler ||= Rufus::Scheduler.start_new(:frequency => 10.0)
   end

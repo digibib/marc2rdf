@@ -164,7 +164,7 @@ class API < Grape::API
     desc "return mapping template or id"
     get "/" do
       content_type 'json'
-      mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'db/templates', 'mapping_skeleton.json')))
+      mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), 'config/templates', 'mapping_skeleton.json')))
       { :mapping => mapping }
     end
   end # end mapping namespace
@@ -222,7 +222,9 @@ class API < Grape::API
         
     desc "fetch a record batch"
       params do
-        requires :id, type: Integer, desc: "ID of library"
+        requires :id,    type: Integer, desc: "ID of library"
+        optional :from,  type: DateTime, desc: "From Date"
+        optional :until, type: DateTime, desc: "To Date"
       end
     put "/fetch" do
       content_type 'json'
@@ -233,7 +235,7 @@ class API < Grape::API
         :parser => library.oai["parser"], 
         :timeout => library.oai["timeout"],
         :redirects => library.oai["redirects"])
-      oai.query
+      oai.query(:from => params[:from], :until => params[:until])
       logger.info "oai response: #{oai.response}"
       rdfrecords = []
       oai.response.entries.each do |record| 
@@ -249,9 +251,59 @@ class API < Grape::API
           logger.info "deleted record: #{record.header.identifier.split(':').last}"
         end
       end
-      
       logger.info "converted records: #{rdfrecords}"
       { :result => rdfrecords }
+    end 
+
+    desc "saves a record batch"
+      params do
+        requires :id,    type: Integer, desc: "ID of library"
+        optional :from,  type: DateTime, desc: "From Date"
+        optional :until, type: DateTime, desc: "To Date"
+      end
+    put "/save" do
+      content_type 'json'
+      library = Library.new.find(:id => params[:id].to_i)
+      logger.info "library: #{library.oai}"
+      oai = OAIClient.new(library.oai["url"], 
+        :format => library.oai["format"], 
+        :parser => library.oai["parser"], 
+        :timeout => library.oai["timeout"],
+        :redirects => library.oai["redirects"])
+      oai.query(:from => params[:from], :until => params[:until])
+      logger.info "oai response: #{oai.response}"
+      file = File.open(File.join(File.dirname(__FILE__), '../db/', "#{library.id}", '.nt'), 'a+')
+      oai.response.entries.each do |record| 
+        unless record.deleted?
+          xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
+          xmlreader.each do |marc|
+            rdf = RDFModeler.new(library.id, marc)
+            rdf.set_type("BIBO.Document")        
+            rdf.convert
+            file.write(rdf.statements)
+          end
+        else
+          logger.info "deleted record: #{record.header.identifier.split(':').last}"
+        end
+      end
+      { :result => "saved!" }
+    end
+  
+    desc "identify a OAI repository"
+      params do
+        requires :id, type: Integer, desc: "ID of library"
+      end
+    get "/identify" do
+      content_type 'json'
+      library = Library.new.find(:id => params[:id].to_i)
+      logger.info "library: #{library.oai}"
+      oai = OAIClient.new(library.oai["url"], 
+        :format => library.oai["format"], 
+        :parser => library.oai["parser"], 
+        :timeout => library.oai["timeout"],
+        :redirects => library.oai["timeout"])
+      result = oai.client.identify
+      { :result => result }
     end 
   end # end oai namespace
   

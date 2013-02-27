@@ -10,6 +10,9 @@ div class="main"
     
     button[type="button" id="conversion_test" class="gen" style="margin-left:48px"]  = "Test conversion"
     button[type="button" id="oai_query_test" class="gen" style="margin-left:48px"]  = "Test OAI query"
+    button[type="button" id="save_convert_test" class="gen" style="margin-left:48px"]  = "Test save conversion"
+    button[type="button" id="save_convert_all_test" class="gen" style="margin-left:48px"]  = "Test full conversion!!"
+    
     // The content div
     div id="converted_content"
         
@@ -65,5 +68,56 @@ div class="main"
           $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
+      
+      // ** test save conversion
+      $('button#save_convert_test').on('click', function() {
+        request = $.ajax({
+          url: '/api/oai/save',
+          type: 'PUT',
+          cache: false,
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify({ 
+            id: id,
+            }),
+          dataType: 'json'
+        });
+  
+        request.success(function ( data ) {
+          if( console && console.log ) {
+            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+          }
+          var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+          $("#converted_content").html('<br/><pre>' + result + '</pre>');
+        });
+        request.error(function(jqXHR, textStatus, errorThrown) {
+          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });      
+
+      // ** test save all!
+      $('button#save_convert_all_test').on('click', function() {
+        request = $.ajax({
+          url: '/api/oai/saveall',
+          type: 'PUT',
+          cache: false,
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify({ 
+            id: id,
+            }),
+          dataType: 'json'
+        });
+  
+        request.success(function ( data ) {
+          if( console && console.log ) {
+            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+          }
+          var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+          $("#converted_content").html('<br/><pre>' + result + '</pre>');
+        });
+        request.error(function(jqXHR, textStatus, errorThrown) {
+          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });       
+      
     });
   == render :slim, :'_footer'
