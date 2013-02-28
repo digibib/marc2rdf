@@ -25,9 +25,9 @@ div class="main"
             td parser
             td
               select[id="parser"]
-                option[selected=("selected" if library.oai['parser'] == "libxml")] libxml (fast)
-                option[selected=("selected" if library.oai['parser'] == "rexml")] rexml (slow)
-            td parser for OAI XML response         
+                option[selected=("selected" if library.oai['parser'] == "libxml")] libxml
+                option[selected=("selected" if library.oai['parser'] == "rexml")] rexml
+            td parser for OAI XML response (libxml=fast, rexml=slow)
           tr
             td timeout
             td: input[type="text" id="timeout" value=(library.oai['timeout']) ]

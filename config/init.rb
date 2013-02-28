@@ -7,6 +7,7 @@ Bundler.setup
 Bundler.require(:default, ENV["RACK_ENV"].to_sym)
 
 require 'json'
+require 'drb'
 
 # read configuration file into constants
 CONFIG_FILE   = File.join(File.dirname(__FILE__), '../config/', 'settings.json')
@@ -20,6 +21,10 @@ REPO          = RDF::Virtuoso::Repository.new(
 
 QUERY              = RDF::Virtuoso::Query
 SECRET_SESSION_KEY = "alongandveryshortstring"
+
+# dynamic ruby object socket
+# allows processes to interact
+DRBSERVER     = 'druby://localhost:9009'
 
 # load all library files
 Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each do |file|

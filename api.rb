@@ -3,8 +3,10 @@
 $stdout.sync = true
 
 require_relative "./config/init.rb"
-#require 'grape'
-require 'json'
+
+# access scheduler through drb socket
+DRb.start_service
+Scheduler = DRbObject.new_with_uri DRBSERVER
 
 # trap all exceptions and fail gracefuly with a 500 and a proper message
 class ApiErrorHandler < Grape::Middleware::Base
@@ -30,7 +32,6 @@ end
 class API < Grape::API
   helpers do
     def logger
-      #logger = API.logger #Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
       logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
     end
   end
@@ -222,37 +223,18 @@ class API < Grape::API
         
     desc "fetch a record batch"
       params do
-        requires :id,    type: Integer, desc: "ID of library"
-        optional :from,  type: DateTime, desc: "From Date"
-        optional :until, type: DateTime, desc: "To Date"
+        requires :id,         type: Integer,  desc: "ID of library"
+        optional :from,       type: DateTime, desc: "From Date"
+        optional :until,      type: DateTime, desc: "To Date"
+        optional :start_time, type: Time,     desc: "Time to schedule"
+        optional :tags,       type: String,   desc: "Tag string"
       end
     put "/fetch" do
       content_type 'json'
-      library = Library.new.find(:id => params[:id].to_i)
-      logger.info "library: #{library.oai}"
-      oai = OAIClient.new(library.oai["url"], 
-        :format => library.oai["format"], 
-        :parser => library.oai["parser"], 
-        :timeout => library.oai["timeout"],
-        :redirects => library.oai["redirects"])
-      oai.query(:from => params[:from], :until => params[:until])
-      logger.info "oai response: #{oai.response}"
-      rdfrecords = []
-      oai.response.entries.each do |record| 
-        unless record.deleted?
-          xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
-          xmlreader.each do |marc|
-            rdf = RDFModeler.new(library.id, marc)
-            rdf.set_type("BIBO.Document")        
-            rdf.convert
-            rdfrecords << rdf.statements
-          end
-        else
-          logger.info "deleted record: #{record.header.identifier.split(':').last}"
-        end
-      end
-      logger.info "converted records: #{rdfrecords}"
-      { :result => rdfrecords }
+      result = Scheduler.start_oai_harvest :id => params[:id],
+          :from  => params[:from]  ||= Date.today.prev_day.to_s,
+          :until => params[:until] ||= Date.today.to_s
+      { :result => result }
     end 
 
     desc "saves a record batch"
@@ -272,7 +254,8 @@ class API < Grape::API
         :redirects => library.oai["redirects"])
       oai.query(:from => params[:from], :until => params[:until])
       logger.info "oai response: #{oai.response}"
-      file = File.open(File.join(File.dirname(__FILE__), '../db/', "#{library.id}", '.nt'), 'a+')
+      FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
+      file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'w')
       oai.response.entries.each do |record| 
         unless record.deleted?
           xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
@@ -306,5 +289,14 @@ class API < Grape::API
       { :result => result }
     end 
   end # end oai namespace
-  
+
+  resource :scheduler do
+    desc "test scheduler"
+    get "/" do
+      content_type 'json'
+      jobs = Scheduler.find_all_jobs
+      { :jobs => jobs }
+    end
+  end # end mapping namespace
+    
 end

@@ -1,16 +1,10 @@
 #encoding: utf-8
 # Struct for Rule class 
-require 'rufus/scheduler'
 
-Rule = Struct.new(:id, :scheduler, :job, :cronjob, :tag, :name, :description, :start_time, :frequency, :script)
+Rule = Struct.new(:id, :job_id, :cron_id, :tag, :name, :description, :start_time, :frequency, :script)
 class Rule
 
   # a Rule is a SPARQL script to be run, either at intervals or at specified time
-  
-  # start a Rufus::Scheduler object if not already done
-  def initialize(scheduler=nil)
-    self.scheduler = scheduler ||= Rufus::Scheduler.start_new(:frequency => 10.0)
-  end
   
   def all
     rules = []
@@ -75,49 +69,5 @@ class Rule
   def reload
     self.find(:id => self.id)
   end  
-  
-  #private
-  # routines to start/pause/stop and lookup Rufus::Scheduler rules
-  def activate
-    self.job = self.scheduler.at "#{self.start_time}", :tags => self.tag do 
-      puts self.script if self.script # run script here
-    end
-  end
-  
-  # make job into schedule
-  def schedule
-    self.cronjob = self.scheduler.cron "#{self.frequency}", :tags => self.tag do 
-      puts self.script if self.script # run script here
-    end
-  end
-  
-  def pause
-    self.job.pause
-  end
-
-  def resume
-    self.job.resume
-  end
-    
-  def unschedule
-    self.cronjob.unschedule
-  end
-  
-  # returns a map job_id => job of at/in/every jobs  
-  def find_jobs
-    self.scheduler.jobs
-  end
-
-  def find_cronjobs
-    self.scheduler.cron_jobs
-  end
-  
-  def find_all_jobs
-    self.scheduler.all_jobs
-  end
-
-  def find_jobs_by_tag(t)
-    self.scheduler.find_by_tag(t)
-  end
   
 end
