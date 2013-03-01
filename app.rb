@@ -87,9 +87,13 @@ class APP < Sinatra::Base
     slim :harvest, :locals => {:library => session[:library]}
   end
 
+  get '/status' do
+    # status on running/scheduled jobs
+    slim :status, :locals => {:library => session[:library]}
+  end
+  
   get '/repository' do
     # Misc. repository settings
-    #session[:repository] = Repo.new('repository.yml')
     session[:repository] = SETTINGS["repository"]
     slim :repository, :locals => {:library => session[:library], :repo => session[:repository]}
   end

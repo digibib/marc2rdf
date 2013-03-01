@@ -15,11 +15,22 @@ class Scheduler
     logger = Logger.new(File.expand_path("../logs/scheduler_#{ENV['RACK_ENV']}.log", __FILE__))
   end  
   
+  def dummyjob(params={})
+    params[:start_time] ||= Time.now
+    params[:tag]        ||= "dummyjob"    
+    job_id = self.scheduler.at params[:start_time], :tags => params[:tag] do
+      10.times do
+        puts "testing..."
+        sleep 3
+      end
+    end
+  end
+  
   ### OAI harvest jobs ###
   
   def start_oai_harvest(params={})
     params[:start_time] ||= Time.now 
-    params[:tags]       ||= "oaiharvest"
+    params[:tag]        ||= "oaiharvest"
     job_id = self.scheduler.at params[:start_time], :tags => params[:tag] do
       timing_start = Time.now
       
@@ -56,6 +67,7 @@ class Scheduler
             rdf = RDFModeler.new(library.id, marc)
             rdf.set_type(library.config['resource']['type'])        
             rdf.convert
+            write_record(rdf, library) # schedule writing
             rdfrecords << rdf.statements
           end
         else
@@ -66,10 +78,18 @@ class Scheduler
     end
   end
   
+  def write_record(rdf, library)
+    job_id = self.scheduler.at Time.now , :tags => "saving" do
+      FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
+      file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
+      rdf.write_record
+      file.write(rdf.rdf)
+    end
+  end
   # start schedule, default every five minutes
   def schedule(cron, params={})
     params[:frequency] ||= "*/5 * * * *"
-    params[:tags]      ||= "test"
+    params[:tag]       ||= "test"
     cron_id = self.scheduler.cron params[:frequency], :tags => params[:tag] do 
       puts cron if cron # run script here
     end

@@ -227,7 +227,7 @@ class API < Grape::API
         optional :from,       type: DateTime, desc: "From Date"
         optional :until,      type: DateTime, desc: "To Date"
         optional :start_time, type: Time,     desc: "Time to schedule"
-        optional :tags,       type: String,   desc: "Tag string"
+        optional :tag,        type: String,   desc: "Tag string"
       end
     put "/harvest" do
       content_type 'json'
@@ -291,26 +291,48 @@ class API < Grape::API
   end # end oai namespace
 
   resource :scheduler do
-    desc "test scheduler"
+    desc "all jobs"
     get "/" do
       content_type 'json'
       jobs = Scheduler.find_all_jobs
       { :jobs => jobs }
     end
     
+    # list running jobs
     desc "running jobs"
     get "/running_jobs" do
       content_type 'json'
-      jobs = Scheduler.find_running_jobs
-      { :jobs => jobs }
+      result = Scheduler.find_running_jobs
+      jobs = []
+      result.each do |job|
+        jobs.push({:job_id    => job.job_id,
+                  :scheduler => job.scheduler,
+                  :start_time => job.t,
+                  :last_job_thread => job.last_job_thread,
+                  :params => job.params,
+                  :block => job.block,
+                  :schedule_info => job.schedule_info,
+                  :run_time => job.last})
+      end
+      { :result => result, :jobs => jobs }
     end
 
     desc "find jobs"
     get "/find_jobs" do
       content_type 'json'
       jobs = Scheduler.find_jobs_by_tag('conversion')
-      { :jobs => jobs }
+      { :result => result, :jobs => jobs }
     end
+
+    desc "run test job"
+    put "/test" do
+      content_type 'json'
+      result = Scheduler.dummyjob :start_time => params[:id].to_i,
+          :from  => params[:from]  ||= Date.today.prev_day.to_s,
+          :until => params[:until] ||= Date.today.to_s
+      { :result => result }
+    end    
+    
     
   end # end mapping namespace
     
