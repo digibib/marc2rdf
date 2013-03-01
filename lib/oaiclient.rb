@@ -20,15 +20,25 @@ class OAIClient
       :http      => self.http
       }
     )
+    self.records = []
   end
 
   # query OAI
   def query(params={})
     from_date = params[:from]  ||= Date.today.prev_day.to_s
     to_date   = params[:until] ||= Date.today.to_s
-    self.response  = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
-  end  
+    if params[:resumption_token]
+      self.response = self.client.list_records :resumption_token => params[:resumption_token]
+    else
+      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
+    end
+    self.response.each {|r| self.records << r }
+    self.records
+  end
+    
+  def get_records
   
+  end
   # get library OAI identifier
   def get_oai_id
     xml = self.client.list_identifiers
@@ -46,6 +56,7 @@ class OAIClient
     end
   end
   
+  
   # get metadata formats
   def list_formats
     formats = self.client.list_metadata_formats.entries
@@ -62,9 +73,14 @@ class OAIClient
     end
   end
   
-  # harvest all! = SLOW!
-  def get_all
+  # harvest all! in memory = SLOW and cumbersome!
+  def query_all
     self.records = self.client.list_records.full
+  end
+  
+  # count records in set (slow!)
+  def query_count_all
+    self.client.list_identifiers.full.count
   end
   
 end

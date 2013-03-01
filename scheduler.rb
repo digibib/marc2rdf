@@ -11,7 +11,12 @@ class Scheduler
     self.scheduler ||= Rufus::Scheduler.start_new
   end
   
-  ### OAI harvest ###
+  def logger
+    logger = Logger.new(File.expand_path("../logs/scheduler_#{ENV['RACK_ENV']}.log", __FILE__))
+  end  
+  
+  ### OAI harvest jobs ###
+  
   def start_oai_harvest(params={})
     params[:start_time] ||= Time.now 
     params[:tags]       ||= "oaiharvest"
@@ -26,9 +31,25 @@ class Scheduler
         :timeout => library.oai["timeout"],
         :redirects => library.oai["redirects"])
       oai.query(:from => params[:from], :until => params[:until])
-      puts "oai response: #{oai.response}"
+      convert_oai_records(oai.records, library)
+      # do the resumption loop...
+      while(oai.response.resumption_token and not oai.response.resumption_token.empty?)
+        oai.records = []
+        #oai.response = oai.client.list_records(:resumption_token => oai.response.resumption_token)
+        oai.query(:resumption_token => oai.response.resumption_token)
+        oai.response.each {|r| oai.records << r }
+        convert_oai_records(oai.records, library)
+      end
+  
+      logger.info "Time to complete oai harvest: #{Time.now - timing_start} s."
+    end
+  end
+  
+  def convert_oai_records(oairecords, library)
+    job_id = self.scheduler.at Time.now , :tags => "conversion" do
+      timing_start = Time.now
       rdfrecords = []
-      oai.response.entries.each do |record| 
+      oairecords.each do |record| 
         unless record.deleted?
           xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
           xmlreader.each do |marc|
@@ -41,8 +62,7 @@ class Scheduler
           puts "deleted record: #{record.header.identifier.split(':').last}"
         end
       end
-      puts "converted records: #{rdfrecords}"
-      logger.info "Time to complete: #{Time.now - timing_start} s."
+      logger.info "Time to convert #{rdfrecords.count} records: #{Time.now - timing_start} s."
     end
   end
   
@@ -68,9 +88,15 @@ class Scheduler
   end
   
   # returns a map job_id => job of at/in/every jobs  
+  def find_running_jobs
+    jobs = self.scheduler.running_jobs
+    logger.info "running jobs: #{jobs}"
+    jobs
+  end
+  
   def find_jobs
     jobs = self.scheduler.jobs
-    logger.info "running jobs: #{jobs}"
+    logger.info "scheduled jobs: #{jobs}"
     jobs
   end
 
@@ -82,19 +108,16 @@ class Scheduler
   
   def find_all_jobs
     jobs = self.scheduler.all_jobs
-    logger.info "running jobs: #{jobs}"
+    logger.info "all jobs: #{jobs}"
     jobs
   end
 
   def find_jobs_by_tag(t)
     jobs = self.scheduler.find_by_tag(t)
-    logger.info "running jobs by tag: #{jobs}"
+    logger.info "all jobs by tag: #{jobs}"
     jobs
   end
   
-  def logger
-    logger = Logger.new(File.expand_path("../logs/scheduler_#{ENV['RACK_ENV']}.log", __FILE__))
-  end
 end
 
 #$SAFE = 1   # disable eval() and friends

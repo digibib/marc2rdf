@@ -104,14 +104,14 @@ class RDFModeler
   return generated_objects
   end
   
-  def assert(p, o)
-    unless p.empty? || o.nil?
-      self.statements << RDF::Statement.new(self.uri, RDF.module_eval("#{p}"), o)
+  def assert(p=nil, o=nil)
+    if p && o
+      self.statements << RDF::Statement.new(self.uri, RDF.module_eval("#{p}"), o) unless p.empty?
     end
   end
   
-  def relate(s, p, o)
-    unless p.nil? || s.nil? || o.nil?
+  def relate(s=nil, p=nil, o=nil)
+    if s && p && o 
       self.statements << RDF::Statement.new(RDF::URI(s), p, o)
     end
   end

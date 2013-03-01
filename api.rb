@@ -221,7 +221,7 @@ class API < Grape::API
       { :result => result }
     end 
         
-    desc "fetch a record batch"
+    desc "harvest a record batch"
       params do
         requires :id,         type: Integer,  desc: "ID of library"
         optional :from,       type: DateTime, desc: "From Date"
@@ -229,9 +229,9 @@ class API < Grape::API
         optional :start_time, type: Time,     desc: "Time to schedule"
         optional :tags,       type: String,   desc: "Tag string"
       end
-    put "/fetch" do
+    put "/harvest" do
       content_type 'json'
-      result = Scheduler.start_oai_harvest :id => params[:id],
+      result = Scheduler.start_oai_harvest :id => params[:id].to_i,
           :from  => params[:from]  ||= Date.today.prev_day.to_s,
           :until => params[:until] ||= Date.today.to_s
       { :result => result }
@@ -297,6 +297,21 @@ class API < Grape::API
       jobs = Scheduler.find_all_jobs
       { :jobs => jobs }
     end
+    
+    desc "running jobs"
+    get "/running_jobs" do
+      content_type 'json'
+      jobs = Scheduler.find_running_jobs
+      { :jobs => jobs }
+    end
+
+    desc "find jobs"
+    get "/find_jobs" do
+      content_type 'json'
+      jobs = Scheduler.find_jobs_by_tag('conversion')
+      { :jobs => jobs }
+    end
+    
   end # end mapping namespace
     
 end

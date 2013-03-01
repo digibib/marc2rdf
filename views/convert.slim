@@ -47,7 +47,7 @@ div class="main"
       // oai query test
       $('button#oai_query_test').on('click', function() {
         request = $.ajax({
-          url: '/api/oai/fetch',
+          url: '/api/oai/harvest',
           type: 'PUT',
           cache: false,
           contentType: "application/json; charset=utf-8",
