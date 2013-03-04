@@ -2,7 +2,7 @@
 # Struct for OAImodeler class 
 require "faraday"
 require "oai"
-require "libxml_ruby"
+#require "libxml_ruby"
 
 OAIClient = Struct.new(:client, :http, :oai_id, :parser, :format, :identify_response, :response, :datasets, :records)
 class OAIClient
@@ -11,7 +11,7 @@ class OAIClient
   def initialize(repo, params={}) 
     faraday = Faraday.new :request => {:open_timeout => 20, :timeout => params[:timeout].to_i }
     self.format = params[:format] ||= 'bibliofilmarc'
-    self.parser = params[:parser] ||= 'libxml'
+    self.parser = params[:parser] ||= 'rexml'
     self.http   = params[:http]   ||= faraday
     self.client = OAI::Client.new(repo, { 
       :redirects => params[:redirects]    ||= false, 

@@ -23,11 +23,12 @@ div class="main"
                 option[selected=("selected" if library.oai['follow_redirects'] == "true")] true
           tr
             td parser
-            td
-              select[id="parser"]
-                option[selected=("selected" if library.oai['parser'] == "libxml")] libxml
-                option[selected=("selected" if library.oai['parser'] == "rexml")] rexml
-            td parser for OAI XML response (libxml=fast, rexml=slow)
+            td: input[type="text" id="parser" value=(library.oai['parser'] if library.oai) disabled="true"]
+            //td
+              //select[id="parser"]
+                //option[selected=("selected" if library.oai['parser'] == "libxml")] libxml
+                //option[selected=("selected" if library.oai['parser'] == "rexml")] rexml
+            td parser for OAI XML response (libxml=broken..., rexml=slow)
           tr
             td timeout
             td: input[type="text" id="timeout" value=(library.oai['timeout']) ]
@@ -108,7 +109,8 @@ div class="main"
                 oai: {
                   url: $('input#url').val(),
                   follow_redirects: $('select#follow_redirects option:selected').val(),
-                  parser: $('select#parser option:selected').val(),
+                  //parser: $('select#parser option:selected').val(),
+                  parser: $('input#parser').val(),
                   timeout: $('input#timeout').val(),
                   format: $('select#format option:selected').val(),
                   preserve_on_update: preserve_array

@@ -3,6 +3,7 @@
 $stdout.sync = true
 require_relative "./config/init.rb"
 require 'logger' 
+require 'eventmachine'
 
 Scheduler = Struct.new(:scheduler)
 class Scheduler
