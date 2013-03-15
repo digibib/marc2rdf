@@ -62,12 +62,12 @@ describe Rule do
     
     it "schedules rule job directly" do
       job_id = @scheduler.run_rule(@rule)
-      job_id.trigger_block.should == @rule[:script]
+      job_id.trigger_block.should match(/10 Rows/)
     end   
     
     it "finds job by tags" do
-      @rule.activate
-      @rule.find_jobs_by_tag('A dummy tag').should_not be_empty
+      job_id = @scheduler.run_rule(@rule)
+      @scheduler.find_jobs_by_tag('A dummy tag').should_not be_empty
     end   
   end
 end

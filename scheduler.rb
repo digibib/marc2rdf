@@ -52,7 +52,7 @@ class Scheduler
     return nil unless rule[:id] || rule[:script] || rule[:start_time]
     rule[:tag] ||= "dummyrule"
     job_id = self.scheduler.at rule[:start_time], :tags => [rule[:id], rule[:tag]] do
-      %x[(echo "#{rule[:script].to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password}]
+      %x[(echo "#{rule[:script].to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
     end
   end
         
