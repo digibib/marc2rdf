@@ -16,23 +16,53 @@ class Scheduler
     logger = Logger.new(File.expand_path("../logs/scheduler_#{ENV['RACK_ENV']}.log", __FILE__))
   end  
   
+  ### dummy jobs for testing ###
   def dummyjob(params={})
+    params[:id]         ||= SecureRandom.uuid
     params[:start_time] ||= Time.now
-    params[:tag]        ||= "dummyjob"    
-    job_id = self.scheduler.at params[:start_time], :tags => params[:tag] do
+    params[:tags]        ||= "dummyjob"
+    
+    job_id = self.scheduler.at params[:start_time], :tags => [params[:id], params[:tags]] do
       10.times do
         puts "testing..."
-        sleep 3
+        sleep 1
       end
     end
   end
   
+  def test_atjob(atjob, params={})
+    params[:start_time] ||= Time.now
+    params[:tags]       ||= "dummyjob"
+    job_id = self.scheduler.at params[:start_time], :tags => params[:tags] do
+      puts "testing atjob: #{atjob}"
+      sleep 3
+    end
+  end
+
+  def test_cronjob(cronjob, params={})
+    params[:frequency]  ||= "0 * * * *"
+    params[:tags]       ||= "dummyjob"
+    job_id = self.scheduler.cron params[:frequency], :tags => params[:tags] do
+      puts "testing cronjob: #{cronjob}"
+      sleep 3
+    end
+  end
+
+  def run_rule(rule)
+    return nil unless rule[:id] || rule[:script] || rule[:start_time]
+    rule[:tag] ||= "dummyrule"
+    job_id = self.scheduler.at rule[:start_time], :tags => [rule[:id], rule[:tag]] do
+      %x[(echo "#{rule[:script].to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password}]
+    end
+  end
+        
+  ### AtJobs based on Library updates ###
   ### OAI harvest jobs ###
   
   def start_oai_harvest(params={})
     params[:start_time] ||= Time.now 
-    params[:tag]        ||= "oaiharvest"
-    job_id = self.scheduler.at params[:start_time], :tags => params[:tag] do
+    params[:tags]        ||= "oaiharvest"
+    job_id = self.scheduler.at params[:start_time], :tags => params[:tags] do
       timing_start = Time.now
       
       library = Library.new.find(:id => params[:id].to_i)
@@ -47,7 +77,6 @@ class Scheduler
       # do the resumption loop...
       while(oai.response.resumption_token and not oai.response.resumption_token.empty?)
         oai.records = []
-        #oai.response = oai.client.list_records(:resumption_token => oai.response.resumption_token)
         oai.query(:resumption_token => oai.response.resumption_token)
         oai.response.each {|r| oai.records << r }
         convert_oai_records(oai.records, library)
@@ -68,7 +97,7 @@ class Scheduler
             rdf = RDFModeler.new(library.id, marc)
             rdf.set_type(library.config['resource']['type'])        
             rdf.convert
-            write_record(rdf, library) # schedule writing
+            write_record(rdf, library) # schedule writing to file
             rdfrecords << rdf.statements
           end
         else
@@ -79,6 +108,7 @@ class Scheduler
     end
   end
   
+  # write converted record to file
   def write_record(rdf, library)
     job_id = self.scheduler.at Time.now , :tags => "saving" do
       FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
@@ -87,11 +117,12 @@ class Scheduler
       file.write(rdf.rdf)
     end
   end
-  # start schedule, default every five minutes
+  
+  # start schedule, default to every hour
   def schedule(cron, params={})
-    params[:frequency] ||= "*/5 * * * *"
-    params[:tag]       ||= "test"
-    cron_id = self.scheduler.cron params[:frequency], :tags => params[:tag] do 
+    params[:frequency] ||= "0 * * * *"
+    params[:tags]      ||= "test"
+    cron_id = self.scheduler.cron params[:frequency], :tags => params[:tags] do 
       puts cron if cron # run script here
     end
   end
@@ -141,7 +172,9 @@ class Scheduler
   
 end
 
-#$SAFE = 1   # disable eval() and friends
-
-DRb.start_service DRBSERVER, Scheduler.new
-DRb.thread.join
+unless ENV['RACK_ENV'] == 'test'
+  $SAFE = 1   # disable eval() and friends
+  
+  DRb.start_service DRBSERVER, Scheduler.new
+  DRb.thread.join
+end

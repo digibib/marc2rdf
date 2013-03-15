@@ -23,8 +23,9 @@ QUERY              = RDF::Virtuoso::Query
 SECRET_SESSION_KEY = "alongandveryshortstring"
 
 # dynamic ruby object socket
-# allows processes to interact
-DRBSERVER     = 'druby://localhost:9009'
+# allows isolated processes to interact
+puts ENV['RACK_ENV']
+DRBSERVER     = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
 
 # load all library files
 Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each do |file|

@@ -5,9 +5,10 @@ $stdout.sync = true
 require_relative "./config/init.rb"
 
 # access scheduler through drb socket
-DRb.start_service
-Scheduler = DRbObject.new_with_uri DRBSERVER
-
+unless ENV['RACK_ENV'] == 'test'
+  DRb.start_service
+  Scheduler = DRbObject.new_with_uri DRBSERVER
+end
 # trap all exceptions and fail gracefuly with a 500 and a proper message
 class ApiErrorHandler < Grape::Middleware::Base
   def call!(env)

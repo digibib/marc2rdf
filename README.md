@@ -27,19 +27,15 @@
 
 The marc2rdf toolkit consists of a web frontend and three parts:
 
-mapping - in which the mapping of MARC tags are made
-repository - in which the RDF repository settings are made
-harvesting - in which the automated harvesting is set up
+app.rb       - Main Sinatra webapp
+api.rb       - Grape API for RESTful interaction 
+scheduler.rb - Rufus Scheduler to generate Jobs / Scheduled Jobs from Rules
 
-* marc2rdf.rb      -- a ruby script to convert binary MARC records to RDF (ntriples, turtle or rdf/xml)
-* oai_harvester.rb -- a ruby script (cronjob) to harvest and convert MARC records from an OAI_PMH repository 
-and update a RDF triplestore
-* harvester.rb     -- a ruby script to harvest bibliographical metadata via SPARQL or XML APIs,
-and convert to semantic triples (RDF) and optionally import to existing RDF store
-
-Auxiliary tool to fix input file
-
-* marcfix.pl strips erroneous 000 tags from binary MARC records in iput file
+Scheduler takes these job types:
+* Single oai harvest (job)
+* Recurring oai harvest (cronjob)
+* Single SPARQL job (isql job) 
+* Recurring SPARQL job (isql cronjob)
 
 ## HOWTO
 
@@ -47,7 +43,7 @@ Auxiliary tool to fix input file
 
 Ruby
 
-* ruby >= 1.8.7
+* ruby >= 1.9.3
 * ruby-marc (thanks to Ross Singer et.al.)
 * rdf.rb (thanks to Arto Bendiken et.al. for the brilliant RDF library for ruby)
 * rdf-rdfxml.rb (requires development libraries libxml2 and libxslt1)

@@ -8,9 +8,12 @@ require 'rdf/virtuoso'
 require 'sinatra/base'
 require 'sinatra/spec'
 
+ENV['RACK_ENV'] = 'test'
+
 require File.join(File.dirname(__FILE__), '../config/', 'init.rb')
 require File.join(File.dirname(__FILE__), '..', 'app.rb')
 require File.join(File.dirname(__FILE__), '..', 'api.rb')
+require File.join(File.dirname(__FILE__), '..', 'scheduler.rb')
 
 if ENV['COVERAGE']
   require 'simplecov'

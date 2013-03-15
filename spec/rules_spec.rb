@@ -41,24 +41,28 @@ describe Rule do
         :frequency => "00 01 * * *",
         :script => @script
         )
+      @scheduler = Scheduler.new
     end
     
     it "starts a Rufus::Scheduler::AtJob object" do
-      @rule.activate
-      @rule.job.should be_a(Rufus::Scheduler::AtJob)
-      @rule.job.t.should == "#{@time}"
+      job_id = @scheduler.test_atjob(@rule[:script], :start_time => @rule[:start_time], :tags => [@rule[:id], @rule[:tag]])
+      job_id.should be_a(Rufus::Scheduler::AtJob)
+      job_id.t.should == @time
+      job_id.params[:tags][0].should == @rule[:id]
+      job_id.params[:tags][1].should == @rule[:tag]
     end    
 
-    it "schedules a started Rufus::Scheduler::AtJob" do
-      @rule.activate
-      @rule.schedule
-      @rule.job.t.should == "#{@time}"
-      @rule.job.scheduler.cron_jobs.should_not == nil
+    it "schedules a started Rufus::Scheduler::CronJob" do
+      cron_id = @scheduler.test_cronjob(@rule[:script], :frequency => @rule[:frequency], :tags => [@rule[:id], @rule[:tag]])
+      cron_id.should be_a(Rufus::Scheduler::CronJob)
+      cron_id.cron_line.original.should == @rule[:frequency]
+      cron_id.params[:tags][0].should == @rule[:id]
+      cron_id.params[:tags][1].should == @rule[:tag]
     end
     
-    it "schedules given script in Rufus::Scheduler::CronJob" do
-      @rule.schedule
-      @rule.cronjob.should_not == nil
+    it "schedules rule job directly" do
+      job_id = @scheduler.run_rule(@rule)
+      job_id.trigger_block.should == @rule[:script]
     end   
     
     it "finds job by tags" do

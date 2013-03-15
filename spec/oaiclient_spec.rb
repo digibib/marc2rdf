@@ -11,10 +11,9 @@ describe OAIClient do
           stub.get(@path) {[200, {}, @xml]}
         end
       end
-      @oai         = OAIClient.new(@url, :http => @oaitest, :format => 'bibliofilmarc')
-      @oairesponse = @oai.query :from => "1970-01-01"
-      @oairecords  = @oairesponse.entries
-      @marcxml     = MARC::XMLReader.new(StringIO.new(@oairecords.first.metadata.to_s))
+      @oaiclient   = OAIClient.new(@url, :http => @oaitest, :format => 'bibliofilmarc')
+      @oaiclient.query :from => "1970-01-01"
+      @marcxml     = MARC::XMLReader.new(StringIO.new(@oaiclient.response.first.metadata.to_s))
     end
     
     it "should support timeout option sent to Faraday request" do
@@ -24,23 +23,23 @@ describe OAIClient do
     end
     
     it "should support checking if OAI response contains records" do
-       @oairesponse.any? == true
+       @oaiclient.response.any? == true
     end
         
     it "should support count records in OAI response" do
-       @oairesponse.count.should == 12
+       @oaiclient.response.count.should == 12
     end
 
     it "should support fetch resumption token from an OAI response header" do
-       @oairesponse.resumption_token.should == "24590-1343733244"
+       @oaiclient.response.resumption_token.should == "24590-1343733244"
     end
 
     it "should support fetch book ID from an OAI response header" do
-       @oairesponse.first.header.identifier.split(':').last.should == "103215"
+       @oaiclient.response.first.header.identifier.split(':').last.should == "103215"
     end
 
     it "should support checking if an OAI response header stauts is deleted" do
-       @oairesponse.first.header.deleted? == false
+       @oaiclient.response.first.header.deleted? == false
     end
             
                
