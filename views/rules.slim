@@ -1,5 +1,3 @@
-== render :slim, :'_header', :locals => {:library => library}
-
 // This file contains rules editor
 div class="main"
   h2 Rules Editor
@@ -10,15 +8,17 @@ div class="main"
       tr
         th 
         th[style="width:120px"] short name
+        th[style="width:120px"] tag
         th description
     tbody
-    - for rule in Rule.new.all
-      tr id="#{rule.id}"
+    - for r in Rule.new.all
+      tr id="#{r.id}"
         td 
         td 
-          a href="/rules/#{rule.id}" #{rule.name}
-        td #{rule.description}
-
+          a href="/rules/#{r.id}" #{r.name}
+        td #{r.tag}
+        td #{r.description}
+        
   - if rule
     h3 Edit Rule #{rule.name}
     div class="divdot inputf"  
@@ -35,7 +35,10 @@ div class="main"
             td: input[type="text" id="save_rule_description" value=(rule.description)]
           tr
             td script
-            td: textarea[id="save_rule_script" rows=10 cols=80] = rule.script
+            td: textarea[id="save_rule_script" rows=10 cols=100] = rule.script
+          tr
+            td tag
+            td: input[type="text" id="save_rule_tag" value=(rule.tag)]
           tr
             td start time
             td: input[type="text" id="save_rule_start_time" value=(rule.start_time)]
@@ -62,8 +65,11 @@ div class="main"
           td description
           td: input[type="text" id="create_rule_description" class="required"]          
         tr
-          td rule
+          td script
           td: textarea[id="create_rule_script" class="required"]
+        tr
+          td tag
+          td: input[type="text" id="create_rule_tag"]
         tr
           td start time
           td: input[type="text" id="create_rule_start_time"]
@@ -89,6 +95,7 @@ div class="main"
               name: $('input#create_rule_name').val(),
               description: $('input#create_rule_description').val(),
               script: $('textarea#create_rule_script').val(),
+              tag: $('input#create_rule_tag').val(),
               start_time: $('input#create_rule_start_time').val(),
               frequency: $('input#create_rule_frequency').val(),
               }),
@@ -113,10 +120,11 @@ div class="main"
           contentType: "application/json; charset=utf-8",
           cache: false,
           data: JSON.stringify({
-              id: "#{rule.id}",
+              id: $('input#save_rule_id').val(),
               name: $('input#save_rule_name').val(),
               description: $('input#save_rule_description').val(),
               script: $('textarea#save_rule_script').val(),
+              tag: $('input#save_rule_tag').val(),
               start_time: $('input#save_rule_start_time').val(),
               frequency: $('input#save_rule_frequency').val(),
               }),
@@ -124,7 +132,7 @@ div class="main"
         });
         
         request.done(function(data) {
-          console.log("updated rule: #{rule.id}");
+          console.log("updated rule: "+ $('input#save_rule_id').val());
           console.log(data);
           $('span#rule_info').html("Saved rule OK!").show().fadeOut(3000);
           //window.location.reload();
@@ -142,7 +150,7 @@ div class="main"
           type: 'DELETE',
           cache: false,
           data: { 
-              id: "#{rule.id}"
+              id: $('input#save_rule_id').val(),
               },
           dataType: 'json'
         });
@@ -158,6 +166,3 @@ div class="main"
       }); 
 
     });
-          
-  == render :slim, :'_footer'
-          

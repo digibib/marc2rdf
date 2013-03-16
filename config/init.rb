@@ -27,7 +27,7 @@ SECRET_SESSION_KEY = "alongandveryshortstring"
 # dynamic ruby object socket
 # allows isolated processes to interact
 # not needed in test environment
-DRBSERVER     = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
+DRBSERVER = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
 
 # load all library files
 Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each do |file|

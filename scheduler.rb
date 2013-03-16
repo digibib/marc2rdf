@@ -184,7 +184,7 @@ class Scheduler
 end
 
 unless ENV['RACK_ENV'] == 'test'
-  $SAFE = 1   # disable eval() and friends
+  #$SAFE = 1   # disable eval() and friends
   DRb.start_service DRBSERVER, Scheduler.new
   DRb.thread.join
 end

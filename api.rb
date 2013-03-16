@@ -336,6 +336,7 @@ class API < Grape::API
     
   end # end scheduler namespace
 
+  ### rules namespace ###
   resource :rules do
     desc "return all rules or specific rule"
     get "/" do

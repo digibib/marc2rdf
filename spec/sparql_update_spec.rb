@@ -16,11 +16,13 @@ describe SparqlUpdate do
     end
     
     it "should support connecting to a SPARUL endpoint with BASIC AUTH" do
-      @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'basic')
+      repo = @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'basic')
+      repo.auth_method.should == 'basic'
     end
     
     it "should support connecting to a SPARUL endpoint with DIGEST AUTH" do
-      @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'digest')
+      repo = @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'digest')
+      repo.auth_method.should == 'digest'
     end
   end
   

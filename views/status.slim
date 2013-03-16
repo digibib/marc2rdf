@@ -1,4 +1,3 @@
-== render :slim, :'_header', :locals => {:library => library}
 // Main file for status on jobs
 div class="main"
   // This form contains OAI-PMH harvester settings                    
@@ -14,6 +13,11 @@ div class="main"
     div id="status" class="divdot inputf"
       p running jobs
       table id="running-jobs" class="genform"
+        thead
+          tr
+            th job id
+            th run_time
+            th tags
         tbody
 
       p scheduled jobs
@@ -25,7 +29,7 @@ div class="main"
       // ** get running jobs, populate status table
       $('button#update_status').on('click', function() {
         $.getJSON('/api/scheduler/running_jobs', function(data) {
-          var header = $('<tr><th>job_id</th><th>run_time</th><th>tags</th></tr>');
+          //var header = $('<tr><th>job_id</th><th>run_time</th><th>tags</th></tr>');
           var rows = $('<tr>');
           $.each(data.jobs, function(i,job){
             rows.append($('<td>').text(job.job_id)).
@@ -33,7 +37,7 @@ div class="main"
                 append($('<td>').text(job.params['tags'].join(',')));
           });
           
-          $('#running-jobs tbody').html(header);
+          //$('#running-jobs tbody').html(header);
           $('#running-jobs tbody').append(rows);
         });
       });
@@ -47,4 +51,3 @@ div class="main"
       });
       
     });
-  == render :slim, :'_footer'

@@ -1,5 +1,3 @@
-== render :slim, :'_header', :locals => {:library => library}
-
 div class="main"
   - if admin?
     h2 Dashboard
@@ -7,5 +5,3 @@ div class="main"
   - else
     p Les om verktøyet på 
     a[href="/about"]: about
-  
-  == render :slim, :'_footer'

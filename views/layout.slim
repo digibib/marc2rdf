@@ -9,8 +9,6 @@ html
     
     script src="/js/jquery.min.js"
     script src="/js/jsoneditor.js"
-    //script src="/js/jsoneditor_interface.js"
-    //script src="/js/JSONeditor.js"
 
   body
     div class="main"
@@ -38,3 +36,10 @@ html
             - else
               a[href="/login"]: li[class="header"] log in
         div id="debug"
+        
+      == yield
+      
+      div id="footer"
+        a[href="https://github.com/digibib/marc2rdf"] MARC2RDF Version 0.0.5
+        |&nbsp; Send feedback to 
+        a[href="mailto:benjamin.rokseth@kul.oslo.kommune.no"] Benjamin Rokseth

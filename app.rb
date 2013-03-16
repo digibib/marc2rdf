@@ -83,12 +83,12 @@ class APP < Sinatra::Base
 
   get '/rules' do
     # Rules creation and management
-    slim :rules, :locals => {:library => session[:library]}
+    slim :rules, :locals => {:library => session[:library], :rule => nil}
   end
 
   get '/rules/:id' do
     # Edit rule
-    slim :rules, :locals => {:library => session[:library], :rule => Rule.new.find(params)}
+    slim :rules, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
   end
       
   get '/harvest' do
