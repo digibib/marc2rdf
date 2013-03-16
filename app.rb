@@ -52,15 +52,14 @@ class APP < Sinatra::Base
     :json
     # reload session if updated, can be optimzed!
     session[:library] = session[:library].reload if session[:library] 
-    slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
+    slim :libraries, :locals => {:library => session[:library]}
   end
 
   get '/libraries/:id' do
     # Library settings
     :json
-    puts params
     session[:library] = Library.new.find(:id => params[:id].to_i)
-    slim :libraries, :locals => {:library => session[:library], :libraries => Library.new.all}
+    slim :libraries, :locals => {:library => session[:library]}
   end
       
   get '/mapping' do
@@ -81,7 +80,17 @@ class APP < Sinatra::Base
     # Main conversion tool
     slim :convert, :locals => {:library => session[:library]}
   end
-  
+
+  get '/rules' do
+    # Rules creation and management
+    slim :rules, :locals => {:library => session[:library]}
+  end
+
+  get '/rules/:id' do
+    # Edit rule
+    slim :rules, :locals => {:library => session[:library], :rule => Rule.new.find(params)}
+  end
+      
   get '/harvest' do
     # Harvesting sources
     slim :harvest, :locals => {:library => session[:library]}

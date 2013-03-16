@@ -13,7 +13,7 @@ div class="main"
           tr 
             td library name
             td: input[type="text" id="save_library_name" value=(library.name)]
-            td: input[type="hidden" id="save_library_id" vlue=(library.id)]
+            td: input[type="hidden" id="save_library_id" value=(library.id)]
           tr
             td oai repository
             td: input[type="text" id="save_library_oai_url" value=(library.oai['url'] if library.oai) disabled="true"]
@@ -45,24 +45,22 @@ div class="main"
           // save and delete button
           tr
             td 
-              button[type="button" id="library_save" class="gen"]  = "Save"
-              button[type="button" id="library_delete" class="gen"]  = "Delete"
+              button[type="button" id="save_library" class="gen"]  = "Save"
+              button[type="button" id="delete_library" class="gen"]  = "Delete"
             td
               span[id="save_library_info" class="info" style="margin-left:48px"]
               span[id="save_library_error" class="error" style="margin-left:48px"]    
   
   h3 select library
-  
   table id="libraries" class="libraries active tablesorter"
     tbody
-      - for library in libraries
+      - for library in Library.new.all
         tr id="#{library.id}"
           td #{library.id}
           td
             a href="/libraries/#{library.id}" #{library.name}
 
   h3 create a new library
-
   div class="divdot inputf"
     span[class='info' id="create_library_info" style="margin-left:20px"]
     form id="add_library_form"
@@ -116,7 +114,7 @@ div class="main"
       });
 
       // ** edit library
-      $('button#library_save').on('click', function() {
+      $('button#save_library').on('click', function() {
         var request = $.ajax({
           url: '/api/library',
           type: 'PUT',
@@ -152,7 +150,7 @@ div class="main"
       });
             
       // ** delete library
-      $('button#library_delete').on('click', function() {
+      $('button#delete_library').on('click', function() {
         // get id of active library
         var request = $.ajax({
           url: '/api/library',

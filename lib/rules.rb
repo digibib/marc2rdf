@@ -5,6 +5,8 @@ Rule = Struct.new(:id, :job_id, :cron_id, :tag, :name, :description, :start_time
 class Rule
 
   # a Rule is a SPARQL script to be run, either at intervals or at specified time
+  # Rules are either global or connected to a Library
+  # Rules are managed by Scheduler via API calls
   
   def all
     rules = []
@@ -16,7 +18,7 @@ class Rule
     end
     File.copy(template, file) unless File.exist?(file)
     data = JSON.parse(IO.read(file))
-    data.each {|rule| rules << rule.to_struct("Rules") }
+    data.each {|rule| rules << rule.to_struct("Rule") }
     rules
   end
   
@@ -41,6 +43,7 @@ class Rule
     return nil unless self.id
     params.delete(:id)
     self.members.each {|name| self[name] = params[name] unless params[name].nil? }
+    save
   end
   
   def save

@@ -48,15 +48,76 @@ class Scheduler
     end
   end
 
-  def run_rule(rule)
-    return nil unless rule[:id] || rule[:script] || rule[:start_time]
-    rule[:tag] ||= "dummyrule"
-    job_id = self.scheduler.at rule[:start_time], :tags => [rule[:id], rule[:tag]] do
-      %x[(echo "#{rule[:script].to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+  ### ISQL rules ###
+  def run_isql_rule(rule)
+    return nil unless rule.id || rule.script || rule.start_time
+    rule.tag ||= "dummyrule"
+    job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.tag] do
+      %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
     end
   end
-        
-  ### AtJobs based on Library updates ###
+
+  def schedule_isql_rule(rule)
+    return nil unless rule.id || rule.script || rule.frequency
+    rule.tag ||= "dummyrule"
+    cron_id = self.scheduler.cron rule.frequency, :tags => [rule.id, rule.tag] do
+      %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+    end
+  end
+  
+  # start schedule, default to every hour
+  def schedule(cron, params={})
+    params[:frequency] ||= "0 * * * *"
+    params[:tags]      ||= "test"
+    cron_id = self.scheduler.cron params[:frequency], :tags => params[:tags] do 
+      puts cron if cron # run script here
+    end
+  end
+  
+  def pause(job)
+    self.scheduler.pause(job)
+  end
+
+  def resume(job)
+    self.scheduler.resume(job)
+  end
+    
+  def unschedule(cronjob)
+    self.scheduler.unschedule(cronjob)
+  end
+  
+  ### find jobs ###
+  def find_running_jobs
+    jobs = self.scheduler.running_jobs
+    logger.info "running jobs: #{jobs}"
+    jobs
+  end
+  
+  def find_jobs
+    jobs = self.scheduler.jobs
+    logger.info "scheduled jobs: #{jobs}"
+    jobs
+  end
+
+  def find_cronjobs
+    jobs = self.scheduler.cron_jobs
+    logger.info "scheduled cron jobs: #{jobs}"
+    jobs
+  end
+  
+  def find_all_jobs
+    jobs = self.scheduler.all_jobs
+    logger.info "all jobs: #{jobs}"
+    jobs
+  end
+
+  def find_jobs_by_tag(t)
+    jobs = self.scheduler.find_by_tag(t)
+    logger.info "all jobs by tag: #{jobs}"
+    jobs
+  end
+          
+  ### Specific AtJobs based on Library updates ###
   ### OAI harvest jobs ###
   
   def start_oai_harvest(params={})
@@ -118,63 +179,12 @@ class Scheduler
     end
   end
   
-  # start schedule, default to every hour
-  def schedule(cron, params={})
-    params[:frequency] ||= "0 * * * *"
-    params[:tags]      ||= "test"
-    cron_id = self.scheduler.cron params[:frequency], :tags => params[:tags] do 
-      puts cron if cron # run script here
-    end
-  end
-  
-  def pause(job)
-    self.scheduler.pause(job)
-  end
 
-  def resume(job)
-    self.scheduler.resume(job)
-  end
-    
-  def unschedule(cronjob)
-    self.scheduler.unschedule(cronjob)
-  end
-  
-  # returns a map job_id => job of at/in/every jobs  
-  def find_running_jobs
-    jobs = self.scheduler.running_jobs
-    logger.info "running jobs: #{jobs}"
-    jobs
-  end
-  
-  def find_jobs
-    jobs = self.scheduler.jobs
-    logger.info "scheduled jobs: #{jobs}"
-    jobs
-  end
-
-  def find_cronjobs
-    jobs = self.scheduler.cron_jobs
-    logger.info "scheduled cron jobs: #{jobs}"
-    jobs
-  end
-  
-  def find_all_jobs
-    jobs = self.scheduler.all_jobs
-    logger.info "all jobs: #{jobs}"
-    jobs
-  end
-
-  def find_jobs_by_tag(t)
-    jobs = self.scheduler.find_by_tag(t)
-    logger.info "all jobs by tag: #{jobs}"
-    jobs
-  end
   
 end
 
 unless ENV['RACK_ENV'] == 'test'
   $SAFE = 1   # disable eval() and friends
-  
   DRb.start_service DRBSERVER, Scheduler.new
   DRb.thread.join
 end

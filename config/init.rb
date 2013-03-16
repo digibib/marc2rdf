@@ -2,10 +2,12 @@
 require 'rubygems'
 ENV["RACK_ENV"] ||= "development"
 
+# require from Gemfile
 require 'bundler'
 Bundler.setup
 Bundler.require(:default, ENV["RACK_ENV"].to_sym)
 
+# require internal Ruby libs
 require 'json'
 require 'drb'
 
@@ -24,7 +26,7 @@ SECRET_SESSION_KEY = "alongandveryshortstring"
 
 # dynamic ruby object socket
 # allows isolated processes to interact
-puts ENV['RACK_ENV']
+# not needed in test environment
 DRBSERVER     = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
 
 # load all library files

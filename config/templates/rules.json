@@ -1,6 +1,5 @@
 [
   {
-    "rule": {
       "id": 1,   
       "tag": "global", 
       "frequency": "0 22 * * 1-5", 
@@ -8,6 +7,5 @@
       "script": "The actual isql SPARQL script", 
       "start_time": "Now", 
       "name": "Example Rule"
-    }
   }
 ]
