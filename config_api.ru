@@ -5,4 +5,4 @@ $stderr.reopen(log)
 
 $stderr.sync = true
 $stdout.sync = true
-run API
+run API::Root

@@ -131,7 +131,7 @@ DEPENDENCIES
   builder
   bundler
   foreman
-  grape (= 0.2.4)
+  grape
   marc
   nokogiri
   oai
