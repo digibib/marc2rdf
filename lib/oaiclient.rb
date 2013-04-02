@@ -23,7 +23,7 @@ class OAIClient
     self.records = []
   end
 
-  # query OAI
+  # query OAI from timestamp, default yesterday 
   def query(params={})
     from_date = params[:from]  ||= Date.today.prev_day.to_s
     to_date   = params[:until] ||= Date.today.to_s
@@ -36,9 +36,11 @@ class OAIClient
     self.records
   end
     
+  # query OAI for specific records
   def get_records
-  
+    # NOT IMPLEMENTED
   end
+  
   # get library OAI identifier
   def get_oai_id
     xml = self.client.list_identifiers
@@ -73,7 +75,7 @@ class OAIClient
     end
   end
   
-  # harvest all! in memory = SLOW and cumbersome!
+  # harvest all! in memory = SLOW and potentially stalling entire app!
   def query_all
     self.records = self.client.list_records.full
   end

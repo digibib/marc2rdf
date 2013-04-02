@@ -87,23 +87,7 @@ class Oai < Grape::API
       end
       { :result => "saved!" }
     end
-  
-    desc "identify a OAI repository"
-      params do
-        requires :id, type: Integer, desc: "ID of library"
-      end
-    get "/identify" do
-      content_type 'json'
-      library = Library.new.find(:id => params[:id].to_i)
-      logger.info "library: #{library.oai}"
-      oai = OAIClient.new(library.oai["url"], 
-        :format => library.oai["format"], 
-        :parser => library.oai["parser"], 
-        :timeout => library.oai["timeout"],
-        :redirects => library.oai["timeout"])
-      result = oai.client.identify
-      { :result => result }
-    end 
+    
   end # end oai namespace
 end
 end

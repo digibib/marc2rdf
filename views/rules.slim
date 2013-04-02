@@ -35,7 +35,7 @@ div class="main"
             td: input[type="text" id="save_rule_description" value=(rule.description)]
           tr
             td script
-            td: textarea[id="save_rule_script" rows=10 cols=100] = rule.script
+            td: textarea[id="save_rule_script" rows=10 cols=80] = rule.script
           tr
             td tag
             td: input[type="text" id="save_rule_tag" value=(rule.tag)]
@@ -66,16 +66,19 @@ div class="main"
           td: input[type="text" id="create_rule_description" class="required"]          
         tr
           td script
-          td: textarea[id="create_rule_script" class="required"]
+          td: textarea[id="create_rule_script" class="required" rows=10 cols=80]
         tr
           td tag
           td: input[type="text" id="create_rule_tag"]
         tr
           td start time
           td: input[type="text" id="create_rule_start_time"]
+          td YYYY-MM-DD, empty=now
         tr
           td frequency
           td: input[type="text" id="create_rule_frequency"]                    
+          td space separated cron frequency (Min Hour DayofMonth Month DayOfWeek)
+          
         tr
           td: button[type="button" id="create_rule" class="gen"]  = "Create new Rule"
           td
