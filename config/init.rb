@@ -33,8 +33,3 @@ DRBSERVER = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
 Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each do |file|
   require file
 end
-
-# load all api libraries
-Dir[File.dirname(__FILE__) + '/../api/*.rb'].each do |file|
-  require file
-end

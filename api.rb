@@ -24,43 +24,56 @@ unless ENV['RACK_ENV'] == 'test'
 end
 
 module API
-
-class Root < Grape::API
-  helpers do
-    def logger
-      logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
+  # custom option validator :length
+  class Length < Grape::Validations::SingleOptionValidator
+    def validate_param!(attr_name, params)
+      unless params[attr_name].length >= @option
+        throw :error, :status => 400, :message => "#{attr_name}: must be at least #{@option} characters long"
+      end
     end
   end
-  
-  prefix 'api'
-  format :json
-  default_format :json
-  use ApiErrorHandler
-  
-  mount API::Mapping
-  mount API::Library
-  mount API::Convert
-  mount API::Oai
-  mount API::Scheduler
-  mount API::Rules
-    
-  before do
-    # Of course this makes the request.body unavailable afterwards.
-    # You can just use a helper method to store it away for later if needed. 
-    logger.info "#{env['REMOTE_ADDR']} #{env['HTTP_USER_AGENT']} #{env['REQUEST_METHOD']} #{env['REQUEST_PATH']} -- Request: #{request.body.read}"
-  end
 
-  # Rescue and log validation errors gracefully
-  rescue_from Grape::Exceptions::ValidationError do |e|
-    logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
-    logger.error "#{e.message}"
-    Rack::Response.new({
-        'status' => e.status,
-        'message' => e.message,
-        #'param' => e.param,
-    }.to_json, e.status) 
-  end
-    
+  class Root < Grape::API
+    helpers do
+      def logger
+        logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
+      end
+    end
 
-end
+    # load all external api libraries
+    Dir[File.dirname(__FILE__) + '/api/*.rb'].each do |file|
+      require file
+    end    
+   
+    prefix 'api'
+    format :json
+    default_format :json
+    use ApiErrorHandler
+    
+    mount API::Mapping
+    mount API::Libraries
+    mount API::Convert
+    mount API::Oai
+    mount API::Scheduling
+    mount API::Rules
+      
+    before do
+      # Of course this makes the request.body unavailable afterwards.
+      # You can just use a helper method to store it away for later if needed. 
+      logger.info "#{env['REMOTE_ADDR']} #{env['HTTP_USER_AGENT']} #{env['REQUEST_METHOD']} #{env['REQUEST_PATH']} -- Request: #{request.body.read}"
+    end
+  
+    # Rescue and log validation errors gracefully
+    rescue_from Grape::Exceptions::ValidationError do |e|
+      logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
+      logger.error "#{e.message}"
+      Rack::Response.new({
+          'status' => e.status,
+          'message' => e.message,
+          #'param' => e.param,
+      }.to_json, e.status) 
+    end
+      
+  
+  end
 end

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 #encoding: utf-8
 module API
-class Scheduler < Grape::API
+class Scheduling < Grape::API
   resource :scheduler do
     desc "all jobs"
     get "/" do
