@@ -52,7 +52,7 @@ module API
     
     mount API::Mapping
     mount API::Libraries
-    mount API::Convert
+    mount API::Conversion
     mount API::Oai
     mount API::Scheduling
     mount API::Rules

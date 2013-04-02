@@ -22,12 +22,12 @@ div class="main"
                 option[selected=("selected" if library.oai['follow_redirects'] == "true")] true
           tr
             td parser
-            td: input[type="text" id="parser" value=(library.oai['parser'] if library.oai) disabled="true"]
-            //td
-              //select[id="parser"]
-                //option[selected=("selected" if library.oai['parser'] == "libxml")] libxml
-                //option[selected=("selected" if library.oai['parser'] == "rexml")] rexml
-            td parser for OAI XML response (libxml=broken..., rexml=slow)
+            //td: input[type="text" id="parser" value=(library.oai['parser'] if library.oai) disabled="true"]
+            td
+              select[id="parser"]
+                option[selected=("selected" if library.oai['parser'] == "libxml")] libxml
+                option[selected=("selected" if library.oai['parser'] == "rexml")] rexml
+            td parser for OAI XML response (libxml=fast..., rexml=slow)
           tr
             td timeout
             td: input[type="text" id="timeout" value=(library.oai['timeout']) ]

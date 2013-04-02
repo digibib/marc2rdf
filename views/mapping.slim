@@ -23,8 +23,8 @@ div class="main"
       var editor_div = document.getElementById("jsoneditor");
       var text_div = document.getElementById("jsonformatter");
       var domSplitter = document.getElementById('splitter');
-      var editor = new JSONEditor(editor_div);
-      var formatter = new JSONFormatter(text_div);
+      var editor = new jsoneditor.JSONEditor(editor_div);
+      var formatter = new jsoneditor.JSONFormatter(text_div);
   
       domSplitter.appendChild(document.createElement('br'));
       var toJSON = document.createElement('button');
