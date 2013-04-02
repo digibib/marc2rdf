@@ -64,7 +64,7 @@ module API
     end
   
     # Rescue and log validation errors gracefully
-    rescue_from Grape::Exceptions::ValidationError do |e|
+    rescue_from Grape::Exceptions::Validation do |e|
       logger = Logger.new(File.expand_path("../logs/#{ENV['RACK_ENV']}.log", __FILE__))
       logger.error "#{e.message}"
       Rack::Response.new({

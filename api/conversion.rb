@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 #encoding: utf-8
 module API
-class Convert < Grape::API
+class Conversion < Grape::API
   resource :convert do
     desc "test convert resource"
       params do
