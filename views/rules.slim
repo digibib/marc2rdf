@@ -1,171 +1,170 @@
 // This file contains rules editor
-div class="main"
-  h2 Rules Editor
-  
-  h3 Existing Rules
-  table id="rules_list" class="libraries active tablesorter"
-    thead
-      tr
-        th 
-        th[style="width:120px"] short name
-        th[style="width:120px"] tag
-        th description
-    tbody
-    - for r in Rule.new.all
-      tr id="#{r.id}"
-        td 
-        td 
-          a href="/rules/#{r.id}" #{r.name}
-        td #{r.tag}
-        td #{r.description}
-        
-  - if rule
-    h3 Edit Rule #{rule.name}
-    div class="divdot inputf"  
-      table class="genform"
-        form id="edit_rule_form" 
-          tr
-            td
-            td: input[type="hidden" id="save_rule_id" value=(rule.id)]
-          tr
-            td name
-            td: input[type="text" id="save_rule_name" value=(rule.name)]
-          tr
-            td description
-            td: input[type="text" id="save_rule_description" value=(rule.description)]
-          tr
-            td script
-            td: textarea[id="save_rule_script" rows=10 cols=80] = rule.script
-          tr
-            td tag
-            td: input[type="text" id="save_rule_tag" value=(rule.tag)]
-          tr
-            td start time
-            td: input[type="text" id="save_rule_start_time" value=(rule.start_time)]
-          tr
-            td frequency
-            td: input[type="text" id="save_rule_frequency" value=(rule.frequency)]
-          tr
-            td 
-              button[type="button" id="save_rule" class="gen"]  = "Save"
-              button[type="button" id="delete_rule" class="gen"]  = "Delete"
-            td
-              span[id="save_rule_info" class="info" style="margin-left:48px"]
-              span[id="save_rule_error" class="error" style="margin-left:48px"]    
-                                          
-  h3 Create a new Rule
-  div class="divdot inputf"
-    span[class='info' id="create_rule_info" style="margin-left:20px"]
-    form id="add_rule_form"
-      table class="genform"
+h2 Rules Editor
+
+h3 Existing Rules
+table id="rules_list" class="libraries active tablesorter"
+  thead
+    tr
+      th 
+      th[style="width:120px"] short name
+      th[style="width:120px"] tag
+      th description
+  tbody
+  - for r in Rule.new.all
+    tr id="#{r.id}"
+      td 
+      td 
+        a href="/rules/#{r.id}" #{r.name}
+      td #{r.tag}
+      td #{r.description}
+      
+- if rule
+  h3 Edit Rule #{rule.name}
+  div class="divdot inputf"  
+    table class="genform"
+      form id="edit_rule_form" 
+        tr
+          td
+          td: input[type="hidden" id="save_rule_id" value=(rule.id)]
         tr
           td name
-          td: input[type="text" id="create_rule_name" class="required"]
+          td: input[type="text" id="save_rule_name" value=(rule.name)]
         tr
           td description
-          td: input[type="text" id="create_rule_description" class="required"]          
+          td: input[type="text" id="save_rule_description" value=(rule.description)]
         tr
           td script
-          td: textarea[id="create_rule_script" class="required" rows=10 cols=80]
+          td: textarea[id="save_rule_script" rows=10 cols=80] = rule.script
         tr
           td tag
-          td: input[type="text" id="create_rule_tag"]
+          td: input[type="text" id="save_rule_tag" value=(rule.tag)]
         tr
           td start time
-          td: input[type="text" id="create_rule_start_time"]
-          td YYYY-MM-DD, empty=now
+          td: input[type="text" id="save_rule_start_time" value=(rule.start_time)]
         tr
           td frequency
-          td: input[type="text" id="create_rule_frequency"]                    
-          td space separated cron frequency (Min Hour DayofMonth Month DayOfWeek)
-          
+          td: input[type="text" id="save_rule_frequency" value=(rule.frequency)]
         tr
-          td: button[type="button" id="create_rule" class="gen"]  = "Create new Rule"
+          td 
+            button[type="button" id="save_rule" class="gen"]  = "Save"
+            button[type="button" id="delete_rule" class="gen"]  = "Delete"
           td
-            span[id="rule_info" class="info" style="margin-left:48px"]
-            span[id="rule_error" class="error" style="margin-left:48px"]            
-    
-  javascript:
-    $(document).ready(function () {
-      // ** create new rule
-      $('button#create_rule').on('click', function() {
-        var request = $.ajax({
-          url: '/api/rules',
-          type: 'POST',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({ 
-              name: $('input#create_rule_name').val(),
-              description: $('input#create_rule_description').val(),
-              script: $('textarea#create_rule_script').val(),
-              tag: $('input#create_rule_tag').val(),
-              start_time: $('input#create_rule_start_time').val(),
-              frequency: $('input#create_rule_frequency').val(),
-              }),
-          dataType: 'json'
-        });
-
-        request.done(function(data) {
-          $('span#rule_info').html("Saved rule OK!").show().fadeOut(3000);
-          window.location.reload();
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-
-      // ** edit rule
-      $('button#save_rule').on('click', function() {
-        var request = $.ajax({
-          url: '/api/rules',
-          type: 'PUT',
-          contentType: "application/json; charset=utf-8",
-          cache: false,
-          data: JSON.stringify({
-              id: $('input#save_rule_id').val(),
-              name: $('input#save_rule_name').val(),
-              description: $('input#save_rule_description').val(),
-              script: $('textarea#save_rule_script').val(),
-              tag: $('input#save_rule_tag').val(),
-              start_time: $('input#save_rule_start_time').val(),
-              frequency: $('input#save_rule_frequency').val(),
-              }),
-          dataType: 'json'
-        });
+            span[id="save_rule_info" class="info" style="margin-left:48px"]
+            span[id="save_rule_error" class="error" style="margin-left:48px"]    
+                                        
+h3 Create a new Rule
+div class="divdot inputf"
+  span[class='info' id="create_rule_info" style="margin-left:20px"]
+  form id="add_rule_form"
+    table class="genform"
+      tr
+        td name
+        td: input[type="text" id="create_rule_name" class="required"]
+      tr
+        td description
+        td: input[type="text" id="create_rule_description" class="required"]          
+      tr
+        td script
+        td: textarea[id="create_rule_script" class="required" rows=10 cols=80]
+      tr
+        td tag
+        td: input[type="text" id="create_rule_tag"]
+      tr
+        td start time
+        td: input[type="text" id="create_rule_start_time"]
+        td YYYY-MM-DD, empty=now
+      tr
+        td frequency
+        td: input[type="text" id="create_rule_frequency"]                    
+        td space separated cron frequency (Min Hour DayofMonth Month DayOfWeek)
         
-        request.done(function(data) {
-          console.log("updated rule: "+ $('input#save_rule_id').val());
-          console.log(data);
-          $('span#rule_info').html("Saved rule OK!").show().fadeOut(3000);
-          //window.location.reload();
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
+      tr
+        td: button[type="button" id="create_rule" class="gen"]  = "Create new Rule"
+        td
+          span[id="rule_info" class="info" style="margin-left:48px"]
+          span[id="rule_error" class="error" style="margin-left:48px"]            
+  
+javascript:
+  $(document).ready(function () {
+    // ** create new rule
+    $('button#create_rule').on('click', function() {
+      var request = $.ajax({
+        url: '/api/rules',
+        type: 'POST',
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+            name: $('input#create_rule_name').val(),
+            description: $('input#create_rule_description').val(),
+            script: $('textarea#create_rule_script').val(),
+            tag: $('input#create_rule_tag').val(),
+            start_time: $('input#create_rule_start_time').val(),
+            frequency: $('input#create_rule_frequency').val(),
+            }),
+        dataType: 'json'
       });
-            
-      // ** delete rule
-      $('button#delete_rule').on('click', function() {
-        var request = $.ajax({
-          url: '/api/rules',
-          type: 'DELETE',
-          cache: false,
-          data: { 
-              id: $('input#save_rule_id').val(),
-              },
-          dataType: 'json'
-        });
 
-        request.done(function(data) {
-          $('span#rule_info').html("Deleted rule OK!").show().fadeOut(3000);
-          window.location.reload();
-        });
+      request.done(function(data) {
+        $('span#rule_info').html("Saved rule OK!").show().fadeOut(3000);
+        window.location.reload();
+      });
 
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      }); 
-
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
     });
+
+    // ** edit rule
+    $('button#save_rule').on('click', function() {
+      var request = $.ajax({
+        url: '/api/rules',
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        cache: false,
+        data: JSON.stringify({
+            id: $('input#save_rule_id').val(),
+            name: $('input#save_rule_name').val(),
+            description: $('input#save_rule_description').val(),
+            script: $('textarea#save_rule_script').val(),
+            tag: $('input#save_rule_tag').val(),
+            start_time: $('input#save_rule_start_time').val(),
+            frequency: $('input#save_rule_frequency').val(),
+            }),
+        dataType: 'json'
+      });
+      
+      request.done(function(data) {
+        console.log("updated rule: "+ $('input#save_rule_id').val());
+        console.log(data);
+        $('span#rule_info').html("Saved rule OK!").show().fadeOut(3000);
+        //window.location.reload();
+      });
+
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });
+          
+    // ** delete rule
+    $('button#delete_rule').on('click', function() {
+      var request = $.ajax({
+        url: '/api/rules',
+        type: 'DELETE',
+        cache: false,
+        data: { 
+            id: $('input#save_rule_id').val(),
+            },
+        dataType: 'json'
+      });
+
+      request.done(function(data) {
+        $('span#rule_info').html("Deleted rule OK!").show().fadeOut(3000);
+        window.location.reload();
+      });
+
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    }); 
+
+  });

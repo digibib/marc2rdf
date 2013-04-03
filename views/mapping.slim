@@ -3,99 +3,98 @@
 // Split screen or test convertion feedback for user:
 // tag > mapping > "test" > result
 
-div class="main"
-  h2 Mapping
-  - unless library
-      pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
-  - else
-    button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Mapping Template"
-    // The mapping div
-    div id="auto"
-      div id="contents"
-        div id="jsoneditor" 
-        div id="splitter" 
-        div id="jsonformatter"
+h2 Mapping
+- unless library
+    pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+- else
+  button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Mapping Template"
+  // The mapping div
+  div id="auto"
+    div id="contents"
+      div id="jsoneditor" 
+      div id="splitter" 
+      div id="jsonformatter"
+  
+  javascript:
+    // disable Firefox spellcheck
+    document.body.spellcheck = false;
+
+    var editor_div = document.getElementById("jsoneditor");
+    var text_div = document.getElementById("jsonformatter");
+    var domSplitter = document.getElementById('splitter');
+    var editor = new jsoneditor.JSONEditor(editor_div);
+    var formatter = new jsoneditor.JSONFormatter(text_div);
+
+    domSplitter.appendChild(document.createElement('br'));
+    var toJSON = document.createElement('button');
+    domSplitter.appendChild(document.createElement('br'));
+    domSplitter.appendChild(document.createElement('br'));
+
+    toJSON.id = 'toJSON';
+    toJSON.title = 'Editor to JSON';
+    toJSON.className = 'convert';
+    toJSON.innerHTML = '<div class="convert-right"></div>';
+    domSplitter.appendChild(toJSON);
     
-    javascript:
-      // disable Firefox spellcheck
-      document.body.spellcheck = false;
-  
-      var editor_div = document.getElementById("jsoneditor");
-      var text_div = document.getElementById("jsonformatter");
-      var domSplitter = document.getElementById('splitter');
-      var editor = new jsoneditor.JSONEditor(editor_div);
-      var formatter = new jsoneditor.JSONFormatter(text_div);
-  
-      domSplitter.appendChild(document.createElement('br'));
-      var toJSON = document.createElement('button');
-      domSplitter.appendChild(document.createElement('br'));
-      domSplitter.appendChild(document.createElement('br'));
-  
-      toJSON.id = 'toJSON';
-      toJSON.title = 'Editor to JSON';
-      toJSON.className = 'convert';
-      toJSON.innerHTML = '<div class="convert-right"></div>';
-      domSplitter.appendChild(toJSON);
+    var toForm = document.createElement('button');
+    toForm.id = 'toForm';
+    toForm.title = 'JSON to Editor';
+    toForm.className = 'convert';
+    toForm.innerHTML = '<div class="convert-left"></div>';
+    domSplitter.appendChild(document.createElement('br'));
+    domSplitter.appendChild(document.createElement('br'));    
+    domSplitter.appendChild(toForm);    
+    
+    var saveJSON = document.createElement('button');
+    saveJSON.id = 'saveJSON';
+    saveJSON.title = 'Save JSON to file';
+    saveJSON.className = 'save';
+    saveJSON.innerHTML = '<div class="save">save<br/>JSON</div>';
+    domSplitter.appendChild(document.createElement('br'));
+    domSplitter.appendChild(document.createElement('br'));        
+    domSplitter.appendChild(saveJSON);    
+    
+    $(document).ready(function () {
+      // get id of active library
+      var id = #{library.id};
+      var json = $.getJSON('/api/library/'+id+'/mapping', function() {
+        editor.set(JSON.parse(json.responseText));
+        formatter.set(editor.get());
+      });
+      // conversions
+      toForm.onclick = function () {
+        editor.set(formatter.get());
+      };
+      toJSON.onclick = function () {
+        formatter.set(editor.get());
+      };  
+      saveJSON.onclick = function () {
+        //console.log(JSON.stringify(editor.get(), null, 2));
+        mapping = editor.get();
+        request = $.ajax({
+          url: '/api/library',
+          type: 'PUT',
+          cache: false,
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({
+              id: id,
+              mapping: mapping["mapping"]
+              }),
+          dataType: 'json'
+        });
+        request.success(function ( data ) {
+          if( console && console.log ) {
+            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+          }
+        });
+      }; 
       
-      var toForm = document.createElement('button');
-      toForm.id = 'toForm';
-      toForm.title = 'JSON to Editor';
-      toForm.className = 'convert';
-      toForm.innerHTML = '<div class="convert-left"></div>';
-      domSplitter.appendChild(document.createElement('br'));
-      domSplitter.appendChild(document.createElement('br'));    
-      domSplitter.appendChild(toForm);    
-      
-      var saveJSON = document.createElement('button');
-      saveJSON.id = 'saveJSON';
-      saveJSON.title = 'Save JSON to file';
-      saveJSON.className = 'save';
-      saveJSON.innerHTML = '<div class="save">save<br/>JSON</div>';
-      domSplitter.appendChild(document.createElement('br'));
-      domSplitter.appendChild(document.createElement('br'));        
-      domSplitter.appendChild(saveJSON);    
-      
-      $(document).ready(function () {
-        // get id of active library
-        var id = #{library.id};
-        var json = $.getJSON('/api/library/'+id+'/mapping', function() {
+      // ** load template into editor
+      $('button#load_template').on('click', function() {
+        var json = $.getJSON('/api/mapping', function() {
           editor.set(JSON.parse(json.responseText));
           formatter.set(editor.get());
         });
-        // conversions
-        toForm.onclick = function () {
-          editor.set(formatter.get());
-        };
-        toJSON.onclick = function () {
-          formatter.set(editor.get());
-        };  
-        saveJSON.onclick = function () {
-          //console.log(JSON.stringify(editor.get(), null, 2));
-          mapping = editor.get();
-          request = $.ajax({
-            url: '/api/library',
-            type: 'PUT',
-            cache: false,
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({
-                id: id,
-                mapping: mapping["mapping"]
-                }),
-            dataType: 'json'
-          });
-          request.success(function ( data ) {
-            if( console && console.log ) {
-              console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-            }
-          });
-        }; 
-        
-        // ** load template into editor
-        $('button#load_template').on('click', function() {
-          var json = $.getJSON('/api/mapping', function() {
-            editor.set(JSON.parse(json.responseText));
-            formatter.set(editor.get());
-          });
-        }); 
-                 
-      });
+      }); 
+               
+    });

@@ -11,7 +11,7 @@ class Rules < Grape::API
         { :rules => Rule.new.all }
       else
         logger.info params
-        rule = Rule.find(params)
+        rule = Rule.new.find(params)
         error!("No rule with id: #{params[:id]}", 404) unless rule
         { :rule => rule }        
       end        

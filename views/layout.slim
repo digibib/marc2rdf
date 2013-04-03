@@ -36,8 +36,8 @@ html
                 span[class="header" style="margin-right:48px"] #{library.name}
               a[href="/libraries"]: li[class="header"] libraries 
               a[href="/mapping"]: li[class="header"] mapping 
-              a[href="/oai"]: li[class="header"] oai
-              a[href="/convert"]: li[class="header"] convert
+              //a[href="/oai"]: li[class="header"] oai
+              //a[href="/convert"]: li[class="header"] convert
               a[href="/rules"]: li[class="header"] rules
               a[href="/harvest"]: li[class="header"] harvest
               a[href="/status"]: li[class="header"] status
@@ -48,8 +48,9 @@ html
             - else
               a[href="/login"]: li[class="header"] log in
         div id="debug"
-        
-      == yield
+      
+      div class="main"
+        == yield
       
       div id="footer"
         a[href="https://github.com/digibib/marc2rdf"] MARC2RDF Version 0.0.6

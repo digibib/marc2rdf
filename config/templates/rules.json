@@ -1,6 +1,6 @@
 [
   {
-      "id": 1,   
+      "id": "dummy",   
       "tag": "global", 
       "frequency": "0 22 * * 1-5", 
       "description": "A rule is a SPARQL script to be run once or at intervals", 

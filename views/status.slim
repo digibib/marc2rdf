@@ -1,53 +1,51 @@
 // Main file for status on jobs
-div class="main"
-  // This form contains OAI-PMH harvester settings                    
-  h2 MARC2RDF status
-  - if !library
-    pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
-  - else
-    h3 Status on running jobs:
-    button[type="button" id="run_test_job" class="gen" style="margin-left:48px"]  = "Run test job"
-    button[type="button" id="update_status" class="gen" style="margin-left:48px"]  = "Update status"
-    
-    // The status div
-    div id="status" class="divdot inputf"
-      p running jobs
-      table id="running-jobs" class="genform"
-        thead
-          tr
-            th job id
-            th run_time
-            th tags
-        tbody
+h2 MARC2RDF status
+- if !library
+  pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+- else
+  h3 Status on running jobs:
+  button[type="button" id="run_test_job" class="gen" style="margin-left:48px"]  = "Run test job"
+  button[type="button" id="update_status" class="gen" style="margin-left:48px"]  = "Update status"
+  
+  // The status div
+  div id="status" class="divdot inputf"
+    p running jobs
+    table id="running-jobs" class="genform"
+      thead
+        tr
+          th job id
+          th run_time
+          th tags
+      tbody
 
-      p scheduled jobs
-      table id="scheduled-jobs" class="genform"
-        tbody
-        
-  javascript:
-    $(document).on('ready', function () {
-      // ** get running jobs, populate status table
-      $('button#update_status').on('click', function() {
-        $.getJSON('/api/scheduler/running_jobs', function(data) {
-          //var header = $('<tr><th>job_id</th><th>run_time</th><th>tags</th></tr>');
-          var rows = $('<tr>');
-          $.each(data.jobs, function(i,job){
-            rows.append($('<td>').text(job.job_id)).
-                append($('<td>').text(job.run_time)).
-                append($('<td>').text(job.params['tags'].join(',')));
-          });
-          
-          //$('#running-jobs tbody').html(header);
-          $('#running-jobs tbody').append(rows);
-        });
-      });
-
-      $('button#run_test_job').on('click', function() {
-          request = $.ajax({
-            url: '/api/scheduler/test',
-            type: 'PUT',
-            cache: false
-          });
-      });
+    p scheduled jobs
+    table id="scheduled-jobs" class="genform"
+      tbody
       
+javascript:
+  $(document).on('ready', function () {
+    // ** get running jobs, populate status table
+    $('button#update_status').on('click', function() {
+      $.getJSON('/api/scheduler/running_jobs', function(data) {
+        //var header = $('<tr><th>job_id</th><th>run_time</th><th>tags</th></tr>');
+        var rows = $('<tr>');
+        $.each(data.jobs, function(i,job){
+          rows.append($('<td>').text(job.job_id)).
+              append($('<td>').text(job.run_time)).
+              append($('<td>').text(job.params['tags'].join(',')));
+        });
+        
+        //$('#running-jobs tbody').html(header);
+        $('#running-jobs tbody').append(rows);
+      });
     });
+
+    $('button#run_test_job').on('click', function() {
+        request = $.ajax({
+          url: '/api/scheduler/test',
+          type: 'PUT',
+          cache: false
+        });
+    });
+    
+  });

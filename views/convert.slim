@@ -1,121 +1,119 @@
 // Main file for conversion
-div class="main"
-  // This form contains OAI-PMH harvester settings                    
-  h2 MARC2RDF converter
-  - if !library
-    pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
-  - else
-    h3 test the conversion module:
-    
-    button[type="button" id="conversion_test" class="gen" style="margin-left:48px"]  = "Test conversion"
-    button[type="button" id="oai_query_test" class="gen" style="margin-left:48px"]  = "Test OAI query"
-    button[type="button" id="save_convert_test" class="gen" style="margin-left:48px"]  = "Test save conversion"
-    button[type="button" id="save_convert_all_test" class="gen" style="margin-left:48px"]  = "Test full conversion!!"
-    
-    // The content div
-    div id="converted_content"
-        
-  javascript:
-    $(document).on('ready', function () {
-      var id = $('#active_library_id').html();
-      // ** test conversion
-      $('button#conversion_test').on('click', function() {
-        request = $.ajax({
-          url: '/api/convert/test',
-          type: 'PUT',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({ 
-            id: id 
-            }),
-          dataType: 'json'
-        });
+h2 MARC2RDF converter
+- if !library
+  pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+- else
+  h3 test the conversion module:
   
-        request.success(function ( data ) {
-          if( console && console.log ) {
-            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-          }
-          var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
-          $("#converted_content").html('<br/><pre>' + result + '</pre>');
-        });
-        request.error(function(jqXHR, textStatus, errorThrown) {
-          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
+  button[type="button" id="conversion_test" class="gen" style="margin-left:48px"]  = "Test conversion"
+  button[type="button" id="oai_query_test" class="gen" style="margin-left:48px"]  = "Test OAI query"
+  button[type="button" id="save_convert_test" class="gen" style="margin-left:48px"]  = "Test save conversion"
+  button[type="button" id="save_convert_all_test" class="gen" style="margin-left:48px"]  = "Test full conversion!!"
+  
+  // The content div
+  div id="converted_content"
       
-      // oai query test
-      $('button#oai_query_test').on('click', function() {
-        request = $.ajax({
-          url: '/api/oai/harvest',
-          type: 'PUT',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({ 
-            id: id 
-            }),
-          dataType: 'json'
-        });
-  
-        request.success(function ( data ) {
-          if( console && console.log ) {
-            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-          }
-          var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
-          $("#converted_content").html('<br/><pre>' + result + '</pre>');
-        });
-        request.error(function(jqXHR, textStatus, errorThrown) {
-          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
+javascript:
+  $(document).on('ready', function () {
+    var id = $('#active_library_id').html();
+    // ** test conversion
+    $('button#conversion_test').on('click', function() {
+      request = $.ajax({
+        url: '/api/convert/test',
+        type: 'PUT',
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+          id: id 
+          }),
+        dataType: 'json'
       });
-      
-      // ** test save conversion
-      $('button#save_convert_test').on('click', function() {
-        request = $.ajax({
-          url: '/api/oai/save',
-          type: 'PUT',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({ 
-            id: id,
-            }),
-          dataType: 'json'
-        });
-  
-        request.success(function ( data ) {
-          if( console && console.log ) {
-            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-          }
-          var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
-          $("#converted_content").html('<br/><pre>' + result + '</pre>');
-        });
-        request.error(function(jqXHR, textStatus, errorThrown) {
-          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });      
 
-      // ** test save all!
-      $('button#save_convert_all_test').on('click', function() {
-        request = $.ajax({
-          url: '/api/oai/saveall',
-          type: 'PUT',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({ 
-            id: id,
-            }),
-          dataType: 'json'
-        });
-  
-        request.success(function ( data ) {
-          if( console && console.log ) {
-            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-          }
-          var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
-          $("#converted_content").html('<br/><pre>' + result + '</pre>');
-        });
-        request.error(function(jqXHR, textStatus, errorThrown) {
-          $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });       
-      
+      request.success(function ( data ) {
+        if( console && console.log ) {
+          console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+        }
+        var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+        $("#converted_content").html('<br/><pre>' + result + '</pre>');
+      });
+      request.error(function(jqXHR, textStatus, errorThrown) {
+        $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
     });
+    
+    // oai query test
+    $('button#oai_query_test').on('click', function() {
+      request = $.ajax({
+        url: '/api/oai/harvest',
+        type: 'PUT',
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+          id: id 
+          }),
+        dataType: 'json'
+      });
+
+      request.success(function ( data ) {
+        if( console && console.log ) {
+          console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+        }
+        var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+        $("#converted_content").html('<br/><pre>' + result + '</pre>');
+      });
+      request.error(function(jqXHR, textStatus, errorThrown) {
+        $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });
+    
+    // ** test save conversion
+    $('button#save_convert_test').on('click', function() {
+      request = $.ajax({
+        url: '/api/oai/save',
+        type: 'PUT',
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+          id: id,
+          }),
+        dataType: 'json'
+      });
+
+      request.success(function ( data ) {
+        if( console && console.log ) {
+          console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+        }
+        var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+        $("#converted_content").html('<br/><pre>' + result + '</pre>');
+      });
+      request.error(function(jqXHR, textStatus, errorThrown) {
+        $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });      
+
+    // ** test save all!
+    $('button#save_convert_all_test').on('click', function() {
+      request = $.ajax({
+        url: '/api/oai/saveall',
+        type: 'PUT',
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+          id: id,
+          }),
+        dataType: 'json'
+      });
+
+      request.success(function ( data ) {
+        if( console && console.log ) {
+          console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+        }
+        var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+        $("#converted_content").html('<br/><pre>' + result + '</pre>');
+      });
+      request.error(function(jqXHR, textStatus, errorThrown) {
+        $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });       
+    
+  });

@@ -1,0 +1,135 @@
+ul class="tabs"
+  li[class="active"] Library
+  li OAI
+  li Mapping
+  li Conversion
+  li Harvesting
+  li Rules
+div class="panes"
+  div class="pane"
+    h3 Edit Library: #{library.name} 
+    // This form contains config filename paths
+    div class="divdot inputf"  
+      table class="genform"
+        form id="change_library_settings_form" 
+          tr 
+            td library name
+            td: input[type="text" id="save_library_name" value=(library.name)]
+            td: input[type="hidden" id="save_library_id" value=(library.id)]
+          tr
+            td oai repository
+            td: input[type="text" id="save_library_oai_url" value=(library.oai['url'] if library.oai)]
+            td the url to the oai repository
+          tr
+            td resource base
+            td: input[type="text" id="save_resource_base" value=(library.config['resource']['base'] if library.config)]
+            td base url to use when creating resources
+          tr
+            td resource prefix
+            td: input[type="text" id="save_resource_prefix" value=(library.config['resource']['prefix'] if library.config)]
+            td prefix to use on resources
+          tr
+            td resource type
+            td: input[type="text" id="save_resource_type" value=(library.config['resource']['type'] if library.config)]
+            td rdf type of resources
+          tr
+            td identifier tag
+            td: input[type="text" id="save_identifier_tag" value=(library.config['resource']['identifier_tag'] if library.config)]
+            td tag used to identify and name resources
+          tr
+            td default graph
+            td: input[type="text" id="save_default_graph" value=(library.config['resource']['default_graph'] if library.config)]
+            td default graph for saving resources
+          tr
+            td default prefix
+            td: input[type="text" id="save_default_prefix" value=(library.config['resource']['default_prefix'] if library.config)]
+            td default prefix to use when creating resources            
+          // save and delete button
+          tr
+            td 
+              button[type="button" id="save_library" class="gen"]  = "Save"
+              button[type="button" id="delete_library" class="gen"]  = "Delete"
+            td
+              span[id="library_info" class="info" style="margin-left:48px"]
+              span[id="library_error" class="error" style="margin-left:48px"]    
+
+  div class="pane"
+    h3 OAI harvester settings
+    - unless library.oai
+      pre No OAI repository entered, you must go back to <a href="/libraries">libraries</a> and write in a URL for the OAI-PMH first
+    - else
+      div class="divdot inputf"
+        form id="change_harvester_settings_form" autocomplete="off"
+          table[id="oai_settings" class="genform"]
+            tr
+              td url
+              td: input[type="text" id="url" value=(library.oai['url'])]
+              td url to OAI repository for harvesting
+            tr
+              td follow_redirects
+              td
+                select[id="follow_redirects"]
+                  option[selected=("selected" if library.oai['follow_redirects'] == "false")] false
+                  option[selected=("selected" if library.oai['follow_redirects'] == "true")] true
+            tr
+              td parser
+              //td: input[type="text" id="parser" value=(library.oai['parser'] if library.oai) disabled="true"]
+              td
+                select[id="parser"]
+                  option[selected=("selected" if library.oai['parser'] == "libxml")] libxml
+                  option[selected=("selected" if library.oai['parser'] == "rexml")] rexml
+              td parser for OAI XML response (libxml=fast... rexml=slow)
+            tr
+              td timeout
+              td: input[type="text" id="timeout" value=(library.oai['timeout']) ]
+              td timeout for OAI response in ms           
+            tr
+              td format
+              td
+                select[id="format"]
+                  option[selected=("selected" if library.oai['format'] == "marcexchange")] marcexchange
+                  option[selected=("selected" if library.oai['format'] == "bibliofilmarc")] bibliofilmarc         
+              td format for OAI response (bibliofilmarc for bibliofil libraries)
+              
+            // NB! to parse preserve predicates as array, we need to use class instead of id
+          table[id="preserve" class="genform"]
+            tr
+              td preserve_on_update 
+              td
+              td properties to keep during update. Delete with '-'
+              - if library.oai['preserve_on_update'].empty?
+                tr
+                  td 
+                  td: input[type="text" class="preserve_on_update"]
+                  td: button[type='button' class="add_table_row"]  = "+"            
+              - else
+                - library.oai['preserve_on_update'].each_with_index do |v, index|
+                  tr
+                    - if index == 0
+                      td 
+                      td: input[type="text" class="preserve_on_update" value="#{v}"]
+                      td: button[type='button' class="add_table_row"]  = "+"
+                    - else
+                      td
+                      td: input[type="text" class="preserve_on_update" value="#{v}"]
+                      td: button[type='button' class="remove_table_row"]  = "-"
+          tr
+            td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
+            td
+              span[id="oai_info" class="info" style="margin-left:48px"]
+              span[id="oai_error" class="error" style="margin-left:48px"]
+  div class="pane"
+    h3 Mapping
+          
+  div class="pane"
+    h3 Conversion module
+  
+    button[type="button" id="conversion_test" class="gen"]  = "Test conversion"
+    button[type="button" id="oai_query_test" class="gen"]  = "Test OAI query"
+    button[type="button" id="save_convert_test" class="gen"]  = "Test save conversion"
+    button[type="button" id="save_convert_all_test" class="gen"]  = "Test full conversion!!"
+      
+    // The content div
+    div id="converted_content"                
+    
+  script src="/js/library.js"

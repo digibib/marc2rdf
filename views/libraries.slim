@@ -1,55 +1,11 @@
 // This file contains library overview
-div class="main"
-  h2 Libraries
-  
-  // if session[:library] is set, show edit form
-  - if library
-    h3 Edit Library: #{library.name} 
-    // This form contains config filename paths
-    div class="divdot inputf"  
-      table class="genform"
-        form id="change_library_settings_form" 
-          tr 
-            td library name
-            td: input[type="text" id="save_library_name" value=(library.name)]
-            td: input[type="hidden" id="save_library_id" value=(library.id)]
-          tr
-            td oai repository
-            td: input[type="text" id="save_library_oai_url" value=(library.oai['url'] if library.oai) disabled="true"]
-            td the url to the oai repository
-          tr
-            td resource base
-            td: input[type="text" id="save_resource_base" value=(library.config['resource']['base'] if library.config)]
-            td base url to use when creating resources
-          tr
-            td resource prefix
-            td: input[type="text" id="save_resource_prefix" value=(library.config['resource']['prefix'] if library.config)]
-            td prefix to use on resources
-          tr
-            td resource type
-            td: input[type="text" id="save_resource_type" value=(library.config['resource']['type'] if library.config)]
-            td rdf type of resources
-          tr
-            td identifier tag
-            td: input[type="text" id="save_identifier_tag" value=(library.config['resource']['identifier_tag'] if library.config)]
-            td tag used to identify and name resources
-          tr
-            td default graph
-            td: input[type="text" id="save_default_graph" value=(library.config['resource']['default_graph'] if library.config)]
-            td default graph for saving resources
-          tr
-            td default prefix
-            td: input[type="text" id="save_default_prefix" value=(library.config['resource']['default_prefix'] if library.config)]
-            td default prefix to use when creating resources            
-          // save and delete button
-          tr
-            td 
-              button[type="button" id="save_library" class="gen"]  = "Save"
-              button[type="button" id="delete_library" class="gen"]  = "Delete"
-            td
-              span[id="save_library_info" class="info" style="margin-left:48px"]
-              span[id="save_library_error" class="error" style="margin-left:48px"]    
-  
+h2 Libraries
+
+// if session[:library] is set, show library settings form
+- if library
+  == render :slim, :'library_settings', :layout => false, :locals => {:library => library}
+
+- else
   h3 select library
   table id="libraries" class="libraries active tablesorter"
     tbody
@@ -58,7 +14,7 @@ div class="main"
           td #{library.id}
           td
             a href="/libraries/#{library.id}" #{library.name}
-
+  
   h3 create a new library
   div class="divdot inputf"
     span[class='info' id="create_library_info" style="margin-left:20px"]
@@ -76,99 +32,99 @@ div class="main"
           td
             span[id="library_info" class="info" style="margin-left:48px"]
             span[id="library_error" class="error" style="margin-left:48px"]            
-    
-  javascript:
-    $(document).ready(function () {
-      // get id of active library
-      var id = $('#active_library_id').html();
-      // ** create new library with some reasonable defaults
-      $('button#create_library').on('click', function() {
-        var request = $.ajax({
-          url: '/api/library',
-          type: 'POST',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({ 
-              name: $('input#create_library_name').val(),
-              oai: { 
-                  url: $('input#create_library_oai_url').val(),
-                  preserve_on_update: [ "FOAF.depiction" ],
-                  timeout: 60,
-                  format: "marcxchange",
-                  follow_redirects: false,
-                  parser: "rexml"
-                  },
-              }),
-          dataType: 'json'
-        });
-
-        request.done(function(data) {
-          $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
-          window.location.reload();
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
+  
+javascript:
+  $(document).ready(function () {
+    // get id of active library
+    var id = $('#active_library_id').html();
+    // ** create new library with some reasonable defaults
+    $('button#create_library').on('click', function() {
+      var request = $.ajax({
+        url: '/api/library',
+        type: 'POST',
+        cache: false,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+            name: $('input#create_library_name').val(),
+            oai: { 
+                url: $('input#create_library_oai_url').val(),
+                preserve_on_update: [ "FOAF.depiction" ],
+                timeout: 60,
+                format: "marcxchange",
+                follow_redirects: false,
+                parser: "rexml"
+                },
+            }),
+        dataType: 'json'
       });
 
-      // ** edit library
-      $('button#save_library').on('click', function() {
-        var request = $.ajax({
-          url: '/api/library',
-          type: 'PUT',
-          contentType: "application/json; charset=utf-8",
-          cache: false,
-          data: JSON.stringify({ 
-                id: id,
-                name: $('input#save_library_name').val(),
-                //oai: { url: $('input#save_library_oai_url').val() },
-                config: {
-                  resource: {
-                    base: $('input#save_resource_base').val(),
-                    prefix: $('input#save_resource_prefix').val(),
-                    identifier_tag: $('input#save_identifier_tag').val(),
-                    type: $('input#save_resource_type').val(),
-                    default_prefix: $('input#save_default_prefix').val(),
-                    default_graph: $('input#save_default_graph').val(),
-                    },
-                  },
-                }),
-          dataType: 'json'
-        });
-        
-        request.done(function(data) {
-          console.log("updated library: "+id);
-          $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
-          //window.location.reload();
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
+      request.done(function(data) {
+        $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
+        window.location.reload();
       });
-            
-      // ** delete library
-      $('button#delete_library').on('click', function() {
-        // get id of active library
-        var request = $.ajax({
-          url: '/api/library',
-          type: 'DELETE',
-          cache: false,
-          data: { 
-              id: id
-              },
-          dataType: 'json'
-        });
 
-        request.done(function(data) {
-          $('span#library_info').html("Deleted library OK!").show().fadeOut(3000);
-          window.location.reload();
-        });
-
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      }); 
-
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
     });
+
+    // ** edit library
+    $('button#save_library').on('click', function() {
+      var request = $.ajax({
+        url: '/api/library',
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        cache: false,
+        data: JSON.stringify({ 
+              id: id,
+              name: $('input#save_library_name').val(),
+              //oai: { url: $('input#save_library_oai_url').val() },
+              config: {
+                resource: {
+                  base: $('input#save_resource_base').val(),
+                  prefix: $('input#save_resource_prefix').val(),
+                  identifier_tag: $('input#save_identifier_tag').val(),
+                  type: $('input#save_resource_type').val(),
+                  default_prefix: $('input#save_default_prefix').val(),
+                  default_graph: $('input#save_default_graph').val(),
+                  },
+                },
+              }),
+        dataType: 'json'
+      });
+      
+      request.done(function(data) {
+        console.log("updated library: "+id);
+        $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
+        //window.location.reload();
+      });
+
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });
+          
+    // ** delete library
+    $('button#delete_library').on('click', function() {
+      // get id of active library
+      var request = $.ajax({
+        url: '/api/library',
+        type: 'DELETE',
+        cache: false,
+        data: { 
+            id: id
+            },
+        dataType: 'json'
+      });
+
+      request.done(function(data) {
+        $('span#library_info').html("Deleted library OK!").show().fadeOut(3000);
+        window.location.reload();
+      });
+
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    }); 
+
+  });
