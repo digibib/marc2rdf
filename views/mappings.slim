@@ -3,10 +3,23 @@
 // Split screen or test convertion feedback for user:
 // tag > mapping > "test" > result
 
-h2 Mapping
-- unless library
-    pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
-- else
+h2 Mappings
+h3 Existing Mappings
+table id="mappings_list" class="libraries active tablesorter"
+  thead
+    tr
+      th 
+      th[style="width:150px"] short name
+      th[style="width:300px"] description
+  tbody
+  - for m in Mapping.new.all
+    tr id="#{m.id}"
+      td 
+      td 
+        a href="/mappings/#{m.id}" #{m.name}
+      td #{m.description}
+- if mapping
+  h3 Edit Mapping: #{mapping.name}      
   button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Mapping Template"
   // The mapping div
   div id="auto"
@@ -55,12 +68,11 @@ h2 Mapping
     domSplitter.appendChild(saveJSON);    
     
     $(document).ready(function () {
-      // get id of active library
-      var id = #{library.id};
-      var json = $.getJSON('/api/library/'+id+'/mapping', function() {
-        editor.set(JSON.parse(json.responseText));
-        formatter.set(editor.get());
-      });
+      //console.log(JSON.parse("#{mapping.mapping.to_json}").text());
+      var json = $.getJSON('/api/mappings/?id=#{mapping.id}', function() {
+          editor.set(JSON.parse(json.responseText));
+          formatter.set(editor.get());
+        });
       // conversions
       toForm.onclick = function () {
         editor.set(formatter.get());
@@ -70,15 +82,15 @@ h2 Mapping
       };  
       saveJSON.onclick = function () {
         //console.log(JSON.stringify(editor.get(), null, 2));
-        mapping = editor.get();
+        map = editor.get();
         request = $.ajax({
-          url: '/api/library',
+          url: '/api/mappings',
           type: 'PUT',
           cache: false,
           contentType: 'application/json; charset=utf-8',
           data: JSON.stringify({
-              id: id,
-              mapping: mapping["mapping"]
+              id: map.id,
+              mapping: map["mapping"]
               }),
           dataType: 'json'
         });
@@ -91,7 +103,7 @@ h2 Mapping
       
       // ** load template into editor
       $('button#load_template').on('click', function() {
-        var json = $.getJSON('/api/mapping', function() {
+        var json = $.getJSON('/api/mappings/template', function() {
           editor.set(JSON.parse(json.responseText));
           formatter.set(editor.get());
         });

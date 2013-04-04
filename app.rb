@@ -62,10 +62,14 @@ class APP < Sinatra::Base
     slim :libraries, :locals => {:library => session[:library]}
   end
       
-  get '/mapping' do
-    # Primary mapping
+  get '/mappings' do
     :json
-    slim :mapping, :locals => {:library => session[:library]}
+    slim :mappings, :locals => {:library => session[:library], :mapping => nil}
+  end
+
+  get '/mappings/:id' do
+    # Edit Mapping
+    slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.new.find(:id => params[:id])}
   end
 
   get '/oai' do
@@ -87,6 +91,7 @@ class APP < Sinatra::Base
   end
 
   get '/rules/:id' do
+    :json
     # Edit rule
     slim :rules, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
   end
