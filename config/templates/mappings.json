@@ -1,0 +1,118 @@
+[
+    {
+        "id": "dummy",
+        "description": "A mapping example from MARC to RDF",
+        "name": "Example Mapping",
+        "mapping": {
+            "tags": {
+                "100": {
+                    "subfield": {
+                        "3": {
+                            "predicate": "DC.creator",
+                            "object": {
+                                "datatype": "uri",
+                                "prefix": "http://data.deichman.no/person/x"
+                            },
+                            "relation": {
+                                "subfield": {
+                                    "1": {
+                                        "predicate": "SKOS.notation",
+                                        "object": {
+                                            "datatype": "literal"
+                                        }
+                                    },
+                                    "3": {
+                                        "predicate": "DC.identifier",
+                                        "object": {
+                                            "datatype": "literal"
+                                        }
+                                    },
+                                    "a": {
+                                        "predicate": "RADATANA.catalogueName",
+                                        "object": {
+                                            "datatype": "literal"
+                                        }
+                                    },
+                                    "c": {
+                                        "predicate": "FOAF.title",
+                                        "object": {
+                                            "datatype": "literal"
+                                        }
+                                    },
+                                    "d": {
+                                        "predicate": "DEICH.lifespan",
+                                        "object": {
+                                            "datatype": "literal"
+                                        }
+                                    },
+                                    "j": {
+                                        "predicate": "XFOAF.nationality",
+                                        "object": {
+                                            "datatype": "uri",
+                                            "regex_strip": "[\\W]+",
+                                            "prefix": "http://data.deichman.no/nationality/",
+                                            "regex_split": "[\\-]+"
+                                        }
+                                    },
+                                    "q": {
+                                        "predicate": "FOAF.givenName",
+                                        "object": {
+                                            "datatype": "literal"
+                                        }
+                                    }
+                                },
+                                "class": "FOAF.Person"
+                            }
+                        }
+                    }
+                },
+                "245": {
+                    "subfield": {
+                        "a": {
+                            "predicate": "DC.title",
+                            "object": {
+                                "datatype": "literal",
+                                "regex_strip": "[\\.:,;\\/\\s]\\s*$"
+                            }
+                        },
+                        "p": {
+                            "predicate": "FABIO.hasSubtitle",
+                            "object": {
+                                "datatype": "literal",
+                                "regex_strip": "[\\.:,;\\/\\s]\\s*$"
+                            }
+                        },
+                        "c": {
+                            "predicate": "RDA.statementOfResponsibility",
+                            "object": {
+                                "datatype": "literal",
+                                "regex_strip": "[\\.:,;\\/\\s]\\s*$"
+                            }
+                        },
+                        "b": {
+                            "predicate": "FABIO.hasSubtitle",
+                            "object": {
+                                "datatype": "literal",
+                                "regex_strip": "[\\.:,;\\/\\s]\\s*$"
+                            }
+                        },
+                        "n": {
+                            "predicate": "BIBO.number",
+                            "object": {
+                                "datatype": "literal"
+                            }
+                        }
+                    }
+                },
+                "001": {
+                    "titleNumber": {
+                        "predicate": "DC.identifier",
+                        "object": {
+                            "datatype": "literal"
+                        }
+                    }
+                }
+            }
+        }
+    }
+]

@@ -24,7 +24,7 @@ unless ENV['RACK_ENV'] == 'test'
 end
 
 module API
-  # custom option validator :length
+  # custom option validators
   class Length < Grape::Validations::SingleOptionValidator
     def validate_param!(attr_name, params)
       unless params[attr_name].length >= @option
@@ -33,6 +33,16 @@ module API
     end
   end
 
+  class Valid_json < Grape::Validations::SingleOptionValidator
+    def validate_param!(attr_name, params)
+      begin
+        JSON.parse(params[attr_name])
+      rescue JSON::ParserError
+        throw :error, :status => 400, :message => "#{attr_name}: must be valid JSON"
+      end
+    end
+  end
+  
   class Root < Grape::API
     helpers do
       def logger
@@ -50,7 +60,7 @@ module API
     default_format :json
     use ApiErrorHandler
     
-    mount API::Mapping
+    mount API::Mappings
     mount API::Libraries
     mount API::Conversion
     mount API::Oai
