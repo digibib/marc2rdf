@@ -38,7 +38,7 @@ class Mapping
   
   def update(params)
     return nil unless self.id
-    return nil if valid_json?(self.mapping) == false
+    #return nil if valid_json?(self.mapping) == false
     params.delete(:id)
     self.members.each {|name| self[name] = params[name] unless params[name].nil? }
     save
@@ -46,7 +46,7 @@ class Mapping
   
   def save
     return nil unless self.id or self.mapping
-    return nil if valid_json?(self.mapping) == false
+    #return nil if valid_json?(self.mapping) == false
     mappings = self.all
     match = self.find(:id => self.id)
     if match

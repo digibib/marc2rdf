@@ -36,7 +36,7 @@ module API
   class Valid_json < Grape::Validations::SingleOptionValidator
     def validate_param!(attr_name, params)
       begin
-        JSON.parse(params[attr_name])
+        JSON.parse(params[attr_name]) 
       rescue JSON::ParserError
         throw :error, :status => 400, :message => "#{attr_name}: must be valid JSON"
       end

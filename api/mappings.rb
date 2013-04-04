@@ -29,7 +29,7 @@ module API
         params do
           requires :name,        type: String, desc: "Short Name of Mapping"
           requires :description, type: String, length: 5, desc: "Description"
-          requires :mapping,     type: String, valid_json: true, desc: "The actual Mapping"
+          requires :mapping,     desc: "The actual Mapping"
         end
       post "/" do
         content_type 'json'
@@ -42,7 +42,7 @@ module API
       desc "edit/update mapping"
         params do
           requires :id,          type: String, desc: "ID of Mapping"
-          requires :mapping,     type: String, valid_json: true, desc: "The actual Mapping"
+          requires :mapping,     desc: "The actual Mapping"
           optional :name,        type: String, desc: "Short Name of Mapping"
           optional :description, type: String, length: 5, desc: "Description"
         end

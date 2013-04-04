@@ -18,9 +18,42 @@ table id="mappings_list" class="libraries active tablesorter"
       td 
         a href="/mappings/#{m.id}" #{m.name}
       td #{m.description}
+
+h3 Create a new Mapping
+div class="divdot inputf"
+  span[class='info' id="create_mapping_info" style="margin-left:20px"]
+  form id="add_mapping_form"
+    table class="genform"
+      tr
+        td name
+        td: input[type="text" id="create_mapping_name" class="required"]
+      tr
+        td description
+        td: input[type="text" id="create_mapping_description" class="required"]          
+      tr
+        td: button[type="button" id="create_mapping" class="gen"]  = "Create new Mapping"
+        td
+          span[id="mapping_info" class="info" style="margin-left:48px"]
+          span[id="mapping_error" class="error" style="margin-left:48px"]            
+                
 - if mapping
-  h3 Edit Mapping: #{mapping.name}      
-  button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Mapping Template"
+  h3 Edit Mapping: #{mapping.name}
+  div class="divdot inputf"  
+    table class="genform"
+      form id="edit_mapping_form" 
+        tr
+          td
+          td: input[type="hidden" id="save_mapping_id" value=(mapping.id)]
+        tr
+          td name
+          td: input[type="text" id="save_mapping_name" value=(mapping.name)]
+        tr
+          td description
+          td: input[type="text" id="save_mapping_description" value=(mapping.description)]
+          
+            button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Mapping Template"
+            button[type="button" id="save_mapping" class="gen"]  = "Update Mapping"
+            button[type="button" id="delete_mapping" class="gen"]  = "Delete Mapping"
   // The mapping div
   div id="auto"
     div id="contents"
@@ -68,9 +101,8 @@ table id="mappings_list" class="libraries active tablesorter"
     domSplitter.appendChild(saveJSON);    
     
     $(document).ready(function () {
-      //console.log(JSON.parse("#{mapping.mapping.to_json}").text());
       var json = $.getJSON('/api/mappings/?id=#{mapping.id}', function() {
-          editor.set(JSON.parse(json.responseText));
+          editor.set(JSON.parse(json.responseText).mapping["mapping"]);
           formatter.set(editor.get());
         });
       // conversions
@@ -82,15 +114,16 @@ table id="mappings_list" class="libraries active tablesorter"
       };  
       saveJSON.onclick = function () {
         //console.log(JSON.stringify(editor.get(), null, 2));
-        map = editor.get();
+        var newmap = editor.get();
+        //alert(JSON.stringify(newmap));
         request = $.ajax({
           url: '/api/mappings',
           type: 'PUT',
           cache: false,
           contentType: 'application/json; charset=utf-8',
           data: JSON.stringify({
-              id: map.id,
-              mapping: map["mapping"]
+              id: "#{mapping.id}",
+              mapping: newmap
               }),
           dataType: 'json'
         });
@@ -106,6 +139,84 @@ table id="mappings_list" class="libraries active tablesorter"
         var json = $.getJSON('/api/mappings/template', function() {
           editor.set(JSON.parse(json.responseText));
           formatter.set(editor.get());
+        });
+      }); 
+      
+      $('button#create_mapping').on('click', function() {
+        var request = $.ajax({
+          url: '/api/mappings',
+          type: 'POST',
+          cache: false,
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify({ 
+              name: $('input#create_mapping_name').val(),
+              description: $('input#create_mapping_description').val(),
+              mapping: {
+                "tags": { }
+              }
+              }),
+          dataType: 'json'
+        });
+  
+        request.done(function(data) {
+          $('span#mapping_info').html("Saved mapping OK!").show().fadeOut(3000);
+          window.location.reload();
+        });
+  
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+
+      // ** edit mapping
+      $('button#save_mapping').on('click', function() {
+        var request = $.ajax({
+          url: '/api/mappings',
+          type: 'PUT',
+          contentType: "application/json; charset=utf-8",
+          cache: false,
+          data: JSON.stringify({
+              id: "#{mapping.id}",
+              name: $('input#save_mapping_name').val(),
+              description: $('input#save_mapping_description').val(),
+              mapping: editor.get()
+              }),
+          dataType: 'json'
+        });
+        
+        request.done(function(data) {
+          console.log("updated mapping: #{mapping.id}");
+          if( console && console.log ) {
+            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+          }
+          $('span#mapping_info').html("Saved mapping OK!").show().fadeOut(3000);
+          //window.location.reload();
+        });
+  
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+            
+      // ** delete mapping
+      $('button#delete_mapping').on('click', function() {
+        var request = $.ajax({
+          url: '/api/mappings',
+          type: 'DELETE',
+          cache: false,
+          data: { 
+              id: "#{mapping.id}",
+              },
+          dataType: 'json'
+        });
+  
+        request.done(function(data) {
+          $('span#mapping_info').html("Deleted mapping OK!").show().fadeOut(3000);
+          window.location.reload();
+        });
+  
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       }); 
                

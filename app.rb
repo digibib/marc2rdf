@@ -91,9 +91,8 @@ class APP < Sinatra::Base
   end
 
   get '/rules/:id' do
-    :json
     # Edit rule
-    slim :rules, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
+    slim :rules, :escape_html => false, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
   end
       
   get '/harvest' do
