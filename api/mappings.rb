@@ -16,29 +16,7 @@ module API
           { :mapping => mapping }        
         end        
       end  
-      
-      ### REMOVE WHEN DONE
-      desc "return mapping template or id"
-      get "/template" do
-        content_type 'json'
-        mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), '../config/templates', 'mapping_skeleton.json')))
-        { :mapping => mapping }
-      end
-    
-      desc "create new mapping"
-        params do
-          requires :name,        type: String, desc: "Short Name of Mapping"
-          requires :description, type: String, length: 5, desc: "Description"
-          requires :mapping,     desc: "The actual Mapping"
-        end
-      post "/" do
-        content_type 'json'
-        mapping = Mapping.new.create(params)
-        mapping.save
-        logger.info "POST: params: #{params} - created mapping: #{mapping}"
-        { :mapping => mapping }
-      end
-          
+
       desc "edit/update mapping"
         params do
           requires :id,          type: String, desc: "ID of Mapping"
@@ -72,7 +50,28 @@ module API
         logger.info "DELETE: params: #{params} - deleted mapping: #{mapping}"
         { :mapping => mapping }
       end        
-                
+
+      ### REMOVE WHEN DONE
+      desc "return mapping template or id"
+      get "/template" do
+        content_type 'json'
+        mapping = JSON.parse(IO.read(File.join(File.dirname(__FILE__), '../config/templates', 'mapping_skeleton.json')))
+        { :mapping => mapping }
+      end
+    
+      desc "create new mapping"
+        params do
+          requires :name,        type: String, desc: "Short Name of Mapping"
+          requires :description, type: String, length: 5, desc: "Description"
+          requires :mapping,     desc: "The actual Mapping"
+        end
+      post "/" do
+        content_type 'json'
+        mapping = Mapping.new.create(params)
+        mapping.save
+        logger.info "POST: params: #{params} - created mapping: #{mapping}"
+        { :mapping => mapping }
+      end                
     end # end mappings namespace
   end
 end

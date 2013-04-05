@@ -9,8 +9,9 @@ table id="mappings_list" class="libraries active tablesorter"
   thead
     tr
       th 
-      th[style="width:150px"] short name
-      th[style="width:300px"] description
+      th[style="width:250px"] short name
+      th[style="width:400px"] description
+      th[style="width:400px"] used by
   tbody
   - for m in Mapping.new.all
     tr id="#{m.id}"
@@ -18,6 +19,11 @@ table id="mappings_list" class="libraries active tablesorter"
       td 
         a href="/mappings/#{m.id}" #{m.name}
       td #{m.description}
+      td 
+        // loop libraries to see if anyone uses this mapping
+        - for l in Library.new.all
+          - if l.mapping == m.id
+            a href="/libraries/#{l.id}" = "#{l.name} "
 
 h3 Create a new Mapping
 div class="divdot inputf"

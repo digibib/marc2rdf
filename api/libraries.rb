@@ -14,26 +14,12 @@ module API
           { :library => library }        
         end
       end
-      
-      ### Mapping ###
-       
-      desc "get specific library mapping"
-      get "/:id/mapping" do
-        content_type 'json'
-        library = Library.new.find(:id=> params[:id].to_i)
-        if library
-          { :mapping => library.mapping }
-        else
-          logger.error "library mapping not found"   
-          error!("library mapping not found", 400)
-        end
-      end
-      
+
       desc "create new library"
         params do
           requires :name,       type: String, length: 5, desc: "Name of library"
           optional :config,     desc: "Config file"
-          optional :mapping,    desc: "Mapping file"
+          optional :mapping,    desc: "Mapping id"
           optional :oai,        desc: "OAI settings"
           optional :harvesting, desc: "Harvesting settings file" 
         end
@@ -44,7 +30,7 @@ module API
         logger.info "POST: params: #{params} - created library: #{library}"
         { :library => library }
       end
-      
+=begin      
       desc "save specific library mapping"
         params do
           requires :mapping, desc: "Mapping file"
@@ -58,21 +44,13 @@ module API
         logger.info "PUT: params: #{params} - updated mapping: #{library.mapping}"
         { :mapping => library.mapping }
       end
-              
-      ### Conversion ###
-      desc "convert records"
-      get "/:id/convert" do
-        content_type 'json'
-        library = Library.new.find(:id => params[:id])
-        { :record => record }
-      end
-    
+=end
       desc "edit/update library"
         params do
           requires :id,         type: Integer, desc: "ID of library"
           optional :name,       type: String,  length: 5, desc: "Name of library"
           optional :config,     desc: "Config file"
-          optional :mapping,    desc: "Mapping file"
+          optional :mapping,    desc: "Mapping id"
           optional :oai,        desc: "OAI settings"
           optional :harvesting, desc: "Harvesting settings file" 
         end

@@ -161,28 +161,24 @@ $(document).ready(function () {
   });
   // ** end OAI settings
   
-  // ** MAPPING, maybe just select from global instead?
-
-  
-  // ** end MAPPING
-  
-  // ** CONVERSION
-  // ** test conversion
-  $('button#conversion_test').ajaxSend( function() {
+  // ** MAPPING
+  // ** test mapping
+  $('button#test_mapping').ajaxSend( function() {
       $(this).addClass('loading');
   });
-  $('button#conversion_test').ajaxComplete( function(){
+  $('button#test_mapping').ajaxComplete( function(){
       $(this).removeClass('loading');
   });
-  $('button#conversion_test').on('click', function() {
+  $('button#test_mapping').on('click', function(e) {
     request = $.ajax({
-      url: '/api/convert/test',
+      url: '/api/conversion/test',
       type: 'PUT',
       cache: false,
       contentType: "application/json; charset=utf-8",
       //beforeSend: function(){ $("#loaderDiv").show(); },
       data: JSON.stringify({ 
-        id: id 
+        id: id,
+        mapping: $(this).closest('tr').attr("id"),
         }),
       dataType: 'json'
     });
@@ -193,12 +189,40 @@ $(document).ready(function () {
         console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
       }
       var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
-      $("#converted_content").html('<br/><pre>' + result + '</pre>');
+      $("#mapping_test").html('<br/><pre>' + result + '</pre>');
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
-      $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+      $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
+  
+  $('button#select_mapping').on('click', function() {
+    var btn = $(this);
+    request = $.ajax({
+      url: '/api/library',
+      type: 'PUT',
+      cache: false,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: id,
+        mapping: $(this).closest('tr').attr("id"),
+        }),
+      dataType: 'json'
+    });
+
+    request.success(function ( data ) {
+       $('span#mapping_info').html("Changed mapping !").show().fadeOut(3000);
+       // deactivate button
+       $('button#select_mapping').removeAttr('disabled');
+       btn.attr('disabled', true);
+    });
+    request.error(function(jqXHR, textStatus, errorThrown) {
+      $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  // ** end MAPPING
+  
+  // ** CONVERSION
   
   // oai query test
   $('button#oai_query_test').on('click', function() {

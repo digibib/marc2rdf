@@ -120,11 +120,39 @@ div class="panes"
               span[id="oai_error" class="error" style="margin-left:48px"]
   div class="pane"
     h3 Mapping
+    p Selected mapping:
+      <a href="/mappings/#{library.mapping}"> #{Mapping.new.find(:id =>library.mapping).name}</a>
+    
+    p Choose another mapping:
+    table id="mappings_list" class="libraries active tablesorter"
+      thead
+        tr
+          th  
+          th[style="width:250px"] short name
+          th[style="width:400px"] description
+          th
+      tbody
+      - for m in Mapping.new.all
+        tr id="#{m.id}"
+          td 
+            button[type="button" id="test_mapping" class="gen"] = "test"
+            - if m.id == library.mapping
+              button[type="button" id="select_mapping" class="gen" disabled="true"] = "select"
+            - else
+              button[type="button" id="select_mapping" class="gen"] = "select"
+          td 
+            a href="/mappings/#{m.id}" #{m.name}
+          td #{m.description}
+      tr
+        td
+          span[id="mapping_info" class="info" style="margin-left:48px"]
+          span[id="mapping_error" class="error" style="margin-left:48px"]
+    // The test div
+    div id="mapping_test" 
           
   div class="pane"
     h3 Conversion module
   
-    button[type="button" id="conversion_test" class="gen"]  = "Test conversion"
     button[type="button" id="oai_query_test" class="gen"]  = "Test OAI query"
     button[type="button" id="save_convert_test" class="gen"]  = "Test save conversion"
     button[type="button" id="save_convert_all_test" class="gen"]  = "Test full conversion!!"
