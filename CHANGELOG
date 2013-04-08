@@ -1,0 +1,16 @@
+= marc2rdf CHANGELOG
+
+0.1.0 released 2013-04-14
+  Initial release of WebApp
+0.0.3-0.0.9
+  Major Rewrite into Web Application (Ruby Sinatra)
+  Library Model
+  JSON Mapping Editor
+  Simple SPARQL Rules model
+  Rufus Scheduler
+0.0.2 
+  OAI-PMH harvester scripts
+  RDF Modeler  
+0.0.1 prerelease
+  mapping files from MARC to RDF in YAML
+  ruby script to convert binary MARC to RDF NTriples
