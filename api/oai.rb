@@ -36,7 +36,42 @@ class Oai < Grape::API
       result = oai.client.identify
       { :result => result }
     end 
-        
+
+    desc "get a record"
+      params do
+        requires :id,       type: Integer, desc: "ID of library"
+        requires :record,   type: String, desc: "Record identifier" 
+        optional :filename, type: String, desc: "Filename, for saving" 
+      end
+    put "/getrecord" do
+      content_type 'json'
+      library = Library.new.find(:id => params[:id].to_i)
+      oai = OAIClient.new(library.oai["url"], 
+        :format => library.oai["format"], 
+        :parser => library.oai["parser"], 
+        :timeout => library.oai["timeout"],
+        :redirects => library.oai["timeout"])
+      unless params[:record].empty?
+        oai.get_record :identifier => params[:record], :metadata_prefix => library.oai["format"]
+      else
+        oai.get_record :metadata_prefix => library.oai["format"]
+      end
+      xmlreader = MARC::XMLReader.new(StringIO.new(oai.records.record.metadata.to_s)) 
+      rdfrecords = []
+      if params[:filename]
+        FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
+        file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", "#{params[:filename]}"), 'w')
+      end
+      xmlreader.each do |marc|
+        rdf = RDFModeler.new(library.id, marc)
+        rdf.set_type("#{library.config['resource']['type']}")        
+        rdf.convert
+        rdfrecords << rdf.statements
+        file.write(rdf.statements) if file
+      end
+      { :resource => rdfrecords }
+    end 
+            
     desc "harvest a record batch"
       params do
         requires :id,         type: Integer,  desc: "ID of library"
@@ -53,6 +88,7 @@ class Oai < Grape::API
       { :result => result }
     end 
 
+    ## NEEDS FIXING ##
     desc "saves a record batch"
       params do
         requires :id,    type: Integer, desc: "ID of library"

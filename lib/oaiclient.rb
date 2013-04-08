@@ -37,8 +37,9 @@ class OAIClient
   end
     
   # query OAI for specific records
-  def get_records
-    # NOT IMPLEMENTED
+  def get_record(params={})
+    identifier     = params[:identifier]      ||= 'oai:bibliofil.no:NO-2030000:14890'
+    self.records = self.client.get_record :identifier => params[:identifier], :metadata_prefix => self.format
   end
   
   # get library OAI identifier

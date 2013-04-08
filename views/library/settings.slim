@@ -1,0 +1,45 @@
+h3 Edit Library: #{library.name} 
+// This form contains config filename paths
+div class="divdot inputf"  
+  table class="genform"
+    form id="change_library_settings_form" 
+      tr 
+        td library name
+        td: input[type="text" id="save_library_name" value=(library.name)]
+        td: input[type="hidden" id="save_library_id" value=(library.id)]
+      tr
+        td oai repository
+        td: input[type="text" id="save_library_oai_url" value=(library.oai['url'] if library.oai)]
+        td the url to the oai repository
+      tr
+        td resource base
+        td: input[type="text" id="save_resource_base" value=(library.config['resource']['base'] if library.config)]
+        td base url to use when creating resources
+      tr
+        td resource prefix
+        td: input[type="text" id="save_resource_prefix" value=(library.config['resource']['prefix'] if library.config)]
+        td prefix to use on resources
+      tr
+        td resource type
+        td: input[type="text" id="save_resource_type" value=(library.config['resource']['type'] if library.config)]
+        td rdf type of resources
+      tr
+        td identifier tag
+        td: input[type="text" id="save_identifier_tag" value=(library.config['resource']['identifier_tag'] if library.config)]
+        td tag used to identify and name resources
+      tr
+        td default graph
+        td: input[type="text" id="save_default_graph" value=(library.config['resource']['default_graph'] if library.config)]
+        td default graph for saving resources
+      tr
+        td default prefix
+        td: input[type="text" id="save_default_prefix" value=(library.config['resource']['default_prefix'] if library.config)]
+        td default prefix to use when creating resources            
+      // save and delete button
+      tr
+        td 
+          button[type="button" id="save_library" class="gen"]  = "Save"
+          button[type="button" id="delete_library" class="gen"]  = "Delete"
+        td
+          span[id="library_info" class="info" style="margin-left:48px"]
+          span[id="library_error" class="error" style="margin-left:48px"]    

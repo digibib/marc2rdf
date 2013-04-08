@@ -16,6 +16,7 @@ class APP < Sinatra::Base
     set :token,'schabogaijk13@[]5fukkksiur!&&%&%'
     set :password,'secret'
     enable :logging, :dump_errors, :raise_errors
+    enable :reload_templates
   end  
   
   configure :development do
@@ -46,7 +47,7 @@ class APP < Sinatra::Base
       slim :about, :locals => {:library => session[:library]}
     end
   end
-  
+
   get '/libraries' do
     # Library selection
     :json
@@ -55,11 +56,17 @@ class APP < Sinatra::Base
     slim :libraries, :locals => {:library => session[:library]}
   end
 
+  get '/reset' do
+    # Reset session and redirect to library selection
+    session[:library] = nil
+    redirect '/libraries'
+  end
+  
   get '/libraries/:id' do
     # Library settings
     :json
     session[:library] = Library.new.find(:id => params[:id].to_i)
-    slim :libraries, :locals => {:library => session[:library]}
+    redirect '/'
   end
       
   get '/mappings' do
@@ -83,6 +90,10 @@ class APP < Sinatra::Base
   get '/convert' do
     # Main conversion tool
     slim :convert, :locals => {:library => session[:library]}
+  end
+  
+  get '/convert/:id/:filename' do |filename|
+    send_file "./db/#{params[:id]}/#{filename}", :filename => filename, :type => 'Application/octet-stream'
   end
 
   get '/rules' do

@@ -1,0 +1,28 @@
+h3 Conversion module
+
+table id="conversion_list" class="libraries active tablesorter"
+  thead
+    tr
+      th
+      th[style="width:240px"] description
+      th record identificator
+      th filename
+  tbody
+    tr
+      td 
+        button[type="button" id="oai_getrecord_test" class="gen"] = "test"
+        button[type="button" id="oai_saverecord_test" class="gen"] = "save"
+      td convert single record
+      td: input[type="text" id="oai_getrecord" class="gen"]
+      td: input[type="text" id="oai_saverecord_filename" class="gen"]
+    tr
+      td: button[type="button" id="save_convert_all_test" class="gen" disabled="true"] = "test"
+      td full conversion!!
+    tr
+      td
+        span[id="conversion_info" class="info" style="margin-left:48px"]
+        span[id="conversion_error" class="error" style="margin-left:48px"]
+      
+// The content div
+div id="converted_content"  
+

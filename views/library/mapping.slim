@@ -1,0 +1,31 @@
+h3 Mapping
+- if library.mapping
+  p Selected mapping:
+    <a href="/mappings/#{library.mapping}"> #{Mapping.new.find(:id =>library.mapping).name}</a>
+
+p Choose mapping:
+table id="mappings_list" class="libraries active tablesorter"
+  thead
+    tr
+      th  
+      th[style="width:250px"] short name
+      th[style="width:400px"] description
+      th
+  tbody
+  - for m in Mapping.new.all
+    tr id="#{m.id}"
+      td 
+        button[type="button" id="test_mapping" class="gen"] = "test"
+        - if m.id == library.mapping
+          button[type="button" id="select_mapping" class="gen" disabled="true"] = "select"
+        - else
+          button[type="button" id="select_mapping" class="gen"] = "select"
+      td 
+        a href="/mappings/#{m.id}" #{m.name}
+      td #{m.description}
+  tr
+    td
+      span[id="mapping_info" class="info" style="margin-left:48px"]
+      span[id="mapping_error" class="error" style="margin-left:48px"]
+// The test div
+div id="mapping_test" 

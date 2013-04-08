@@ -1,6 +1,9 @@
 - if admin?
   h2 Dashboard
-  p marc2rdf tool dashboard...
+  // if session[:library] is set, show library settings form
+  - if library
+    == render :slim, :'library_settings', :layout => false, :locals => {:library => library}           
+
 - else
   p Les om verktøyet på 
   a[href="/about"]: about

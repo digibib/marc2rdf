@@ -85,24 +85,26 @@ $(document).ready(function () {
         
   // ** delete library
   $('button#delete_library').on('click', function() {
-    var request = $.ajax({
-      url: '/api/library',
-      type: 'DELETE',
-      cache: false,
-      data: { 
-          id: id
-          },
-      dataType: 'json'
-    });
-
-    request.done(function(data) {
-      $('span#library_info').html("Deleted library OK!").show().fadeOut(3000);
-      window.location.reload();
-    });
-
-    request.fail(function(jqXHR, textStatus, errorThrown) {
-      $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
-    });
+    if (confirm('Are you sure? All info on Library will be lost!')) {
+      var request = $.ajax({
+        url: '/api/library',
+        type: 'DELETE',
+        cache: false,
+        data: { 
+            id: id
+            },
+        dataType: 'json'
+      });
+  
+      request.done(function(data) {
+        $('span#library_info').html("Deleted library OK!").show().fadeOut(3000);
+        window.location = '/reset';
+      });
+  
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    }
   }); 
   // ** end LIBRARY settings
   
@@ -223,41 +225,16 @@ $(document).ready(function () {
   // ** end MAPPING
   
   // ** CONVERSION
-  
-  // oai query test
-  $('button#oai_query_test').on('click', function() {
+  // oai getrecord test
+  $('button#oai_getrecord_test').on('click', function() {
     request = $.ajax({
-      url: '/api/oai/harvest',
-      type: 'PUT',
-      cache: false,
-      contentType: "application/json; charset=utf-8",
-      data: JSON.stringify({ 
-        id: id 
-        }),
-      dataType: 'json'
-    });
-
-    request.success(function ( data ) {
-      if( console && console.log ) {
-        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-      }
-      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
-      $("#converted_content").html('<br/><pre>' + result + '</pre>');
-    });
-    request.error(function(jqXHR, textStatus, errorThrown) {
-      $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
-    });
-  });
-  
-  // ** test save conversion
-  $('button#save_convert_test').on('click', function() {
-    request = $.ajax({
-      url: '/api/oai/save',
+      url: '/api/oai/getrecord',
       type: 'PUT',
       cache: false,
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
         id: id,
+        record: $('input#oai_getrecord').val(),
         }),
       dataType: 'json'
     });
@@ -270,7 +247,37 @@ $(document).ready(function () {
       $("#converted_content").html('<br/><pre>' + result + '</pre>');
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
-      $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+      $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  
+  // ** test save conversion
+  $('button#oai_saverecord_test').on('click', function() {
+    filename = $('input#oai_saverecord_filename').val();
+    request = $.ajax({
+      url: '/api/oai/getrecord',
+      type: 'PUT',
+      cache: false,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: id,
+        record: $('input#oai_getrecord').val(),
+        filename: filename,
+        }),
+      dataType: 'json'
+    });
+
+    request.success(function ( data ) {
+      if( console && console.log ) {
+        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+      }
+      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+      $("#converted_content").html('<br/><pre>' + result + '</pre>');
+      // and download file
+      window.location="/convert/"+id+"/"+filename;
+    });
+    request.error(function(jqXHR, textStatus, errorThrown) {
+      $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });      
 
