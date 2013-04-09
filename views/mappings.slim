@@ -15,7 +15,7 @@ table id="mappings_list" class="libraries active tablesorter"
   tbody
   - for m in Mapping.new.all
     tr id="#{m.id}"
-      td 
+      td
       td 
         a href="/mappings/#{m.id}" #{m.name}
       td #{m.description}
@@ -57,7 +57,8 @@ div class="divdot inputf"
           td description
           td: input[type="text" id="save_mapping_description" value=(mapping.description)]
           
-            button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Mapping Template"
+            button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Basic Template"
+            button[type="button" id="clone_mapping" class="gen"] = "Clone Mapping"
             button[type="button" id="save_mapping" class="gen"]  = "Update Mapping"
             button[type="button" id="delete_mapping" class="gen"]  = "Delete Mapping"
   // The mapping div
@@ -147,7 +148,8 @@ div class="divdot inputf"
           formatter.set(editor.get());
         });
       }); 
-      
+
+      // create new mapping
       $('button#create_mapping').on('click', function() {
         var request = $.ajax({
           url: '/api/mappings',
@@ -203,7 +205,36 @@ div class="divdot inputf"
           $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
-            
+
+      // clone mapping into new
+      $('button#clone_mapping').on('click', function() {
+        var request = $.ajax({
+          url: '/api/mappings',
+          type: 'POST',
+          contentType: "application/json; charset=utf-8",
+          cache: false,
+          data: JSON.stringify({
+              name: $('input#save_mapping_name').val() + '_copy',
+              description: $('input#save_mapping_description').val(),
+              mapping: editor.get()
+              }),
+          dataType: 'json'
+        });
+        
+        request.done(function(data) {
+          console.log("updated mapping: " + JSON.stringify(data.mapping["id"]));
+          if( console && console.log ) {
+            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+          }
+          $('span#mapping_info').html("Saved mapping OK!").show().fadeOut(3000);
+          window.location.reload();
+        });
+  
+        request.fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+                  
       // ** delete mapping
       $('button#delete_mapping').on('click', function() {
         if (confirm('Are you sure? All info on Mapping will be lost!')) {
