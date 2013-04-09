@@ -206,24 +206,26 @@ div class="divdot inputf"
             
       // ** delete mapping
       $('button#delete_mapping').on('click', function() {
-        var request = $.ajax({
-          url: '/api/mappings',
-          type: 'DELETE',
-          cache: false,
-          data: { 
-              id: "#{mapping.id}",
-              },
-          dataType: 'json'
-        });
-  
-        request.done(function(data) {
-          $('span#mapping_info').html("Deleted mapping OK!").show().fadeOut(3000);
-          window.location.reload();
-        });
-  
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
+        if (confirm('Are you sure? All info on Mapping will be lost!')) {
+          var request = $.ajax({
+            url: '/api/mappings',
+            type: 'DELETE',
+            cache: false,
+            data: { 
+                id: "#{mapping.id}",
+                },
+            dataType: 'json'
+          });
+    
+          request.done(function(data) {
+            $('span#mapping_info').html("Deleted mapping OK!").show().fadeOut(3000);
+            window.location.reload();
+          });
+    
+          request.fail(function(jqXHR, textStatus, errorThrown) {
+            $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+          });
+        }
       }); 
                
     });
