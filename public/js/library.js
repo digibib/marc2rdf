@@ -6,7 +6,7 @@ $(document).ready(function () {
   // ** options tabs handling **
   $('.pane').hide();
   $('.pane:first').addClass('active').show();
-
+  
   $('.tabs li').on('click', function() {
     $('.tabs li.active').removeClass('active');
     $(this).addClass('active');
@@ -123,6 +123,17 @@ $(document).ready(function () {
     return false;
   });
 
+  // ** validate oai repository
+  $('button#oai_settings_validate').on('click', function() {
+    $.get('/api/oai/validate', { id: id })
+      .done(function(data) {
+        $('input#oai_id').val(data.id);
+        $('span#oai_info').html(JSON.stringify(data)).show().fadeOut(5000);
+      })
+      .fail(function() { $('span#oai_error').html("Failed to validate, check URL!").show().fadeOut(5000); });
+    
+  });
+  
   // ** save oai settings
   $('button#oai_settings_save').on('click', function() {
   
@@ -143,13 +154,15 @@ $(document).ready(function () {
           id: id,
           oai: {
             url: $('input#url').val(),
+            id: $('input#oai_id').val(),
             follow_redirects: $('select#follow_redirects option:selected').val(),
             parser: $('select#parser option:selected').val(),
             //parser: $('input#parser').val(),
             timeout: $('input#timeout').val(),
             format: $('select#format option:selected').val(),
             preserve_on_update: preserve_array
-          }}),
+            }
+          }),
       dataType: 'json'
     });
 
@@ -198,6 +211,7 @@ $(document).ready(function () {
     });
   });
   
+  // select mapping
   $('button#select_mapping').on('click', function() {
     var btn = $(this);
     request = $.ajax({
@@ -214,7 +228,7 @@ $(document).ready(function () {
 
     request.success(function ( data ) {
        $('span#mapping_info').html("Changed mapping !").show().fadeOut(3000);
-       // deactivate button
+       // deactivate button for chosen mapping
        $('button#select_mapping').removeAttr('disabled');
        btn.attr('disabled', true);
     });
@@ -234,7 +248,7 @@ $(document).ready(function () {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
         id: id,
-        record: $('input#oai_getrecord').val(),
+        record: $('span#oai_id').val() + $('input#oai_getrecord').val(),
         }),
       dataType: 'json'
     });
@@ -274,7 +288,7 @@ $(document).ready(function () {
       var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
       $("#converted_content").html('<br/><pre>' + result + '</pre>');
       // and download file
-      window.location="/convert/"+id+"/"+filename;
+      window.location="/convert/"+filename;
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
       $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);

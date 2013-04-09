@@ -16,10 +16,13 @@ class Oai < Grape::API
         :parser => library.oai["parser"], 
         :timeout => library.oai["timeout"],
         :redirects => library.oai["timeout"])
-      result = oai.validate
-      { :result => result }
+      oai.validate
+      return  { :result => "not validated!" } unless oai.identify_response
+      { :repo => oai.identify_response, :id => oai.oai_id, :datasets => oai.datasets }
     end 
 
+=begin
+  deprecated, validate instead
     desc "identify a OAI repository"
       params do
         requires :id, type: Integer, desc: "ID of library"
@@ -36,7 +39,7 @@ class Oai < Grape::API
       result = oai.client.identify
       { :result => result }
     end 
-
+=end
     desc "get a record"
       params do
         requires :id,       type: Integer, desc: "ID of library"
@@ -59,15 +62,18 @@ class Oai < Grape::API
       xmlreader = MARC::XMLReader.new(StringIO.new(oai.records.record.metadata.to_s)) 
       rdfrecords = []
       if params[:filename]
-        FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
-        file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", "#{params[:filename]}"), 'w')
+        FileUtils.mkdir_p File.join(File.dirname(__FILE__), '../db/converted/')
+        file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'w')
       end
       xmlreader.each do |marc|
         rdf = RDFModeler.new(library.id, marc)
         rdf.set_type("#{library.config['resource']['type']}")        
         rdf.convert
         rdfrecords << rdf.statements
-        file.write(rdf.statements) if file
+        if file
+          rdf.write_record
+          file.write(rdf.rdf)
+        end
       end
       { :resource => rdfrecords }
     end 
@@ -91,9 +97,10 @@ class Oai < Grape::API
     ## NEEDS FIXING ##
     desc "saves a record batch"
       params do
-        requires :id,    type: Integer, desc: "ID of library"
-        optional :from,  type: DateTime, desc: "From Date"
-        optional :until, type: DateTime, desc: "To Date"
+        requires :id,       type: Integer, desc: "ID of library"
+        optional :from,     type: DateTime, desc: "From Date"
+        optional :until,    type: DateTime, desc: "To Date"
+        optional :filename, type: String, desc: "Filename, for saving" 
       end
     put "/save" do
       content_type 'json'
@@ -106,8 +113,8 @@ class Oai < Grape::API
         :redirects => library.oai["redirects"])
       oai.query(:from => params[:from], :until => params[:until])
       logger.info "oai response: #{oai.response}"
-      FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
-      file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'w')
+      FileUtils.mkdir_p File.join(File.dirname(__FILE__), '../db/converted/')
+      file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'w') if params[:filename]
       oai.response.entries.each do |record| 
         unless record.deleted?
           xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
@@ -115,7 +122,7 @@ class Oai < Grape::API
             rdf = RDFModeler.new(library.id, marc)
             rdf.set_type("BIBO.Document")        
             rdf.convert
-            file.write(rdf.statements)
+            file.write(rdf.statements) if params[:filename]
           end
         else
           logger.info "deleted record: #{record.header.identifier.split(':').last}"

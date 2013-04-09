@@ -59,7 +59,6 @@ class OAIClient
     end
   end
   
-  
   # get metadata formats
   def list_formats
     formats = self.client.list_metadata_formats.entries
@@ -70,6 +69,8 @@ class OAIClient
     begin
       self.identify_response = self.client.identify
       self.identify_response.is_a?(OAI::IdentifyResponse)
+      get_oai_id
+      get_sets
     rescue ArgumentError => e
       puts e if ENV['RACK_ENV'] == "development"
       self.identify_response = nil

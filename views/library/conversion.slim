@@ -5,7 +5,8 @@ table id="conversion_list" class="libraries active tablesorter"
     tr
       th
       th[style="width:240px"] description
-      th record identificator
+      th oai id
+      th record id
       th filename
   tbody
     tr
@@ -13,7 +14,8 @@ table id="conversion_list" class="libraries active tablesorter"
         button[type="button" id="oai_getrecord_test" class="gen"] = "test"
         button[type="button" id="oai_saverecord_test" class="gen"] = "save"
       td convert single record
-      td: input[type="text" id="oai_getrecord" class="gen"]
+      td: span[id="oai_id"] #{library.oai["id"] if library.oai["id"]}:
+      td: input[size="10" type="text" id="oai_getrecord" class="gen"]
       td: input[type="text" id="oai_saverecord_filename" class="gen"]
     tr
       td: button[type="button" id="save_convert_all_test" class="gen" disabled="true"] = "test"

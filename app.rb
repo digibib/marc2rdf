@@ -92,8 +92,8 @@ class APP < Sinatra::Base
     slim :convert, :locals => {:library => session[:library]}
   end
   
-  get '/convert/:id/:filename' do |filename|
-    send_file "./db/#{params[:id]}/#{filename}", :filename => filename, :type => 'Application/octet-stream'
+  get '/convert/:filename' do |filename|
+    send_file "./db/converted/#{filename}", :filename => filename, :type => 'text/plain'
   end
 
   get '/rules' do

@@ -10,6 +10,10 @@ h3 OAI harvester settings
           td: input[type="text" id="url" value=(library.oai['url'])]
           td url to OAI repository for harvesting
         tr
+          td id
+          td: input[type="text" id="oai_id" value=(library.oai['id']) disabled="true"]
+          td id of Library Resources
+        tr
           td follow_redirects
           td
             select[id="follow_redirects"]
@@ -59,6 +63,7 @@ h3 OAI harvester settings
                   td: button[type='button' class="remove_table_row"]  = "-"
       tr
         td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
+        td: button[type='button' id="oai_settings_validate" class="gen"]  = "Validate"
         td
           span[id="oai_info" class="info" style="margin-left:48px"]
           span[id="oai_error" class="error" style="margin-left:48px"]
