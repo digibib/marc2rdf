@@ -116,30 +116,7 @@ over at [their site](http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSD
 
 Debian wheezy comes with Virtuoso version 6.1.4, as does Ubuntu 12.04 Precise.
 
-### PREPARATION
-
-Command line options are listed by running either of the three Ruby scripts.
-
-A typical conversion consists of:
-
-* converting an entire MARC binary record set with marc2rdf.rb.
-* splitting up and importing result RDF to a triplestore
-* setting up cron job to use OAI-PMH repository with oai_harvester.rb
-* adding sources to harvest and reap the internet with harvester.rb
-
-Before conversion, care must be taken to setup config files under ./config
-
-Three config files are needed:
-
-* config.yml (file and RDF repository settings)
-* harvesting.yml (sources and settings for harvesting)
-* mappingfile.yml (MARC to RDF mapping)
-
-examples on all three are under ./config 
-
-Excerpt of YAML mapping given below.
-
-For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml' based on NORMARC variant of USMARC
+#### Mapping
 
 * tag numbers can be regex (e.g. "^5(?!71)" for 500-599 minus 571)
 * predicates are given in format PREFIX.suffix and non-standard prefixes must exist in ./lib/rdfmodeler.rb
@@ -149,76 +126,6 @@ For full list of functions see example YAML file 'config/mapping-normarc2rdf.yml
 * objects can be mapped key => values
 * relations can have subfields
 * string replace non-ascii characters to create uris
-* oai harvester uses same mapping as marc2rdf given in config.yml
+* oai harvester uses same mapping
 * erroneous 000 marc field in normarc can be removed with perl script ./tools/marcfix.pl
-
-## FILES INCLUDED
-
-* marc2rdf.rb                            -- main ruby script to convert NORMARC file to RDF
-* oai.rb								 -- oai harvester skript to harvest and update rdf store
-* lib/
-    * string_replace.rb                  -- mapping of UTF8-encoded characters
-    * rdfmodeler.rb                      -- the MARC to RDF conversion module
-    * sparql_update.rb                   -- SPARQL Update module
-* config/
-    * config-dist.yml                    -- config file
-    * mapping-normarc2rdf.yml            -- example mapping file: NORMARC tags to rdf mapping
-    * mapping-normarc2rdf-with-authorities.yml  -- example mapping file: NORMARC tags to rdf mapping with authorities    
-    * mapping-normarc2rdf_bildebaser.yml -- example mapping file: image base in NORMARC
-* hamsun_fikset.mrc                      -- test NORMARC file
-* output.rdf                             -- test output RDF with -r 50 (50 records)
-
-## YAML MAPPING
-
-uses yaml hashes mapping. Example excerpt:
-
-    tag:
-      '700':
-        subfield: 
-          a:
-            conditions:
-              subfield:
-                e:
-                  orig: 'arr|bearb|biogr|dir|fort|foto|...|utøv'
-                  subs: 
-                    arr: DEICHMAN.musicalArranger
-                    bearb: DC.contributor
-                    biogr: DEICHMAN.biographer
-                    dir: DEICHMAN.director
-                    eks: DEICHMAN.performer
-                    forf: DC.creator
-                    fort: DC.narrator
-                    foto: DEICHMAN.photographer
-                    ...
-                    utøv: DEICHMAN.performer
-                  default: DC.contributor
-            object:
-              combine:
-                - a
-                - b
-                - d
-              combinestring: '_' 
-              urlize: true
-              regex_strip: '[^\w\-]+'
-              prefix: http://data.deichman.no/person/
-              datatype: uri
-            relation: 
-              class: FOAF.Person
-              subfield:
-                a:
-                  predicate: RADATANA.catalogueName
-                  object:
-                    datatype: literal
-                j:
-                  predicate: XFOAF.nationality
-                  object:
-                    datatype: uri
-                    prefix: 'http://data.deichman.no/nationality/'
-                    regex_strip: '[\W]+'
-
-
-## TODO 
-
-relation subfield relations should accept different classes
-
 

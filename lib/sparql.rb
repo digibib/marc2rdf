@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 module Sparql
+=begin
 CONFIG           = YAML::load_file('config/config.yml')
 SPARQL_ENDPOINT  = CONFIG['rdfstore']['sparql_endpoint']
 DEFAULT_PREFIX   = CONFIG['rdfstore']['default_prefix']
@@ -8,7 +9,7 @@ DEFAULT_GRAPH    = RDF::URI(CONFIG['rdfstore']['default_graph'])
 
 REPO = RDF::Virtuoso::Repository.new(SPARQL_ENDPOINT)
 QUERY  = RDF::Virtuoso::Query
-
+=end
   def self.count(type)
     query    = QUERY.select.where([:s, RDF.type, type]).distinct
     query.count(:s)
