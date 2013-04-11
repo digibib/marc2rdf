@@ -1,8 +1,9 @@
 = marc2rdf CHANGELOG
 
-0.1.0 released 2013-04-14
+0.0.6 released 2013-04-14
   Initial release of WebApp
-0.0.3-0.0.9
+  Rename master branch and move old master to v0.0.5
+0.0.3-0.0.5
   Major Rewrite into Web Application (Ruby Sinatra)
   Library Model
   JSON Mapping Editor
