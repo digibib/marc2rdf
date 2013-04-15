@@ -15,6 +15,7 @@ h2 MARC2RDF status
         tr
           th job id
           th run_time
+          th rule id
           th tags
       tbody
 
@@ -32,11 +33,12 @@ javascript:
         $.each(data.jobs, function(i,job){
           rows.append($('<td>').text(job.job_id)).
               append($('<td>').text(job.run_time)).
+              append($('<td>').text(job.params['tags'].shift())).
               append($('<td>').text(job.params['tags'].join(',')));
         });
         
         //$('#running-jobs tbody').html(header);
-        $('#running-jobs tbody').append(rows);
+        $('#running-jobs tbody').html(rows);
       });
     });
 

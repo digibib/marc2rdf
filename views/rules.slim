@@ -136,12 +136,12 @@ javascript:
       request.done(function(data) {
         console.log("updated rule: "+ $('input#save_rule_id').val());
         console.log(data);
-        $('span#rule_info').html("Saved rule OK!").show().fadeOut(3000);
+        $('span#save_rule_info').html("Saved rule OK!").show().fadeOut(3000);
         //window.location.reload();
       });
 
       request.fail(function(jqXHR, textStatus, errorThrown) {
-        $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+        $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
       });
     });
           
@@ -158,12 +158,12 @@ javascript:
       });
 
       request.done(function(data) {
-        $('span#rule_info').html("Deleted rule OK!").show().fadeOut(3000);
+        $('span#save_rule_info').html("Deleted rule OK!").show().fadeOut(3000);
         window.location.reload();
       });
 
       request.fail(function(jqXHR, textStatus, errorThrown) {
-        $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+        $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
       });
     }); 
 

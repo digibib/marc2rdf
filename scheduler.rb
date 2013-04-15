@@ -50,7 +50,7 @@ class Scheduler
 
   ### ISQL rules ###
   def run_isql_rule(rule)
-    return nil unless rule.id || rule.script || rule.start_time
+    return nil unless rule.id and rule.script and rule.start_time
     rule.tag ||= "dummyrule"
     job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.tag] do
       %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
@@ -58,7 +58,7 @@ class Scheduler
   end
 
   def schedule_isql_rule(rule)
-    return nil unless rule.id || rule.script || rule.frequency
+    return nil unless rule.id and rule.script and rule.frequency
     rule.tag ||= "dummyrule"
     cron_id = self.scheduler.cron rule.frequency, :tags => [rule.id, rule.tag] do
       %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
