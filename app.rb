@@ -17,6 +17,7 @@ class APP < Sinatra::Base
     set :password,'secret'
     enable :logging, :dump_errors, :raise_errors
     enable :reload_templates
+    enable :sessions
   end  
   
   configure :development do
@@ -28,8 +29,9 @@ class APP < Sinatra::Base
     #STDERR.sync = true
   end
   
-  # use internal session hash, not cookies
-  session = {}
+  # use internal session hash for global session, not cookies
+  # not used yet
+  globalsession = {}
 
   # Very simple authentication
   helpers do
