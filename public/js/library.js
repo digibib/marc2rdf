@@ -39,14 +39,15 @@ $(document).ready(function () {
 
     request.done(function(data) {
       $('span#library_info').html("Saved library OK!").show().fadeOut(3000);
-      window.location.reload();
+      //load newly created library
+      window.location = '/libraries/'+data.library["id"];
     });
 
     request.fail(function(jqXHR, textStatus, errorThrown) {
       $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
-
+  
   // ** edit library
   $('button#save_library').on('click', function() {
     var request = $.ajax({
@@ -57,7 +58,7 @@ $(document).ready(function () {
       data: JSON.stringify({ 
             id: id,
             name: $('input#save_library_name').val(),
-            //oai: { url: $('input#save_library_oai_url').val() },
+            oai: { url: $('input#save_library_oai_url').val() },
             config: {
               resource: {
                 base: $('input#save_resource_base').val(),

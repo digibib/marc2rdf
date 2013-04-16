@@ -1,0 +1,23 @@
+h3 Script
+div class="divdot inputf"  
+  table class="genform"
+    form id="edit_rule_script" 
+      pre Make sure to test script before creating Insert rule!
+      tr
+        td name
+        td: #{rule.name}
+      tr
+        td tag
+        td: #{rule.tag}
+      tr
+        td script
+        td: textarea[id="rule_script" rows=15 cols=100] = rule.script
+      tr
+        td 
+          button[type="button" id="save_rule_script" class="gen"]  = "Save"
+        td
+          span[id="save_rule_script_info" class="info" style="margin-left:48px"]
+          span[id="save_rule_script_error" class="error" style="margin-left:48px"]    
+
+// The test div
+div id="script_test"

@@ -2,7 +2,7 @@
   h2 Dashboard
   // if session[:library] is set, show library settings form
   - if library
-    == render :slim, :'library_settings', :layout => false, :locals => {:library => library}
+    == render :slim, :'library_menu', :layout => false, :locals => {:library => library}
   - else
     pre Hint: Choose or create a <a href="/libraries">library</a> to get started
 

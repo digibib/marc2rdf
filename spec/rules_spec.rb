@@ -36,6 +36,7 @@ describe Rule do
       @rule = Rule.new.create(
         :name => "Test rule", 
         :description => "A rule testing rules",
+        :type => 'local',
         :tag => "A dummy tag",
         :start_time => @time,
         :frequency => "00 01 * * *",
@@ -63,6 +64,7 @@ describe Rule do
     it "runs a Rule job" do
       job_id = @scheduler.run_isql_rule(@rule)
       job_id.trigger_block.should match(/10 Rows/)
+      @rule.last_result.should match(/10 Rows/)
     end   
     
     it "schedules a Rule" do
@@ -72,6 +74,7 @@ describe Rule do
       cron_id.params[:tags][0].should == @rule.id
       cron_id.params[:tags][1].should == @rule.tag
       cron_id.trigger_block.should match(/10 Rows/)
+      @rule.last_result.should match(/10 Rows/)
     end   
     
     it "finds job by tags" do

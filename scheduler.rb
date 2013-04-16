@@ -20,7 +20,7 @@ class Scheduler
   def dummyjob(params={})
     params[:id]         ||= SecureRandom.uuid
     params[:start_time] ||= Time.now
-    params[:tags]        ||= "dummyjob"
+    params[:tags]       ||= "dummyjob"
     
     job_id = self.scheduler.at params[:start_time], :tags => [params[:id], params[:tags]] do
       10.times do
@@ -53,7 +53,7 @@ class Scheduler
     return nil unless rule.id and rule.script and rule.start_time
     rule.tag ||= "dummyrule"
     job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.tag] do
-      %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
     end
   end
 
@@ -61,7 +61,7 @@ class Scheduler
     return nil unless rule.id and rule.script and rule.frequency
     rule.tag ||= "dummyrule"
     cron_id = self.scheduler.cron rule.frequency, :tags => [rule.id, rule.tag] do
-      %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
     end
   end
   

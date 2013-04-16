@@ -1,9 +1,20 @@
 [
   {
-      "id": "dummy",   
-      "tag": "global", 
+      "id": "dummy_globalrule",
+      "type": "global",
+      "tag": "globaltest", 
       "frequency": "0 22 * * 1-5", 
-      "description": "A rule is a SPARQL script to be run once or at intervals", 
+      "description": "A global rule is a SPARQL script runs against entire RDF store, to be run once or at intervals", 
+      "script": "SPARQL SELECT * WHERE {?s a bibo:Document ; dct:title ?title }", 
+      "start_time": "now", 
+      "name": "Example Global Rule"
+  },
+  {
+      "id": "dummy_localrule",
+      "type": "local",
+      "tag": "localtest", 
+      "frequency": "0 22 * * 1-5", 
+      "description": "A local rule is a SPARQL script runs against a library graph in the RDF store, to be run once or at intervals", 
       "script": "The actual isql SPARQL script", 
       "start_time": "Now", 
       "name": "Example Rule"

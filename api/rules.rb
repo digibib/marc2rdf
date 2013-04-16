@@ -20,11 +20,6 @@ module API
       desc "create new rule"
         params do
           requires :name,        type: String, desc: "Short Name of Rule"
-          requires :description, type: String, length: 5, desc: "Description"
-          requires :script,      type: String, length: 15, desc: "The actual Rule"
-          optional :tag,         type: String, desc: "Tag to recognize rule"
-          optional :start_time,  desc: "Time to start rule"
-          optional :frequency,   desc: "cron frequency" 
         end
       post "/" do
         content_type 'json'
@@ -40,13 +35,14 @@ module API
           optional :name,        type: String, desc: "Short Name of Rule"
           optional :description, type: String, length: 5, desc: "Description"
           optional :script,      type: String, length: 15, desc: "The actual Rule"
+          optional :type,        type: String, desc: "global|local"
           optional :tag,         type: String, desc: "Tag to recognize rule"
           optional :start_time,  desc: "Time to start rule"
           optional :frequency,   desc: "cron frequency" 
         end
       put "/" do
         content_type 'json'
-        valid_params = ['id','name','description','script','tag','start_time','frequency']
+        valid_params = ['id','name','description','script','tag', 'type', 'start_time','frequency']
         # do we have a valid parameter?
         if valid_params.any? {|p| params.has_key?(p) }
           rule = Rule.new.find(:id => params[:id])
@@ -55,7 +51,7 @@ module API
           { :rule => rule}
         else
           logger.error "invalid or missing params"   
-          error!("Need at least one param of id|description|script|tag|start_time|frequency", 400)      
+          error!("Need at least one param of id|description|script|type|tag|start_time|frequency", 400)      
         end
       end
       

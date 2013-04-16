@@ -43,6 +43,21 @@ class Scheduling < Grape::API
           :from  => params[:from]  ||= Date.today.prev_day.to_s,
           :until => params[:until] ||= Date.today.to_s
       { :result => result }
+    end
+    
+    desc "Schedule Rule as job"
+      params do
+        requires :id,          type: String, desc: "ID of Rule"
+        optional :start_time,  desc: "Time to start rule"
+      end
+    put "/start_rule" do
+      content_type 'json'
+      rule = Rule.new.find(:id => params[:id])
+      error!("No rule with id: #{params[:id]}", 404) unless rule
+      # allow overriding start time by param
+      rule.start_time = params[:start_time] if params[:start_time]
+      result = Scheduler.run_isql_rule(rule)
+      { :result => result }
     end    
     
   end # end scheduler namespace

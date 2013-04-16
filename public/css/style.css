@@ -70,3 +70,8 @@ table.genform  {  }
 table.libraries { margin-left:48px; }
 table.libraries tr:hover { background-color:#f5f5f5;}
 table.libraries th { text-align: left; }
+textarea {
+    font-family: droid sans mono, monospace, courier new, courier, sans-serif;
+    font-size: 10pt;
+    color: #1A1A1A;
+    }

@@ -1,0 +1,9 @@
+ul class="tabs"
+  li[class="active"] Settings
+  li Script
+div class="panes"
+  div class="pane"
+    == render :slim, :'rule/settings', :layout => false, :locals => {:library => library, :rule => rule}
+  div class="pane"
+    == render :slim, :'rule/script', :layout => false, :locals => {:library => library, :rule => rule}
+  script src="/js/rule.js"

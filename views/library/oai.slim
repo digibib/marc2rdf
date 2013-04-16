@@ -45,7 +45,7 @@ h3 OAI harvester settings
           td preserve_on_update 
           td
           td properties to keep during update. Delete with '-'
-          - if library.oai['preserve_on_update'].empty?
+          - if library.oai['preserve_on_update'].nil? or library.oai['preserve_on_update'].empty?
             tr
               td 
               td: input[type="text" class="preserve_on_update"]

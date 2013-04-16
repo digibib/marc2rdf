@@ -1,0 +1,38 @@
+h3 Edit Rule: #{rule.name}
+div class="divdot inputf"  
+  table class="genform"
+    form id="edit_rule_form" 
+      tr
+        td
+        td: input[type="hidden" id="save_rule_id" value=(rule.id)]
+      tr
+        td type
+        td
+          select[id="save_rule_type"]
+            option[selected=("selected" if rule.type == "global")] global
+            option[selected=("selected" if rule.type == "local")] local
+        td (global=entire RDF store, local=library Graph)
+      tr
+        td name
+        td: input[type="text" id="save_rule_name" value=(rule.name)]
+      tr
+        td description
+        td: input[type="text" id="save_rule_description" value=(rule.description)]
+      tr
+        td tag
+        td: input[type="text" id="save_rule_tag" value=(rule.tag)]
+      tr
+        td start time
+        td: input[type="text" id="save_rule_start_time" value=(rule.start_time)]
+        td YYYY-MM-DD, empty=now
+      tr
+        td frequency
+        td: input[type="text" id="save_rule_frequency" value=(rule.frequency)]
+        td space separated cron frequency (Min Hour DayofMonth Month DayOfWeek)
+      tr
+        td 
+          button[type="button" id="save_rule" class="gen"]  = "Save"
+          button[type="button" id="delete_rule" class="gen"]  = "Delete"
+        td
+          span[id="save_rule_info" class="info" style="margin-left:48px"]
+          span[id="save_rule_error" class="error" style="margin-left:48px"]    

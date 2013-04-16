@@ -54,13 +54,15 @@ class APP < Sinatra::Base
     # Library selection
     :json
     # reload session if updated, can be optimzed!
-    session[:library] = session[:library].reload if session[:library] 
+    #session[:library] = session[:library].reload if session[:library] 
+    #slim :libraries, :locals => {:library => session[:library]}
+    session[:library] = nil
     slim :libraries, :locals => {:library => session[:library]}
   end
 
   get '/reset' do
     # Reset session and redirect to library selection
-    session[:library] = nil
+    session.clear
     redirect '/libraries'
   end
   
@@ -68,7 +70,7 @@ class APP < Sinatra::Base
     # Library settings
     :json
     session[:library] = Library.new.find(:id => params[:id].to_i)
-    redirect '/'
+    slim :library_menu, :locals => {:library => session[:library]}
   end
       
   get '/mappings' do
@@ -100,12 +102,16 @@ class APP < Sinatra::Base
 
   get '/rules' do
     # Rules creation and management
-    slim :rules, :locals => {:library => session[:library], :rule => nil}
+    session[:rule] = nil
+    slim :rules, :locals => {:library => session[:library], :rule => session[:rule]}
   end
 
   get '/rules/:id' do
+    :json
     # Edit rule
-    slim :rules, :escape_html => false, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
+    session[:rule] = Rule.new.find(:id => params[:id])
+    #slim :rules, :escape_html => false, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
+    slim :rule_menu, :locals => {:library => session[:library], :rule => session[:rule]}
   end
       
   get '/harvest' do
