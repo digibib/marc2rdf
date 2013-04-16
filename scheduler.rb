@@ -49,11 +49,17 @@ class Scheduler
   end
 
   ### ISQL rules ###
+  # TODO: inject rules run to json log
   def run_isql_rule(rule)
     return nil unless rule.id and rule.script and rule.start_time
-    rule.tag ||= "dummyrule"
+    rule.tag        ||= "dummyrule"
+    rule.start_time ||= Time.now + 30 # default to 30 sec. from now
     job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.tag] do
+      timing_start = Time.now
+      logger.info "Running rule: #{rule.id}"
       rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+      logger.info "Time to complete: #{Time.now - timing_start} s."
+      logger.info "Result: #{rule.last_result}"
     end
   end
 
@@ -93,7 +99,7 @@ class Scheduler
     jobs
   end
   
-  def find_jobs
+  def find_scheduled_jobs
     jobs = self.scheduler.jobs
     logger.info "scheduled jobs: #{jobs}"
     jobs

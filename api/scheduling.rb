@@ -29,8 +29,44 @@ class Scheduling < Grape::API
       { :result => result, :jobs => jobs }
     end
 
-    desc "find jobs"
-    get "/find_jobs" do
+    desc "find scheduled jobs"
+    get "/find_scheduled_jobs" do
+      content_type 'json'
+      result = Scheduler.find_scheduled_jobs
+      jobs = []
+      result.each do |job|
+        jobs.push({:job_id    => job.job_id,
+                  :scheduler => job.scheduler,
+                  :start_time => job.t,
+                  :last_job_thread => job.last_job_thread,
+                  :params => job.params,
+                  :block => job.block,
+                  :schedule_info => job.schedule_info,
+                  :run_time => job.last})
+      end
+      { :result => result, :jobs => jobs }
+    end
+
+    desc "find all jobs"
+    get "/find_all_jobs" do
+      content_type 'json'
+      result = Scheduler.find_all_jobs
+      jobs = []
+      result.each do |name, job|
+        jobs.push({:job_id    => job.job_id,
+                  :scheduler => job.scheduler,
+                  :start_time => job.t,
+                  :last_job_thread => job.last_job_thread,
+                  :params => job.params,
+                  :block => job.block,
+                  :schedule_info => job.schedule_info,
+                  :run_time => job.last})
+      end
+      { :result => result, :jobs => jobs }
+    end
+        
+    desc "find jobs by tag"
+    get "/find_jobs_by_tag" do
       content_type 'json'
       jobs = Scheduler.find_jobs_by_tag('conversion')
       { :result => result, :jobs => jobs }
@@ -55,7 +91,8 @@ class Scheduling < Grape::API
       rule = Rule.new.find(:id => params[:id])
       error!("No rule with id: #{params[:id]}", 404) unless rule
       # allow overriding start time by param
-      rule.start_time = params[:start_time] if params[:start_time]
+      rule.start_time = params[:start_time] ? params[:start_time] :
+        rule.start_time.empty? ? Time.now : rule.start_time
       result = Scheduler.run_isql_rule(rule)
       { :result => result }
     end    

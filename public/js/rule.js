@@ -38,31 +38,35 @@ $(document).ready(function () {
     });
   });
 
-  // ** save/update rule
+  // ** edit rule
   $('button#save_rule').on('click', function() {
     var request = $.ajax({
       url: '/api/rules',
       type: 'PUT',
-      cache: false,
       contentType: "application/json; charset=utf-8",
-      data: JSON.stringify({ 
+      cache: false,
+      data: JSON.stringify({
+          id: $('input#save_rule_id').val(),
           type: $('select#save_rule_type option:selected').val(),
-          name: $('input#create_rule_name').val(),
-          description: $('input#create_rule_description').val(),
-          tag: $('input#create_rule_tag').val(),
-          start_time: $('input#create_rule_start_time').val(),
-          frequency: $('input#create_rule_frequency').val(),
+          name: $('input#save_rule_name').val(),
+          description: $('input#save_rule_description').val(),
+          script: $('textarea#save_rule_script').val(),
+          tag: $('input#save_rule_tag').val(),
+          start_time: $('input#save_rule_start_time').val(),
+          frequency: $('input#save_rule_frequency').val(),
           }),
       dataType: 'json'
     });
-
+    
     request.done(function(data) {
-      $('span#rule_info').html("Saved rule OK!").show().fadeOut(3000);
-      window.location = '/rules/'+data.rule["id"];
+      console.log("updated rule: "+ $('input#save_rule_id').val());
+      console.log(data);
+      $('span#save_rule_info').html("Saved rule OK!").show().fadeOut(3000);
+      //window.location.reload();
     });
 
     request.fail(function(jqXHR, textStatus, errorThrown) {
-      $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+      $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
 
@@ -116,38 +120,6 @@ $(document).ready(function () {
       $('span#save_rule_script_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
-
-  // ** edit rule
-  $('button#save_rule').on('click', function() {
-    var request = $.ajax({
-      url: '/api/rules',
-      type: 'PUT',
-      contentType: "application/json; charset=utf-8",
-      cache: false,
-      data: JSON.stringify({
-          id: $('input#save_rule_id').val(),
-          type: $('select#save_rule_type option:selected').val(),
-          name: $('input#save_rule_name').val(),
-          description: $('input#save_rule_description').val(),
-          script: $('textarea#save_rule_script').val(),
-          tag: $('input#save_rule_tag').val(),
-          start_time: $('input#save_rule_start_time').val(),
-          frequency: $('input#save_rule_frequency').val(),
-          }),
-      dataType: 'json'
-    });
-    
-    request.done(function(data) {
-      console.log("updated rule: "+ $('input#save_rule_id').val());
-      console.log(data);
-      $('span#save_rule_info').html("Saved rule OK!").show().fadeOut(3000);
-      //window.location.reload();
-    });
-
-    request.fail(function(jqXHR, textStatus, errorThrown) {
-      $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
-    });
-  });
           
   // ** delete rule
   $('button#delete_rule').on('click', function() {
@@ -170,5 +142,24 @@ $(document).ready(function () {
       $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   }); 
+  
+  // test-activate rule
+  $('button#test_rule').on('click', function() {
+    request = $.ajax({
+      url: '/api/scheduler/start_rule',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ id: $('input#save_rule_id').val() }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      window.location = '/status';
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#save_rule_script_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
 
 });
