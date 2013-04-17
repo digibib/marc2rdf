@@ -11,7 +11,7 @@ module API
           { :mappings => Mapping.new.all }
         else
           logger.info params
-          mapping = Mapping.new.find(params)
+          mapping = Mapping.new.find(:id => params[:id])
           error!("No mapping with id: #{params[:id]}", 404) unless mapping
           { :mapping => mapping }        
         end        
@@ -63,7 +63,7 @@ module API
         params do
           requires :name,        type: String, desc: "Short Name of Mapping"
           requires :description, type: String, length: 5, desc: "Description"
-          requires :mapping,     desc: "The actual Mapping"
+          optional :mapping,     desc: "The actual Mapping"
         end
       post "/" do
         content_type 'json'

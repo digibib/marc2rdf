@@ -1,0 +1,21 @@
+h3 Edit Mapping: #{mapping.name}
+div class="divdot inputf"  
+  table class="genform"
+    form id="edit_mapping_form" 
+      tr
+        td
+        td: input[type="hidden" id="save_mapping_id" value=(mapping.id)]
+      tr
+        td name
+        td: input[type="text" id="save_mapping_name" value=(mapping.name)]
+      tr
+        td description
+        td: input[type="text" id="save_mapping_description" value=(mapping.description)]
+      tr
+        td
+          //button[type="button" id="clone_mapping" class="gen"] = "Clone Mapping"
+          button[type="button" id="save_mapping" class="gen"]  = "Save Mapping"
+          button[type="button" id="delete_mapping" class="gen"]  = "Delete Mapping"
+        td
+          span[id="mapping_info" class="info" style="margin-left:48px"]
+          span[id="mapping_error" class="error" style="margin-left:48px"]

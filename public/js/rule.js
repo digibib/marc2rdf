@@ -86,11 +86,11 @@ $(document).ready(function () {
         })
         .done(function(response) { 
           console.log("Sample of data:", JSON.stringify(response).slice(0, 300));
-          $('span#mapping_info').html("Cloned rule OK!").show().fadeOut(3000);
+          $('span#save_rule_info').html("Cloned rule OK!").show().fadeOut(3000);
           window.location.reload();
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+          $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
         });
       });
   });

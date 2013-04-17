@@ -1,0 +1,64 @@
+h3 Mapping Editor
+// The mapping div
+button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Basic Template"
+button[type="button" id="save_mapping" class="gen"]  = "Update Mapping"
+span[id="mapping_info" class="info" style="margin-left:48px"]
+span[id="mapping_error" class="error" style="margin-left:48px"]
+    
+div id="auto"
+  div id="contents"
+    div id="jsoneditor" 
+    div id="splitter" 
+    div id="jsonformatter"
+    
+javascript:
+  // disable Firefox spellcheck
+  document.body.spellcheck = false;
+  
+  var editor_div = document.getElementById("jsoneditor");
+  var text_div = document.getElementById("jsonformatter");
+  var domSplitter = document.getElementById('splitter');
+  var editor = new jsoneditor.JSONEditor(editor_div);
+  var formatter = new jsoneditor.JSONFormatter(text_div);
+  
+  domSplitter.appendChild(document.createElement('br'));
+  var toJSON = document.createElement('button');
+  domSplitter.appendChild(document.createElement('br'));
+  domSplitter.appendChild(document.createElement('br'));
+  
+  toJSON.id = 'toJSON';
+  toJSON.title = 'Editor to JSON';
+  toJSON.className = 'convert';
+  toJSON.innerHTML = '<div class="convert-right"></div>';
+  domSplitter.appendChild(toJSON);
+  
+  var toForm = document.createElement('button');
+  toForm.id = 'toForm';
+  toForm.title = 'JSON to Editor';
+  toForm.className = 'convert';
+  toForm.innerHTML = '<div class="convert-left"></div>';
+  domSplitter.appendChild(document.createElement('br'));
+  domSplitter.appendChild(document.createElement('br'));    
+  domSplitter.appendChild(toForm);    
+  
+  // ** end JSON editor
+
+  var json = $.getJSON('/api/mappings/?id=#{mapping.id}', function() {
+      editor.set(JSON.parse(json.responseText).mapping["mapping"]);
+      formatter.set(editor.get());
+    });
+  // conversions
+  toForm.onclick = function () {
+    editor.set(formatter.get());
+  };
+  toJSON.onclick = function () {
+    formatter.set(editor.get());
+  };  
+
+  // ** load template into editor
+  $('button#load_template').on('click', function() {
+    var json = $.getJSON('/api/mappings/template', function() {
+      editor.set(JSON.parse(json.responseText).mapping);
+      formatter.set(editor.get());
+    });
+  });   

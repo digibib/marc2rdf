@@ -1,0 +1,9 @@
+ul class="tabs"
+  li[class="active"] Settings
+  li Editor
+div class="panes"
+  div class="pane"
+    == render :slim, :'mapping/settings', :layout => false, :locals => {:library => library, :mapping => mapping}
+  div class="pane"
+    == render :slim, :'mapping/editor', :layout => false, :locals => {:library => library, :mapping => mapping}
+  script src="/js/mapping.js"

@@ -53,9 +53,6 @@ class APP < Sinatra::Base
   get '/libraries' do
     # Library selection
     :json
-    # reload session if updated, can be optimzed!
-    #session[:library] = session[:library].reload if session[:library] 
-    #slim :libraries, :locals => {:library => session[:library]}
     session[:library] = nil
     slim :libraries, :locals => {:library => session[:library]}
   end
@@ -74,13 +71,15 @@ class APP < Sinatra::Base
   end
       
   get '/mappings' do
-    :json
-    slim :mappings, :locals => {:library => session[:library], :mapping => nil}
+    session[:mapping] = nil
+    slim :mappings, :locals => {:library => session[:library], :mapping => session[:mapping]}
   end
 
   get '/mappings/:id' do
+    :json
     # Edit Mapping
-    slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.new.find(:id => params[:id])}
+    session[:mapping] = Mapping.new.find(:id => params[:id])
+    slim :mappings, :locals => {:library => session[:library], :mapping => session[:mapping]}
   end
 
   get '/oai' do

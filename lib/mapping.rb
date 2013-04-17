@@ -5,7 +5,6 @@ Mapping = Struct.new(:id, :name, :description, :mapping)
 class Mapping
 
   # a Mapping is a JSON mapping from MARC 2 RDF
-  
   def all
     mappings = []
     file     = File.join(File.dirname(__FILE__), '../db/', 'mappings.json')
@@ -23,9 +22,6 @@ class Mapping
   def find(params)
     return nil unless params[:id]
     self.all.detect {|mapping| mapping.id == params[:id] }
-  end
-  
-  def find_by_tag()
   end
   
   # new mapping

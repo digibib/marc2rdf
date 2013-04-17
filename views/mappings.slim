@@ -1,262 +1,43 @@
-// This file contains entire mapping from MARC to RDF
-// This mapping must be well thought through
-// Split screen or test convertion feedback for user:
-// tag > mapping > "test" > result
-
-h2 Mappings
-h3 Existing Mappings
-table id="mappings_list" class="libraries active tablesorter"
-  thead
-    tr
-      th 
-      th[style="width:250px"] short name
-      th[style="width:400px"] description
-      th[style="width:400px"] used by
-  tbody
-  - for m in Mapping.new.all
-    tr id="#{m.id}"
-      td
-      td 
-        a href="/mappings/#{m.id}" #{m.name}
-      td #{m.description}
-      td 
-        // loop libraries to see if anyone uses this mapping
-        - for l in Library.new.all
-          - if l.mapping == m.id
-            a href="/libraries/#{l.id}" = "#{l.name} "
-
-h3 Create a new Mapping
-div class="divdot inputf"
-  span[class='info' id="create_mapping_info" style="margin-left:20px"]
-  form id="add_mapping_form"
-    table class="genform"
-      tr
-        td name
-        td: input[type="text" id="create_mapping_name" class="required"]
-      tr
-        td description
-        td: input[type="text" id="create_mapping_description" class="required"]          
-      tr
-        td: button[type="button" id="create_mapping" class="gen"]  = "Create new Mapping"
-        td
-          span[id="mapping_info" class="info" style="margin-left:48px"]
-          span[id="mapping_error" class="error" style="margin-left:48px"]            
-                
 - if mapping
-  h3 Edit Mapping: #{mapping.name}
-  div class="divdot inputf"  
-    table class="genform"
-      form id="edit_mapping_form" 
-        tr
-          td
-          td: input[type="hidden" id="save_mapping_id" value=(mapping.id)]
+  == render :slim, :'mapping_menu', :layout => false, :locals => {:library => library, :mapping => mapping}
+- else
+  h2 Mappings
+  h3[style="margin-left:24px"] Existing Mappings
+  table id="mappings_list" class="libraries active tablesorter"
+    thead
+      tr
+        th 
+        th[style="width:250px"] short name
+        th[style="width:400px"] description
+        th[style="width:400px"] used by
+    tbody
+    - for m in Mapping.new.all
+      tr id="#{m.id}"
+        td: button[type="button" id="clone_mapping" class="gen"]  = "clone"
+        td 
+          a href="/mappings/#{m.id}" #{m.name}
+        td #{m.description}
+        td 
+          // loop libraries to see if anyone uses this mapping
+          - for l in Library.new.all
+            - if l.mapping == m.id
+              a href="/libraries/#{l.id}" = "#{l.name} "
+  
+  h3 Create a new Mapping
+  div class="divdot inputf"
+    span[class='info' id="create_mapping_info" style="margin-left:20px"]
+    form id="add_mapping_form"
+      table class="genform"
         tr
           td name
-          td: input[type="text" id="save_mapping_name" value=(mapping.name)]
+          td: input[type="text" id="create_mapping_name" class="required"]
         tr
           td description
-          td: input[type="text" id="save_mapping_description" value=(mapping.description)]
-          
-            button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Basic Template"
-            button[type="button" id="clone_mapping" class="gen"] = "Clone Mapping"
-            button[type="button" id="save_mapping" class="gen"]  = "Update Mapping"
-            button[type="button" id="delete_mapping" class="gen"]  = "Delete Mapping"
-  // The mapping div
-  div id="auto"
-    div id="contents"
-      div id="jsoneditor" 
-      div id="splitter" 
-      div id="jsonformatter"
-  
-  javascript:
-    // disable Firefox spellcheck
-    document.body.spellcheck = false;
+          td: input[type="text" id="create_mapping_description" class="required"]          
+        tr
+          td: button[type="button" id="create_mapping" class="gen"]  = "Create new Mapping"
+          td
+            span[id="mapping_info" class="info" style="margin-left:48px"]
+            span[id="mapping_error" class="error" style="margin-left:48px"]            
 
-    var editor_div = document.getElementById("jsoneditor");
-    var text_div = document.getElementById("jsonformatter");
-    var domSplitter = document.getElementById('splitter');
-    var editor = new jsoneditor.JSONEditor(editor_div);
-    var formatter = new jsoneditor.JSONFormatter(text_div);
-
-    domSplitter.appendChild(document.createElement('br'));
-    var toJSON = document.createElement('button');
-    domSplitter.appendChild(document.createElement('br'));
-    domSplitter.appendChild(document.createElement('br'));
-
-    toJSON.id = 'toJSON';
-    toJSON.title = 'Editor to JSON';
-    toJSON.className = 'convert';
-    toJSON.innerHTML = '<div class="convert-right"></div>';
-    domSplitter.appendChild(toJSON);
-    
-    var toForm = document.createElement('button');
-    toForm.id = 'toForm';
-    toForm.title = 'JSON to Editor';
-    toForm.className = 'convert';
-    toForm.innerHTML = '<div class="convert-left"></div>';
-    domSplitter.appendChild(document.createElement('br'));
-    domSplitter.appendChild(document.createElement('br'));    
-    domSplitter.appendChild(toForm);    
-    
-    var saveJSON = document.createElement('button');
-    saveJSON.id = 'saveJSON';
-    saveJSON.title = 'Save JSON to file';
-    saveJSON.className = 'save';
-    saveJSON.innerHTML = '<div class="save">save<br/>JSON</div>';
-    domSplitter.appendChild(document.createElement('br'));
-    domSplitter.appendChild(document.createElement('br'));        
-    domSplitter.appendChild(saveJSON);    
-    
-    $(document).ready(function () {
-      var json = $.getJSON('/api/mappings/?id=#{mapping.id}', function() {
-          editor.set(JSON.parse(json.responseText).mapping["mapping"]);
-          formatter.set(editor.get());
-        });
-      // conversions
-      toForm.onclick = function () {
-        editor.set(formatter.get());
-      };
-      toJSON.onclick = function () {
-        formatter.set(editor.get());
-      };  
-      saveJSON.onclick = function () {
-        //console.log(JSON.stringify(editor.get(), null, 2));
-        var newmap = editor.get();
-        //alert(JSON.stringify(newmap));
-        request = $.ajax({
-          url: '/api/mappings',
-          type: 'PUT',
-          cache: false,
-          contentType: 'application/json; charset=utf-8',
-          data: JSON.stringify({
-              id: "#{mapping.id}",
-              mapping: newmap
-              }),
-          dataType: 'json'
-        });
-        request.success(function ( data ) {
-          if( console && console.log ) {
-            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-          }
-        });
-      }; 
-      
-      // ** load template into editor
-      $('button#load_template').on('click', function() {
-        var json = $.getJSON('/api/mappings/template', function() {
-          editor.set(JSON.parse(json.responseText));
-          formatter.set(editor.get());
-        });
-      }); 
-
-      // create new mapping
-      $('button#create_mapping').on('click', function() {
-        var request = $.ajax({
-          url: '/api/mappings',
-          type: 'POST',
-          cache: false,
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({ 
-              name: $('input#create_mapping_name').val(),
-              description: $('input#create_mapping_description').val(),
-              mapping: {
-                "tags": { }
-              }
-              }),
-          dataType: 'json'
-        });
-  
-        request.done(function(data) {
-          $('span#mapping_info').html("Saved mapping OK!").show().fadeOut(3000);
-          window.location.reload();
-        });
-  
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-
-      // ** edit mapping
-      $('button#save_mapping').on('click', function() {
-        var request = $.ajax({
-          url: '/api/mappings',
-          type: 'PUT',
-          contentType: "application/json; charset=utf-8",
-          cache: false,
-          data: JSON.stringify({
-              id: "#{mapping.id}",
-              name: $('input#save_mapping_name').val(),
-              description: $('input#save_mapping_description').val(),
-              mapping: editor.get()
-              }),
-          dataType: 'json'
-        });
-        
-        request.done(function(data) {
-          console.log("updated mapping: #{mapping.id}");
-          if( console && console.log ) {
-            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-          }
-          $('span#mapping_info').html("Saved mapping OK!").show().fadeOut(3000);
-          //window.location.reload();
-        });
-  
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-
-      // clone mapping into new
-      $('button#clone_mapping').on('click', function() {
-        var request = $.ajax({
-          url: '/api/mappings',
-          type: 'POST',
-          contentType: "application/json; charset=utf-8",
-          cache: false,
-          data: JSON.stringify({
-              name: $('input#save_mapping_name').val() + '_copy',
-              description: $('input#save_mapping_description').val(),
-              mapping: editor.get()
-              }),
-          dataType: 'json'
-        });
-        
-        request.done(function(data) {
-          console.log("updated mapping: " + JSON.stringify(data.mapping["id"]));
-          if( console && console.log ) {
-            console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-          }
-          $('span#mapping_info').html("Saved mapping OK!").show().fadeOut(3000);
-          window.location.reload();
-        });
-  
-        request.fail(function(jqXHR, textStatus, errorThrown) {
-          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
-        });
-      });
-                  
-      // ** delete mapping
-      $('button#delete_mapping').on('click', function() {
-        if (confirm('Are you sure? All info on Mapping will be lost!')) {
-          var request = $.ajax({
-            url: '/api/mappings',
-            type: 'DELETE',
-            cache: false,
-            data: { 
-                id: "#{mapping.id}",
-                },
-            dataType: 'json'
-          });
-    
-          request.done(function(data) {
-            $('span#mapping_info').html("Deleted mapping OK!").show().fadeOut(3000);
-            window.location.reload();
-          });
-    
-          request.fail(function(jqXHR, textStatus, errorThrown) {
-            $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
-          });
-        }
-      }); 
-               
-    });
+  script src="/js/mapping.js"
