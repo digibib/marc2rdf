@@ -58,9 +58,9 @@ class Scheduler
       timing_start = Time.now
       logger.info "Running rule: #{rule.id}"
       logger.info "Script:\n#{rule.script}"
-      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
       logger.info "Time to complete: #{Time.now - timing_start} s."
-      logger.info "Result: #{rule.last_result}"
+      logger.info "Result:\n#{rule.last_result}"
       logline = {:time => Time.now, :rule => rule.id, :job_id => job.job_id, :cron_id => nil, :start_time => timing_start, :length => "#{Time.now - timing_start} s.", :result => rule.last_result}
       write_history(logline)
     end
@@ -73,9 +73,9 @@ class Scheduler
       timing_start = Time.now
       logger.info "Running scheduled rule: #{rule.id}"
       logger.info "Script:\n #{rule.script}"
-      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
       logger.info "Time to complete: #{Time.now - timing_start} s."
-      logger.info "Result: #{rule.last_result}"
+      logger.info "Result:\n#{rule.last_result}"
       logline = {:time => Time.now, :rule => rule.id, :job_id => nil, :cron_id => cron.job_id, :start_time => timing_start, :length => "#{Time.now - timing_start} s.", :result => rule.last_result}
       write_history(logline)
     end
