@@ -45,10 +45,9 @@ javascript:
   $(document).on('ready', function () {
     // ** get running jobs, populate status table
     $.getJSON('/api/scheduler/running_jobs', function(data) {
-    //var header = $('<tr><th>job_id</th><th>run_time</th><th>tags</th></tr>');
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id = job.params["tags"].shift();
+        rule_id = job.params["tags"].shift(); // first tag is rule id
         $('<tr>').attr('id',i)
             .append($('<td>').text(job.job_id))
             .append($('<td>').text(job.run_time))
@@ -62,7 +61,7 @@ javascript:
     $.getJSON('/api/scheduler/find_all_jobs', function(data) {
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id = job.params["tags"].shift();
+        rule_id = job.params["tags"].shift(); // first tag is rule id
         $('<tr>').attr('id',i)
             .append($('<td>').text(job.job_id))
             .append($('<td>').text(job.start_time))
@@ -78,7 +77,7 @@ javascript:
       var rows = $('<tr>');
       $.each(data.history.reverse(), function(i,job){
         rule_id = job.rule;
-        job_id = job.cron_id = 'null' ? job.job_id : job.cron_id;
+        job.job_id ? job_id = job.job_id : job_id = job.cron_id;
         $('<tr>').attr('id',i)
           .append($('<td>').text(job_id))
           .append($('<td>').text(job.time))
