@@ -35,10 +35,10 @@ div id="history" class="divdot inputf"
     thead
       tr
         th[style="width:240px"] job id
-        th[style="width:180px"] scheduled time
+        th[style="width:180px"] run
         th[style="width:180px"] rule id
-        th[style="width:180px"] tags
-        th[style="width:180px"] last run
+        th[style="width:180px"] lenght
+        th[style="width:180px"] result
     tbody
 
 javascript:
@@ -49,13 +49,13 @@ javascript:
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
         rule_id = job.params["tags"].shift();
-        rows.append($('<td>').text(job.job_id))
+        $('<tr>').attr('id',i)
+            .append($('<td>').text(job.job_id))
             .append($('<td>').text(job.run_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
-            .append($('<td>').text(job.params['tags'].join(',')));
+            .append($('<td>').text(job.params['tags'].join(',')))
+            .appendTo('#running-jobs tbody');
       });
-      
-      $('#running-jobs tbody').html(rows);
     });
     
     // ** get scheduled jobs, populate status table
@@ -63,16 +63,32 @@ javascript:
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
         rule_id = job.params["tags"].shift();
-        rows.append($('<td>').text(job.job_id))
+        $('<tr>').attr('id',i)
+            .append($('<td>').text(job.job_id))
             .append($('<td>').text(job.start_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
             .append($('<td>').text(job.params['tags'].join(',')))
-            .append($('<td>').text(job.run_time));
+            .append($('<td>').text(job.run_time))
+            .appendTo('#scheduled-jobs tbody');
       });
-      
-      $('#scheduled-jobs tbody').html(rows);
     });
-    
+
+    // ** get history, populate status table
+    $.getJSON('/api/scheduler/history', function(data) {
+      var rows = $('<tr>');
+      $.each(data.history.reverse(), function(i,job){
+        rule_id = job.rule;
+        job_id = job.cron_id = 'null' ? job.job_id : job.cron_id;
+        $('<tr>').attr('id',i)
+          .append($('<td>').text(job_id))
+          .append($('<td>').text(job.time))
+          .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
+          .append($('<td>').text(job.length))
+          .append($('<td><button>result</button></td>').click(function () { alert(job.result); }))
+          .appendTo('#finished-jobs tbody');
+      });
+    });
+        
     $('button#refresh_page').on('click', function() {
       window.location.reload();
     });

@@ -3,8 +3,9 @@
 - else
   h2 Rules Editor
   
-  h3 Existing Rules
-  table id="rules_list" class="libraries active tablesorter"
+  h3[style="margin-left:24px"] Global Rules
+  p[style="margin-left:48px"] These rules are run against entire RDF store
+  table id="global_rules_list" class="libraries active tablesorter"
     thead
       tr
         th 
@@ -14,14 +15,35 @@
         th description
     tbody
     - for r in Rule.new.all
-      tr id="#{r.id}"
-        td: button[type="button" id="clone_rule" class="gen"]  = "clone"
-        td 
-          a href="/rules/#{r.id}" #{r.name if r.name}
-        td #{r.type if r.type}
-        td #{r.tag if r.type}
-        td #{r.description if r.description}
-        
+      - if r.type == 'global'
+        tr id="#{r.id}"
+          td: button[type="button" id="clone_rule" class="gen"]  = "clone"
+          td 
+            a href="/rules/#{r.id}" #{r.name if r.name}
+          td #{r.type if r.type}
+          td #{r.tag if r.type}
+          td #{r.description if r.description}
+
+  h3[style="margin-left:24px"] Local Rules
+  p[style="margin-left:48px"] These rules are run against a library's Graph, and must be activated in Library
+  table id="local_rules_list" class="libraries active tablesorter"
+    thead
+      tr
+        th 
+        th[style="width:150px"] short name
+        th[style="width:120px"] type
+        th[style="width:120px"] tag
+        th description
+    tbody
+    - for r in Rule.new.all
+      - if r.type == 'local'
+        tr id="#{r.id}"
+          td: button[type="button" id="clone_rule" class="gen"]  = "clone"
+          td 
+            a href="/rules/#{r.id}" #{r.name if r.name}
+          td #{r.type if r.type}
+          td #{r.tag if r.type}
+          td #{r.description if r.description}        
                                           
   h3 Create a new Rule
   div class="divdot inputf"

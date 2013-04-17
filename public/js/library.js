@@ -15,7 +15,7 @@ $(document).ready(function () {
     $('.pane:eq('+idx+')').show();
   });
     
-  // ** Library Settings 
+  // ** SETTINGS 
   // ** create new library with some reasonable defaults */
   $('button#create_library').on('click', function() {
     var request = $.ajax({
@@ -47,7 +47,32 @@ $(document).ready(function () {
       $('span#library_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
-  
+
+  // clone library into new
+  $('button#clone_library').on('click', function() {
+    $.getJSON('/api/library', { id: $(this).closest('tr').attr("id") })
+      .done(function(data) {
+        json = data["library"];
+        json.name = json.name + ' copy';
+        console.log("cloned rule: " + JSON.stringify(json));
+        $.ajax({
+          url: '/api/library', 
+          type: 'POST',
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify(json),
+          dataType: 'json'
+        })
+        .done(function(response) { 
+          console.log("Sample of data:", JSON.stringify(response).slice(0, 300));
+          $('span#mapping_info').html("Cloned rule OK!").show().fadeOut(3000);
+          window.location.reload();
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
+        });
+      });
+  });
+    
   // ** edit library
   $('button#save_library').on('click', function() {
     var request = $.ajax({
@@ -107,9 +132,9 @@ $(document).ready(function () {
       });
     }
   }); 
-  // ** end LIBRARY settings
+  // ** end SETTINGS
   
-  // ** OAI settings
+  // ** OAI
   // ** functions to add/remove table row, class "remove_table_row"
   $("table#preserve").delegate(".remove_table_row", "click", function(){
     $(this).closest("tr").remove();
@@ -175,7 +200,7 @@ $(document).ready(function () {
       $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
-  // ** end OAI settings
+  // ** end OAI
   
   // ** MAPPING
   // ** test mapping
@@ -318,6 +343,54 @@ $(document).ready(function () {
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
       $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  // ** end CONVERSION
+  
+  // ** RULES
+  // run rule once
+  $('button#run_rule_now').on('click', function() {
+    request = $.ajax({
+      url: '/api/scheduler/run_rule',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: $(this).closest('tr').attr("id"),
+        library: id
+        }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#rule_info').html("Activated Rule OK!").show().fadeOut(3000);
+      window.location = '/status';
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  
+  // schedule rule
+  $('button#schedule_rule').on('click', function() {
+    request = $.ajax({
+      url: '/api/scheduler/schedule_rule',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: $(this).closest('tr').attr("id"),
+        library: id
+        }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#rule_info').html("Scheduled Rule OK!").show().fadeOut(3000);
+      window.location = '/status';
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
 });

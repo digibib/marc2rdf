@@ -9,7 +9,7 @@ module API
           { :libraries => Library.new.all }
         else
           logger.info params
-          library = Library.new.find(params)
+          library = Library.new.find(:id => params[:id].to_i)
           error!("No library with id: #{params[:id]}", 404) unless library
           { :library => library }        
         end

@@ -2,7 +2,13 @@ h3 Script
 div class="divdot inputf"  
   table class="genform"
     form id="edit_rule_script" 
-      pre Make sure to test script before activating rule!
+      pre 
+        | Please make sure to test script in real sparql endpoint before activating rule! <br/>
+        | No validation is done on script whatsoever!<br/>
+        | For Local rules the available variables are:<br/>
+        |   DEFAULT_GRAPH      (Will be substituted by Library Graph and made an URI)<br/>
+        |   DEFAULT_PREFIX.xyz (Will be substituted by default prefix from Library to generate resources and made an URI)<br/>
+        | And remember: script MUST be started with 'SPARQL' and ended with ';' to run
       tr
         td name
         td: #{rule.name}
@@ -15,7 +21,6 @@ div class="divdot inputf"
       tr
         td 
           button[type="button" id="save_rule_script" class="gen"]  = "save"
-          button[type="button" id="test_rule" class="gen"]  = "test"
         td
           span[id="save_rule_script_info" class="info" style="margin-left:48px"]
           span[id="save_rule_script_error" class="error" style="margin-left:48px"]    

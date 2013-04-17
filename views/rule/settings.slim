@@ -11,7 +11,7 @@ div class="divdot inputf"
           select[id="save_rule_type"]
             option[selected=("selected" if rule.type == "global")] global
             option[selected=("selected" if rule.type == "local")] local
-        td (global=entire RDF store, local=library Graph)
+        td (global=Run against entire RDF store, local=run against library Graph)
       tr
         td name
         td: input[type="text" id="save_rule_name" value=(rule.name)]
@@ -33,6 +33,9 @@ div class="divdot inputf"
         td 
           button[type="button" id="save_rule" class="gen"]  = "Save"
           button[type="button" id="delete_rule" class="gen"]  = "Delete"
+          - if rule.type == 'global'
+            button[type="button" id="run_rule_now" class="gen"]  = "Run now!"
+            button[type="button" id="activate_schedule" class="gen"]  = "Schedule!"
         td
           span[id="save_rule_info" class="info" style="margin-left:48px"]
           span[id="save_rule_error" class="error" style="margin-left:48px"]    

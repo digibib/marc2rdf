@@ -54,20 +54,30 @@ class Scheduler
     return nil unless rule.id and rule.script and rule.start_time
     rule.tag        ||= "dummyrule"
     rule.start_time ||= Time.now + 30 # default to 30 sec. from now
-    job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.tag] do
+    job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.tag] do |job|
       timing_start = Time.now
       logger.info "Running rule: #{rule.id}"
+      logger.info "Script: #{rule.script}"
       rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
       logger.info "Time to complete: #{Time.now - timing_start} s."
       logger.info "Result: #{rule.last_result}"
+      logline = {:time => Time.now, :rule => rule.id, :job_id => job.job_id, :cron_id => nil, :start_time => timing_start, :length => "#{Time.now - timing_start} s.", :result => rule.last_result}
+      write_history(logline)
     end
   end
 
   def schedule_isql_rule(rule)
     return nil unless rule.id and rule.script and rule.frequency
     rule.tag ||= "dummyrule"
-    cron_id = self.scheduler.cron rule.frequency, :tags => [rule.id, rule.tag] do
+    cron_id = self.scheduler.cron rule.frequency, :tags => [rule.id, rule.tag] do |cron|
+      timing_start = Time.now
+      logger.info "Running scheduled rule: #{rule.id}"
+      logger.info "Script: #{rule.script}"
       rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+      logger.info "Time to complete: #{Time.now - timing_start} s."
+      logger.info "Result: #{rule.last_result}"
+      logline = {:time => Time.now, :rule => rule.id, :job_id => nil, :cron_id => cron.job_id, :start_time => timing_start, :length => "#{Time.now - timing_start} s.", :result => rule.last_result}
+      write_history(logline)
     end
   end
   
@@ -185,7 +195,19 @@ class Scheduler
     end
   end
   
-
+  ### History 
+  def read_history
+    logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
+    open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
+    log = JSON.parse(IO.read(logfile))
+  end
+  
+  def write_history(logline)
+    logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
+    log = self.read_history
+    log["history"] << logline
+    open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(log.to_json))) } 
+  end
   
 end
 

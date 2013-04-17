@@ -1,0 +1,25 @@
+h3 Rules
+p[style="margin-left:24px"] Only local rules are available to library, for global rules visit <a href="/rules">rules</a> page
+table id="mappings_list" class="libraries active tablesorter"
+  thead
+    tr
+      th  
+      th[style="width:250px"] short name
+      th[style="width:400px"] description
+      th
+  tbody
+  - for rule in Rule.new.all
+    - if rule.type == 'local'
+      tr id="#{rule.id}"
+        td 
+          button[type="button" id="run_rule_now" class="gen"] = "run once"
+          button[type="button" id="schedule_rule" class="gen"] = "schedule"
+        td 
+          a href="/rules/#{rule.id}" #{rule.name}
+        td #{rule.description}
+  tr
+    td
+      span[id="rule_info" class="info" style="margin-left:48px"]
+      span[id="rule_error" class="error" style="margin-left:48px"]
+// The test div
+div id="rule_test" 

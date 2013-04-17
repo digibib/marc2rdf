@@ -72,9 +72,9 @@ $(document).ready(function () {
 
   // clone rule into new
   $('button#clone_rule').on('click', function() {
-    $.getJSON('/api/rules', { id: $('input#save_rule_id').val() })
+    $.getJSON('/api/rules', { id: $(this).closest('tr').attr("id") })
       .done(function(data) {
-        json = data["rules"][0];
+        json = data["rule"];
         json.name = json.name + ' copy';
         console.log("cloned rule: " + JSON.stringify(json));
         $.ajax({
@@ -143,10 +143,11 @@ $(document).ready(function () {
     });
   }); 
   
-  // test-activate rule
-  $('button#test_rule').on('click', function() {
+  // ** Running Rules once or on schedule
+  // run rule once
+  $('button#run_rule_now').on('click', function() {
     request = $.ajax({
-      url: '/api/scheduler/start_rule',
+      url: '/api/scheduler/run_rule',
       type: 'PUT',
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ id: $('input#save_rule_id').val() }),
@@ -155,10 +156,31 @@ $(document).ready(function () {
     });
     
     request.done(function(data) {
+      $('span#save_rule_info').html("Activated Rule OK!").show().fadeOut(3000);
       window.location = '/status';
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
-      $('span#save_rule_script_error').html(jqXHR.responseText).show().fadeOut(5000);
+      $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+
+  // activate schedule
+  $('button#activate_schedule').on('click', function() {
+    request = $.ajax({
+      url: '/api/scheduler/schedule_rule',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ id: $('input#save_rule_id').val() }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#save_rule_info').html("Activated Schedule OK!").show().fadeOut(3000);
+      window.location = '/status';
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
 

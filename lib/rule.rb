@@ -73,4 +73,17 @@ class Rule
     self.find(:id => self.id)
   end  
   
+  def localize(library)
+    return nil unless self.id and self.script
+    self.script.gsub!(/DEFAULT_GRAPH/, RDF::URI(library.config['resource']['default_graph']).to_ntriples)
+    self.script.gsub!(/DEFAULT_PREFIX\.([^\s]+)/, '<' +library.config['resource']['default_prefix'] + '\1>')
+    self
+  end
+  
+  def globalize
+    return nil unless self.id and self.script
+    self.script.gsub!(/DEFAULT_GRAPH/, RDF::URI(SETTINGS['global']['default_graph']).to_ntriples)
+    self.script.gsub!(/DEFAULT_PREFIX\.([^\s]+)/, '<' +SETTINGS['global']['default_prefix'] + '\1>')
+    self
+  end
 end

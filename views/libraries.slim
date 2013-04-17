@@ -4,16 +4,16 @@
   // This file contains library overview
   h2 Libraries
   
-  h3 select library
+  h3[style="margin-left:24px"] select library
   table id="libraries" class="libraries active tablesorter"
     tbody
       - for library in Library.new.all
-        tr id="#{library.id}"
-          td #{library.id}
+        tr id="#{library.id}" 
+          td: button[type="button" id="clone_library" class="gen"]  = "clone"
           td
             a href="/libraries/#{library.id}" #{library.name}
   
-  h3 create a new library
+  h3[style="margin-left:24px"] create a new library
   div class="divdot inputf"
     span[class='info' id="create_library_info" style="margin-left:20px"]
     form id="add_library_form" onsubmit="return false"

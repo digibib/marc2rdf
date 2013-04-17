@@ -5,5 +5,9 @@
     "username": "dba", 
     "password": "dba", 
     "auth_method": "digest"
+  },
+  "global": {
+    "default_graph": "http://example.com/graph",
+    "default_prefix": "http://example.com/"
   }
 }

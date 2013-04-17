@@ -1,9 +1,22 @@
 = marc2rdf CHANGELOG
-
+0.0.8
+  Rules Engine:
+    run now and scheduled jobs
+    global and local rules with DEFAULT_GRAPH and DEFAULT_PREFIX substitution
+    saved json history of jobs completed with result popup
+  Rule and Library cloning
+0.0.7
+  Rules scripting in Scheduler  
 0.0.6 released 2013-04-14
   Initial release of WebApp
   Rename master branch and move old master to v0.0.5
-0.0.3-0.0.5
+0.0.5
+  Library modular settings
+  OAI scheduling
+0.0.4 API rewrite
+  all jquery/ajax requests through API modules
+  /api{library,mappings,oai,conversion,rules,scheduling}
+0.0.3
   Major Rewrite into Web Application (Ruby Sinatra)
   Library Model
   JSON Mapping Editor
