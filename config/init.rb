@@ -11,6 +11,9 @@ Bundler.require(:default, ENV["RACK_ENV"].to_sym)
 require 'json'
 require 'drb'
 
+# fix broken UTF-8 during PUT requests for Ruby < 1.9.3-p392
+Encoding.default_external = Encoding::UTF_8
+
 # read configuration file into constants
 CONFIG_FILE   = File.join(File.dirname(__FILE__), '../config/', 'settings.json')
 SETTINGS      = JSON.parse(IO.read(CONFIG_FILE))
