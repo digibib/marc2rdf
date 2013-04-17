@@ -124,10 +124,9 @@ class APP < Sinatra::Base
     slim :status, :locals => {:library => session[:library]}
   end
   
-  get '/repository' do
-    # Misc. repository settings
-    session[:repository] = SETTINGS["repository"]
-    slim :repository, :locals => {:library => session[:library], :repo => session[:repository]}
+  get '/settings' do
+    # Misc. settings
+    slim :settings, :locals => {:library => session[:library], :settings => SETTINGS}
   end
   
   get '/about' do

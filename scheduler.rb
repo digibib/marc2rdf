@@ -57,8 +57,8 @@ class Scheduler
     job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.tag] do |job|
       timing_start = Time.now
       logger.info "Running rule: #{rule.id}"
-      logger.info "Script: #{rule.script}"
-      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
+      logger.info "Script:\n#{rule.script}"
+      rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} ]
       logger.info "Time to complete: #{Time.now - timing_start} s."
       logger.info "Result: #{rule.last_result}"
       logline = {:time => Time.now, :rule => rule.id, :job_id => job.job_id, :cron_id => nil, :start_time => timing_start, :length => "#{Time.now - timing_start} s.", :result => rule.last_result}
@@ -72,7 +72,7 @@ class Scheduler
     cron_id = self.scheduler.cron rule.frequency, :tags => [rule.id, rule.tag] do |cron|
       timing_start = Time.now
       logger.info "Running scheduled rule: #{rule.id}"
-      logger.info "Script: #{rule.script}"
+      logger.info "Script:\n #{rule.script}"
       rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} | grep "\-\-" -]
       logger.info "Time to complete: #{Time.now - timing_start} s."
       logger.info "Result: #{rule.last_result}"

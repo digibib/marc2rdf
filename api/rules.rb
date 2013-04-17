@@ -24,6 +24,7 @@ module API
       post "/" do
         content_type 'json'
         rule = Rule.new.create(params)
+        rule.type = "global" unless params[:type]
         rule.save
         logger.info "POST: params: #{params} - created rule: #{rule}"
         { :rule => rule }

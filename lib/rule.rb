@@ -35,7 +35,7 @@ class Rule
     # populate Rule Struct    
     self.members.each {|name| self[name] = params[name] unless params[name].nil? } 
     self.id         = SecureRandom.uuid
-    self.start_time = params[:start_time] ||= DateTime.now
+    self.start_time = params[:start_time]
     self
   end
   
@@ -50,6 +50,7 @@ class Rule
     return nil unless self.id
     rules = self.all
     match = self.find(:id => self.id)
+    #sanitize # clean script before saving
     if match
       # overwrite rule if match
       rules.map! { |rule| rule.id == self.id ? self : rule}
@@ -84,6 +85,14 @@ class Rule
     return nil unless self.id and self.script
     self.script.gsub!(/DEFAULT_GRAPH/, RDF::URI(SETTINGS['global']['default_graph']).to_ntriples)
     self.script.gsub!(/DEFAULT_PREFIX\.([^\s]+)/, '<' +SETTINGS['global']['default_prefix'] + '\1>')
+    self
+  end
+  
+  def sanitize
+    # need to remove apostrophes before saving script
+    return nil unless self.id and self.script
+    self.script.gsub!('"', "'")
+    self.script.gsub!(/(?=[`])/, '\\')
     self
   end
 end

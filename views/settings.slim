@@ -1,0 +1,55 @@
+// This file contains advanced settings for rdf store and harvesting
+h2 Settings
+h3[style="margin-left:24px"] RDF-store (saving is disabled)
+
+// This form contains RDF store settings
+div class="divdot inputf"  
+  table class="genform"
+    form id="change_rdfstore_settings_form" 
+      tr
+        td store
+        td: input[type="text" id="store" value="virtuoso" disabled="true"]
+        td why alternatives ...?
+      tr
+        td sparql_endpoint
+        td: input[type="text" id="sparql_endpoint" value=(settings['repository']['sparql_endpoint'])]
+        td url to sparql endpoint
+      tr
+        td sparul_endpoint
+        td: input[type="text" id="sparul_endpoint" value=(settings['repository']['sparul_endpoint'])]
+        td url to sparql update endpoint    
+      tr
+        td username
+        td: input[type="text" id="username" disabled="true" value="*******"]
+        td username for sparql update
+      tr
+        td password
+        td: input[type="text" id="password" disabled="true" value="*******"]
+        td password for sparql update   
+      tr
+        td auth_method
+        td 
+          select[id="auth_method"]
+            option[selected=("selected" if settings['repository']['auth_method'] == "digest")] digest
+            option[selected=("selected" if settings['repository']['auth_method'] == "basic")] basic
+        td sparql update authentication method
+      tr
+        td: button[type="button" id="rdfstore_settings_save" class="gen"]  = "Save"
+        td
+          span[id="rdfstore_info" class="info" style="margin-left:48px"]
+          span[id="rdfstore_error" class="error" style="margin-left:48px"]
+
+h3[style="margin-left:24px"] Global settings (saving is disabled)
+
+// This form contains Global settings
+div class="divdot inputf"  
+  table class="genform"
+    form id="change_rdfstore_settings_form" 
+      tr
+        td default graph
+        td: input[type="text" id="default_graph" value=(settings['global']['default_graph'])]
+        td 
+      tr
+        td default prefix
+        td: input[type="text" id="default_graph" value=(settings['global']['default_prefix'])]
+        td default prefix used in Rules to generate URIs
