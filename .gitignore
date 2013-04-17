@@ -2,6 +2,4 @@ config/config.yml
 config/settings.json
 config/repository.yml
 config/harvesting.yml
-db/*
 oai_updates/*
-logs/*
