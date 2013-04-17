@@ -123,24 +123,26 @@ $(document).ready(function () {
           
   // ** delete rule
   $('button#delete_rule').on('click', function() {
-    var request = $.ajax({
-      url: '/api/rules',
-      type: 'DELETE',
-      cache: false,
-      data: { 
-          id: $('input#save_rule_id').val(),
-          },
-      dataType: 'json'
-    });
-
-    request.done(function(data) {
-      $('span#save_rule_info').html("Deleted rule OK!").show().fadeOut(3000);
-      window.location = '/rules';
-    });
-
-    request.fail(function(jqXHR, textStatus, errorThrown) {
-      $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
-    });
+    if (confirm('Are you sure? All info on Rule will be lost!')) {
+      var request = $.ajax({
+        url: '/api/rules',
+        type: 'DELETE',
+        cache: false,
+        data: { 
+            id: $('input#save_rule_id').val(),
+            },
+        dataType: 'json'
+      });
+  
+      request.done(function(data) {
+        $('span#save_rule_info').html("Deleted rule OK!").show().fadeOut(3000);
+        window.location = '/rules';
+      });
+  
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#save_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    }
   }); 
   
   // ** Running Rules once or on schedule
