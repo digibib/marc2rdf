@@ -12,6 +12,7 @@ div id="status" class="divdot inputf"
     thead
       tr
         th[style="width:240px"] job id
+        th[style="width:180px"] library
         th[style="width:180px"] start time
         th[style="width:180px"] rule id
         th[style="width:180px"] tags
@@ -22,6 +23,7 @@ div id="status" class="divdot inputf"
     thead
       tr
         th[style="width:240px"] job id
+        th[style="width:180px"] library
         th[style="width:180px"] scheduled time
         th[style="width:180px"] rule id
         th[style="width:180px"] tags
@@ -35,9 +37,10 @@ div id="history" class="divdot inputf"
     thead
       tr
         th[style="width:240px"] job id
+        th[style="width:180px"] library
         th[style="width:180px"] run
         th[style="width:180px"] rule id
-        th[style="width:180px"] lenght
+        th[style="width:180px"] time
         th[style="width:180px"] result
     tbody
 
@@ -47,9 +50,11 @@ javascript:
     $.getJSON('/api/scheduler/running_jobs', function(data) {
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id = job.params["tags"].shift(); // first tag is rule id
+        rule_id      = job.params["tags"].shift(); // first tag is rule id
+        rule_library = job.params["tags"].shift(); // second tag is library
         $('<tr>').attr('id',i)
             .append($('<td>').text(job.job_id))
+            .append($('<td>').text(job.library))
             .append($('<td>').text(job.run_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
             .append($('<td>').text(job.params['tags'].join(',')))
@@ -61,9 +66,11 @@ javascript:
     $.getJSON('/api/scheduler/find_all_jobs', function(data) {
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id = job.params["tags"].shift(); // first tag is rule id
+        rule_id      = job.params["tags"].shift(); // first tag is rule id
+        rule_library = job.params["tags"].shift(); // first tag is rule id
         $('<tr>').attr('id',i)
             .append($('<td>').text(job.job_id))
+            .append($('<td>').text(job.library))
             .append($('<td>').text(job.start_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
             .append($('<td>').text(job.params['tags'].join(',')))
@@ -76,12 +83,12 @@ javascript:
     $.getJSON('/api/scheduler/history', function(data) {
       var rows = $('<tr>');
       $.each(data.history.reverse(), function(i,job){
-        rule_id = job.rule;
         job.job_id ? job_id = job.job_id : job_id = job.cron_id;
         $('<tr>').attr('id',i)
           .append($('<td>').text(job_id))
+          .append($('<td>').text(job.library))
           .append($('<td>').text(job.time))
-          .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
+          .append($('<td><a href="/rules/'+job.rule+'">'+job.rule+'</a></td>'))
           .append($('<td>').text(job.length))
           .append($('<td><button>result</button></td>').click(function () { alert(job.result); }))
           .appendTo('#finished-jobs tbody');

@@ -98,8 +98,10 @@ class Scheduling < Grape::API
         library = Library.new.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         rule.localize(library)
+        rule.library = library.name
       else
         rule.globalize
+        rule.library = "global"
       end
       rule.sanitize
       # start time by either: 1) param, 2) rule's start_time or 3) now 
@@ -124,8 +126,10 @@ class Scheduling < Grape::API
         library = Library.new.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         rule.localize(library)
+        rule.library = library.name
       else
         rule.globalize
+        rule.library = "global"
       end
       rule.sanitize
       # allow override frequency with param 

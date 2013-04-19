@@ -1,7 +1,7 @@
 #encoding: utf-8
 # Struct for Rule class 
 
-Rule = Struct.new(:id, :type, :job_id, :cron_id, :tag, :name, :description, :start_time, :frequency, :script, :last_result)
+Rule = Struct.new(:id, :type, :library, :job_id, :cron_id, :tag, :name, :description, :start_time, :frequency, :script, :last_result)
 class Rule
 
   # a Rule is a SPARQL script to be run, either at intervals or at specified time
