@@ -29,6 +29,10 @@ class APP < Sinatra::Base
     #STDERR.sync = true
   end
   
+  configure :production do
+    log = File.new("logs/development.log", "a+") 
+  end
+  
   # use internal session hash for global session, not cookies
   # not used yet
   globalsession = {}

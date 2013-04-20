@@ -18,7 +18,8 @@ class Scheduling < Grape::API
       result = Scheduler.find_running_jobs
       jobs = []
       result.each do |job|
-        jobs.push({:job_id    => job.job_id,
+        jobs.push({:job      => job,
+                  :job_id    => job.job_id,
                   :scheduler => job.scheduler,
                   :start_time => job.t,
                   :last_job_thread => job.last_job_thread,
@@ -36,7 +37,8 @@ class Scheduling < Grape::API
       result = Scheduler.find_scheduled_jobs
       jobs = []
       result.each do |job|
-        jobs.push({:job_id    => job.job_id,
+        jobs.push({:job      => job,
+                  :job_id    => job.job_id,
                   :scheduler => job.scheduler,
                   :start_time => job.t,
                   :last_job_thread => job.last_job_thread,
@@ -54,7 +56,8 @@ class Scheduling < Grape::API
       result = Scheduler.find_all_jobs
       jobs = []
       result.each do |name, job|
-        jobs.push({:job_id    => job.job_id,
+        jobs.push({:job      => job,
+                  :job_id    => job.job_id,
                   :scheduler => job.scheduler,
                   :start_time => job.t,
                   :last_job_thread => job.last_job_thread,
@@ -138,7 +141,23 @@ class Scheduling < Grape::API
       result = Scheduler.schedule_isql_rule(rule)
       { :result => result }
     end  
-        
+    
+    ### Unschedule ###
+    desc "Unschedule scheduled job"
+      params do
+        requires :id,          type: String, desc: "ID of Job"
+      end
+    put "/unschedule" do
+      content_type 'json'
+      begin
+        job = Scheduler.scheduler.find(params[:id])
+      rescue ArgumentError => e
+        error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
+      end
+      result = Scheduler.unschedule(job)
+      { :result => result }
+    end    
+            
     ### History ###
     desc "get scheduler history"
     get "/history" do
