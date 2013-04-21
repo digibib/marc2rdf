@@ -1,4 +1,4 @@
-marc2rdf: bundle exec rackup config.ru -p 3000
+marc2rdf: bundle exec shotgun config.ru -p 3000
 scheduler: bundle exec ruby scheduler.rb
 
 # uncomment to test API on separate port

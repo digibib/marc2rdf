@@ -69,6 +69,28 @@ javascript:
     });
     return this;
   }
+  var stop = function (jobid) {
+    var request = $.ajax({
+      url: '/api/scheduler/stop',
+      type: 'PUT',
+      cache: false,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+          id: jobid,
+          }),
+      dataType: 'json'
+    });
+
+    request.done(function(data) {
+      console.log(data);
+      window.location.reload();
+    });
+
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR.responseText);
+    });
+    return this;
+  }
 
   $(document).on('ready', function () {
     // ** get running jobs, populate status table
@@ -78,7 +100,7 @@ javascript:
         rule_id      = job.params["tags"].shift(); // first tag is rule id
         rule_library = job.params["tags"].shift(); // second tag is library
         $('<tr>').attr('id',i)
-            .append($('<td><button>stop</button></td>').click(function () { unschedule(job_id); }))
+            .append($('<td><button>stop</button></td>').click(function () { stop(job.job_id); }))
             .append($('<td>').text(job.job_id))
             .append($('<td>').text(job.library))
             .append($('<td>').text(job.run_time))
@@ -95,7 +117,7 @@ javascript:
         rule_id      = job.params["tags"].shift(); // first tag is rule id
         rule_library = job.params["tags"].shift(); // first tag is rule id
         $('<tr>').attr('id',i)
-            .append($('<td><button>stop</button></td>').click(function () { unschedule(job_id); }))
+            .append($('<td><button>stop</button></td>').click(function () { unschedule(job.job_id); }))
             .append($('<td>').text(job.job_id))
             .append($('<td>').text(job.library))
             .append($('<td>').text(job.start_time))

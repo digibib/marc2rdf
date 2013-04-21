@@ -18,8 +18,7 @@ class Scheduling < Grape::API
       result = Scheduler.find_running_jobs
       jobs = []
       result.each do |job|
-        jobs.push({:job      => job,
-                  :job_id    => job.job_id,
+        jobs.push({:job_id    => job.job_id,
                   :scheduler => job.scheduler,
                   :start_time => job.t,
                   :last_job_thread => job.last_job_thread,
@@ -37,8 +36,7 @@ class Scheduling < Grape::API
       result = Scheduler.find_scheduled_jobs
       jobs = []
       result.each do |job|
-        jobs.push({:job      => job,
-                  :job_id    => job.job_id,
+        jobs.push({:job_id    => job.job_id,
                   :scheduler => job.scheduler,
                   :start_time => job.t,
                   :last_job_thread => job.last_job_thread,
@@ -56,8 +54,7 @@ class Scheduling < Grape::API
       result = Scheduler.find_all_jobs
       jobs = []
       result.each do |name, job|
-        jobs.push({:job      => job,
-                  :job_id    => job.job_id,
+        jobs.push({:job_id    => job.job_id,
                   :scheduler => job.scheduler,
                   :start_time => job.t,
                   :last_job_thread => job.last_job_thread,
@@ -86,7 +83,7 @@ class Scheduling < Grape::API
       { :result => result }
     end
     
-    desc "Start Rule as job"
+    desc "Start Rule as one-time job"
       params do
         requires :id,          type: String, desc: "ID of Rule"
         optional :start_time,  desc: "Time to start rule"
@@ -142,7 +139,23 @@ class Scheduling < Grape::API
       { :result => result }
     end  
     
-    ### Unschedule ###
+    ### Unschedule/stop ###
+    desc "Stop running job"
+      params do
+        requires :id,          type: String, desc: "ID of Job"
+      end
+    put "/stop" do
+      content_type 'json'
+      begin
+        job = Scheduler.find_running_jobs.select {|j| j.job_id == params[:id] }
+      rescue ArgumentError => e
+        error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
+      end
+      #result = Scheduler.unschedule(job)
+      result = job.first.last_job_thread.kill
+      { :result => result }
+    end
+    
     desc "Unschedule scheduled job"
       params do
         requires :id,          type: String, desc: "ID of Job"
@@ -154,7 +167,8 @@ class Scheduling < Grape::API
       rescue ArgumentError => e
         error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
       end
-      result = Scheduler.unschedule(job)
+      #result = Scheduler.unschedule(job)
+      result = job.unschedule
       { :result => result }
     end    
             
