@@ -18,9 +18,6 @@ class RDFModeler
     self.statements = []
   end
   
-  def populate(record)
-  end
-  
   def set_type(t)
     self.statements << RDF::Statement.new(self.uri, RDF.type, RDF.module_eval("#{t}"))
   end

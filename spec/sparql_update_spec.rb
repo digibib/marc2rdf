@@ -1,75 +1,46 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
-
 describe SparqlUpdate do
 
-  before(:all) do
-    @sparql_endpoint   = "http://localhost:8890/sparql"
-    @sparul_endpoint   = "http://localhost:8890/sparql-auth"
-    @uri = "http://example.com/"
-    @repo = RDF::Virtuoso::Repository
-    #$debug = true
-  end
-  
-  context "when connecting to a triplestore" do
-    it "should support connecting to a SPARQL endpoint" do
-      repo = @repo.new(@sparql_endpoint)
+  context "when doing a SPARQL UPDATE from converted MARC" do
+    before(:each) do
+      @reader = MARC::ForgivingReader.new("./spec/example.binary.normarc.mrc")
+      record = @reader.first
+      rdf = RDFModeler.new(1, record)
+      rdf.set_type("BIBO.Document")
+      rdf.convert
+      @default_graph = 'http://example.com'
+      l = {'id'=>1, 'name'=>'test', 'mapping'=>'dummy', 'oai'=>{'preserve_on_update'=>['FOAF.depiction']}, 
+          'config'=>{'resource'=>{'default_graph'=> @default_graph}}}
+      library = l.to_struct("Library")
+      @sparql = SparqlUpdate.new(rdf,library)
     end
     
-    it "should support connecting to a SPARUL endpoint with BASIC AUTH" do
-      repo = @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'basic')
-      repo.auth_method.should == 'basic'
+    it "should support creating an update query from record" do
+      @sparql.uri.to_s.should == "http://example.com/id_0583095"
     end
-    
-    it "should support connecting to a SPARUL endpoint with DIGEST AUTH" do
-      repo = @repo.new(@sparql_endpoint, :update_uri => @sparul_endpoint, :username => 'admin', :password => 'secret', :auth_method => 'digest')
-      repo.auth_method.should == 'digest'
-    end
-  end
-  
-  context "when doing a SPARQL UPDATE from OAI response" do
-    before(:all) do
-      @query = RDF::Virtuoso::Query
-      
-      #$debug = true
-      @book_id = "1234567890"
-      $statements = [
-        RDF::URI(@uri + @book_id),
-        RDF.type,
-        RDF::URI(RDF::BIBO.Document)
-        ]
-    end
-    
-    it "should support updating a book" do
-      response = OAIUpdate.sparql_update(@book_id)
-      #p response
-      response.should match(/(done|nothing)/)
-      response.should_not match(/NULL/)
-    end
-    
-    it "should actually insert correct data when updating a book" do
-      response = OAIUpdate.sparql_purge(@book_id)
-      response = OAIUpdate.sparql_update(@book_id)
 
-      repo = @repo.new(@sparql_endpoint)
-      query = @query.select(:type)
-      query.where([RDF::URI(@uri + @book_id), RDF::type, :type])
-      #puts query.to_s
-      solutions = repo.select(query)
-      solutions.bindings[:type].first.should eql(RDF::BIBO.Document)
+    it "should preserve predicate when update query from record" do
+      @sparql.preserve.should == ['FOAF.depiction']
     end
     
-    it "should support updating a book while preserving harvested info" do
-      preserve = ["FOAF.depiction", "REV.hasReview"]
-      response = OAIUpdate.sparql_update(@book_id, :preserve => preserve)
-      #p response
-      response.should match(/(done|nothing)/)
-      response.should_not match(/NULL/)
+    it "should create proper delete query with minus" do
+      result = @sparql.delete_record
+      result.should == 'DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . } WHERE { <http://example.com/id_0583095> ?p ?o . MINUS { <http://example.com/id_0583095> <http://xmlns.com/foaf/0.1/depiction> ?o . } }'
     end
     
-    it "should support deleting a book entirely" do
-      response = OAIUpdate.sparql_purge(@book_id)
-      response.should match(/(done|nothing)/)
-      response.should_not match(/NULL/)
+    it "should delete existing authorities before update" do
+      result = @sparql.delete_authorities
+      result.first['id'].to_s.should == "http://data.deichman.no/person/x32026400"
+    end
+    
+    it "should insert new statements" do
+      result = @sparql.insert_record
+      result.should match('INSERT DATA INTO GRAPH <http://example.com> { <http://example.com/id_0583095>')
+    end
+
+    it "should purge a record" do
+      result = @sparql.purge_record
+      result.should == 'DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . } WHERE { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . }'
     end
   end
 end
