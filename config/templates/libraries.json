@@ -26,6 +26,7 @@
             "follow_redirects": false,
             "parser": "rexml"
         },
+        "rules": [],
         "harvesting": {}
     }
 ]

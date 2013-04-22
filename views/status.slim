@@ -11,9 +11,9 @@ div id="status" class="divdot inputf"
   table id="running-jobs" class="libraries active tablesorter"
     thead
       tr
-        th
+        th[style="width:80px"]
         th[style="width:240px"] job id
-        th[style="width:180px"] library
+        th[style="width:80px"] library id
         th[style="width:180px"] start time
         th[style="width:180px"] rule id
         th[style="width:180px"] tags
@@ -23,9 +23,9 @@ div id="status" class="divdot inputf"
   table id="scheduled-jobs" class="libraries active tablesorter"
     thead
       tr
-        th
+        th[style="width:80px"]
         th[style="width:240px"] job id
-        th[style="width:180px"] library
+        th[style="width:80px"] library id
         th[style="width:180px"] scheduled time
         th[style="width:180px"] rule id
         th[style="width:180px"] tags
@@ -39,7 +39,7 @@ div id="history" class="divdot inputf"
     thead
       tr
         th[style="width:240px"] job id
-        th[style="width:180px"] library
+        th[style="width:80px"] library id
         th[style="width:180px"] run
         th[style="width:180px"] rule id
         th[style="width:180px"] time
@@ -47,7 +47,7 @@ div id="history" class="divdot inputf"
     tbody
 
 javascript:
-  var unschedule = function (jobid) {
+  var unschedule = function (jobid, libr) {
     var request = $.ajax({
       url: '/api/scheduler/unschedule',
       type: 'PUT',
@@ -55,6 +55,7 @@ javascript:
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
           id: jobid,
+          library: libr,
           }),
       dataType: 'json'
     });
@@ -102,7 +103,7 @@ javascript:
         $('<tr>').attr('id',i)
             .append($('<td><button>stop</button></td>').click(function () { stop(job.job_id); }))
             .append($('<td>').text(job.job_id))
-            .append($('<td>').text(job.library))
+            .append($('<td><a href="/library/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.run_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
             .append($('<td>').text(job.params['tags'].join(',')))
@@ -115,11 +116,11 @@ javascript:
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
         rule_id      = job.params["tags"].shift(); // first tag is rule id
-        rule_library = job.params["tags"].shift(); // first tag is rule id
+        rule_library = job.params["tags"].shift(); // second tag is library
         $('<tr>').attr('id',i)
-            .append($('<td><button>stop</button></td>').click(function () { unschedule(job.job_id); }))
+            .append($('<td><button>stop</button></td>').click(function () { unschedule(job.job_id, rule_library); }))
             .append($('<td>').text(job.job_id))
-            .append($('<td>').text(job.library))
+            .append($('<td><a href="/library/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.start_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
             .append($('<td>').text(job.params['tags'].join(',')))

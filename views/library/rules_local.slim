@@ -1,9 +1,10 @@
-h3 Rules
+h3 Available Rules
 p[style="margin-left:24px"] Only local rules are available to library, for global rules visit <a href="/rules">rules</a> page
-table id="mappings_list" class="libraries active tablesorter"
+table id="available_rules_list" class="libraries active tablesorter"
   thead
     tr
-      th  
+      th
+      th frequency
       th[style="width:250px"] short name
       th[style="width:400px"] description
       th
@@ -12,14 +13,40 @@ table id="mappings_list" class="libraries active tablesorter"
     - if rule.type == 'local'
       tr id="#{rule.id}"
         td 
-          button[type="button" id="run_rule_now" class="gen"] = "run once"
+          button[type="button" id="run_rule_now" class="gen"] = "run now"
           button[type="button" id="schedule_rule" class="gen"] = "schedule"
+        td: input[size="10" type="text" id="schedule_frequency" class="gen" value=(rule.frequency)]
         td 
           a href="/rules/#{rule.id}" #{rule.name}
         td #{rule.description}
   tr
     td
-      span[id="rule_info" class="info" style="margin-left:48px"]
-      span[id="rule_error" class="error" style="margin-left:48px"]
+      span[id="available_rule_info" class="info" style="margin-left:48px"]
+      span[id="available_rule_error" class="error" style="margin-left:48px"]
+
+h3 Activated Local Rules
+p[style="margin-left:24px"] Activated local rules must be disabled/unscheduled from the <a href="/status">status</a> page
+table id="activated_rules_list" class="libraries active tablesorter"
+  thead
+    tr
+      th
+      th frequency
+      th[style="width:250px"] short name
+      th[style="width:400px"] description
+      th
+  tbody
+  - for localrule in library.rules.each
+    - rule = Rule.new.find(:id => localrule['id'])
+    tr id="#{localrule['id']}"
+      td 
+        td: input[size="10" type="text" id="schedule_frequency" class="gen" value=(localrule['frequency']) disabled="true"]
+      td 
+        a href="/rules/#{rule.id}" #{rule.name}
+      td #{rule.description}
+  tr
+    td
+      span[id="activated_rule_info" class="info" style="margin-left:48px"]
+      span[id="activated_rule_error" class="error" style="margin-left:48px"]
+            
 // The test div
 div id="rule_test" 

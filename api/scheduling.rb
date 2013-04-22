@@ -98,7 +98,7 @@ class Scheduling < Grape::API
         library = Library.new.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         rule.localize(library)
-        rule.library = library.name
+        rule.library = library.id
       else
         rule.globalize
         rule.library = "global"
@@ -121,28 +121,33 @@ class Scheduling < Grape::API
       content_type 'json'
       rule    = Rule.new.find(:id => params[:id])
       error!("No rule with id: #{params[:id]}", 404) unless rule
+      # allow override frequency with param 
+      rule.frequency = params[:frequency] ? params[:frequency] : rule.frequency
+      error!("Missing or invalid frequency!", 404) if rule.frequency.empty?
       # Make sure to localize if library param sent
       if params[:library]
         library = Library.new.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         rule.localize(library)
-        rule.library = library.name
+        rule.library = library.id
       else
         rule.globalize
         rule.library = "global"
       end
       rule.sanitize
-      # allow override frequency with param 
-      rule.frequency = params[:frequency] ? params[:frequency] : rule.frequency
-      error!("Missing or invalid frequency!", 404) if rule.frequency.empty?
       result = Scheduler.schedule_isql_rule(rule)
+      if params[:library]
+        library.rules.push({:id => rule.id, :frequency => rule.frequency, :job_id => result.job_id})
+        library.update
+      end
       { :result => result }
     end  
     
     ### Unschedule/stop ###
-    desc "Stop running job"
+    desc "Stop/kill running job"
       params do
-        requires :id,          type: String, desc: "ID of Job"
+        requires :id,      type: String, desc: "ID of Job"
+        optional :library, type: Integer, desc: "Library ID to run rule against"
       end
     put "/stop" do
       content_type 'json'
@@ -151,6 +156,13 @@ class Scheduling < Grape::API
       rescue ArgumentError => e
         error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
       end
+      if params[:library]
+        # make sure to delete rule from library.rules array
+        library = Library.new.find(:id => params[:library].to_i) 
+        error!("No library with id: #{params[:library]}", 404) unless library
+        library.rules.delete_if {|r| r['job_id'] == params[:id] } 
+        library.update(:rules => library.rules)
+      end
       #result = Scheduler.unschedule(job)
       result = job.first.last_job_thread.kill
       { :result => result }
@@ -158,7 +170,8 @@ class Scheduling < Grape::API
     
     desc "Unschedule scheduled job"
       params do
-        requires :id,          type: String, desc: "ID of Job"
+        requires :id,      type: String, desc: "ID of Job"
+        optional :library, type: Integer, desc: "Library ID to run rule against"
       end
     put "/unschedule" do
       content_type 'json'
@@ -166,6 +179,13 @@ class Scheduling < Grape::API
         job = Scheduler.scheduler.find(params[:id])
       rescue ArgumentError => e
         error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
+      end
+      if params[:library]
+        # make sure to delete rule from library.rules array
+        library = Library.new.find(:id => params[:library].to_i) 
+        error!("No library with id: #{params[:library]}", 404) unless library
+        library.rules.delete_if {|r| r['job_id'] == params[:id] } 
+        library.update(:rules => library.rules)
       end
       #result = Scheduler.unschedule(job)
       result = job.unschedule

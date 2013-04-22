@@ -1,6 +1,6 @@
 #encoding: utf-8
 # Struct for Libraries saved in json
-Library = Struct.new(:id, :name, :config, :mapping, :oai, :harvesting)
+Library = Struct.new(:id, :name, :config, :mapping, :oai, :rules, :harvesting)
 class Library
   def all
     libraries = []

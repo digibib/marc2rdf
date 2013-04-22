@@ -347,7 +347,7 @@ $(document).ready(function () {
   });
   // ** end CONVERSION
   
-  // ** RULES
+  // ** LOCAL RULES
   // run rule once
   $('button#run_rule_now').on('click', function() {
     request = $.ajax({
@@ -393,4 +393,5 @@ $(document).ready(function () {
       $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
+  
 });
