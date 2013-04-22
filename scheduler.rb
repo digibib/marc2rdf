@@ -22,7 +22,7 @@ class Scheduler
     params[:start_time] ||= Time.now
     params[:tags]       ||= "dummyjob"
     
-    job_id = self.scheduler.at params[:start_time], :tags => [params[:id], params[:tags]] do
+    job_id = self.scheduler.at params[:start_time], :tags => [{:id => params[:id], :tags => params[:tags]}] do
       10.times do
         puts "testing..."
         sleep 1
@@ -33,7 +33,7 @@ class Scheduler
   def test_atjob(atjob, params={})
     params[:start_time] ||= Time.now
     params[:tags]       ||= "dummyjob"
-    job_id = self.scheduler.at params[:start_time], :tags => params[:tags] do
+    job_id = self.scheduler.at params[:start_time], :tags => [{:tags => params[:tags]}] do
       puts "testing atjob: #{atjob}"
       sleep 3
     end
@@ -42,7 +42,7 @@ class Scheduler
   def test_cronjob(cronjob, params={})
     params[:frequency]  ||= "0 * * * *"
     params[:tags]       ||= "dummyjob"
-    job_id = self.scheduler.cron params[:frequency], :tags => params[:tags] do
+    job_id = self.scheduler.cron params[:frequency], :tags => [{:tags => params[:tags]}] do
       puts "testing cronjob: #{cronjob}"
       sleep 3
     end
@@ -54,7 +54,7 @@ class Scheduler
     return nil unless rule.id and rule.script and rule.start_time
     rule.tag        ||= "dummyrule"
     rule.start_time ||= Time.now + 30 # default to 30 sec. from now
-    job_id = self.scheduler.at rule.start_time, :tags => [rule.id, rule.library, rule.tag] do |job|
+    job_id = self.scheduler.at rule.start_time, :tags => [{:id => rule.id, :library => rule.library, :tags => rule.tag}] do |job|
       timing_start = Time.now
       logger.info "Running rule: #{rule.id}"
       logger.info "Script:\n#{rule.script}"
@@ -69,7 +69,7 @@ class Scheduler
   def schedule_isql_rule(rule)
     return nil unless rule.id and rule.script and rule.frequency
     rule.tag ||= "dummyrule"
-    cron_id = self.scheduler.cron rule.frequency, :tags => [rule.id, rule.library, rule.tag] do |cron|
+    cron_id = self.scheduler.cron rule.frequency, :tags => [{:id => rule.id, :library => rule.library, :tags => rule.tag}] do |cron|
       timing_start = Time.now
       logger.info "Running scheduled rule: #{rule.id}"
       logger.info "Script:\n #{rule.script}"
@@ -130,7 +130,7 @@ class Scheduler
   def start_oai_harvest(params={})
     params[:start_time] ||= Time.now 
     params[:tags]        ||= "oaiharvest"
-    job_id = self.scheduler.at params[:start_time], :tags => params[:tags] do
+    job_id = self.scheduler.at params[:start_time], :tags => [{:tags => params[:tags]}] do
       timing_start = Time.now
       
       library = Library.new.find(:id => params[:id].to_i)

@@ -47,15 +47,15 @@ div id="history" class="divdot inputf"
     tbody
 
 javascript:
-  var unschedule = function (jobid, libr) {
+  var unschedule = function (job) {
     var request = $.ajax({
       url: '/api/scheduler/unschedule',
       type: 'PUT',
       cache: false,
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
-          id: jobid,
-          library: libr,
+          id: job.id,
+          library: job.library,
           }),
       dataType: 'json'
     });
@@ -70,14 +70,14 @@ javascript:
     });
     return this;
   }
-  var stop = function (jobid) {
+  var stop = function (job) {
     var request = $.ajax({
       url: '/api/scheduler/stop',
       type: 'PUT',
       cache: false,
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
-          id: jobid,
+          id: job.id,
           }),
       dataType: 'json'
     });
@@ -98,15 +98,16 @@ javascript:
     $.getJSON('/api/scheduler/running_jobs', function(data) {
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id      = job.params["tags"].shift(); // first tag is rule id
-        rule_library = job.params["tags"].shift(); // second tag is library
+        rule_id      = job.params["tags"][0]["id"];      
+        rule_library = job.params["tags"][0]["library"];
+        tags         = job.params["tags"][0]["tags"];
         $('<tr>').attr('id',i)
-            .append($('<td><button>stop</button></td>').click(function () { stop(job.job_id); }))
+            .append($('<td><button>stop</button></td>').click(function () { stop({id: job.job_id}); }))
             .append($('<td>').text(job.job_id))
             .append($('<td><a href="/library/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.run_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
-            .append($('<td>').text(job.params['tags'].join(',')))
+            .append($('<td>').text(tags))
             .appendTo('#running-jobs tbody');
       });
     });
@@ -115,15 +116,16 @@ javascript:
     $.getJSON('/api/scheduler/find_all_jobs', function(data) {
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id      = job.params["tags"].shift(); // first tag is rule id
-        rule_library = job.params["tags"].shift(); // second tag is library
+        rule_id      = job.params["tags"][0]["id"]; 
+        rule_library = job.params["tags"][0]["library"]; 
+        tags         = job.params["tags"][0]["tags"];
         $('<tr>').attr('id',i)
-            .append($('<td><button>stop</button></td>').click(function () { unschedule(job.job_id, rule_library); }))
+            .append($('<td><button>stop</button></td>').click(function () { unschedule({id: job.job_id, library: rule_library}); }))
             .append($('<td>').text(job.job_id))
             .append($('<td><a href="/library/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.start_time))
             .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
-            .append($('<td>').text(job.params['tags'].join(',')))
+            .append($('<td>').text(tags))
             .append($('<td>').text(job.run_time))
             .appendTo('#scheduled-jobs tbody');
       });

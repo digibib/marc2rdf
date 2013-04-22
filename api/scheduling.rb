@@ -101,7 +101,7 @@ class Scheduling < Grape::API
         rule.library = library.id
       else
         rule.globalize
-        rule.library = "global"
+        #rule.library = "global"
       end
       rule.sanitize
       # start time by either: 1) param, 2) rule's start_time or 3) now 
@@ -132,7 +132,7 @@ class Scheduling < Grape::API
         rule.library = library.id
       else
         rule.globalize
-        rule.library = "global"
+        #rule.library = "global"
       end
       rule.sanitize
       result = Scheduler.schedule_isql_rule(rule)
