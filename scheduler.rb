@@ -81,15 +81,6 @@ class Scheduler
     end
   end
   
-  # start schedule, default to every hour
-  def schedule(cron, params={})
-    params[:frequency] ||= "0 * * * *"
-    params[:tags]      ||= "test"
-    cron_id = self.scheduler.cron params[:frequency], :tags => params[:tags] do 
-      puts cron if cron # run script here
-    end
-  end
-  
   def pause(job)
     self.scheduler.pause(job)
   end
@@ -174,7 +165,8 @@ class Scheduler
             rdf = RDFModeler.new(library.id, marc)
             rdf.set_type(library.config['resource']['type'])        
             rdf.convert
-            write_record(rdf, library) # schedule writing to file
+            write_record_to_file(rdf, library) # schedule writing to file
+            update_record(rdf, library)        # schedule writing to repository
             rdfrecords << rdf.statements
           end
         else
@@ -186,7 +178,7 @@ class Scheduler
   end
   
   # write converted record to file
-  def write_record(rdf, library)
+  def write_record_to_file(rdf, library)
     job_id = self.scheduler.at Time.now , :tags => "saving" do
       FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
       file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
@@ -194,7 +186,14 @@ class Scheduler
       file.write(rdf.rdf)
     end
   end
-  
+
+  # sparql update converted record
+  def update_record(rdf, library)
+    job_id = self.scheduler.at Time.now , :tags => "SparqlUpdate" do
+      # TODO
+    end
+  end
+    
   ### History 
   def read_history
     logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')

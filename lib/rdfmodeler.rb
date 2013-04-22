@@ -1,5 +1,5 @@
 #encoding: utf-8
-# Struct for Libraries saved in json
+# Struct for RDFModeler
 require 'rdf/ntriples'
 
 RDFModeler = Struct.new(:library_id, :record, :uri, :tags, :statements, :rdf)
