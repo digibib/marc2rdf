@@ -1,4 +1,6 @@
-# Ignore everything in this directory
+# ignore all files in this dir...
 *
-# Except this file
+# ... except for this one.
 !.gitignore
+!converted*
+!uploads*
