@@ -1,4 +1,4 @@
-h3 Conversion module
+h3 Convert from OAI
 
 table id="conversion_list" class="libraries active tablesorter"
   thead
@@ -7,7 +7,7 @@ table id="conversion_list" class="libraries active tablesorter"
       th[style="width:240px"] description
       th oai id
       th record id
-      th filename
+      th download filename
   tbody
     tr
       td 
@@ -29,8 +29,9 @@ h3 Convert from file
 div class="divdot inputf"
   form id="upload_file_form" enctype="multipart/form-data"
     input[type="file" name="file" id="filename" class="gen"]
-    span[style="margin-left:24px"]
-      button[type="button" id="upload" class="gen"] = "upload file"
+    span[style="margin-left:12px"]
+      button[type="button" id="uploadtest" class="gen"] = "upload test"
+      button[type="button" id="upload" class="gen"] = "upload and convert!"
             
 // The content div
 div id="converted_content"  

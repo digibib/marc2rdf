@@ -29,9 +29,8 @@ div.panes { width:90%; height:600px; border: 1px solid #ccc; padding:10px; clear
 div.mapping { margin-left:50px;}
 
 /* loading spinner */
-.loading {
-    background: url('/img/ajax-loader.gif') no-repeat center;
-}
+.loading { background: url('/img/ajax-loader.gif') no-repeat center; }
+
 /* Hide all the children of the 'loading' element */
 .loading * {
     display: none;  

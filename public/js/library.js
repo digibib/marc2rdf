@@ -171,7 +171,7 @@ $(document).ready(function () {
     });
     //alert(preserve_array);
     
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/library',
       type: 'PUT',
       cache: false,
@@ -204,28 +204,21 @@ $(document).ready(function () {
   
   // ** MAPPING
   // ** test mapping
-  $('button#test_mapping').ajaxSend( function() {
-      $(this).addClass('loading');
-  });
-  $('button#test_mapping').ajaxComplete( function(){
-      $(this).removeClass('loading');
-  });
   $('button#test_mapping').on('click', function(e) {
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/conversion/test',
       type: 'PUT',
       cache: false,
       contentType: "application/json; charset=utf-8",
-      //beforeSend: function(){ $("#loaderDiv").show(); },
       data: JSON.stringify({ 
         id: id,
         mapping: $(this).closest('tr').attr("id"),
         }),
       dataType: 'json'
     });
-
+    $(this).addClass('loading');
     request.success(function ( data ) {
-      //$("#loaderDiv").hide();
+      $('button#test_mapping').removeClass('loading');
       if( console && console.log ) {
         console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
       }
@@ -233,6 +226,7 @@ $(document).ready(function () {
       $("#mapping_test").html('<br/><pre>' + result + '</pre>');
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
+      $('button#test_mapping').removeClass('loading');
       $('span#mapping_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
@@ -240,7 +234,7 @@ $(document).ready(function () {
   // select mapping
   $('button#select_mapping').on('click', function() {
     var btn = $(this);
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/library',
       type: 'PUT',
       cache: false,
@@ -267,7 +261,7 @@ $(document).ready(function () {
   // ** CONVERSION
   // oai getrecord test
   $('button#oai_getrecord_test').on('click', function() {
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/oai/getrecord',
       type: 'PUT',
       cache: false,
@@ -294,7 +288,7 @@ $(document).ready(function () {
   // ** test save conversion
   $('button#oai_saverecord_test').on('click', function() {
     filename = $('input#oai_saverecord_filename').val();
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/oai/getrecord',
       type: 'PUT',
       cache: false,
@@ -323,7 +317,7 @@ $(document).ready(function () {
 
   // ** test save all!
   $('button#save_convert_all_test').on('click', function() {
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/oai/saveall',
       type: 'PUT',
       cache: false,
@@ -342,15 +336,81 @@ $(document).ready(function () {
       $("#converted_content").html('<br/><pre>' + result + '</pre>');
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
-      $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+      $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
+  
+  // test upload and convert
+  $("#uploadtest").live("click", function() {
+    var file_data = $("#filename").prop("files")[0]; // Getting the properties of file from file field
+    var form_data = new FormData();                 // Creating object of FormData class
+    form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
+    form_data.append("id", id)                       // Adding extra parameters to form_data
+    var request = $.ajax({
+      url: "/api/conversion/uploadtest",
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      type: 'POST'
+    })
+    $(this).addClass('loading');
+    request.done(function(data) {
+      $("#uploadtest").removeClass('loading');
+      $('span#conversion_info').html("Uploaded OK!").show().fadeOut(3000);
+      
+      if( console && console.log ) {
+        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+      }
+      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;");
+      $("#converted_content").html('<br/><pre><h3>First record of converted data:</h3>' + result + '</pre>');
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $("#uploadtest").removeClass('loading');
+      $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  })
+  
+  // upload and convert
+  $("#upload").live("click", function() {
+    var file_data = $("#filename").prop("files")[0]; // Getting the properties of file from file field
+    var form_data = new FormData();                 // Creating object of FormData class
+    form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
+    form_data.append("id", id)                       // Adding extra parameters to form_data
+    var request = $.ajax({
+      url: "/api/conversion/upload",
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      type: 'POST'
+    })
+    $(this).addClass('loading');
+    request.done(function(data) {
+      $("#upload").removeClass('loading');
+      $('span#conversion_info').html("Uploaded OK!").show().fadeOut(3000);
+      
+      if( console && console.log ) {
+        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+      }
+      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;");
+      $("#converted_content").html('<br/><pre><h3>Sample of converted data:</h3>' + result + '</pre>');
+      // and download file
+      window.location="/convert/"+data.filename;
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $("#upload").removeClass('loading');
+      $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  })
   // ** end CONVERSION
   
   // ** LOCAL RULES
   // run rule once
   $('button#run_rule_now').on('click', function() {
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/scheduler/run_rule',
       type: 'PUT',
       contentType: "application/json; charset=utf-8",
@@ -373,7 +433,7 @@ $(document).ready(function () {
   
   // schedule rule
   $('button#schedule_rule').on('click', function() {
-    request = $.ajax({
+    var request = $.ajax({
       url: '/api/scheduler/schedule_rule',
       type: 'PUT',
       contentType: "application/json; charset=utf-8",
@@ -394,21 +454,4 @@ $(document).ready(function () {
     });
   });
   
-  
-  $("#upload").live("click", function() {
-    var file_data = $("#filename").prop("files")[0];  // Getting the properties of file from file field
-    var form_data = new FormData();                 // Creating object of FormData class
-    form_data.append("file", file_data)             // Appending parameter named file with properties of file_field to form_data
-    //form_data.append("filename", "test")                // Adding extra parameters to form_data
-    $.ajax({
-      url: "/api/conversion/upload",
-      dataType: 'script',
-      cache: false,
-      contentType: false,
-      processData: false,
-      data: form_data,
-      type: 'post'
-     })
-  })
-
 });

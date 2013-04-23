@@ -62,12 +62,11 @@ class Oai < Grape::API
       xmlreader = MARC::XMLReader.new(StringIO.new(oai.records.record.metadata.to_s)) 
       rdfrecords = []
       if params[:filename]
-        FileUtils.mkdir_p File.join(File.dirname(__FILE__), '../db/converted/')
-        file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'w')
+        file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'a+')
       end
       xmlreader.each do |marc|
         rdf = RDFModeler.new(library.id, marc)
-        rdf.set_type("#{library.config['resource']['type']}")        
+        rdf.set_type(library.config["resource"]["type"])        
         rdf.convert
         rdfrecords << rdf.statements
         if file
@@ -113,16 +112,16 @@ class Oai < Grape::API
         :redirects => library.oai["redirects"])
       oai.query(:from => params[:from], :until => params[:until])
       logger.info "oai response: #{oai.response}"
-      FileUtils.mkdir_p File.join(File.dirname(__FILE__), '../db/converted/')
-      file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'w') if params[:filename]
+      file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'a+') if params[:filename]
       oai.response.entries.each do |record| 
         unless record.deleted?
           xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
           xmlreader.each do |marc|
             rdf = RDFModeler.new(library.id, marc)
-            rdf.set_type("BIBO.Document")        
+            rdf.set_type(library.config["resource"]["type"])       
             rdf.convert
-            file.write(rdf.statements) if params[:filename]
+            rdf.write_record
+            file.write(rdf.rdf) if params[:filename]
           end
         else
           logger.info "deleted record: #{record.header.identifier.split(':').last}"
