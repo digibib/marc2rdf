@@ -83,7 +83,6 @@ $(document).ready(function () {
       data: JSON.stringify({ 
             id: id,
             name: $('input#save_library_name').val(),
-            oai: { url: $('input#save_library_oai_url').val() },
             config: {
               resource: {
                 base: $('input#save_resource_base').val(),
@@ -136,16 +135,16 @@ $(document).ready(function () {
   
   // ** OAI
   // ** functions to add/remove table row, class "remove_table_row"
-  $("table#preserve").delegate(".remove_table_row", "click", function(){
+  $("table#oai_preserve").delegate(".remove_table_row", "click", function(){
     $(this).closest("tr").remove();
     return false;
   });
-  $("table#preserve").delegate(".add_table_row", "click", function(){
+  $("table#oai_preserve").delegate(".add_table_row", "click", function(){
     var data = '<tr><td></td><td>' + 
        '<input type="text" class="preserve_on_update" /></td>' +
        '<td><button class="remove_table_row">-</button></td></tr>';
        
-    $("table#preserve").append(data);
+    $("table#oai_preserve").append(data);
     return false;
   });
 
@@ -165,7 +164,7 @@ $(document).ready(function () {
   
     // make preserve table inputs into array
     var preserve_array = [];
-    $("table#preserve input:text").each(function() { 
+    $("table#oai_preserve input:text").each(function() { 
       var val=$(this).attr('value');
       preserve_array.push(val);
     });
@@ -179,14 +178,14 @@ $(document).ready(function () {
       data: JSON.stringify({
           id: id,
           oai: {
-            url: $('input#url').val(),
+            url: $('input#oai_url').val(),
             id: $('input#oai_id').val(),
-            follow_redirects: $('select#follow_redirects option:selected').val(),
-            parser: $('select#parser option:selected').val(),
-            //parser: $('input#parser').val(),
-            timeout: $('input#timeout').val(),
-            format: $('select#format option:selected').val(),
-            preserve_on_update: preserve_array
+            follow_redirects: $('select#oai_follow_redirects option:selected').val(),
+            parser: $('select#oai_parser option:selected').val(),
+            timeout: $('input#oai_timeout').val(),
+            format: $('select#oai_format option:selected').val(),
+            preserve_on_update: preserve_array,
+            schedule: $('input#oai_schedule').val()
             }
           }),
       dataType: 'json'

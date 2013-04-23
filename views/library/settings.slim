@@ -9,7 +9,7 @@ div class="divdot inputf"
         td: input[type="hidden" id="save_library_id" value=(library.id)]
       tr
         td oai repository
-        td: input[type="text" id="save_library_oai_url" value=(library.oai['url'] if library.oai)]
+        td: input[type="text" id="save_library_oai_url" value=(library.oai['url'] if library.oai) disabled="true"]
         td the url to the oai repository
       tr
         td resource base

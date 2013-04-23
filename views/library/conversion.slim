@@ -1,6 +1,6 @@
-h3 Convert from OAI
+h3 Convert single record from OAI
 
-table id="conversion_list" class="libraries active tablesorter"
+table id="single_conversion" class="libraries active tablesorter"
   thead
     tr
       th
@@ -18,12 +18,26 @@ table id="conversion_list" class="libraries active tablesorter"
       td: input[size="10" type="text" id="oai_getrecord" class="gen"]
       td: input[type="text" id="oai_saverecord_filename" class="gen"]
     tr
-      td: button[type="button" id="save_convert_all_test" class="gen" disabled="true"] = "test"
-      td full conversion!! disabled yet...
-    tr
       td
         span[id="conversion_info" class="info" style="margin-left:48px"]
         span[id="conversion_error" class="error" style="margin-left:48px"]
+
+h3 Update library from OAI
+table id="oai_conversion" class="libraries active tablesorter"
+  thead
+    tr
+      th
+      th[style="width:180px"] schedule
+      th[style="width:180px"] from date<br/>(yyyy-mm-dd)
+      th[style="width:180px"] to date<br/>(yyyy-mm-dd)
+  tbody
+    tr
+      td 
+        button[type="button" id="oai_convert_test" class="gen"] = "run"
+        button[type="button" id="oai_convert_full" class="gen" disabled="true"] = "full"
+      td: input[size="10" type="text" id="oai_convert_schedule" class="gen" value=(library.oai['schedule']) title="Min Hour DayofMonth Month DayOfWeek" disabled="true"]
+      td: input[size="10" type="text" id="oai_convert_from" class="gen"]
+      td: input[size="10" type="text" id="oai_convert_until" class="gen"]
 
 h3 Convert from file
 div class="divdot inputf"

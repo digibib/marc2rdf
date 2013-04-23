@@ -128,11 +128,11 @@ class Scheduler
   ### OAI harvest jobs ###
   
   def start_oai_harvest(params={})
-    params[:start_time] ||= Time.now 
-    params[:tags]        ||= "oaiharvest"
-    job_id = self.scheduler.at params[:start_time], :tags => [{:tags => params[:tags]}] do
+    params[:start_time]    ||= Time.now 
+    params[:tags]          ||= "oaiharvest"
+    job_id = self.scheduler.at params[:start_time], :tags => [{:tags => params[:tags]}] do |job|
       timing_start = Time.now
-      
+      count = 0
       library = Library.new.find(:id => params[:id].to_i)
       logger.info "library oai: #{library.oai}"
       oai = OAIClient.new(library.oai["url"], 
@@ -141,21 +141,24 @@ class Scheduler
         :timeout => library.oai["timeout"],
         :redirects => library.oai["redirects"])
       oai.query(:from => params[:from], :until => params[:until])
-      convert_oai_records(oai.records, library)
+      count += oai.records.count
+      convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
       # do the resumption loop...
       while(oai.response.resumption_token and not oai.response.resumption_token.empty?)
-        oai.records = []
+        oai.records = [] # empty oai records before each iteration
         oai.query(:resumption_token => oai.response.resumption_token)
         oai.response.each {|r| oai.records << r }
+        count += oai.records.count
         convert_oai_records(oai.records, library)
       end
-  
-      logger.info "Time to complete oai harvest: #{Time.now - timing_start} s."
+      length = Time.now - timing_start
+      logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => timing_start, :length => "#{length} s.", :result => "Converted records: #{count}"}
+      logger.info "Time to complete oai harvest: #{length} s.\nRecords converted: #{count}"
     end
   end
   
-  def convert_oai_records(oairecords, library)
-    job_id = self.scheduler.at Time.now , :tags => "conversion" do
+  def convert_oai_records(oairecords, library, params={})
+    job_id = self.scheduler.at Time.now , :tags => [{:tags => "conversion"}] do
       timing_start = Time.now
       rdfrecords = []
       oairecords.each do |record| 
@@ -165,8 +168,8 @@ class Scheduler
             rdf = RDFModeler.new(library.id, marc)
             rdf.set_type(library.config['resource']['type'])        
             rdf.convert
-            write_record_to_file(rdf, library) # schedule writing to file
-            update_record(rdf, library)        # schedule writing to repository
+            write_record_to_file(rdf, library) if params[:write_records] # schedule writing to file
+            update_record(rdf, library)        if params[:sparql_update] # schedule writing to repository
             rdfrecords << rdf.statements
           end
         else
@@ -179,10 +182,10 @@ class Scheduler
   
   # write converted record to file
   def write_record_to_file(rdf, library)
-    job_id = self.scheduler.at Time.now , :tags => "saving" do
+    job_id = self.scheduler.at Time.now , :tags => [{:tags => "saving"}] do
       FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
       file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
-      rdf.write_record
+      rdf.write_record     # creates rdf ntriples
       file.write(rdf.rdf)
     end
   end
@@ -190,7 +193,8 @@ class Scheduler
   # sparql update converted record
   def update_record(rdf, library)
     job_id = self.scheduler.at Time.now , :tags => "SparqlUpdate" do
-      # TODO
+      s = SparqlUpdate.new(rdf, library)
+      s.update_record
     end
   end
     

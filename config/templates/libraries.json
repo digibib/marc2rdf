@@ -24,7 +24,8 @@
             "format": "marcxchange",
             "url": "http://example.com/cgi-bin/oai",
             "follow_redirects": false,
-            "parser": "rexml"
+            "parser": "rexml",
+            "schedule": "01 23 * * *"
         },
         "rules": [],
         "harvesting": {}
