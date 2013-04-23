@@ -364,7 +364,7 @@ $(document).ready(function () {
         console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
       }
       var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;");
-      $("#converted_content").html('<br/><pre><h3>First record of converted data:</h3>' + result + '</pre>');
+      $("#converted_content").html('<br/><pre><h3>First 5 records of converted data:</h3>' + result + '</pre>');
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
       $("#uploadtest").removeClass('loading');

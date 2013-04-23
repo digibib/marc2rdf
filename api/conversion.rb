@@ -27,14 +27,19 @@ class Conversion < Grape::API
       puts request.body
       filename = File.join(File.dirname(__FILE__), '../db/uploads', params[:file][:filename])
       FileUtils.cp(params[:file][:tempfile], filename) 
-      logger.info "Success! #{params[:file][:filename]} uploaded."
+      logger.info "Success: #{params[:file][:filename]} uploaded."
       # converting ...
       library = Library.new.find(:id => params[:id])
       reader = MARC::ForgivingReader.new(filename)
-      rdf = RDFModeler.new(library.id, reader.first)
-      rdf.set_type(library.config["resource"]["type"])
-      rdf.convert
-      { :resource => rdf.statements }
+      rdfrecords = []
+      reader.first(5).each do |record|
+        rdf = RDFModeler.new(library.id, record)
+        rdf.set_type(library.config["resource"]["type"])
+        rdf.convert
+        rdf.write_record
+        rdfrecords << rdf.statements
+      end
+      { :resource => rdfrecords }
     end
 
     desc "uploads a file to convert"
@@ -45,12 +50,12 @@ class Conversion < Grape::API
     post "/upload" do
       upload = File.join(File.dirname(__FILE__), '../db/uploads', params[:file][:filename])
       FileUtils.cp(params[:file][:tempfile], upload) 
-      logger.info "Success! #{params[:file][:filename]} uploaded."
+      logger.info "Success: #{params[:file][:filename]} uploaded."
       # converting ...
       library = Library.new.find(:id => params[:id])
       reader = MARC::ForgivingReader.new(upload)
       rdfrecords = []
-      filename = "#{params[:file][:filename]}"
+      filename = "#{params[:file][:filename]}.nt"
       savefile = File.join(File.dirname(__FILE__), '../db/converted/', filename)
       file = File.open(savefile, 'a+') if params[:file][:filename]
       reader.each do |record|
