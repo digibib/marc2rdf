@@ -32,7 +32,7 @@ class Conversion < Grape::API
       library = Library.new.find(:id => params[:id])
       reader = MARC::ForgivingReader.new(filename)
       rdfrecords = []
-      reader.first(5).each do |record|
+      reader.first(20).each do |record|
         rdf = RDFModeler.new(library.id, record)
         rdf.set_type(library.config["resource"]["type"])
         rdf.convert
