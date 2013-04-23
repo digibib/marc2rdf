@@ -58,6 +58,7 @@ module API
     prefix 'api'
     format :json
     default_format :json
+    content_type :jpeg, "image/jpeg"
     use ApiErrorHandler
     
     mount API::Mappings

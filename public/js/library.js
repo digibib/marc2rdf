@@ -394,4 +394,21 @@ $(document).ready(function () {
     });
   });
   
+  
+  $("#upload").live("click", function() {
+    var file_data = $("#filename").prop("files")[0];  // Getting the properties of file from file field
+    var form_data = new FormData();                 // Creating object of FormData class
+    form_data.append("file", file_data)             // Appending parameter named file with properties of file_field to form_data
+    //form_data.append("filename", "test")                // Adding extra parameters to form_data
+    $.ajax({
+      url: "/api/conversion/upload",
+      dataType: 'script',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: form_data,
+      type: 'post'
+     })
+  })
+
 });

@@ -30,21 +30,7 @@ module API
         logger.info "POST: params: #{params} - created library: #{library}"
         { :library => library }
       end
-=begin      
-      desc "save specific library mapping"
-        params do
-          requires :mapping, desc: "Mapping file"
-        end
-      put "/:id/mapping" do
-        content_type 'json'
-        logger.info "PUT: mapping: #{params[:mapping]}"
-        library = Library.new.find(:id => params[:id].to_i)
-        puts params
-        library.update(:mapping => params[:mapping])
-        logger.info "PUT: params: #{params} - updated mapping: #{library.mapping}"
-        { :mapping => library.mapping }
-      end
-=end
+
       desc "edit/update library"
         params do
           requires :id,         type: Integer, desc: "ID of library"

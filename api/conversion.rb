@@ -17,6 +17,17 @@ class Conversion < Grape::API
       rdf.convert
       { :resource => rdf.statements }
     end
+    
+    desc "uploads a file to convert"
+      #params do
+      #  requires :file,  desc: "File to convert"
+      #end    
+    post "/upload" do
+      puts request.body
+      filename = File.join(File.dirname(__FILE__), '../db/uploads', params[:file][:filename])
+      FileUtils.cp(params[:file][:tempfile], filename) 
+      "success!"
+    end
   end # end convert namespace
 end
 end
