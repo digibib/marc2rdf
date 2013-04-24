@@ -23,21 +23,25 @@ table id="single_conversion" class="libraries active tablesorter"
         span[id="conversion_error" class="error" style="margin-left:48px"]
 
 h3 Update library from OAI
-table id="oai_conversion" class="libraries active tablesorter"
+table id="oai_harvest" class="libraries active tablesorter"
   thead
     tr
       th
-      th[style="width:180px"] schedule
+      th[style="width:180px" title="Min Hour DayofMonth Month DayOfWeek" disabled="true"] schedule
       th[style="width:180px"] from date<br/>(yyyy-mm-dd)
       th[style="width:180px"] to date<br/>(yyyy-mm-dd)
+      th[style="width:80px" title="Write converted records to file"] write file
+      th[style="width:80px" title="Insert (Sparql Update) records directly into Repository"] update repository
   tbody
     tr
       td 
-        button[type="button" id="oai_convert_test" class="gen"] = "run"
+        button[type="button" id="oai_harvest_test" class="gen"] = "run"
         button[type="button" id="oai_convert_full" class="gen" disabled="true"] = "full"
-      td: input[size="10" type="text" id="oai_convert_schedule" class="gen" value=(library.oai['schedule']) title="Min Hour DayofMonth Month DayOfWeek" disabled="true"]
-      td: input[size="10" type="text" id="oai_convert_from" class="gen"]
-      td: input[size="10" type="text" id="oai_convert_until" class="gen"]
+      td: input[size="10" type="text" id="oai_harvest_schedule" class="gen" value=(library.oai['schedule'])]
+      td: input[size="10" type="text" id="oai_harvest_from" class="gen"]
+      td: input[size="10" type="text" id="oai_harvest_until" class="gen"]
+      td: input[type="checkbox" id="write_records" class="gen" value="false"]
+      td: input[type="checkbox" id="sparql_update" class="gen" value="false"]
 
 h3 Convert from file
 div class="divdot inputf"

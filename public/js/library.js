@@ -193,6 +193,7 @@ $(document).ready(function () {
 
     request.success(function(data) {
       $('span#oai_info').html("Saved oai settings !").show().fadeOut(3000);
+      window.location.reload();
     });
 
     request.error(function(jqXHR, textStatus, errorThrown) {
@@ -339,7 +340,36 @@ $(document).ready(function () {
     });
   });
   
-  // test upload and convert
+  // ** test save all!
+  $('button#oai_harvest_test').on('click', function() {
+    var request = $.ajax({
+      url: '/api/oai/harvest',
+      type: 'PUT',
+      cache: false,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: id,
+        from: $('input#oai_harvest_from').val(),
+        until: $('input#oai_harvest_until').val(),
+        write_file: $('input#write_records').is(':checked'),
+        sparql_update: $('input#sparql_update').is(':checked')
+        }),
+      dataType: 'json'
+    });
+
+    request.success(function ( data ) {
+      if( console && console.log ) {
+        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+      }
+      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+      $("#converted_content").html('<br/><pre>' + result + '</pre>');
+    });
+    request.error(function(jqXHR, textStatus, errorThrown) {
+      $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  
+  // test upload and convert only first 20
   $("#uploadtest").live("click", function() {
     var file_data = $("#filename").prop("files")[0]; // Getting the properties of file from file field
     var form_data = new FormData();                 // Creating object of FormData class

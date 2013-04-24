@@ -79,17 +79,20 @@ class Oai < Grape::API
             
     desc "harvest a record batch"
       params do
-        requires :id,         type: Integer,  desc: "ID of library"
-        optional :from,       type: DateTime, desc: "From Date"
-        optional :until,      type: DateTime, desc: "To Date"
-        optional :start_time, type: Time,     desc: "Time to schedule"
-        optional :tag,        type: String,   desc: "Tag string"
+        requires :id,            type: Integer,  desc: "ID of library"
+        optional :from,          type: DateTime, desc: "From Date"
+        optional :until,         type: DateTime, desc: "To Date"
+        optional :tags,          type: String,   desc: "Tags"
+        optional :write_records, type: Boolean,  desc: "Write converted records to file"
+        optional :sparql_update, type: Boolean,  desc: "Update Repository directly"
       end
     put "/harvest" do
       content_type 'json'
+      # Schedule harvest with from/until optional params, default from yesterday
       result = Scheduler.start_oai_harvest :id => params[:id].to_i,
           :from  => params[:from]  ||= Date.today.prev_day.to_s,
-          :until => params[:until] ||= Date.today.to_s
+          :until => params[:until] ||= Date.today.to_s,
+          :tags  => params[:tags]
       { :result => result }
     end 
 
