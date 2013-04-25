@@ -1,6 +1,6 @@
 #encoding: utf-8
 # Scheduler Server 
-$stdout.sync = true
+#$stdout.sync = true
 require_relative "./config/init.rb"
 require 'logger' 
 require 'eventmachine'
@@ -147,7 +147,7 @@ class Scheduler
     params[:start_time]    ||= Time.now 
     params[:tags]          ||= "oaiharvest"
     library = Library.new.find(:id => params[:id].to_i)
-    puts "scheduled params: #{params}"
+    logger.info "Scheduled params: #{params}"
     job_id = self.scheduler.at params[:start_time], :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
       # counters
@@ -180,7 +180,7 @@ class Scheduler
   private 
   # internal functions
   def convert_oai_records(oairecords, library, deletecount, modifycount, params={})
-    job_id = self.scheduler.at Time.now , :tags => [{:tags => "conversion"}] do
+    self.scheduler.at Time.now , :tags => [{:tags => "conversion"}] do
       timing_start = Time.now
       @rdfrecords = []
       # iterate xml records and modify or delete
@@ -209,7 +209,7 @@ class Scheduler
   
   # write converted record to file
   def write_record_to_file(rdf, library)
-    job_id = self.scheduler.at Time.now , :tags => [{:tags => "saving"}] do
+    self.scheduler.at Time.now , :tags => [{:tags => "saving"}] do
       FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
       file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
       rdf.write_record     # creates rdf ntriples
@@ -219,7 +219,7 @@ class Scheduler
 
   # sparql update converted record
   def update_record(rdf, library, params={})
-    job_id = self.scheduler.at Time.now , :tags => "SparqlUpdate" do
+    self.scheduler.at Time.now , :tags => "SparqlUpdate" do
       s = SparqlUpdate.new(rdf, library)
       params[:delete] ? s.delete_record : s.modify_record
     end

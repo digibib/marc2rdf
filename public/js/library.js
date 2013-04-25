@@ -343,8 +343,8 @@ $(document).ready(function () {
   
   // ** test save all!
   $('button#oai_harvest_test').on('click', function() {
-    $('input#oai_harvest_from').is('empty')  ? from  = $('input#oai_harvest_from').val()  : from  = null;
-    $('input#oai_harvest_until').is('empty') ? until = $('input#oai_harvest_until').val() : until = null;
+    var from = ($('input#oai_harvest_from').val().length > 0) ? $('input#oai_harvest_from').val() : null ;
+    var until = ($('input#oai_harvest_until').val().length > 0) ? $('input#oai_harvest_until').val() : null ;
     var request = $.ajax({
       url: '/api/oai/harvest',
       type: 'PUT',
