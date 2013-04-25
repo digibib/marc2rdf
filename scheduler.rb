@@ -159,12 +159,14 @@ class Scheduler
         :timeout => library.oai["timeout"],
         :redirects => library.oai["redirects"])
       oai.query :from => params[:from], :until => params[:until]
+      @countrecords += oai.records.count
+      convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
       # do the resumption loop...
-      until oai.response.resumption_token.empty?
-        @countrecords += oai.records.count
-        convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
+      until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
         # fetch remainder if resumption token
         oai.query :resumption_token => oai.response.resumption_token if oai.response.resumption_token
+        @countrecords += oai.records.count
+        convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
       end
       
       length = Time.now - timing_start
