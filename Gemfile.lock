@@ -137,7 +137,6 @@ DEPENDENCIES
   grape
   libxml-ruby
   marc
-  nokogiri
   oai
   pry
   rdf

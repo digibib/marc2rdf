@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 gem "builder"
 gem "bundler"
-gem "nokogiri"
+#gem "nokogiri"
 gem "marc"
 gem "rdf"
 gem "rdf-rdfxml"

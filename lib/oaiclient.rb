@@ -32,6 +32,7 @@ class OAIClient
     else
       self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
     end
+    self.records = []
     self.response.each {|r| self.records << r }
     self.records
   end
