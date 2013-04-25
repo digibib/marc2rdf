@@ -33,6 +33,7 @@ class SparqlUpdate
       minus = self.preserve.collect { |p| [self.uri, RDF.module_eval("#{p}"), :o] }
       query = QUERY.delete([self.uri, :p, :o]).graph(self.graph).where([self.uri, :p, :o])
       minus.each {|m| query.minus(m) }
+      query.define('sql:log-enable 2')  # neccessary for concurrent writes
     end  
     #puts "DELETE query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ? 
@@ -68,6 +69,7 @@ class SparqlUpdate
       deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(self.graph).where([auth[:id], :p, :o])
       deleteauthquery.minus([auth[:id], RDF::SKOS.broader, :o])
       deleteauthquery.minus([auth[:id], RDF::OWL.sameAs, :o])
+      deleteauthquery.define('sql:log-enable 2')  # neccessary for concurrent writes
       #puts "Delete authorities:\n #{deleteauthquery}" if ENV['RACK_ENV'] == 'development'
       REPO.delete(deleteauthquery) unless ENV['RACK_ENV'] == 'test'
     end
@@ -87,6 +89,7 @@ class SparqlUpdate
     return nil unless self.uri
     query = QUERY.delete([self.uri, :p, :o],[:x, :y, self.uri])
     query.graph(self.graph).where([self.uri, :p, :o],[:x, :y, self.uri])
+    query.define('sql:log-enable 2')  # neccessary for concurrent writes
     #puts "PURGE query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ?
       response = query.to_s : 
