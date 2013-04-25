@@ -61,7 +61,8 @@ class Scheduler
       rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
       logger.info "Time to complete: #{Time.now - timing_start} s."
       logger.info "Result:\n#{rule.last_result}"
-      logline = {:time => Time.now, :rule => rule.id, :job_id => job.job_id, :cron_id => nil, :library => rule.library, :start_time => timing_start, :length => "#{Time.now - timing_start} s.", :result => rule.last_result}
+      logline = {:time => Time.now, :rule => rule.id, :job_id => job.job_id, :cron_id => nil, :library => rule.library, :start_time => timing_start, 
+                 :length => "#{Time.now - timing_start} s.", :tags => rule.tag, :result => rule.last_result}
       write_history(logline)
     end
   end
@@ -76,7 +77,8 @@ class Scheduler
       rule.last_result = %x[(echo "#{rule.script.to_s}") | /usr/bin/isql-vt 1111 #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
       logger.info "Time to complete: #{Time.now - timing_start} s."
       logger.info "Result:\n#{rule.last_result}"
-      logline = {:time => Time.now, :rule => rule.id, :job_id => nil, :cron_id => cron.job_id, :library => rule.library, :start_time => timing_start, :length => "#{Time.now - timing_start} s.", :result => rule.last_result}
+      logline = {:time => Time.now, :rule => rule.id, :job_id => nil, :cron_id => cron.job_id, :library => rule.library, :start_time => timing_start, 
+                 :length => "#{Time.now - timing_start} s.", :tags => rule.tag, :result => rule.last_result}
       write_history(logline)
     end
   end
@@ -123,17 +125,33 @@ class Scheduler
     logger.info "all jobs by tag: #{jobs}"
     jobs
   end
-          
+  
+  ### History 
+  def read_history
+    logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
+    open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
+    log = JSON.parse(IO.read(logfile))
+  end
+  
+  def write_history(logline)
+    logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
+    log = self.read_history
+    log["history"] << logline
+    open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(log.to_json))) } 
+  end
+            
   ### Specific AtJobs based on Library updates ###
   ### OAI harvest jobs ###
   
   def start_oai_harvest(params={})
     params[:start_time]    ||= Time.now 
     params[:tags]          ||= "oaiharvest"
-    job_id = self.scheduler.at params[:start_time], :tags => [{:tags => params[:tags]}] do |job|
+    library = Library.new.find(:id => params[:id].to_i)
+    puts "scheduled params: #{params}"
+    job_id = self.scheduler.at params[:start_time], :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
-      count = 0
-      library = Library.new.find(:id => params[:id].to_i)
+      # counters
+      countrecords, deletecount, modifycount = 0, 0, 0
       logger.info "library oai: #{library.oai}"
       oai = OAIClient.new(library.oai["url"], 
         :format => library.oai["format"], 
@@ -141,42 +159,51 @@ class Scheduler
         :timeout => library.oai["timeout"],
         :redirects => library.oai["redirects"])
       oai.query(:from => params[:from], :until => params[:until])
-      count += oai.records.count
-      convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
+      countrecords += oai.records.count
+      convert_oai_records(oai.records, library, deletecount, modifycount, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
       # do the resumption loop...
       while(oai.response.resumption_token and not oai.response.resumption_token.empty?)
         oai.records = [] # empty oai records before each iteration
         oai.query(:resumption_token => oai.response.resumption_token)
         oai.response.each {|r| oai.records << r }
-        count += oai.records.count
-        convert_oai_records(oai.records, library)
+        countrecords += oai.records.count
+        convert_oai_records(oai.records, library, deletecount, modifycount, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
       end
       length = Time.now - timing_start
-      logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => timing_start, :length => "#{length} s.", :result => "Converted records: #{count}"}
-      logger.info "Time to complete oai harvest: #{length} s.\nRecords converted: #{count}"
+      logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => params[:start_time], 
+                 :length => "#{length} s.", :tags => params[:tags], :result => "Total records modified: #{countrecords}.\nRecords deleted: #{deletecount}\nRecords modified: #{modifycount}"}
+      write_history(logline)
+      logger.info "Time to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{countrecords}.\nRecords deleted: #{deletecount}\nRecords modified: #{modifycount}"
     end
   end
   
-  def convert_oai_records(oairecords, library, params={})
+  private 
+  # internal functions
+  def convert_oai_records(oairecords, library, deletecount, modifycount, params={})
     job_id = self.scheduler.at Time.now , :tags => [{:tags => "conversion"}] do
       timing_start = Time.now
-      rdfrecords = []
+      @rdfrecords = []
+      # iterate xml records and modify or delete
       oairecords.each do |record| 
         unless record.deleted?
           xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
-          xmlreader.each do |marc|
-            rdf = RDFModeler.new(library.id, marc)
+          xmlreader.each do |marcrecord|
+            rdf = RDFModeler.new(library.id, marcrecord)
             rdf.set_type(library.config['resource']['type'])        
             rdf.convert
             write_record_to_file(rdf, library) if params[:write_records] # schedule writing to file
             update_record(rdf, library)        if params[:sparql_update] # schedule writing to repository
-            rdfrecords << rdf.statements
+            @rdfrecords << rdf.statements
+            modifycount += 1
           end
         else
-          puts "deleted record: #{record.header.identifier.split(':').last}"
+          deletedrecord = record.header.identifier.split(':').last
+          update_record(deletedrecord, library, :delete => true) if params[:sparql_update] # schedule writing to repository
+          deletecount += 1
+          puts "deleted record: #{deletedrecord}"
         end
       end
-      logger.info "Time to convert #{rdfrecords.count} records: #{Time.now - timing_start} s."
+      logger.info "Time to convert #{@rdfrecords.count} records: #{Time.now - timing_start} s."
     end
   end
   
@@ -191,27 +218,13 @@ class Scheduler
   end
 
   # sparql update converted record
-  def update_record(rdf, library)
+  def update_record(rdf, library, params={})
     job_id = self.scheduler.at Time.now , :tags => "SparqlUpdate" do
       s = SparqlUpdate.new(rdf, library)
-      s.update_record
+      params[:delete] ? s.delete_record : s.modify_record
     end
   end
     
-  ### History 
-  def read_history
-    logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
-    open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
-    log = JSON.parse(IO.read(logfile))
-  end
-  
-  def write_history(logline)
-    logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
-    log = self.read_history
-    log["history"] << logline
-    open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(log.to_json))) } 
-  end
-  
 end
 
 unless ENV['RACK_ENV'] == 'test'

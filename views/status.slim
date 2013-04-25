@@ -42,6 +42,7 @@ div id="history" class="divdot inputf"
         th[style="width:80px"] library id
         th[style="width:180px"] run
         th[style="width:180px"] rule id
+        th[style="width:180px"] tags
         th[style="width:180px"] time
         th[style="width:180px"] result
     tbody
@@ -101,12 +102,13 @@ javascript:
         rule_id      = job.params["tags"][0]["id"];      
         rule_library = job.params["tags"][0]["library"];
         tags         = job.params["tags"][0]["tags"];
+        rule_id ? rule_href = '<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>' : rule_href = '<td>';
         $('<tr>').attr('id',i)
             .append($('<td><button>stop</button></td>').click(function () { stop({id: job.job_id}); }))
             .append($('<td>').text(job.job_id))
             .append($('<td><a href="/library/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.run_time))
-            .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
+            .append($(rule_href))
             .append($('<td>').text(tags))
             .appendTo('#running-jobs tbody');
       });
@@ -119,12 +121,13 @@ javascript:
         rule_id      = job.params["tags"][0]["id"]; 
         rule_library = job.params["tags"][0]["library"]; 
         tags         = job.params["tags"][0]["tags"];
+        rule_id ? rule_href = '<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>' : rule_href = '<td>';
         $('<tr>').attr('id',i)
             .append($('<td><button>stop</button></td>').click(function () { unschedule({id: job.job_id, library: rule_library}); }))
             .append($('<td>').text(job.job_id))
             .append($('<td><a href="/library/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.start_time))
-            .append($('<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>'))
+            .append($(rule_href))
             .append($('<td>').text(tags))
             .append($('<td>').text(job.run_time))
             .appendTo('#scheduled-jobs tbody');
@@ -136,11 +139,13 @@ javascript:
       var rows = $('<tr>');
       $.each(data.history.reverse(), function(i,job){
         job.job_id ? job_id = job.job_id : job_id = job.cron_id;
+        job.rule ? rule_href = '<td><a href="/rules/'+job.rule+'">'+job.rule+'</a></td>' : rule_href = '<td>';
         $('<tr>').attr('id',i)
           .append($('<td>').text(job_id))
           .append($('<td>').text(job.library))
           .append($('<td>').text(job.time))
-          .append($('<td><a href="/rules/'+job.rule+'">'+job.rule+'</a></td>'))
+          .append($(rule_href))
+          .append($('<td>').text(job.tags))
           .append($('<td>').text(job.length))
           .append($('<td><button>result</button></td>').click(function () { alert(job.result); }))
           .appendTo('#finished-jobs tbody');

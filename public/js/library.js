@@ -342,6 +342,8 @@ $(document).ready(function () {
   
   // ** test save all!
   $('button#oai_harvest_test').on('click', function() {
+    $('input#oai_harvest_from').is('empty')  ? from  = $('input#oai_harvest_from').val()  : from  = null;
+    $('input#oai_harvest_until').is('empty') ? until = $('input#oai_harvest_until').val() : until = null;
     var request = $.ajax({
       url: '/api/oai/harvest',
       type: 'PUT',
@@ -349,20 +351,17 @@ $(document).ready(function () {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
         id: id,
-        from: $('input#oai_harvest_from').val(),
-        until: $('input#oai_harvest_until').val(),
-        write_file: $('input#write_records').is(':checked'),
+        from: from,
+        until: until,
+        write_records: $('input#write_records').is(':checked'),
         sparql_update: $('input#sparql_update').is(':checked')
         }),
       dataType: 'json'
     });
 
     request.success(function ( data ) {
-      if( console && console.log ) {
-        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
-      }
-      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
-      $("#converted_content").html('<br/><pre>' + result + '</pre>');
+      $('span#conversion_info').html("OAI harvesting started!").show().fadeOut(3000);
+      window.location = '/status';
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
       $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);

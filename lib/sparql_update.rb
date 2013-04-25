@@ -6,34 +6,41 @@ SparqlUpdate = Struct.new(:uri, :graph, :record, :isbn, :response, :library, :pr
 class SparqlUpdate
   
   def initialize(record, library)
-    self.uri      = record.uri
+    # check if an RDF modeler object or just a RDF uri
+    record.instance_of?(RDFModeler) ? self.uri = record.uri : self.uri = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{record}")
     self.library  = library
     self.preserve = library.oai['preserve_on_update']
     self.graph    = RDF::URI(library.config['resource']['default_graph'])
     self.record   = record
   end
 
-  def update_record
-    delete_record
-    delete_authorities
-    insert_record
+  def modify_record
+    delete_old_record
+    delete_old_authorities
+    insert_new_record
   end
-    
-  # this method deletes record while preserving specified predicates
+  
   def delete_record
+    purge_record
+  end
+   
+  private
+  
+  # this method deletes record while preserving specified predicates
+  def delete_old_record
     return nil unless self.uri
     if self.preserve
       minus = self.preserve.collect { |p| [self.uri, RDF.module_eval("#{p}"), :o] }
       query = QUERY.delete([self.uri, :p, :o]).graph(self.graph).where([self.uri, :p, :o])
       minus.each {|m| query.minus(m) }
     end  
-    puts "query:\n #{query.pp}" if ENV['RACK_ENV'] == 'development'
+    puts "query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ? 
       response = query.to_s : 
       response = REPO.delete(query)
   end
 
-  def delete_authorities
+  def delete_old_authorities
     ## done by making temporary graph with converted record
     ## and do queries on this to find authorities to delete
     tempgraph = RDF::Graph.new('temp')
@@ -61,16 +68,16 @@ class SparqlUpdate
       deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(self.graph).where([auth[:id], :p, :o])
       deleteauthquery.minus([auth[:id], RDF::SKOS.broader, :o])
       deleteauthquery.minus([auth[:id], RDF::OWL.sameAs, :o])
-      puts "Delete authorities:\n #{deleteauthquery.pp}" if ENV['RACK_ENV'] == 'development'
+      puts "Delete authorities:\n #{deleteauthquery}" if ENV['RACK_ENV'] == 'development'
       REPO.delete(deleteauthquery) unless ENV['RACK_ENV'] == 'test'
     end
     authority_ids
   end
   
-  def insert_record
+  def insert_new_record
     ## insert new triples
     query = QUERY.insert_data(self.record.statements).graph(self.graph)
-    puts "query:\n #{query.pp}" if ENV['RACK_ENV'] == 'development'
+    puts "query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ? 
       response = query.to_s : 
       response = REPO.insert_data(query)
@@ -80,7 +87,7 @@ class SparqlUpdate
     return nil unless self.uri
     query = QUERY.delete([self.uri, :p, :o],[:x, :y, self.uri])
     query.graph(self.graph).where([self.uri, :p, :o],[:x, :y, self.uri])
-    puts "query:\n #{query.pp}" if ENV['RACK_ENV'] == 'development'
+    puts "query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ?
       response = query.to_s : 
       response = REPO.delete(query)
