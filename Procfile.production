@@ -1,4 +1,4 @@
-marc2rdf: bundle exec rackup -E production config.ru -p 3000
+marc2rdf: bundle exec rackup -E production -p 3000 -o 0.0.0.0 config.ru
 scheduler: bundle exec ruby scheduler.rb
 
 # uncomment to test API on separate port
