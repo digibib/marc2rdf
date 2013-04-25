@@ -160,11 +160,13 @@ class Scheduler
         :redirects => library.oai["redirects"])
       oai.query :from => params[:from], :until => params[:until]
       # do the resumption loop...
-      while oai.response.entries.count > 0
+      until oai.response.resumption_token.empty?
         @countrecords += oai.records.count
         convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
+        # fetch remainder if resumption token
         oai.query :resumption_token => oai.response.resumption_token if oai.response.resumption_token
       end
+      
       length = Time.now - timing_start
       logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => params[:start_time], 
                  :length => "#{length} s.", :tags => params[:tags], :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}"}
