@@ -200,7 +200,7 @@ class Scheduler
           deletedrecord = record.header.identifier.split(':').last
           update_record(deletedrecord, library, :delete => true) if params[:sparql_update] # schedule writing to repository
           deletecount += 1
-          puts "deleted record: #{deletedrecord}"
+          #puts "deleted record: #{deletedrecord}"
         end
       end
       logger.info "Time to convert #{@rdfrecords.count} records: #{Time.now - timing_start} s."

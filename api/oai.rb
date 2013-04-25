@@ -89,7 +89,7 @@ class Oai < Grape::API
     put "/harvest" do
       content_type 'json'
       # Schedule harvest with from/until optional params, default from yesterday
-      puts params
+      logger.info "params: #{params}"
       result = Scheduler.start_oai_harvest :id => params[:id].to_i,
           :from  => params[:from]  ||= Date.today.prev_day.to_s,
           :until => params[:until] ||= Date.today.to_s,

@@ -26,13 +26,14 @@ $(document).ready(function () {
       data: JSON.stringify({ 
           name: $('input#create_library_name').val(),
           oai: { 
-              url: $('input#create_library_oai_url').val(),
+              url: "",
               preserve_on_update: [ "FOAF.depiction" ],
               timeout: 60,
               format: "marcxchange",
               follow_redirects: false,
               parser: "rexml"
               },
+          rules: []
           }),
       dataType: 'json'
     });

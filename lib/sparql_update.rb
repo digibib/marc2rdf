@@ -34,7 +34,7 @@ class SparqlUpdate
       query = QUERY.delete([self.uri, :p, :o]).graph(self.graph).where([self.uri, :p, :o])
       minus.each {|m| query.minus(m) }
     end  
-    puts "query:\n #{query}" if ENV['RACK_ENV'] == 'development'
+    #puts "DELETE query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ? 
       response = query.to_s : 
       response = REPO.delete(query)
@@ -68,7 +68,7 @@ class SparqlUpdate
       deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(self.graph).where([auth[:id], :p, :o])
       deleteauthquery.minus([auth[:id], RDF::SKOS.broader, :o])
       deleteauthquery.minus([auth[:id], RDF::OWL.sameAs, :o])
-      puts "Delete authorities:\n #{deleteauthquery}" if ENV['RACK_ENV'] == 'development'
+      #puts "Delete authorities:\n #{deleteauthquery}" if ENV['RACK_ENV'] == 'development'
       REPO.delete(deleteauthquery) unless ENV['RACK_ENV'] == 'test'
     end
     authority_ids
@@ -77,7 +77,7 @@ class SparqlUpdate
   def insert_new_record
     ## insert new triples
     query = QUERY.insert_data(self.record.statements).graph(self.graph)
-    puts "query:\n #{query}" if ENV['RACK_ENV'] == 'development'
+    puts "INSERT query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ? 
       response = query.to_s : 
       response = REPO.insert_data(query)
@@ -87,7 +87,7 @@ class SparqlUpdate
     return nil unless self.uri
     query = QUERY.delete([self.uri, :p, :o],[:x, :y, self.uri])
     query.graph(self.graph).where([self.uri, :p, :o],[:x, :y, self.uri])
-    puts "query:\n #{query}" if ENV['RACK_ENV'] == 'development'
+    puts "PURGE query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ?
       response = query.to_s : 
       response = REPO.delete(query)
