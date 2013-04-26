@@ -180,49 +180,43 @@ class Scheduler
   private 
   # internal functions
   def convert_oai_records(oairecords, library, params={})
-    #self.scheduler.at Time.now , :tags => [{:tags => "conversion"}] do
-      timing_start = Time.now
-      @rdfrecords = []
-      # iterate xml records and modify or delete
-      oairecords.each do |record| 
-        unless record.deleted?
-          xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
-          xmlreader.each do |marcrecord|
-            rdf = RDFModeler.new(library.id, marcrecord)
-            rdf.set_type(library.config['resource']['type'])        
-            rdf.convert
-            write_record_to_file(rdf, library) if params[:write_records] # schedule writing to file
-            update_record(rdf, library)        if params[:sparql_update] # schedule writing to repository
-            @rdfrecords << rdf.statements
-            @modifycount += 1
-          end
-        else
-          deletedrecord = record.header.identifier.split(':').last
-          update_record(deletedrecord, library, :delete => true) if params[:sparql_update] # schedule writing to repository
-          @deletecount += 1
-          #puts "deleted record: #{deletedrecord}"
+    timing_start = Time.now
+    @rdfrecords = []
+    # iterate xml records and modify or delete
+    oairecords.each do |record| 
+      unless record.deleted?
+        xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
+        xmlreader.each do |marcrecord|
+          rdf = RDFModeler.new(library.id, marcrecord)
+          rdf.set_type(library.config['resource']['type'])        
+          rdf.convert
+          write_record_to_file(rdf, library) if params[:write_records] # schedule writing to file
+          update_record(rdf, library)        if params[:sparql_update] # schedule writing to repository
+          @rdfrecords << rdf.statements
+          @modifycount += 1
         end
+      else
+        deletedrecord = record.header.identifier.split(':').last
+        update_record(deletedrecord, library, :delete => true) if params[:sparql_update] # schedule writing to repository
+        @deletecount += 1
+        #puts "deleted record: #{deletedrecord}"
       end
+    end
       logger.info "Time to convert #{@rdfrecords.count} records: #{Time.now - timing_start} s."
-    #end
   end
   
   # write converted record to file
   def write_record_to_file(rdf, library)
-    #self.scheduler.at Time.now , :tags => [{:tags => "saving"}] do
-      FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
-      file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
-      rdf.write_record     # creates rdf ntriples
-      file.write(rdf.rdf)
-    #end
+    FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
+    file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
+    rdf.write_record     # creates rdf ntriples
+    file.write(rdf.rdf)
   end
 
   # sparql update converted record
   def update_record(rdf, library, params={})
-    #self.scheduler.at Time.now , :tags => "SparqlUpdate" do
-      s = SparqlUpdate.new(rdf, library)
-      params[:delete] ? s.delete_record : s.modify_record
-    #end
+    s = SparqlUpdate.new(rdf, library)
+    params[:delete] ? s.delete_record : s.modify_record
   end
     
 end

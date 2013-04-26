@@ -1,4 +1,7 @@
 = marc2rdf CHANGELOG
+0.0.9
+  SPARQL Update and Conversion module
+  Libxml deactivated, segfaulting
 0.0.8
   Rules Engine:
     run now and scheduled jobs
