@@ -156,7 +156,7 @@ $(document).ready(function () {
         $('input#oai_id').val(data.id);
         $('span#oai_info').html(JSON.stringify(data)).show().fadeOut(5000);
       })
-      .fail(function() { $('span#oai_error').html("Failed to validate, check URL!").show().fadeOut(5000); });
+      .fail(function() { $('span#oai_error').html("Failed to validate, check URL or enter OAI Resource ID manually").show().fadeOut(5000); });
     
   });
   
