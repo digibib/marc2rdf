@@ -269,7 +269,7 @@ $(document).ready(function () {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
         id: id,
-        record: $('span#oai_id').val() + $('input#oai_getrecord').val(),
+        record: $('span#oai_record_identifier').text() + $('input#oai_getrecord').val(),
         }),
       dataType: 'json'
     });
@@ -296,7 +296,7 @@ $(document).ready(function () {
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
         id: id,
-        record: $('input#oai_getrecord').val(),
+        record: $('span#oai_record_identifier').val() + $('input#oai_getrecord').val(),
         filename: filename,
         }),
       dataType: 'json'

@@ -14,7 +14,7 @@ table id="single_conversion" class="libraries active tablesorter"
         button[type="button" id="oai_getrecord_test" class="gen"] = "test"
         button[type="button" id="oai_saverecord_test" class="gen"] = "save"
       td convert single record
-      td: span[id="oai_id"] #{library.oai["id"] if library.oai["id"]}:
+      td: span[id="oai_record_identifier"] #{library.oai["id"] if library.oai["id"]}:
       td: input[size="10" type="text" id="oai_getrecord" class="gen"]
       td: input[type="text" id="oai_saverecord_filename" class="gen"]
     tr
