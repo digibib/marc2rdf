@@ -59,7 +59,9 @@ class Oai < Grape::API
       else
         oai.get_record :metadata_prefix => library.oai["format"]
       end
+      logger.info "GetRecord result: identifier #{params[:record]}\n #{oai.records.record.metadata.to_s}"
       xmlreader = MARC::XMLReader.new(StringIO.new(oai.records.record.metadata.to_s)) 
+      logger.info "Marc response: #{xmlreader.inspect}"
       rdfrecords = []
       if params[:filename]
         file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'a+')

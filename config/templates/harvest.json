@@ -1,0 +1,68 @@
+{
+    "sources": [
+        {
+            "id": "dummy1",
+            "name": "Sparql endpoint Example",
+            "description": "This is an example of a Sparql endpoint harvest",
+            "custom_headers": {
+                "CUSTOM_APIKEY": "your_key_here"
+            },
+            "url": {
+                "prefix": "http://example.com/sparql",
+                "suffix": ""
+            },
+            "harvest": [
+                "OWL.sameAs",
+                "FOAF.isPrimaryTopicOf",
+                "BIBO.isbn",
+                "BIBO.lccn",
+                "BIBO.oclcnum"
+            ],
+            "append_to": [
+                "FABIO.Manifestation"
+            ],
+            "params": {
+                "content_type": "application/sparql-results+json"
+            },
+            "protocol": "sparql",
+            "limits": {
+                "batch_limit": 30,
+                "delay": 5,
+                "retry_limit": 3
+            }
+        },
+        {
+            "id": "dummy2",
+            "name": "XML endpoint Example",
+            "description": "This is an example of a harvest from a generic http endpoint",
+            "protocol": "http",
+            "url": {
+                "prefix": "http://example.com/?query=",
+                "suffix": "&result=application/json"
+            },
+            "apikey": "dummykey",
+            "namespaces": {
+                "xmlns": "http://worldcat.org/xid/isbn/"
+            },
+            "harvest": {
+                "FOAF.depiction": {
+                    "datatype": "uri",
+                    "xpath": "//path/to/object",
+                    "regex_strip": "somethingtocut"
+                },
+                "BIBO.isbn": {
+                    "datatype": "literal",
+                    "xpath": "//xmlns:isbn"
+                }
+            },
+            "append_to": [
+                "FABIO.Manifestation"
+            ],
+            "limits": {
+                "batch_limit": 30,
+                "delay": 5,
+                "retry_limit": 3
+            }
+        }
+    ]
+}
