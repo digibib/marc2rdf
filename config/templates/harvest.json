@@ -1,5 +1,4 @@
-{
-    "sources": [
+[
         {
             "id": "dummy1",
             "name": "Sparql endpoint Example",
@@ -11,7 +10,7 @@
                 "prefix": "http://example.com/sparql",
                 "suffix": ""
             },
-            "harvest": [
+            "predicates": [
                 "OWL.sameAs",
                 "FOAF.isPrimaryTopicOf",
                 "BIBO.isbn",
@@ -26,6 +25,7 @@
             },
             "protocol": "sparql",
             "limits": {
+                "max_limit": 10,
                 "batch_limit": 30,
                 "delay": 5,
                 "retry_limit": 3
@@ -37,14 +37,14 @@
             "description": "This is an example of a harvest from a generic http endpoint",
             "protocol": "http",
             "url": {
-                "prefix": "http://example.com/?query=",
-                "suffix": "&result=application/json"
+                "prefix": "http://xisbn.worldcat.org/webservices/xid/isbn/",
+                "suffix": "?method=getEditions&format=xml"
             },
             "apikey": "dummykey",
             "namespaces": {
                 "xmlns": "http://worldcat.org/xid/isbn/"
             },
-            "harvest": {
+            "predicates": {
                 "FOAF.depiction": {
                     "datatype": "uri",
                     "xpath": "//path/to/object",
@@ -56,13 +56,14 @@
                 }
             },
             "append_to": [
-                "FABIO.Manifestation"
+                "FABIO.Work"
             ],
             "limits": {
+                "max_limit": 10,
                 "batch_limit": 30,
                 "delay": 5,
                 "retry_limit": 3
             }
         }
     ]
-}
+
