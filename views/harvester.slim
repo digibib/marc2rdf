@@ -1,0 +1,37 @@
+- if harvester
+  == render :slim, :'harvest_menu', :layout => false, :locals => {:library => library, :harvester => harvester}
+- else
+  h2 Harvester Editor
+  
+  h3[style="margin-left:24px"] Harvest Rules
+  p[style="margin-left:48px"] These harvesting rules are run against entire RDF store
+  table id="global_harvester_list" class="libraries active tablesorter"
+    thead
+      tr
+        th 
+        th[style="width:150px"] short name
+        th description
+    tbody
+    - for h in Harvest.new.all
+      tr id="#{h.id}"
+        td: button[type="button" id="clone_harvester" class="gen"]  = "clone"
+        td 
+          a href="/harvester/#{h.id}" #{h.name if h.name}
+        td #{h.description if h.description}
+
+  h3 Create a new Harvest Rule
+  div class="divdot inputf"
+    span[class='info' id="create_harvester_info" style="margin-left:20px"]
+    form id="add_harvester_form"
+      table class="genform"
+        tr
+          td name
+          td: input[type="text" id="create_harvester_name" class="required"]
+        tr
+          td: button[type="button" id="create_harvester" class="gen"]  = "Create new Harvester"
+          td
+            span[id="harvester_info" class="info" style="margin-left:48px"]
+            span[id="harvester_error" class="error" style="margin-left:48px"]            
+    
+    script src="/js/harvester.js"
+  

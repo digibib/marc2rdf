@@ -5,7 +5,7 @@ BatchHarvest   = Struct.new(:harvester, :params, :client, :count, :solutions, :r
 
 class BatchHarvest
   # A Batch accepts an RDF::Query::Solutions as input or from a query against RDF store
-  # Make sure that RDF::Query::Solutions includes :object binding, as this is used for harvesting
+  # NB! Make sure that RDF::Query::Solutions includes :object binding, as its value is used for harvesting
   
   def initialize(harvester, batch = nil)
     self.harvester   = harvester

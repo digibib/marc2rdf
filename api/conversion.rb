@@ -18,7 +18,7 @@ class Conversion < Grape::API
       { :resource => rdf.statements }
     end
     
-    desc "test: uploads a file to convert"
+    desc "test: uploads a file, converts first 20 records"
       params do
         requires :id, type: Integer, desc: "ID of library"
         requires :file,  desc: "File to convert"

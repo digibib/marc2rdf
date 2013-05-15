@@ -117,9 +117,17 @@ class APP < Sinatra::Base
     slim :rule_menu, :locals => {:library => session[:library], :rule => session[:rule]}
   end
       
-  get '/harvest' do
-    # Harvesting sources
-    slim :harvest, :locals => {:library => session[:library]}
+  get '/harvester' do
+    # Harvester creation and management
+    session[:harvester] = nil
+    slim :harvester, :locals => {:library => session[:library], :harvester => session[:harvester]}
+  end
+
+  get '/harvester/:id' do
+    :json
+    # Edit harvester
+    session[:harvester] = Harvest.new.find(:id => params[:id])
+    slim :harvest_menu, :locals => {:library => session[:library], :harvester => session[:harvester]}
   end
 
   get '/status' do
