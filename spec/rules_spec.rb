@@ -25,6 +25,7 @@ describe Rule do
       @rule.create(:name => "Test rule")
       @rule.update(:id=>"New dummy id")
       @rule.id.should_not == "New dummy id"
+      @rule.delete
     end    
   end
   
@@ -43,6 +44,7 @@ describe Rule do
         )
       @scheduler = Scheduler.new
     end
+    
     it "starts a Rufus::Scheduler::AtJob object" do
       job_id = @scheduler.test_atjob(@rule.script, :start_time => @rule.start_time, :tags => [{:id => @rule.id, :tags => @rule.tag}])
       job_id.should be_a(Rufus::Scheduler::AtJob)
