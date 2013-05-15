@@ -1,18 +1,20 @@
 #encoding: utf-8
 # Struct for BatchHarvest class 
 
-Batch   = Struct.new(:harvest, :params, :client, :count, :solutions, :response, :statements)
+BatchHarvest   = Struct.new(:harvester, :params, :client, :count, :solutions, :response, :statements)
 
-class Batch
-  # A Batch is a RDF::Solutions either from update or query against RDF store
-  def initialize(harvest, batch = nil)
-    self.harvest   = harvest
+class BatchHarvest
+  # A Batch accepts an RDF::Query::Solutions as input or from a query against RDF store
+  # Make sure that RDF::Query::Solutions includes :object binding, as this is used for harvesting
+  
+  def initialize(harvester, batch = nil)
+    self.harvester   = harvester
     self.solutions = batch if batch.is_a?(RDF::Query::Solutions) # set solutions if harvest from batch
   end
 
   ### Client methods, make persistent connection
   def connect
-    self.client = Net::HTTP::Persistent.new self.harvest.id
+    self.client = Net::HTTP::Persistent.new self.harvester.id
   end
   
   def disconnect
@@ -34,15 +36,16 @@ class Batch
     self.count = solutions.first[:s].to_i
   end
   
+  # Main method for harvesting, iterates self.solutions if present or iterates lookup against RDF store
   def start_harvest(params={})
     params[:offset]      ||= 0
-    params[:max_limit]   ||= self.harvest.limits["max_limit"]
-    params[:batch_limit] ||= self.harvest.limits["batch_limit"]
-    params[:retry_limit] ||= self.harvest.limits["retry_limit"]
-    params[:delay]       ||= self.harvest.limits["delay"]
+    params[:max_limit]   ||= self.harvester.limits["max_limit"]
+    params[:batch_limit] ||= self.harvester.limits["batch_limit"]
+    params[:retry_limit] ||= self.harvester.limits["retry_limit"]
+    params[:delay]       ||= self.harvester.limits["delay"]
     self.connect
     if self.solutions
-      # iterate batch until end
+      # iterate batch until end of solutions
       while params[:offset] <= self.solutions.length
         solutions = Marshal.load(Marshal.dump(self.solutions)).offset(params[:offset]).limit(params[:batch_limit])
         run_harvester(solutions)
@@ -52,7 +55,6 @@ class Batch
       # do rdf lookups and iterate until end
       while params[:offset] <= params[:max_limit]
         solutions = rdfstore_query(params)
-        puts solutions.inspect
         run_harvester(solutions)
         params[:offset] += params[:batch_limit]
       end
@@ -87,23 +89,24 @@ class Batch
   ### Harvesting methods
   def run_harvester(solutions)
     # need to have solutions first
-    return nil unless solutions and self.harvest
+    return nil unless solutions and self.harvester
     self.statements = []
     solutions.each do |solution|
       next unless solution.object # ignore if no object variable in solution
-      url = "#{self.harvest.url["prefix"]}#{solution.object}#{self.harvest.url["suffix"]}"
+      url = "#{self.harvester.url["prefix"]}#{solution.object}#{self.harvester.url["suffix"]}"
       fetch_xpath_results(url)
       next unless self.response
       
-      self.harvest.predicates.each do |predicate, opts|
-        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvest.namespaces)
+      self.harvester.predicates.each do |predicate, opts|
+        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.namespaces)
         unless results.empty?
           case opts["datatype"]
           when "uri" 
             results.map! { |obj| RDF::URI("#{obj}") }
           else
             results.each do | obj |
-              if opts['append_to'] == 'FABIO.Work'
+              # for now objects are only added to either 'work' or 'edition' subjects
+              if self.harvester.subject == 'work'
                 self.statements << RDF::Statement.new(RDF::URI.new("#{solution.work}"), RDF.module_eval("#{predicate}"), obj)
               else
                 self.statements << RDF::Statement.new(RDF::URI.new("#{solution.edition}"), RDF.module_eval("#{predicate}"), obj)
@@ -116,19 +119,20 @@ class Batch
   end
 
   def fetch_xpath_results(url)
-    self.response = self.client.request URI url
+    self.response = self.client.request URI.parse url
   end
   
   def parse_xml(http_response, opts={})
     opts.delete_if {|k,v| v.nil?} #delete unused conditions
     # make sure we get valid response
-    if http_response.code == "200"
+    if http_response.code == "200" || http_response.code == "302" 
       xml = Nokogiri::XML(http_response.body)
-      results = []
-      xml.xpath("#{opts[:xpath]}", opts[:namespaces]).each { | elem | results << elem.text }
+      #results = []
+      #xml.xpath("#{opts[:xpath]}", opts[:namespaces]).each { | elem | results << elem.text }
+      results = xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces]))
       # optional regex strip
+      return nil unless results
       results.each { |result| result.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
-      puts results
       return results
     end
   end

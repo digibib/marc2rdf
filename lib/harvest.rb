@@ -1,7 +1,7 @@
 #encoding: utf-8
 # Struct for Harvest class 
 
-Harvest = Struct.new(:id, :name, :description, :protocol, :url, :namespaces, :predicates, :params, :limits)
+Harvest = Struct.new(:id, :name, :description, :protocol, :url, :params, :custom_headers, :namespaces, :subject, :predicates, :limits)
 
 class Harvest
 
@@ -55,7 +55,7 @@ class Harvest
       # new harvest if no match
       harvests << self
     end 
-    open(File.join(File.dirname(__FILE__), '../db/', 'harvest.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(harvest.to_json))) } 
+    open(File.join(File.dirname(__FILE__), '../db/', 'harvest.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(harvests.to_json))) } 
     self
   end
   
@@ -63,7 +63,7 @@ class Harvest
     return nil unless self.id
     harvests = self.all
     harvests.delete_if {|lib| lib.id == self.id }
-    open(File.join(File.dirname(__FILE__), '../db/', 'harvest.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(harvest.to_json))) } 
+    open(File.join(File.dirname(__FILE__), '../db/', 'harvest.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(harvests.to_json))) } 
     harvests
   end
   

@@ -16,10 +16,9 @@ describe Rule do
       @rule.script.should == "A dummy script"
     end
 
-    it "should give rule an unique id and give a default DateTime start" do
+    it "should give rule an unique id" do
       @rule.create(:tag => "Test rule tag", :id => "A dummy id")
       @rule.id.should_not == "A dummy id"
-      @rule.start_time.should be_a(DateTime)
     end
     
     it "should not allow to update unique id" do
@@ -29,7 +28,7 @@ describe Rule do
     end    
   end
   
-  context "when activating rules" do
+  context ": when activating rules" do
     before(:each) do
       @time = Time.now + 60*10 # now + 10mins
       @script = "SPARQL SELECT * WHERE {[] a ?Concept} LIMIT 10 ;"
@@ -44,26 +43,25 @@ describe Rule do
         )
       @scheduler = Scheduler.new
     end
-    
     it "starts a Rufus::Scheduler::AtJob object" do
-      job_id = @scheduler.test_atjob(@rule.script, :start_time => @rule.start_time, :tags => [@rule.id, @rule.tag])
+      job_id = @scheduler.test_atjob(@rule.script, :start_time => @rule.start_time, :tags => [{:id => @rule.id, :tags => @rule.tag}])
       job_id.should be_a(Rufus::Scheduler::AtJob)
       job_id.t.should == @time
-      job_id.params[:tags][0].should == @rule.id
-      job_id.params[:tags][1].should == @rule.tag
+      job_id.params[:tags][0][:tags][0][:id].should == @rule.id
+      job_id.params[:tags][0][:tags][0][:tags].should == @rule.tag
     end    
 
     it "schedules a started Rufus::Scheduler::CronJob" do
-      cron_id = @scheduler.test_cronjob(@rule.script, :frequency => @rule.frequency, :tags => [@rule.id, @rule.tag])
+      cron_id = @scheduler.test_cronjob(@rule.script, :frequency => @rule.frequency, :tags => [{:id => @rule.id, :tags => @rule.tag}])
       cron_id.should be_a(Rufus::Scheduler::CronJob)
       cron_id.cron_line.original.should == @rule.frequency
-      cron_id.params[:tags][0].should == @rule.id
-      cron_id.params[:tags][1].should == @rule.tag
+      cron_id.params[:tags][0][:tags][0][:id].should == @rule.id
+      cron_id.params[:tags][0][:tags][0][:tags].should == @rule.tag
     end
     
     it "runs a Rule job" do
       job_id = @scheduler.run_isql_rule(@rule)
-      job_id.trigger_block.should match(/10 Rows/)
+      job_id.trigger_block
       @rule.last_result.should match(/10 Rows/)
     end   
     
@@ -71,17 +69,15 @@ describe Rule do
       cron_id = @scheduler.schedule_isql_rule(@rule)
       cron_id.should be_a(Rufus::Scheduler::CronJob)
       cron_id.cron_line.original.should == @rule.frequency
-      cron_id.params[:tags][0].should == @rule.id
-      cron_id.params[:tags][1].should == @rule.tag
-      cron_id.trigger_block.should match(/10 Rows/)
+      cron_id.trigger_block
       @rule.last_result.should match(/10 Rows/)
     end   
     
     it "finds job by tags" do
-      job = @scheduler.run_isql_rule(@rule)
+      cron_id = @scheduler.schedule_isql_rule(@rule)
       find_jobs = @scheduler.find_jobs_by_tag('A dummy tag')
       find_jobs.should_not be_empty
-      find_jobs.first.job_id.should == job.job_id
+      find_jobs.first.job_id.should == cron_id.job_id
     end   
   end
 end

@@ -49,7 +49,6 @@ class Scheduler
   end
 
   ### ISQL rules ###
-  # TODO: inject rules run to json log
   def run_isql_rule(rule)
     return nil unless rule.id and rule.script and rule.start_time
     rule.tag        ||= "dummyrule"
@@ -120,8 +119,10 @@ class Scheduler
     jobs
   end
 
+  # patched to allow finding job by tag
   def find_jobs_by_tag(t)
-    jobs = self.scheduler.find_by_tag(t)
+    #jobs = self.scheduler.find_by_tag({:tags => t})
+    jobs = self.scheduler.all_jobs.values.select { |j| j.tags[0][:tags].include?(t) }
     logger.info "all jobs by tag: #{jobs}"
     jobs
   end

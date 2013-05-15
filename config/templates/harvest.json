@@ -1,69 +1,66 @@
 [
-        {
-            "id": "dummy1",
-            "name": "Sparql endpoint Example",
-            "description": "This is an example of a Sparql endpoint harvest",
-            "custom_headers": {
-                "CUSTOM_APIKEY": "your_key_here"
+    {
+        "id": "dummy1",
+        "name": "Sparql endpoint Example",
+        "description": "This is an example of a Sparql endpoint harvest",
+        "custom_headers": {
+            "CUSTOM_APIKEY": "your_key_here"
+        },
+        "url": {
+            "prefix": "http://example.com/sparql",
+            "suffix": ""
+        },
+        "predicates": [
+            "OWL.sameAs",
+            "FOAF.isPrimaryTopicOf",
+            "BIBO.isbn",
+            "BIBO.lccn",
+            "BIBO.oclcnum"
+        ],
+        "subject": "edition",
+        "params": {
+            "content_type": "application/sparql-results+json"
+        },
+        "protocol": "sparql",
+        "limits": {
+            "max_limit": 10,
+            "batch_limit": 30,
+            "delay": 5,
+            "retry_limit": 3
+        }
+    },
+    {
+        "id": "dummy2",
+        "name": "XML endpoint Example",
+        "description": "This is an example of a harvest from a generic http endpoint",
+        "protocol": "http",
+        "url": {
+            "prefix": "http://xisbn.worldcat.org/webservices/xid/isbn/",
+            "suffix": "?method=getEditions&format=xml"
+        },
+        "params": {
+            "apikey": "dummykey"
+        },
+        "namespaces": {
+            "xmlns": "http://worldcat.org/xid/isbn/"
+        },
+        "predicates": {
+            "FOAF.depiction": {
+                "datatype": "uri",
+                "xpath": "//path/to/object",
+                "regex_strip": "somethingtocut"
             },
-            "url": {
-                "prefix": "http://example.com/sparql",
-                "suffix": ""
-            },
-            "predicates": [
-                "OWL.sameAs",
-                "FOAF.isPrimaryTopicOf",
-                "BIBO.isbn",
-                "BIBO.lccn",
-                "BIBO.oclcnum"
-            ],
-            "append_to": [
-                "FABIO.Manifestation"
-            ],
-            "params": {
-                "content_type": "application/sparql-results+json"
-            },
-            "protocol": "sparql",
-            "limits": {
-                "max_limit": 10,
-                "batch_limit": 30,
-                "delay": 5,
-                "retry_limit": 3
+            "BIBO.isbn": {
+                "datatype": "literal",
+                "xpath": "//xmlns:isbn"
             }
         },
-        {
-            "id": "dummy2",
-            "name": "XML endpoint Example",
-            "description": "This is an example of a harvest from a generic http endpoint",
-            "protocol": "http",
-            "url": {
-                "prefix": "http://xisbn.worldcat.org/webservices/xid/isbn/",
-                "suffix": "?method=getEditions&format=xml"
-            },
-            "apikey": "dummykey",
-            "namespaces": {
-                "xmlns": "http://worldcat.org/xid/isbn/"
-            },
-            "predicates": {
-                "FOAF.depiction": {
-                    "datatype": "uri",
-                    "xpath": "//path/to/object",
-                    "regex_strip": "somethingtocut"
-                },
-                "BIBO.isbn": {
-                    "datatype": "literal",
-                    "xpath": "//xmlns:isbn"
-                }
-            },
-            "append_to": [
-                "FABIO.Work"
-            ],
-            "limits": {
-                "max_limit": 10,
-                "batch_limit": 30,
-                "delay": 5,
-                "retry_limit": 3
-            }
+        "subject": "work",
+        "limits": {
+            "max_limit": 10,
+            "batch_limit": 30,
+            "delay": 5,
+            "retry_limit": 3
         }
-    ]
-
+    }
+]
