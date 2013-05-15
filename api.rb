@@ -67,6 +67,7 @@ module API
     mount API::Oai
     mount API::Scheduling
     mount API::Rules
+    mount API::Harvester
       
     before do
       # Of course this makes the request.body unavailable afterwards.
