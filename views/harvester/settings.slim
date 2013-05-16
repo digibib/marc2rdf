@@ -6,6 +6,12 @@ div class="divdot inputf"
         td
         td: input[type="hidden" id="save_harvester_id" value=(harvester.id)]
       tr
+        td name
+        td: input[type="text" id="save_harvester_name" value=(harvester.name)]
+      tr
+        td description
+        td: input[type="text" id="save_harvester_description" value=(harvester.description)]
+      tr
         td protocol
         td
           select[id="save_harvester_protocol"]
@@ -13,17 +19,17 @@ div class="divdot inputf"
             option[selected=("selected" if harvester.protocol == "sparql")] sparql
         td (http=generic xml harvester, sparql=not implemented yet)
       tr
-        td name
-        td: input[type="text" id="save_harvester_name" value=(harvester.name)]
+        td: hr
+        td url settings
       tr
-        td description
-        td: input[type="text" id="save_harvester_description" value=(harvester.description)]
-      tr
-        td url prefix
+        td prefix
         td: input[type="text" id="save_harvester_url_prefix" value=(harvester.url['prefix'])]
       tr
-        td url suffix
+        td suffix
         td: input[type="text" id="save_harvester_url_suffix" value=(harvester.url['suffix'])]
+      tr
+        td: hr
+        td harvest settings       
       tr
         td subject
         td
@@ -35,25 +41,27 @@ div class="divdot inputf"
       // NB! to parse preserve predicates as array, we need to use class instead of id
       table[id="harvester_predicates" class="genform"]
         tr
-          td harvester_predicates
-          td
-          td harvester predicate. Delete with '-'
-          - if harvester.predicates.empty?
+          td: button[type='button' class="add_table_row"]  = "add row"
+          td predicate
+          td datatype
+          td xpath
+          td regex_strip
+        - if harvester.predicates.empty?
+          tr
+            td 
+            td: input[type="text" class="harvester_predicates"]
+            td: input[type="text" class="harvester_predicates"]
+            td: input[type="text" class="harvester_predicates"]
+        - else
+          - harvester.predicates.each do |k, v|
             tr
-              td 
-              td: input[type="text" class="harvester_predicates"]
-              td: button[type='button' class="add_table_row"]  = "+"            
-          - else
-            - harvester.predicates.each_with_index do |v, index|
-              tr
-                - if index == 0
-                  td 
-                  td: input[type="text" class="harvester_predicates" value="#{v}"]
-                  td: button[type='button' class="add_table_row"]  = "+"
-                - else
-                  td
-                  td: input[type="text" class="harvester_predicates" value="#{v}"]
-                  td: button[type='button' class="remove_table_row"]  = "-"
+              td
+              td: input[type="text" class="harvester_predicate" value=(k)]
+              td: input[type="text" class="harvester_datatype" value=(v['datatype'])]
+              td: input[type="text" class="harvester_xpath" value=(v['xpath'])]
+              td: input[type="text" class="harvester_regex_strip" value=(v['regex_strip'])]
+              td: button[type='button' class="remove_table_row"]  = "delete row"
+            
       tr
         td 
           button[type="button" id="save_harvester" class="gen"]  = "Save"

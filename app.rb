@@ -75,15 +75,13 @@ class APP < Sinatra::Base
   end
       
   get '/mappings' do
-    session[:mapping] = nil
-    slim :mappings, :locals => {:library => session[:library], :mapping => session[:mapping]}
+    slim :mappings, :locals => {:library => session[:library], :mapping => nil}
   end
 
   get '/mappings/:id' do
     :json
     # Edit Mapping
-    session[:mapping] = Mapping.new.find(:id => params[:id])
-    slim :mappings, :locals => {:library => session[:library], :mapping => session[:mapping]}
+    slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.new.find(:id => params[:id])}
   end
 
   get '/oai' do
@@ -105,29 +103,25 @@ class APP < Sinatra::Base
 
   get '/rules' do
     # Rules creation and management
-    session[:rule] = nil
-    slim :rules, :locals => {:library => session[:library], :rule => session[:rule]}
+    slim :rules, :locals => {:library => session[:library], :rule => nil}
   end
 
   get '/rules/:id' do
     :json
     # Edit rule
-    session[:rule] = Rule.new.find(:id => params[:id])
     #slim :rules, :escape_html => false, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
-    slim :rule_menu, :locals => {:library => session[:library], :rule => session[:rule]}
+    slim :rule_menu, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
   end
       
   get '/harvester' do
     # Harvester creation and management
-    session[:harvester] = nil
-    slim :harvester, :locals => {:library => session[:library], :harvester => session[:harvester]}
+    slim :harvester, :locals => {:library => session[:library], :harvester => nil}
   end
 
   get '/harvester/:id' do
     :json
     # Edit harvester
-    session[:harvester] = Harvest.new.find(:id => params[:id])
-    slim :harvest_menu, :locals => {:library => session[:library], :harvester => session[:harvester]}
+    slim :harvest_menu, :locals => {:library => session[:library], :harvester => Harvest.new.find(:id => params[:id])}
   end
 
   get '/status' do

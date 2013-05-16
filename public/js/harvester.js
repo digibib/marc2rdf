@@ -14,15 +14,18 @@ $(document).ready(function () {
     $('.pane:eq('+idx+')').show();
   });
 
-  // ** functions to add/remove table row, class "remove_table_row"
+  // ** functions to add/remove table row on harvester predicates, class "remove_table_row"
   $("table#harvester_predicates").delegate(".remove_table_row", "click", function(){
     $(this).closest("tr").remove();
     return false;
   });
   $("table#harvester_predicates").delegate(".add_table_row", "click", function(){
-    var data = '<tr><td></td><td>' + 
-       '<input type="text" class="harvester_predicates" /></td>' +
-       '<td><button class="remove_table_row">-</button></td></tr>';
+    var data = '<tr><td></td>' + 
+       '<td><input type="text" class="harvester_predicates" /></td>' +
+       '<td><input type="text" class="harvester_predicates" /></td>' +
+       '<td><input type="text" class="harvester_predicates" /></td>' +
+       '<td><input type="text" class="harvester_predicates" /></td>' +
+       '<td><button class="remove_table_row">delete row</button></td></tr>';
        
     $("table#harvester_predicates").append(data);
     return false;
@@ -53,13 +56,19 @@ $(document).ready(function () {
 
   // ** edit harvester
   $('button#save_harvester').on('click', function() {
+    
     // make harvester predicate table inputs into array
     var predicates_array = [];
-    $("table#harvester_predicates input:text").each(function() { 
-      var val=$(this).attr('value');
-      predicates_array.push(val);
+    $("table#harvester_predicates tr:gt(0)").each(function() { 
+      var obj={};
+      pred = $(this).find(".harvester_predicate").val();
+      obj[pred]={};
+      obj[pred]['datatype'] = $(this).find(".harvester_datatype").val();
+      obj[pred]['xpath'] = $(this).find(".harvester_xpath").val();
+      obj[pred]['regex_strip'] = $(this).find(".harvester_regex_strip").val();
+      predicates_array.push(obj);
     });
-    alert(predicates_array);
+    //console.log(predicates_array);
 
     var request = $.ajax({
       url: '/api/harvester',

@@ -41,6 +41,7 @@ class Harvest
     return nil unless self.id
     params.delete(:id)
     self.members.each {|name| self[name] = params[name] unless params[name].nil? }
+    self.predicates = params['predicates'].to_hash.to_json
     save
   end
   
