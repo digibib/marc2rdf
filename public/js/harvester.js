@@ -21,16 +21,31 @@ $(document).ready(function () {
   });
   $("table#harvester_predicates").delegate(".add_table_row", "click", function(){
     var data = '<tr><td></td>' + 
-       '<td><input type="text" class="harvester_predicates" /></td>' +
-       '<td><input type="text" class="harvester_predicates" /></td>' +
-       '<td><input type="text" class="harvester_predicates" /></td>' +
-       '<td><input type="text" class="harvester_predicates" /></td>' +
+       '<td><input type="text" class="harvester_predicate" /></td>' +
+       '<td><input type="text" class="harvester_datatype" /></td>' +
+       '<td><input type="text" class="harvester_xpath" /></td>' +
+       '<td><input type="text" class="harvester_regex_strip" /></td>' +
        '<td><button class="remove_table_row">delete row</button></td></tr>';
        
     $("table#harvester_predicates").append(data);
     return false;
   });
-  
+
+  // ** functions to add/remove table row on namespaces, class "remove_table_row"
+  $("table#harvester_namespaces").delegate(".remove_table_row", "click", function(){
+    $(this).closest("tr").remove();
+    return false;
+  });
+  $("table#harvester_namespaces").delegate(".add_table_row", "click", function(){
+    var data = '<tr><td></td>' + 
+       '<td><input type="text" class="harvester_namespace_prefix" /></td>' +
+       '<td><input type="text" class="harvester_namespace_url" /></td>' +
+       '<td><button class="remove_table_row">delete row</button></td></tr>';
+       
+    $("table#harvester_namespaces").append(data);
+    return false;
+  });
+    
   // ** create new harvester
   $('button#create_harvester').on('click', function() {
     var request = $.ajax({
@@ -57,19 +72,23 @@ $(document).ready(function () {
   // ** edit harvester
   $('button#save_harvester').on('click', function() {
     
-    // make harvester predicate table inputs into array
-    var predicates_array = [];
-    $("table#harvester_predicates tr:gt(0)").each(function() { 
-      var obj={};
+    // predicates hash
+    var predicates={};
+    $("#harvester_predicates tr:gt(0)").each(function() { 
       pred = $(this).find(".harvester_predicate").val();
-      obj[pred]={};
-      obj[pred]['datatype'] = $(this).find(".harvester_datatype").val();
-      obj[pred]['xpath'] = $(this).find(".harvester_xpath").val();
-      obj[pred]['regex_strip'] = $(this).find(".harvester_regex_strip").val();
-      predicates_array.push(obj);
+      predicates[pred]={};
+      predicates[pred]['datatype'] = $(this).find(".harvester_datatype").val();
+      predicates[pred]['xpath'] = $(this).find(".harvester_xpath").val();
+      predicates[pred]['regex_strip'] = $(this).find(".harvester_regex_strip").val();
     });
-    //console.log(predicates_array);
 
+    // namespaces hash
+    var namespaces={};
+    $("#harvester_namespaces tr:gt(0)").each(function() { 
+      key = $(this).find(".harvester_namespace_prefix").val();
+      namespaces[key] = $(this).find(".harvester_namespace_url").val();
+    });
+    
     var request = $.ajax({
       url: '/api/harvester',
       type: 'PUT',
@@ -81,7 +100,8 @@ $(document).ready(function () {
           name: $('input#save_harvester_name').val(),
           description: $('input#save_harvester_description').val(),
           subject: $('select#save_harvester_subject option:selected').val(),
-          predicates: predicates_array
+          predicates: predicates,
+          namespaces: namespaces
           }),
       dataType: 'json'
     });

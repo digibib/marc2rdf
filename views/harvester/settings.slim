@@ -38,7 +38,7 @@ div class="divdot inputf"
             option[selected=("selected" if harvester.subject == "edition")] edition
         td (work=harvest to work, edition=harvest to edition)
       
-      // NB! to parse preserve predicates as array, we need to use class instead of id
+      // NB! to parse preserve predicates as hash, we need to use class instead of id
       table[id="harvester_predicates" class="genform"]
         tr
           td: button[type='button' class="add_table_row"]  = "add row"
@@ -49,11 +49,13 @@ div class="divdot inputf"
         - if harvester.predicates.empty?
           tr
             td 
-            td: input[type="text" class="harvester_predicates"]
-            td: input[type="text" class="harvester_predicates"]
-            td: input[type="text" class="harvester_predicates"]
+            td: input[type="text" class="harvester_predicate"]
+            td: input[type="text" class="harvester_datatype"]
+            td: input[type="text" class="harvester_xpath"]
+            td: input[type="text" class="harvester_regex_strip"]
+            td: button[type='button' class="remove_table_row"]  = "delete row"
         - else
-          - harvester.predicates.each do |k, v|
+          - harvester.predicates.each do |k,v|
             tr
               td
               td: input[type="text" class="harvester_predicate" value=(k)]
@@ -61,7 +63,27 @@ div class="divdot inputf"
               td: input[type="text" class="harvester_xpath" value=(v['xpath'])]
               td: input[type="text" class="harvester_regex_strip" value=(v['regex_strip'])]
               td: button[type='button' class="remove_table_row"]  = "delete row"
-            
+
+      // NB! to parse namespaces as hash, we need to use class instead of id
+      table[id="harvester_namespaces" class="genform"]
+        tr
+          td: button[type='button' class="add_table_row"]  = "add row"
+          td namespace
+          td url
+        - if harvester.namespaces.empty?
+          tr
+            td 
+            td: input[type="text" class="harvester_namespace_prefix"]
+            td: input[type="text" class="harvester_namespace_url"]
+            td: button[type='button' class="remove_table_row"]  = "delete row"
+        - else
+          - harvester.namespaces.each do |k,v|
+            tr
+              td
+              td: input[type="text" class="harvester_namespace_prefix" value=(k)]
+              td: input[type="text" class="harvester_namespace_url" value=(v)]
+              td: button[type='button' class="remove_table_row"]  = "delete row"
+                          
       tr
         td 
           button[type="button" id="save_harvester" class="gen"]  = "Save"
