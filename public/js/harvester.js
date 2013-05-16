@@ -95,11 +95,21 @@ $(document).ready(function () {
       contentType: "application/json; charset=utf-8",
       cache: false,
       data: JSON.stringify({
-          id: $('input#save_harvester_id').val(),
-          protocol: $('select#save_harvester_protocol option:selected').val(),
-          name: $('input#save_harvester_name').val(),
-          description: $('input#save_harvester_description').val(),
+          id: $('#save_harvester_id').val(),
+          protocol: $('#save_harvester_protocol option:selected').val(),
+          name: $('#save_harvester_name').val(),
+          description: $('#save_harvester_description').val(),
           subject: $('select#save_harvester_subject option:selected').val(),
+          url: { 
+            prefix: $('#save_harvester_url_prefix').val(),
+            suffix: $('#save_harvester_url_suffix').val()
+          },
+          limits: {
+            max_limit: $('#save_harvester_max_limit').val(),
+            batch_limit: $('#save_harvester_batch_limit').val(),
+            retry_limit: $('#save_harvester_retry_limit').val(),
+            delay: $('#save_harvester_delay').val()
+          },
           predicates: predicates,
           namespaces: namespaces
           }),

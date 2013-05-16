@@ -29,6 +29,21 @@ div class="divdot inputf"
         td: input[type="text" id="save_harvester_url_suffix" value=(harvester.url['suffix'])]
       tr
         td: hr
+        td limits
+      tr
+        td max_limit
+        td: input[type="text" id="save_harvester_max_limit" value=(harvester.limits['max_limit'])]
+      tr
+        td batch_limit
+        td: input[type="text" id="save_harvester_batch_limit" value=(harvester.limits['batch_limit'])]        
+      tr
+        td retry_limit
+        td: input[type="text" id="save_harvester_retry_limit" value=(harvester.limits['retry_limit'])]
+      tr
+        td delay
+        td: input[type="text" id="save_harvester_delay" value=(harvester.limits['delay'])]
+      tr
+        td: hr
         td harvest settings       
       tr
         td subject
