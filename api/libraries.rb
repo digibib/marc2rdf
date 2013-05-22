@@ -21,7 +21,8 @@ module API
           optional :config,     desc: "Config file"
           optional :mapping,    desc: "Mapping id"
           optional :oai,        desc: "OAI settings"
-          optional :harvesting, desc: "Harvesting settings file" 
+          optional :rules,      desc: "SPARQL Rules"
+          optional :harvesters, desc: "Harvesting settings file" 
         end
       post "/" do
         content_type 'json'
@@ -38,11 +39,12 @@ module API
           optional :config,     desc: "Config file"
           optional :mapping,    desc: "Mapping id"
           optional :oai,        desc: "OAI settings"
-          optional :harvesting, desc: "Harvesting settings file" 
+          optional :rules,      desc: "SPARQL Rules"
+          optional :harvesters, desc: "Harvesting settings file" 
         end
       put "/" do
         content_type 'json'
-        valid_params = ['id','name','config','mapping','oai','harvesting']
+        valid_params = ['id','name','config','mapping','oai', 'rules', 'harvesters']
         # do we have a valid parameter?
         if valid_params.any? {|p| params.has_key?(p) }
           library = Library.new.find(:id => params[:id])
@@ -51,7 +53,7 @@ module API
           { :library => library}
         else
           logger.error "invalid or missing params"   
-          error!("Need at least one param of id|name|config|mapping|oai|harvesting", 400)      
+          error!("Need at least one param of id|name|config|mapping|oai|rules|harvesters", 400)      
         end
       end
       

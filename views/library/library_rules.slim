@@ -15,7 +15,7 @@ table id="available_rules_list" class="libraries active tablesorter"
         td 
           button[type="button" id="run_rule_now" class="gen"] = "run now"
           button[type="button" id="schedule_rule" class="gen"] = "schedule"
-        td: input[size="10" type="text" id="schedule_frequency" class="gen" value=(rule.frequency)]
+        td: input[size="10" type="text" class="schedule_frequency_override" value=(rule.frequency)]
         td 
           a href="/rules/#{rule.id}" #{rule.name}
         td #{rule.description}
@@ -38,8 +38,7 @@ table id="activated_rules_list" class="libraries active tablesorter"
   - for localrule in library.rules.each
     - rule = Rule.new.find(:id => localrule['id'])
     tr id="#{localrule['id']}"
-      td 
-        td: input[size="10" type="text" id="schedule_frequency" class="gen" value=(localrule['frequency']) disabled="true"]
+      td #{localrule['frequency']}
       td 
         a href="/rules/#{rule.id}" #{rule.name}
       td #{rule.description}

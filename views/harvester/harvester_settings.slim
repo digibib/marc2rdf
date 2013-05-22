@@ -10,7 +10,7 @@ div class="divdot inputf"
         td: input[type="text" id="save_harvester_name" value=(harvester.name)]
       tr
         td description
-        td: input[type="text" id="save_harvester_description" value=(harvester.description)]
+        td: input[type="textfield" id="save_harvester_description" value=(harvester.description)]
       tr
         td protocol
         td
@@ -23,28 +23,34 @@ div class="divdot inputf"
         td url settings
       tr
         td prefix
-        td: input[type="text" id="save_harvester_url_prefix" value=(harvester.url['prefix'])]
+        td: input[type="text" id="save_harvester_url_prefix" value=(harvester.to_map.fetch('url'){{}}.fetch('prefix'){} )]
+        td url string before search object
       tr
         td suffix
-        td: input[type="text" id="save_harvester_url_suffix" value=(harvester.url['suffix'])]
+        td: input[type="text" id="save_harvester_url_suffix" value=(harvester.to_map.fetch('url'){{}}.fetch('prefix'){} )]
+        td url string after search object
       tr
         td: hr
-        td limits
+        td limits on harvesting
       tr
         td max_limit
-        td: input[type="text" id="save_harvester_max_limit" value=(harvester.limits['max_limit'])]
+        td: input[type="text" id="save_harvester_max_limit" value=(harvester.to_map.fetch('limits'){{}}.fetch('max_limit'){} )]
+        td max records on a rdf store lookup, does not affect harvests from batch solutions
       tr
         td batch_limit
-        td: input[type="text" id="save_harvester_batch_limit" value=(harvester.limits['batch_limit'])]        
+        td: input[type="text" id="save_harvester_batch_limit" value=(harvester.to_map.fetch('limits'){{}}.fetch('batch_limit'){} )]
+        td number of records in each harvest
       tr
         td retry_limit
-        td: input[type="text" id="save_harvester_retry_limit" value=(harvester.limits['retry_limit'])]
+        td: input[type="text" id="save_harvester_retry_limit" value=(harvester.to_map.fetch('limits'){{}}.fetch('retry_limit'){} )]
+        td how many times to retry connection 
       tr
         td delay
-        td: input[type="text" id="save_harvester_delay" value=(harvester.limits['delay'])]
+        td: input[type="text" id="save_harvester_delay" value=(harvester.to_map.fetch('limits'){{}}.fetch('delay'){} )]
+        td wait (sec) between each connection 
       tr
         td: hr
-        td harvest settings       
+        td harvesting properties       
       tr
         td subject
         td
@@ -52,7 +58,24 @@ div class="divdot inputf"
             option[selected=("selected" if harvester.subject == "work")] work
             option[selected=("selected" if harvester.subject == "edition")] edition
         td (work=harvest to work, edition=harvest to edition)
-      
+      tr
+        td: hr
+        td harvest settings 
+
+      // NB! to parse namespaces as hash, we need to use class instead of id
+      table[id="harvester_namespaces" class="genform"]
+        tr
+          td: button[type='button' class="add_table_row"]  = "add row"
+          td namespace
+          td url
+        - unless harvester.predicates.nil? or harvester.namespaces.empty?
+          - harvester.namespaces.each do |k,v|
+            tr
+              td
+              td: input[type="text" class="harvester_namespace_prefix" value=(k)]
+              td: input[type="text" class="harvester_namespace_url" value=(v)]
+              td: button[type='button' class="remove_table_row"]  = "delete row"
+                            
       // NB! to parse preserve predicates as hash, we need to use class instead of id
       table[id="harvester_predicates" class="genform"]
         tr
@@ -61,44 +84,19 @@ div class="divdot inputf"
           td datatype
           td xpath
           td regex_strip
-        - if harvester.predicates.empty?
-          tr
-            td 
-            td: input[type="text" class="harvester_predicate"]
-            td: input[type="text" class="harvester_datatype"]
-            td: input[type="text" class="harvester_xpath"]
-            td: input[type="text" class="harvester_regex_strip"]
-            td: button[type='button' class="remove_table_row"]  = "delete row"
-        - else
+        - unless harvester.predicates.nil? or harvester.predicates.empty?
           - harvester.predicates.each do |k,v|
             tr
               td
               td: input[type="text" class="harvester_predicate" value=(k)]
-              td: input[type="text" class="harvester_datatype" value=(v['datatype'])]
+              td
+                select[class="harvester_datatype"]
+                    option[selected=("selected" if v['datatype'] == "literal")] literal
+                    option[selected=("selected" if v['datatype'] == "uri")] uri
               td: input[type="text" class="harvester_xpath" value=(v['xpath'])]
               td: input[type="text" class="harvester_regex_strip" value=(v['regex_strip'])]
               td: button[type='button' class="remove_table_row"]  = "delete row"
 
-      // NB! to parse namespaces as hash, we need to use class instead of id
-      table[id="harvester_namespaces" class="genform"]
-        tr
-          td: button[type='button' class="add_table_row"]  = "add row"
-          td namespace
-          td url
-        - if harvester.namespaces.empty?
-          tr
-            td 
-            td: input[type="text" class="harvester_namespace_prefix"]
-            td: input[type="text" class="harvester_namespace_url"]
-            td: button[type='button' class="remove_table_row"]  = "delete row"
-        - else
-          - harvester.namespaces.each do |k,v|
-            tr
-              td
-              td: input[type="text" class="harvester_namespace_prefix" value=(k)]
-              td: input[type="text" class="harvester_namespace_url" value=(v)]
-              td: button[type='button' class="remove_table_row"]  = "delete row"
-                          
       tr
         td 
           button[type="button" id="save_harvester" class="gen"]  = "Save"

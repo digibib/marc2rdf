@@ -4,16 +4,18 @@ ul class="tabs"
   li Mapping
   li Conversion
   li Rules
-  li Harvesting
+  li Harvesters
 div class="panes"
   div class="pane"
-    == render :slim, :'library/settings', :layout => false, :locals => {:library => library}
+    == render :slim, :'library/library_settings', :layout => false, :locals => {:library => library}
   div class="pane"
-    == render :slim, :'library/oai', :layout => false, :locals => {:library => library}
+    == render :slim, :'library/library_oai', :layout => false, :locals => {:library => library}
   div class="pane"
-    == render :slim, :'library/mapping', :layout => false, :locals => {:library => library}
+    == render :slim, :'library/library_mapping', :layout => false, :locals => {:library => library}
   div class="pane"
-    == render :slim, :'library/conversion', :layout => false, :locals => {:library => library}
+    == render :slim, :'library/library_conversion', :layout => false, :locals => {:library => library}
   div class="pane"
-    == render :slim, :'library/rules_local', :layout => false, :locals => {:library => library}  
+    == render :slim, :'library/library_rules', :layout => false, :locals => {:library => library}
+  div class="pane"
+    == render :slim, :'library/library_harvesters', :layout => false, :locals => {:library => library}      
   script src="/js/library.js"

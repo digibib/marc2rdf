@@ -3,7 +3,7 @@ ul class="tabs"
   li Script
 div class="panes"
   div class="pane"
-    == render :slim, :'rule/settings', :layout => false, :locals => {:library => library, :rule => rule}
+    == render :slim, :'rule/rule_settings', :layout => false, :locals => {:library => library, :rule => rule}
   div class="pane"
-    == render :slim, :'rule/script', :layout => false, :locals => {:library => library, :rule => rule}
+    == render :slim, :'rule/rule_script', :layout => false, :locals => {:library => library, :rule => rule}
   script src="/js/rule.js"

@@ -27,13 +27,14 @@ $(document).ready(function () {
           name: $('input#create_library_name').val(),
           oai: { 
               url: "",
-              preserve_on_update: [ "FOAF.depiction" ],
+              preserve_on_update: [],
               timeout: 60,
               format: "marcxchange",
               follow_redirects: false,
               parser: "rexml"
               },
-          rules: []
+          rules: [],
+          harvesters: [],
           }),
       dataType: 'json'
     });
@@ -74,7 +75,7 @@ $(document).ready(function () {
       });
   });
     
-  // ** edit library
+  // ** edit library settings
   $('button#save_library').on('click', function() {
     var request = $.ajax({
       url: '/api/library',
@@ -372,7 +373,7 @@ $(document).ready(function () {
   // test upload and convert only first 20
   $("#uploadtest").live("click", function() {
     var file_data = $("#filename").prop("files")[0]; // Getting the properties of file from file field
-    var form_data = new FormData();                 // Creating object of FormData class
+    var form_data = new FormData();                  // Creating object of FormData class
     form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
     form_data.append("id", id)                       // Adding extra parameters to form_data
     var request = $.ajax({
@@ -467,8 +468,9 @@ $(document).ready(function () {
       type: 'PUT',
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
-        id: $(this).closest('tr').attr("id"),
-        library: id
+        id: $(this).closest('tr').attr('id'),
+        library: id,
+        frequency: $(this).closest('tr').find('.schedule_frequency_override').val()
         }),
       cache: false,
       dataType: 'json'
@@ -482,5 +484,29 @@ $(document).ready(function () {
       $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
+  // ** END LOCAL RULES
   
+  // ** HARVESTERS
+  // schedule rule
+  $('button#activate_harvester').on('click', function() {
+    var request = $.ajax({
+      url: '/api/scheduler/activate_harvester',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: $(this).closest('tr').attr('id'),
+        library: id,
+        }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#available_harvester_info').html("Activated Harvester Rule OK!").show().fadeOut(3000);
+      window.location = '/status';
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#available_harvester_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });  
 });

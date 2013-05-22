@@ -37,6 +37,10 @@ class BatchHarvest
   end
   
   # Main method for harvesting, iterates self.solutions if present or iterates lookup against RDF store
+  # max_limit:   max records on a rdf store lookup, does not affect harvests from batch solutions 
+  # batch_limit: number of records in each harvest
+  # retry_limit: how many times to retry connection 
+  # delay:       wait (sec) between each connection 
   def start_harvest(params={})
     params[:offset]      ||= 0
     params[:max_limit]   ||= self.harvester.limits["max_limit"]

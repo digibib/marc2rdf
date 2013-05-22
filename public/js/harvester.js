@@ -22,7 +22,7 @@ $(document).ready(function () {
   $("table#harvester_predicates").delegate(".add_table_row", "click", function(){
     var data = '<tr><td></td>' + 
        '<td><input type="text" class="harvester_predicate" /></td>' +
-       '<td><input type="text" class="harvester_datatype" /></td>' +
+       '<td><select class="harvester_datatype"><option>uri</option><option>literal</option></select></td>' +
        '<td><input type="text" class="harvester_xpath" /></td>' +
        '<td><input type="text" class="harvester_regex_strip" /></td>' +
        '<td><button class="remove_table_row">delete row</button></td></tr>';
@@ -77,7 +77,7 @@ $(document).ready(function () {
     $("#harvester_predicates tr:gt(0)").each(function() { 
       pred = $(this).find(".harvester_predicate").val();
       predicates[pred]={};
-      predicates[pred]['datatype'] = $(this).find(".harvester_datatype").val();
+      predicates[pred]['datatype'] = $(this).find(".harvester_datatype option:selected").val();
       predicates[pred]['xpath'] = $(this).find(".harvester_xpath").val();
       predicates[pred]['regex_strip'] = $(this).find(".harvester_regex_strip").val();
     });
@@ -99,7 +99,7 @@ $(document).ready(function () {
           protocol: $('#save_harvester_protocol option:selected').val(),
           name: $('#save_harvester_name').val(),
           description: $('#save_harvester_description').val(),
-          subject: $('select#save_harvester_subject option:selected').val(),
+          subject: $('#save_harvester_subject option:selected').val(),
           url: { 
             prefix: $('#save_harvester_url_prefix').val(),
             suffix: $('#save_harvester_url_suffix').val()
@@ -155,7 +155,7 @@ $(document).ready(function () {
           
   // ** delete harvester
   $('button#delete_harvester').on('click', function() {
-    if (confirm('Are you sure? All info on Harvester will be lost!')) {
+    if (confirm('Are you sure? All info on Harvester Rule will be lost!')) {
       var request = $.ajax({
         url: '/api/harvester',
         type: 'DELETE',
@@ -167,7 +167,7 @@ $(document).ready(function () {
       });
   
       request.done(function(data) {
-        $('span#save_harvester_info').html("Deleted harvester OK!").show().fadeOut(3000);
+        $('span#save_harvester_info').html("Deleted harvester rule OK!").show().fadeOut(3000);
         window.location = '/harvester';
       });
   

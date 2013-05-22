@@ -12,7 +12,7 @@
                 "default_graph": "http://example.com/default_graph/"
             }
         },
-        "mapping": {},
+        "mapping": "dummy",
         "oai": {
             "preserve_on_update": [
                 "FOAF.depiction",
@@ -28,6 +28,6 @@
             "schedule": "01 23 * * *"
         },
         "rules": [],
-        "harvesting": {}
+        "harvesters": []
     }
 ]

@@ -1,36 +1,6 @@
 [
     {
         "id": "dummy1",
-        "name": "Sparql endpoint Example",
-        "description": "This is an example of a Sparql endpoint harvest",
-        "custom_headers": {
-            "CUSTOM_APIKEY": "your_key_here"
-        },
-        "url": {
-            "prefix": "http://example.com/sparql",
-            "suffix": ""
-        },
-        "predicates": [
-            "OWL.sameAs",
-            "FOAF.isPrimaryTopicOf",
-            "BIBO.isbn",
-            "BIBO.lccn",
-            "BIBO.oclcnum"
-        ],
-        "subject": "edition",
-        "params": {
-            "content_type": "application/sparql-results+json"
-        },
-        "protocol": "sparql",
-        "limits": {
-            "max_limit": 10,
-            "batch_limit": 30,
-            "delay": 5,
-            "retry_limit": 3
-        }
-    },
-    {
-        "id": "dummy2",
         "name": "XML endpoint Example",
         "description": "This is an example of a harvest from a generic http endpoint",
         "protocol": "http",
@@ -56,6 +26,36 @@
             }
         },
         "subject": "work",
+        "limits": {
+            "max_limit": 10,
+            "batch_limit": 30,
+            "delay": 5,
+            "retry_limit": 3
+        }
+    },
+    {
+        "id": "dummy2",
+        "name": "Sparql endpoint Example",
+        "description": "This is an example of a Sparql endpoint harvest",
+        "custom_headers": {
+            "CUSTOM_APIKEY": "your_key_here"
+        },
+        "url": {
+            "prefix": "http://example.com/sparql",
+            "suffix": ""
+        },
+        "predicates": [
+            "OWL.sameAs",
+            "FOAF.isPrimaryTopicOf",
+            "BIBO.isbn",
+            "BIBO.lccn",
+            "BIBO.oclcnum"
+        ],
+        "subject": "edition",
+        "params": {
+            "content_type": "application/sparql-results+json"
+        },
+        "protocol": "sparql",
         "limits": {
             "max_limit": 10,
             "batch_limit": 30,

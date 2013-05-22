@@ -2,5 +2,5 @@ ul class="tabs"
   li[class="active"] Settings
 div class="panes"
   div class="pane"
-    == render :slim, :'harvester/settings', :layout => false, :locals => {:library => library, :harvester => harvester}
+    == render :slim, :'harvester/harvester_settings', :layout => false, :locals => {:library => library, :harvester => harvester}
   script src="/js/harvester.js"

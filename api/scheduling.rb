@@ -73,7 +73,8 @@ class Scheduling < Grape::API
       { :result => result, :jobs => jobs }
     end
 
-    ### Run jobs ###
+    ### Run/Schedule Rules ###
+    
     desc "run test job"
     put "/test" do
       content_type 'json'
