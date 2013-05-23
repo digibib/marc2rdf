@@ -140,7 +140,7 @@ class Scheduling < Grape::API
         library.update
       end
       { :result => result }
-    end  
+    end
     
     ### Unschedule/stop ###
     desc "Stop/kill running job"
@@ -190,7 +190,39 @@ class Scheduling < Grape::API
       result = job.unschedule
       { :result => result }
     end    
-            
+    
+    ### Harvester ### 
+    
+    desc "Activate Harvester Rule"
+      params do
+        requires :id,        type: String, desc: "ID of Harvester"
+        requires :library,   type: Integer, desc: "Library ID to run Harvester against"
+      end
+    put "/activate_harvester" do
+      content_type 'json'
+      harvester    = Harvest.new.find(:id => params[:id])
+      error!("No harvest rule with id: #{params[:id]}", 404) unless harvester
+      library = Library.new.find(:id => params[:library].to_i) 
+      library.harvesters.push({:id => harvester.id})
+      library.update
+      { :library => library }
+    end
+
+    desc "Deactivate Harvester Rule"
+      params do
+        requires :id,        type: String, desc: "ID of Harvester"
+        requires :library,   type: Integer, desc: "Library ID to run Harvester against"
+      end
+    put "/deactivate_harvester" do
+      content_type 'json'
+      harvester    = Harvest.new.find(:id => params[:id])
+      error!("No harvest rule with id: #{params[:id]}", 404) unless harvester
+      library = Library.new.find(:id => params[:library].to_i) 
+      library.harvesters.delete_if {|lh| lh[:id] == harvester.id}
+      library.update
+      { :library => library }
+    end
+                
     ### History ###
     desc "get scheduler history"
     get "/history" do

@@ -32,7 +32,7 @@ table id="activated_harvesters_list" class="libraries active tablesorter"
       th
   tbody
   - for localharvester in library.harvesters.each
-    - harvester = Harvester.new.find(:id => localharvester['id'])
+    - harvester = Harvest.new.find(:id => localharvester['id'])
     tr id="#{localharvester['id']}"
       td 
         a href="/harvester/#{harvester.id}" #{harvester.name}

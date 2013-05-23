@@ -487,7 +487,12 @@ $(document).ready(function () {
   // ** END LOCAL RULES
   
   // ** HARVESTERS
-  // schedule rule
+  // test harvester
+  $('button#test_harvester').on('click', function() {
+    alert("not implemented yet!\nWhat should it do, anyway?");
+  }); 
+  
+  // activate harvester rule
   $('button#activate_harvester').on('click', function() {
     var request = $.ajax({
       url: '/api/scheduler/activate_harvester',
@@ -503,10 +508,36 @@ $(document).ready(function () {
     
     request.done(function(data) {
       $('span#available_harvester_info').html("Activated Harvester Rule OK!").show().fadeOut(3000);
-      window.location = '/status';
+      //window.location = '/status';
+      window.location.reload();
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
       $('span#available_harvester_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
-  });  
+  });
+   
+  // deactivate harvester rule
+  $('button#deactivate_harvester').on('click', function() {
+    var request = $.ajax({
+      url: '/api/scheduler/deactivate_harvester',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: $(this).closest('tr').attr('id'),
+        library: id,
+        }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#available_harvester_info').html("Deactivated Harvester Rule OK!").show().fadeOut(3000);
+      //window.location = '/status';
+      window.location.reload();
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#available_harvester_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  
 });
