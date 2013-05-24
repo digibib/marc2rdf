@@ -493,13 +493,14 @@ $(document).ready(function () {
   }); 
   
   // activate harvester rule
-  $('button#activate_harvester').on('click', function() {
+  $('button.activate_harvester').on('click', function() {
+    var row = $(this).closest('tr');
     var request = $.ajax({
       url: '/api/scheduler/activate_harvester',
       type: 'PUT',
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
-        id: $(this).closest('tr').attr('id'),
+        id: row.attr('id'),
         library: id,
         }),
       cache: false,
@@ -508,8 +509,9 @@ $(document).ready(function () {
     
     request.done(function(data) {
       $('span#available_harvester_info').html("Activated Harvester Rule OK!").show().fadeOut(3000);
-      //window.location = '/status';
-      window.location.reload();
+      // toggle activate/deactivate buttons
+      row.find('button.deactivate_harvester').removeAttr('disabled');
+      row.find('button.activate_harvester').attr('disabled', true);
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
       $('span#available_harvester_error').html(jqXHR.responseText).show().fadeOut(5000);
@@ -517,13 +519,14 @@ $(document).ready(function () {
   });
    
   // deactivate harvester rule
-  $('button#deactivate_harvester').on('click', function() {
+  $('button.deactivate_harvester').on('click', function() {
+    var row = $(this).closest('tr');
     var request = $.ajax({
       url: '/api/scheduler/deactivate_harvester',
       type: 'PUT',
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify({ 
-        id: $(this).closest('tr').attr('id'),
+        id: row.attr('id'),
         library: id,
         }),
       cache: false,
@@ -532,8 +535,9 @@ $(document).ready(function () {
     
     request.done(function(data) {
       $('span#available_harvester_info').html("Deactivated Harvester Rule OK!").show().fadeOut(3000);
-      //window.location = '/status';
-      window.location.reload();
+      // toggle activate/deactivate buttons
+      row.find('button.activate_harvester').removeAttr('disabled');
+      row.find('button.deactivate_harvester').attr('disabled', true);
     });
     request.fail(function(jqXHR, textStatus, errorThrown) {
       $('span#available_harvester_error').html(jqXHR.responseText).show().fadeOut(5000);

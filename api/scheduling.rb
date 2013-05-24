@@ -203,7 +203,7 @@ class Scheduling < Grape::API
       harvester    = Harvest.new.find(:id => params[:id])
       error!("No harvest rule with id: #{params[:id]}", 404) unless harvester
       library = Library.new.find(:id => params[:library].to_i) 
-      library.harvesters.push({:id => harvester.id})
+      library.harvesters.push({:id => harvester.id}) unless library.harvesters.any? {|lh| lh['id'] == harvester.id}
       library.update
       { :library => library }
     end
@@ -218,7 +218,7 @@ class Scheduling < Grape::API
       harvester    = Harvest.new.find(:id => params[:id])
       error!("No harvest rule with id: #{params[:id]}", 404) unless harvester
       library = Library.new.find(:id => params[:library].to_i) 
-      library.harvesters.delete_if {|lh| lh[:id] == harvester.id}
+      library.harvesters.delete_if {|lh| lh['id'] == harvester.id}
       library.update
       { :library => library }
     end

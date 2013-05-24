@@ -11,18 +11,22 @@ table id="available_harvesters_list" class="libraries active tablesorter"
   - for harvester in Harvest.new.all
     tr id="#{harvester.id}"
       td 
-        button[type="button" id="test_harvester" class="gen"] = "test"
-        button[type="button" id="activate_harvester" class="gen"] = "activate"
+        - if library.harvesters.any? {|lh| lh['id'] == harvester.id } 
+          button[type="button" class="activate_harvester" disabled="true"] = "activate"
+          button[type="button" class="deactivate_harvester"] = "deactivate"
+        - else
+          button[type="button" class="activate_harvester"] = "activate"
+          button[type="button" class="deactivate_harvester" disabled="true"] = "deactivate"
       td 
         a href="/harvester/#{harvester.id}" #{harvester.name}
       td #{harvester.description}
+    
   tr
     td
       span[id="available_harvester_info" class="info" style="margin-left:48px"]
       span[id="available_harvester_error" class="error" style="margin-left:48px"]
 
 h3 Activated Harvester Rules
-p[style="margin-left:24px"] Activated local rules must be disabled/unscheduled from the <a href="/status">status</a> page
 table id="activated_harvesters_list" class="libraries active tablesorter"
   thead
     tr
