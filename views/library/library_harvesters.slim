@@ -1,5 +1,5 @@
 h3 Available Harvesters
-p[style="margin-left:24px"] for creating harvesters visit <a href="/harvester">harvester</a> page
+p[style="margin-left:24px"] for creating or editing harvesters visit <a href="/harvester">harvester</a> page
 table id="available_harvesters_list" class="libraries active tablesorter"
   thead
     tr
@@ -11,6 +11,7 @@ table id="available_harvesters_list" class="libraries active tablesorter"
   - for harvester in Harvest.new.all
     tr id="#{harvester.id}"
       td 
+        button[type="button" id="test_harvester"] = "test"
         - if library.harvesters.any? {|lh| lh['id'] == harvester.id } 
           button[type="button" class="activate_harvester" disabled="true"] = "activate"
           button[type="button" class="deactivate_harvester"] = "deactivate"
@@ -26,25 +27,5 @@ table id="available_harvesters_list" class="libraries active tablesorter"
       span[id="available_harvester_info" class="info" style="margin-left:48px"]
       span[id="available_harvester_error" class="error" style="margin-left:48px"]
 
-h3 Activated Harvester Rules
-table id="activated_harvesters_list" class="libraries active tablesorter"
-  thead
-    tr
-      th
-      th[style="width:250px"] short name
-      th[style="width:400px"] description
-      th
-  tbody
-  - for localharvester in library.harvesters.each
-    - harvester = Harvest.new.find(:id => localharvester['id'])
-    tr id="#{localharvester['id']}"
-      td 
-        a href="/harvester/#{harvester.id}" #{harvester.name}
-      td #{harvester.description}
-  tr
-    td
-      span[id="activated_harvester_info" class="info" style="margin-left:48px"]
-      span[id="activated_harvester_error" class="error" style="margin-left:48px"]
-            
 // The test div
 div id="harvester_test" 

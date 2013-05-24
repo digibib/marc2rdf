@@ -14,6 +14,7 @@ class APP < Sinatra::Base
     set :server, 'thin'
     set :username,'bob'
     set :token,'schabogaijk13@[]5fukkksiur!&&%&%'
+    set :session_secret, 'supersecrettokeepsessionsconsistent!'
     set :password,'secret'
     enable :logging, :dump_errors, :raise_errors
     enable :reload_templates
@@ -126,6 +127,7 @@ class APP < Sinatra::Base
 
   get '/status' do
     # status on running/scheduled jobs
+    :json
     slim :status, :locals => {:library => session[:library]}
   end
   

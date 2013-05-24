@@ -144,6 +144,14 @@ class Scheduler
   ### Specific AtJobs based on Library updates ###
   ### OAI harvest jobs ###
   
+  # The full cycle of an OAI harvest: 
+  # 1) pull records from OAI-PMH repo
+  # 2) convert harvested records, based on Library's chosen mapping
+  #   2a) write converted records to ntriples file if chosen
+  #   2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
+  #   2c) if any harvesters are activated for library, do external harvesting and update RDF store
+  # 3) return to 1) for next OAI batch by resumption token 
+    
   def start_oai_harvest(params={})
     params[:start_time]    ||= Time.now 
     params[:tags]          ||= "oaiharvest"
@@ -159,16 +167,9 @@ class Scheduler
         :parser => library.oai["parser"], 
         :timeout => library.oai["timeout"],
         :redirects => library.oai["redirects"])
-      oai.query :from => params[:from], :until => params[:until]
-      @countrecords += oai.records.count
-      convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
-      # do the resumption loop...
-      until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
-        # fetch remainder if resumption token
-        oai.query :resumption_token => oai.response.resumption_token if oai.response.resumption_token
-        @countrecords += oai.records.count
-        convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
-      end
+        
+      # do the OAI dance!
+      run_oai_harvest_cycle(oai, library, params={})    
       
       length = Time.now - timing_start
       logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => params[:start_time], 
@@ -180,10 +181,26 @@ class Scheduler
   
   private 
   # internal functions
+  
+  def run_oai_harvest_cycle(oai, library, params={})
+    # 1) pull first records from OAI-PMH repo
+    oai.query :from => params[:from], :until => params[:until]
+    @countrecords += oai.records.count  
+    convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
+    
+    # 3) do the resumption loop...
+    until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
+      # fetch remainder if resumption token
+      oai.query :resumption_token => oai.response.resumption_token if oai.response.resumption_token
+      @countrecords += oai.records.count
+      convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
+    end
+  end
+  
   def convert_oai_records(oairecords, library, params={})
     timing_start = Time.now
     @rdfrecords = []
-    # iterate xml records and modify or delete
+    # 2) convert harvested records, based on Library's chosen mapping
     oairecords.each do |record| 
       unless record.deleted?
         xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
@@ -206,7 +223,7 @@ class Scheduler
       logger.info "Time to convert #{@rdfrecords.count} records: #{Time.now - timing_start} s."
   end
   
-  # write converted record to file
+  # 2a) write converted records to ntriples file if chosen
   def write_record_to_file(rdf, library)
     FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
     file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
@@ -214,12 +231,31 @@ class Scheduler
     file.write(rdf.rdf)
   end
 
-  # sparql update converted record
+  # 2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
   def update_record(rdf, library, params={})
     s = SparqlUpdate.new(rdf, library)
     params[:delete] ? s.delete_record : s.modify_record
   end
-    
+
+  # 2c) if any harvesters are activated for library, do external harvesting and update RDF store
+  def run_external_harvester(rdf, library, params={})
+    ## HERE!
+    library.harvesters.each do |harvester|
+      # need to query converted records through temporary graph to make RDF::Query::Solutions for batch harvesting
+      # make temporary graph with converted record
+      tempgraph = RDF::Graph.new('temp')
+      rdf.statements.each {|s| tempgraph << s }
+      # query for :work, :edition and :object
+      batch = RDF::Query.execute(tempgraph) do
+        pattern [:work, RDF.type, RDF::FABIO.Work ]
+        pattern [:edition, RDF.type, RDF::FABIO.Manifestation ]
+        pattern [:object, RDF::BIBO.isbn, :object ]
+      end
+      # then harvest
+      bh = BatchHarvest.new harvester, batch
+    end
+  end
+      
 end
 
 unless ENV['RACK_ENV'] == 'test'

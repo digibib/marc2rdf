@@ -42,28 +42,22 @@ h3 OAI harvester settings
               option[selected=("selected" if library.oai['format'] == "bibliofilmarc")] bibliofilmarc         
           td format for OAI response (bibliofilmarc for bibliofil libraries)
 
-        // NB! to parse preserve predicates as array, we need to use class instead of id
+        tr
+          td: hr
+          td preserve_on_update 
+        
+      // NB! to parse preserve predicates as array, we need to use class instead of id
       table[id="oai_preserve" class="genform"]
         tr
-          td preserve_on_update 
-          td
-          td properties to keep during update. Delete with '-'
-          - if library.oai['preserve_on_update'].nil? or library.oai['preserve_on_update'].empty?
+          td: button[type='button' class="add_table_row"]  = "add row"
+          td properties on manifestations to keep from being deleted during oai update
+        - unless library.oai['preserve_on_update'].nil? or library.oai['preserve_on_update'].empty?
+          - library.oai['preserve_on_update'].each do |v|
             tr
-              td 
-              td: input[type="text" class="preserve_on_update"]
-              td: button[type='button' class="add_table_row"]  = "+"            
-          - else
-            - library.oai['preserve_on_update'].each_with_index do |v, index|
-              tr
-                - if index == 0
-                  td 
-                  td: input[type="text" class="preserve_on_update" value="#{v}"]
-                  td: button[type='button' class="add_table_row"]  = "+"
-                - else
-                  td
-                  td: input[type="text" class="preserve_on_update" value="#{v}"]
-                  td: button[type='button' class="remove_table_row"]  = "-"
+              td
+              td: input[type="text" class="preserve_on_update" value=(v)]
+              td: button[type='button' class="remove_table_row"]  = "delete row"
+
       tr
         td: button[type='button' id="oai_settings_save" class="gen"]  = "Save"
         td: button[type='button' id="oai_settings_validate" class="gen"]  = "Validate"

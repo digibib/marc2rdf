@@ -144,7 +144,7 @@ $(document).ready(function () {
   $("table#oai_preserve").delegate(".add_table_row", "click", function(){
     var data = '<tr><td></td><td>' + 
        '<input type="text" class="preserve_on_update" /></td>' +
-       '<td><button class="remove_table_row">-</button></td></tr>';
+       '<td><button class="remove_table_row">delete row</button></td></tr>';
        
     $("table#oai_preserve").append(data);
     return false;
