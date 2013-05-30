@@ -119,7 +119,7 @@ class Scheduling < Grape::API
       end
     put "/schedule_rule" do
       content_type 'json'
-      rule    = Rule.new.find(:id => params[:id])
+      rule = Rule.new.find(:id => params[:id])
       error!("No rule with id: #{params[:id]}", 404) unless rule
       # allow override frequency with param 
       rule.frequency = params[:frequency] ? params[:frequency] : rule.frequency
@@ -135,8 +135,9 @@ class Scheduling < Grape::API
       end
       rule.sanitize
       result = Scheduler.schedule_isql_rule(rule)
+      # also add rule to library if not already present
       if params[:library]
-        library.rules.push({:id => rule.id, :frequency => rule.frequency, :job_id => result.job_id})
+        library.rules.push({:id => rule.id, :frequency => rule.frequency, :job_id => result.job_id}) unless library.rules.any? {|r| r['id'] == rule.id }
         library.update
       end
       { :result => result }
@@ -150,6 +151,7 @@ class Scheduling < Grape::API
       end
     put "/stop" do
       content_type 'json'
+      rule = Rule.new.find(:id => params[:id])
       begin
         job = Scheduler.find_running_jobs.select {|j| j.job_id == params[:id] }
       rescue ArgumentError => e
@@ -159,7 +161,7 @@ class Scheduling < Grape::API
         # make sure to delete rule from library.rules array
         library = Library.new.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
-        library.rules.delete_if {|r| r['job_id'] == params[:id] } 
+        library.rules.delete_if {|r| r['id'] == rule.id }
         library.update(:rules => library.rules)
       end
       #result = Scheduler.unschedule(job)
@@ -174,6 +176,7 @@ class Scheduling < Grape::API
       end
     put "/unschedule" do
       content_type 'json'
+      rule = Rule.new.find(:id => params[:id])
       begin
         job = Scheduler.scheduler.find(params[:id])
       rescue ArgumentError => e
@@ -183,7 +186,7 @@ class Scheduling < Grape::API
         # make sure to delete rule from library.rules array
         library = Library.new.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
-        library.rules.delete_if {|r| r['job_id'] == params[:id] } 
+        library.rules.delete_if {|r| r['id'] == rule.id }
         library.update(:rules => library.rules)
       end
       #result = Scheduler.unschedule(job)

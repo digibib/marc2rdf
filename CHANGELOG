@@ -1,4 +1,11 @@
 = marc2rdf CHANGELOG
+0.10.0
+  Harvester Engine:
+    connect one or more Harvester to Library
+    run after OAI update
+    Harvests from external XML APIs
+  harvesters queries external APIs on RDF objects from RDF::Query::Solutions,
+  either from OAI update batch or lookup in RDF store
 0.0.9
   SPARQL Update and Conversion module
   Libxml deactivated, segfaulting
