@@ -106,7 +106,7 @@ class BatchHarvest
         if results
           case opts["datatype"]
           when "uri" 
-            results.map! { |obj| RDF::URI("#{obj}") }
+            Array(results).map! { |obj| RDF::URI("#{obj}") }
           else
             results.each do | obj |
               # for now objects are only added to either 'work' or 'edition' subjects
