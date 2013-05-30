@@ -99,7 +99,6 @@ $(document).ready(function () {
           protocol: $('#save_harvester_protocol option:selected').val(),
           name: $('#save_harvester_name').val(),
           description: $('#save_harvester_description').val(),
-          subject: $('#save_harvester_subject option:selected').val(),
           url: { 
             prefix: $('#save_harvester_url_prefix').val(),
             suffix: $('#save_harvester_url_suffix').val()
@@ -110,15 +109,23 @@ $(document).ready(function () {
             retry_limit: $('#save_harvester_retry_limit').val(),
             delay: $('#save_harvester_delay').val()
           },
-          predicates: predicates,
-          namespaces: namespaces
+          local: {
+            subject: $('#save_harvester_local_subject option:selected').val(),
+            predicate: $('#save_harvester_local_predicate').val(),
+            object: $('#save_harvester_local_object').val()
+          },
+          remote: {
+            predicates: predicates,
+            namespaces: namespaces
+          }
+
           }),
       dataType: 'json'
     });
     
     request.done(function(data) {
       console.log("updated harvester: "+ $('input#save_harvester_id').val());
-      console.log(data);
+      //console.log(data);
       $('span#save_harvester_info').html("Saved harvester OK!").show().fadeOut(3000);
       //window.location.reload();
     });

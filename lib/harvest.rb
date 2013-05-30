@@ -1,7 +1,7 @@
 #encoding: utf-8
 # Struct for Harvest class 
 
-Harvest = Struct.new(:id, :name, :description, :protocol, :url, :params, :custom_headers, :namespaces, :subject, :predicates, :limits)
+Harvest = Struct.new(:id, :name, :description, :protocol, :url, :params, :custom_headers, :local, :remote, :limits)
 
 class Harvest
 
@@ -25,7 +25,7 @@ class Harvest
   
   def find(params)
     return nil unless params[:id]
-    self.all.detect {|harvest| harvest.id == params[:id] }
+    self.all.detect {|harvest| harvest.id == params[:id] } # returns nil if not found
   end
   
   

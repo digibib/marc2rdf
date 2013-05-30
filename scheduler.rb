@@ -2,7 +2,7 @@
 # Scheduler Server 
 #$stdout.sync = true
 require_relative "./config/init.rb"
-require 'logger' 
+require 'logger'
 require 'eventmachine'
 
 Scheduler = Struct.new(:scheduler)
@@ -52,8 +52,13 @@ class Scheduler
   def run_isql_rule(rule)
     return nil unless rule.id and rule.script and rule.start_time
     rule.tag        ||= "dummyrule"
-    rule.start_time ||= Time.now + 30 # default to 30 sec. from now
-    job_id = self.scheduler.at rule.start_time, :tags => [{:id => rule.id, :library => rule.library, :tags => rule.tag}] do |job|
+    # for now rescue empty timestamp to Time.now
+    begin
+      start_time = Time.parse("#{rule.start_time}")
+    rescue 
+      start_time = Time.now
+    end
+    job_id = self.scheduler.at start_time, :tags => [{:id => rule.id, :library => rule.library, :tags => rule.tag}] do |job|
       timing_start = Time.now
       logger.info "Running rule: #{rule.id}"
       logger.info "Script:\n#{rule.script}"
@@ -119,7 +124,7 @@ class Scheduler
     jobs
   end
 
-  # patched to allow finding job by tag
+  # patched scheduler to allow finding job by tag
   def find_jobs_by_tag(t)
     #jobs = self.scheduler.find_by_tag({:tags => t})
     jobs = self.scheduler.all_jobs.values.select { |j| j.tags[0][:tags].include?(t) }
@@ -151,6 +156,7 @@ class Scheduler
   #   2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
   #   2c) if any harvesters are activated for library, do external harvesting and update RDF store
   # 3) return to 1) for next OAI batch by resumption token 
+  # 4) if any rules are activated for library, run rules directly on library graph
     
   def start_oai_harvest(params={})
     params[:start_time]    ||= Time.now 
@@ -159,8 +165,8 @@ class Scheduler
     logger.info "Scheduled params: #{params}"
     job_id = self.scheduler.at params[:start_time], :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
-      # counters
-      @countrecords, @deletecount, @modifycount = 0, 0, 0
+      # result counters
+      @countrecords, @deletecount, @modifycount, @harvestcount = 0, 0, 0, 0
       logger.info "library oai: #{library.oai}"
       oai = OAIClient.new(library.oai["url"], 
         :format => library.oai["format"], 
@@ -173,9 +179,10 @@ class Scheduler
       
       length = Time.now - timing_start
       logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => params[:start_time], 
-                 :length => "#{length} s.", :tags => params[:tags], :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}"}
+                 :length => "#{length} s.", :tags => params[:tags], 
+                 :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
       write_history(logline)
-      logger.info "Time to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}"
+      logger.info "Time to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"
     end
   end
   
@@ -186,15 +193,21 @@ class Scheduler
     # 1) pull first records from OAI-PMH repo
     oai.query :from => params[:from], :until => params[:until]
     @countrecords += oai.records.count  
+    # 2)
     convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
     
     # 3) do the resumption loop...
     until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
       # fetch remainder if resumption token
+      # 1)
       oai.query :resumption_token => oai.response.resumption_token if oai.response.resumption_token
       @countrecords += oai.records.count
+      # 2)
       convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
     end
+    # 4) Finally run activated rules on updated RDFstore
+    logger.info "Running rules on updated set..."
+    run_rules_engine(library) if library.rules.any?
   end
   
   def convert_oai_records(oairecords, library, params={})
@@ -208,8 +221,10 @@ class Scheduler
           rdf = RDFModeler.new(library.id, marcrecord)
           rdf.set_type(library.config['resource']['type'])        
           rdf.convert
-          write_record_to_file(rdf, library) if params[:write_records] # schedule writing to file
-          update_record(rdf, library)        if params[:sparql_update] # schedule writing to repository
+          # the conversion, rules, harvesting and updating
+          write_record_to_file(rdf, library)              if params[:write_records]  # a)
+          update_record(rdf, library, params={})          if params[:sparql_update]  # b)
+          run_external_harvester(rdf, library, params={}) # c)
           @rdfrecords << rdf.statements
           @modifycount += 1
         end
@@ -220,7 +235,7 @@ class Scheduler
         #puts "deleted record: #{deletedrecord}"
       end
     end
-      logger.info "Time to convert #{@rdfrecords.count} records: #{Time.now - timing_start} s."
+    logger.info "Time to convert #{@rdfrecords.count} records: #{Time.now - timing_start} s."
   end
   
   # 2a) write converted records to ntriples file if chosen
@@ -239,23 +254,46 @@ class Scheduler
 
   # 2c) if any harvesters are activated for library, do external harvesting and update RDF store
   def run_external_harvester(rdf, library, params={})
-    ## HERE!
-    library.harvesters.each do |harvester|
+    library.harvesters.each do |h|
+      # find harvester
+      harvester = Harvest.new.find :id=>h['id']
+      return nil unless harvester
       # need to query converted records through temporary graph to make RDF::Query::Solutions for batch harvesting
       # make temporary graph with converted record
       tempgraph = RDF::Graph.new('temp')
       rdf.statements.each {|s| tempgraph << s }
-      # query for :work, :edition and :object
-      batch = RDF::Query.execute(tempgraph) do
-        pattern [:work, RDF.type, RDF::FABIO.Work ]
-        pattern [:edition, RDF.type, RDF::FABIO.Manifestation ]
-        pattern [:object, RDF::BIBO.isbn, :object ]
+      # query for :edition and :object
+      batchsolutions = RDF::Query.execute(tempgraph) do
+        pattern [:edition, RDF.type, RDF.module_eval("#{library.config['resource']['type']}") ]
+        pattern [:edition, RDF.module_eval("#{harvester.local['predicate']}"), :object ]
       end
+      logger.info "Batch Harvest solutions #{batchsolutions.inspect}"
+      if harvester.local['subject'] == 'work'
+        # TODO!
+        # if harvester subject is set to 'work' then a RDFstore lookup must be made to get work URI
+      else
+        # just say work = edition for now
+        batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:work => batchsolutions.first.edition))}
+      end
+      
       # then harvest
-      bh = BatchHarvest.new harvester, batch
+      bh = BatchHarvest.new harvester, batchsolutions
+      bh.start_harvest
+      next if bh.statements.empty?
+      logger.info "Batch Harvest results #{bh.statements.inspect}"
+      # and insert harvested triples into RDF store
+      SparqlUpdate.insert_harvested_triples(library.config['resource']['default_graph'], bh.statements)
+      @harvestcount += bh.statements.count
     end
   end
-      
+
+  # 4) run rules on library graph
+  def run_rules_engine(library)
+    library.rules.each do |r|
+      rule = Rule.new.find :id=>r['id']
+      run_isql_rule(rule) if rule
+    end
+  end
 end
 
 unless ENV['RACK_ENV'] == 'test'

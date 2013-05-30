@@ -1,14 +1,13 @@
 #encoding: utf-8
 # Struct for BatchHarvest class 
-
 BatchHarvest   = Struct.new(:harvester, :params, :client, :count, :solutions, :response, :statements)
 
 class BatchHarvest
   # A Batch accepts an RDF::Query::Solutions as input or from a query against RDF store
   # NB! Make sure that RDF::Query::Solutions includes :object binding, as its value is used for harvesting
-  
+
   def initialize(harvester, batch = nil)
-    self.harvester   = harvester
+    self.harvester = harvester
     self.solutions = batch if batch.is_a?(RDF::Query::Solutions) # set solutions if harvest from batch
   end
 
@@ -42,25 +41,25 @@ class BatchHarvest
   # retry_limit: how many times to retry connection 
   # delay:       wait (sec) between each connection 
   def start_harvest(params={})
-    params[:offset]      ||= 0
-    params[:max_limit]   ||= self.harvester.limits["max_limit"]
-    params[:batch_limit] ||= self.harvester.limits["batch_limit"]
-    params[:retry_limit] ||= self.harvester.limits["retry_limit"]
-    params[:delay]       ||= self.harvester.limits["delay"]
+    offset      = params[:offset] ? params[:offset].to_i : 0
+    max_limit   = params[:max_limit] ? params[:max_limit].to_i : self.harvester.limits["max_limit"].to_i
+    batch_limit = params[:batch_limit] ? params[:batch_limit].to_i : self.harvester.limits["batch_limit"].to_i
+    retry_limit = params[:retry_limit] ? params[:retry_limit].to_i : self.harvester.limits["retry_limit"].to_i
+    delay       = params[:delay] ? params[:delay].to_i : self.harvester.limits["delay"].to_i
     self.connect
     if self.solutions
       # iterate batch until end of solutions
-      while params[:offset] <= self.solutions.length
-        solutions = Marshal.load(Marshal.dump(self.solutions)).offset(params[:offset]).limit(params[:batch_limit])
+      while offset <= self.solutions.length
+        solutions = Marshal.load(Marshal.dump(self.solutions)).offset(offset).limit(batch_limit)
         run_harvester(solutions)
-        params[:offset] += params[:batch_limit]
+        offset += batch_limit
       end
     else
       # do rdf lookups and iterate until end
-      while params[:offset] <= params[:max_limit]
+      while offset <= max_limit
         solutions = rdfstore_query(params)
         run_harvester(solutions)
-        params[:offset] += params[:batch_limit]
+        offset += batch_limit
       end
     end
     self.disconnect
@@ -95,31 +94,32 @@ class BatchHarvest
     # need to have solutions first
     return nil unless solutions and self.harvester
     self.statements = []
+    puts "Solutions to run harvest on #{solutions.inspect}"
     solutions.each do |solution|
       next unless solution.object # ignore if no object variable in solution
       url = "#{self.harvester.url["prefix"]}#{solution.object}#{self.harvester.url["suffix"]}"
       fetch_xpath_results(url)
       next unless self.response
       
-      self.harvester.predicates.each do |predicate, opts|
-        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.namespaces)
-        unless results.empty?
+      self.harvester.remote["predicates"].each do |predicate, opts|
+        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"])
+        unless results
           case opts["datatype"]
           when "uri" 
             results.map! { |obj| RDF::URI("#{obj}") }
           else
             results.each do | obj |
               # for now objects are only added to either 'work' or 'edition' subjects
-              if self.harvester.subject == 'work'
-                self.statements << RDF::Statement.new(RDF::URI.new("#{solution.work}"), RDF.module_eval("#{predicate}"), obj)
+              if self.harvester.local['subject'] == 'work'
+                self.statements << RDF::Statement.new(RDF::URI.new("#{solution.work}"), RDF.module_eval("#{predicate}"), RDF::Literal.new(obj))
               else
-                self.statements << RDF::Statement.new(RDF::URI.new("#{solution.edition}"), RDF.module_eval("#{predicate}"), obj)
+                self.statements << RDF::Statement.new(RDF::URI.new("#{solution.edition}"), RDF.module_eval("#{predicate}"), RDF::Literal.new(obj))
               end
             end
           end
         end
       end
-    end #self.isbns.each
+    end 
   end
 
   def fetch_xpath_results(url)
@@ -134,9 +134,11 @@ class BatchHarvest
       #results = []
       #xml.xpath("#{opts[:xpath]}", opts[:namespaces]).each { | elem | results << elem.text }
       results = xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces]))
-      # optional regex strip
-      return nil unless results
-      results.each { |result| result.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
+
+      return nil if Array(results).empty?
+      # optional regex strip      
+      results.map { |result| result.to_s.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
+      puts "regex stripped XML results #{results}"
       return results
     end
   end
