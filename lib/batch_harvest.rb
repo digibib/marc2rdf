@@ -103,7 +103,7 @@ class BatchHarvest
       
       self.harvester.remote["predicates"].each do |predicate, opts|
         results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"])
-        unless results
+        if results
           case opts["datatype"]
           when "uri" 
             results.map! { |obj| RDF::URI("#{obj}") }

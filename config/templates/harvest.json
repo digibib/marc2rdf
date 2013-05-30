@@ -1,66 +1,118 @@
 [
-    {
-        "id": "dummy1",
-        "name": "XML endpoint Example",
-        "description": "This is an example of a harvest from a generic http endpoint",
-        "protocol": "http",
-        "url": {
-            "prefix": "http://xisbn.worldcat.org/webservices/xid/isbn/",
-            "suffix": "?method=getEditions&format=xml"
-        },
-        "params": {
-            "apikey": "dummykey"
-        },
-        "namespaces": {
-            "xmlns": "http://worldcat.org/xid/isbn/"
-        },
-        "predicates": {
-            "FOAF.depiction": {
-                "datatype": "uri",
-                "xpath": "//path/to/object",
-                "regex_strip": "somethingtocut"
-            },
-            "BIBO.isbn": {
-                "datatype": "literal",
-                "xpath": "//xmlns:isbn"
-            }
-        },
-        "subject": "work",
-        "limits": {
-            "max_limit": 10,
-            "batch_limit": 30,
-            "delay": 5,
-            "retry_limit": 3
-        }
+  {
+    "id": "dummy1",
+    "name": "Sparql endpoint Example",
+    "description": "This is an example of a Sparql endpoint harvest",
+    "protocol": "sparql",
+    "url": {
+      "prefix": "http://example.com/sparql",
+      "suffix": ""
     },
-    {
-        "id": "dummy2",
-        "name": "Sparql endpoint Example",
-        "description": "This is an example of a Sparql endpoint harvest",
-        "custom_headers": {
-            "CUSTOM_APIKEY": "your_key_here"
-        },
-        "url": {
-            "prefix": "http://example.com/sparql",
-            "suffix": ""
-        },
-        "predicates": [
-            "OWL.sameAs",
-            "FOAF.isPrimaryTopicOf",
-            "BIBO.isbn",
-            "BIBO.lccn",
-            "BIBO.oclcnum"
-        ],
-        "subject": "edition",
-        "params": {
-            "content_type": "application/sparql-results+json"
-        },
-        "protocol": "sparql",
-        "limits": {
-            "max_limit": 10,
-            "batch_limit": 30,
-            "delay": 5,
-            "retry_limit": 3
-        }
+    "params": {
+      "content_type": "application/sparql-results+json"
+    },
+    "custom_headers": {
+      "CUSTOM_APIKEY": "your_key_here"
+    },
+    "local": {
+      "subject": "edition",
+      "predicate": "BIBO.isbn",
+      "object": ""
+    },
+    "remote": {
+      "predicates": [
+        "OWL.sameAs",
+        "FOAF.isPrimaryTopicOf",
+        "BIBO.isbn",
+        "BIBO.lccn",
+        "BIBO.oclcnum"
+      ]
+    },
+    "limits": {
+      "max_limit": 10,
+      "batch_limit": 30,
+      "delay": 5,
+      "retry_limit": 3
     }
+  },
+  {
+    "id": "dummy2",
+    "name": "XML endpoint Example",
+    "description": "This is an example of a harvest from a generic http endpoint",
+    "protocol": "http",
+    "url": {
+      "prefix": "http://xisbn.worldcat.org/webservices/xid/isbn/",
+      "suffix": "?method=getEditions&format=xml"
+    },
+    "params": {
+      "apikey": "dummykey"
+    },
+    "local": {
+      "subject": "edition",
+      "predicate": "BIBO.isbn",
+      "object": ""
+    },
+    "remote": {
+      "predicates": {
+        "FOAF.depiction": {
+          "datatype": "uri",
+          "xpath": "//path/to/object",
+          "regex_strip": "somethingtocut"
+        },
+        "BIBO.isbn": {
+          "datatype": "literal",
+          "xpath": "//xmlns:isbn",
+          "regex_strip": ""
+        }
+      },
+      "namespaces": {
+      }
+    },
+    "limits": {
+      "max_limit": "10",
+      "batch_limit": "30",
+      "retry_limit": "3",
+      "delay": "5"
+    }
+  },
+  {
+    "id": "81216886-9d97-478c-bb4f-4af1d6557f59",
+    "name": "XML endpoint Example copy",
+    "description": "This is an example of a harvest from a generic http endpoint",
+    "protocol": "http",
+    "url": {
+      "prefix": "http://xisbn.worldcat.org/webservices/xid/isbn/",
+      "suffix": "?method=getEditions&format=xml"
+    },
+    "params": {
+      "apikey": "dummykey"
+    },
+    "local": {
+      "subject": "edition",
+      "predicate": "BIBO.isbn",
+      "object": ""
+    },
+    "remote": {
+      "predicates": {
+        "FOAF.depiction": {
+          "datatype": "uri",
+          "xpath": "//path/to/object",
+          "regex_strip": "somethingtocut"
+        },
+        "BIBO.isbn": {
+          "datatype": "literal",
+          "xpath": "//xmlns:isbn",
+          "regex_strip": ""
+        }
+      },
+      "namespaces": {
+      }
+    },
+    "limits": {
+      "max_limit": "10",
+      "batch_limit": "30",
+      "retry_limit": "3",
+      "delay": "5"
+    }
+  }
 ]
