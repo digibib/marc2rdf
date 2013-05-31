@@ -23,6 +23,7 @@
             "timeout": 60,
             "format": "marcxchange",
             "url": "http://example.com/cgi-bin/oai",
+            "dataset": "",
             "follow_redirects": false,
             "parser": "rexml",
             "schedule": "01 23 * * *"

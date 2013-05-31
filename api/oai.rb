@@ -3,7 +3,7 @@
 module API
 class Oai < Grape::API
   resource :oai do
-    desc "validate a OAI repository"
+    desc "validate a OAI repository, find sets and identifier"
       params do
         requires :id, type: Integer, desc: "ID of library"
       end
@@ -18,28 +18,9 @@ class Oai < Grape::API
         :redirects => library.oai["timeout"])
       oai.validate
       return  { :result => "not validated!" } unless oai.identify_response
-      { :repo => oai.identify_response, :id => oai.oai_id, :datasets => oai.datasets.inspect }
+      { :repo => oai.identify_response, :id => oai.oai_id, :datasets => oai.available_sets }
     end 
 
-=begin
-  deprecated, validate instead
-    desc "identify a OAI repository"
-      params do
-        requires :id, type: Integer, desc: "ID of library"
-      end
-    get "/identify" do
-      content_type 'json'
-      library = Library.new.find(:id => params[:id].to_i)
-      logger.info "library: #{library.oai}"
-      oai = OAIClient.new(library.oai["url"], 
-        :format => library.oai["format"], 
-        :parser => library.oai["parser"], 
-        :timeout => library.oai["timeout"],
-        :redirects => library.oai["timeout"])
-      result = oai.client.identify
-      { :result => result }
-    end 
-=end
     desc "get a record"
       params do
         requires :id,       type: Integer, desc: "ID of library"

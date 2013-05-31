@@ -4,7 +4,7 @@ require "faraday"
 require "oai"
 #require "libxml_ruby"
 
-OAIClient = Struct.new(:client, :http, :oai_id, :parser, :format, :identify_response, :response, :datasets, :records)
+OAIClient = Struct.new(:client, :http, :oai_id, :parser, :format, :identify_response, :response, :set, :available_sets, :records)
 class OAIClient
   # initialize OAI client with optional parameters. 
   # faraday connection can be overridden by passing a faraday object as :http arg
@@ -25,12 +25,13 @@ class OAIClient
 
   # query OAI from timestamp, default yesterday 
   def query(params={})
-    from_date = params[:from]  ||= Date.today.prev_day.to_s
-    to_date   = params[:until] ||= Date.today.to_s
+    from_date = params[:from]    ||= Date.today.prev_day.to_s
+    to_date   = params[:until]   ||= Date.today.to_s
+    set       = params[:set]     ||= self.set
     if params[:resumption_token]
       self.response = self.client.list_records :resumption_token => params[:resumption_token]
     else
-      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
+      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set
     end
     self.records = []
     self.response.each {|r| self.records << r }
@@ -50,14 +51,8 @@ class OAIClient
     self.oai_id = id.rpartition(':').first
   end
   
-  # get sets if available
-  def get_sets
-    begin
-      self.datasets = self.client.list_sets
-    rescue OAI::Exception => e
-      puts e if ENV['RACK_ENV'] == "development"
-      self.datasets = nil
-    end
+  def select_set(set)
+    self.set = set
   end
   
   # get metadata formats
@@ -71,13 +66,25 @@ class OAIClient
       self.identify_response = self.client.identify
       self.identify_response.is_a?(OAI::IdentifyResponse)
       get_oai_id
-      get_sets
+      get_available_sets
     rescue ArgumentError => e
       puts e if ENV['RACK_ENV'] == "development"
       self.identify_response = nil
     end
   end
-  
+
+  # get sets if available
+  def get_available_sets
+    begin
+      sets = self.client.list_sets
+      self.available_sets = []
+      sets.each {|set| self.available_sets << {:name => set.name, :description => set.description, :spec => set.spec} }
+    rescue OAI::Exception => e
+      puts e if ENV['RACK_ENV'] == "development"
+      self.available_sets = nil
+    end
+  end
+    
   # harvest all! in memory = SLOW and potentially stalling entire app!
   def query_all
     self.records = self.client.list_records.full

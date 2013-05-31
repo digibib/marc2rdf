@@ -155,12 +155,11 @@ $(document).ready(function () {
     $.get('/api/oai/validate', { id: id })
       .done(function(data) {
         $('input#oai_id').val(data.id);
-        $('span#oai_info').html(JSON.stringify(data)).show().fadeOut(5000);
+        $('span#oai_info').html(JSON.stringify(data)).show();
       })
-      .fail(function() { $('span#oai_error').html("Failed to validate, check URL or enter OAI Resource ID manually").show().fadeOut(5000); });
-    
+      .fail(function() { $('span#oai_error').html("Failed to validate, check URL or enter OAI Resource ID manually").show().fadeOut(10000); });
   });
-  
+    
   // ** save oai settings
   $('button#oai_settings_save').on('click', function() {
   
@@ -180,8 +179,9 @@ $(document).ready(function () {
       data: JSON.stringify({
           id: id,
           oai: {
-            url: $('input#oai_url').val(),
             id: $('input#oai_id').val(),
+            url: $('input#oai_url').val(),
+            set: $('input#oai_set').val(),
             follow_redirects: $('select#oai_follow_redirects option:selected').val(),
             parser: $('select#oai_parser option:selected').val(),
             timeout: $('input#oai_timeout').val(),

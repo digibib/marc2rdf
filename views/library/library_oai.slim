@@ -14,6 +14,10 @@ h3 OAI harvester settings
           td: input[type="text" id="oai_id" value=(library.oai['id']) ]
           td id of Library Resources (fetched automatically by 'validate' of possible)
         tr
+          td dataset
+          td: input[type="text" id="oai_set" value=(library.oai['set']) ]
+          td validate and choose dataset from 'spec' to limit OAI to dataset (uses 'all' if empty)
+        tr
           td follow_redirects
           td
             select[id="oai_follow_redirects"]
