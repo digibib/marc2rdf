@@ -130,7 +130,7 @@ class BatchHarvest
       xml = Nokogiri::XML(http_response.body)
       results = []
       #xml.xpath("#{opts[:xpath]}", opts[:namespaces]).each { | elem | results << elem.text }
-      results << xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces])) {|node| node.text}
+      xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces])).each {|node| results << node.text}
       puts "xpath results: #{results}"
       return nil if results.empty?
       # optional regex strip      
