@@ -101,7 +101,7 @@ class BatchHarvest
       next unless self.response
       
       self.harvester.remote["predicates"].each do |predicate, opts|
-        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => Array(self.harvester.remote["namespaces"]) )
+        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"] )
         puts "Harvester results: #{results.inspect}"
         if results
           case opts["datatype"]
