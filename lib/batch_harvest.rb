@@ -104,17 +104,14 @@ class BatchHarvest
         results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"] )
         puts "Harvester results: #{results.inspect}"
         if results
-          case opts["datatype"]
-          when "uri" 
-            Array(results).map! { |obj| RDF::URI("#{obj}") }
-          else
-            results.each do | obj |
-              # for now objects are only added to either 'work' or 'edition' subjects
-              if self.harvester.local['subject'] == 'work'
-                self.statements << RDF::Statement.new(RDF::URI.new("#{solution.work}"), RDF.module_eval("#{predicate}"), RDF::Literal.new(obj))
-              else
-                self.statements << RDF::Statement.new(RDF::URI.new("#{solution.edition}"), RDF.module_eval("#{predicate}"), RDF::Literal.new(obj))
-              end
+          # make RDF::URIs if datatype uri
+          results.map! { |obj| RDF::URI("#{obj}") } if opts["datatype"] == "uri"
+          results.each do | obj |
+            # for now objects are only added to either 'work' or 'edition' subjects
+            if self.harvester.local['subject'] == 'work'
+              self.statements << RDF::Statement.new(RDF::URI.new("#{solution.work}"), RDF.module_eval("#{predicate}"), obj)
+            else
+              self.statements << RDF::Statement.new(RDF::URI.new("#{solution.edition}"), RDF.module_eval("#{predicate}"), obj)
             end
           end
         end
@@ -131,11 +128,11 @@ class BatchHarvest
     # make sure we get valid response
     if http_response.code == "200" || http_response.code == "302" 
       xml = Nokogiri::XML(http_response.body)
-      #results = []
+      results = []
       #xml.xpath("#{opts[:xpath]}", opts[:namespaces]).each { | elem | results << elem.text }
-      results = xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces]))
-
-      return nil if Array(results).empty?
+      results << xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces])) {|node| node.text}
+      puts "xpath results: #{results}"
+      return nil if results.empty?
       # optional regex strip      
       results.map { |result| result.to_s.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
       puts "regex stripped XML results #{results}"
