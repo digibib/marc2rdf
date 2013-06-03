@@ -31,7 +31,7 @@ class OAIClient
     if params[:resumption_token]
       self.response = self.client.list_records :resumption_token => params[:resumption_token]
     else
-      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set
+      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set ? set : ''
     end
     self.records = []
     self.response.each {|r| self.records << r }

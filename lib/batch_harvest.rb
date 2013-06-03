@@ -91,8 +91,7 @@ class BatchHarvest
   
   ### Harvesting methods
   def run_harvester(solutions)
-    # need to have solutions first
-    return nil unless solutions and self.harvester
+    return nil unless self.harvester # require harvester
     self.statements = []
     puts "Solutions to run harvest on #{solutions.inspect}"
     solutions.each do |solution|
@@ -102,7 +101,8 @@ class BatchHarvest
       next unless self.response
       
       self.harvester.remote["predicates"].each do |predicate, opts|
-        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"])
+        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => Array(self.harvester.remote["namespaces"]) )
+        puts "Harvester results: #{results.inspect}"
         if results
           case opts["datatype"]
           when "uri" 
