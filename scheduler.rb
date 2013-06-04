@@ -230,9 +230,9 @@ class Scheduler
           rdf.set_type(library.config['resource']['type'])        
           rdf.convert
           # the conversion, rules, harvesting and updating
-          write_record_to_file(rdf, library)              if params[:write_records]  # a)
-          update_record(rdf, library, params={})          if params[:sparql_update]  # b)
-          run_external_harvester(rdf, library, params={}) # c)
+          write_record_to_file(rdf, library, params)   if params[:write_records]  # a)
+          update_record(rdf, library, params)          if params[:sparql_update]  # b)
+          run_external_harvester(rdf, library, params) # c)
           @rdfrecords << rdf.statements
           @modifycount += 1
         end
@@ -243,13 +243,13 @@ class Scheduler
         #puts "deleted record: #{deletedrecord}"
       end
     end
-    logger.info "Time to convert #{@rdfrecords.count} records: #{Time.now - timing_start} s."
+    logger.info "Time to convert #{oairecords.count} records: #{Time.now - timing_start} s."
   end
   
   # 2a) write converted records to ntriples file if chosen
-  def write_record_to_file(rdf, library)
+  def write_record_to_file(rdf, library, params={})
     logger.info "Writing to file..."
-    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{Time.now.to_s}_#{library.name}.nt"), 'a+')
+    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:start_time]}_#{library.name}.nt"), 'a+')
     file.write(RDFModeler.write_ntriples(rdf.statements)) if file
   end
 
