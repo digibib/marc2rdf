@@ -97,9 +97,17 @@ class APP < Sinatra::Base
     # Main conversion tool
     slim :convert, :locals => {:library => session[:library]}
   end
-  
+
+  # download converted file  
   get '/convert/:filename' do |filename|
     send_file "./db/converted/#{filename}", :filename => filename, :type => 'text/plain'
+  end
+  
+  # show list of files
+  get '/files' do
+    files = Dir.glob("./db/converted/*.*").map{|f| f.split('/').last}
+    # render list here
+    slim :files, :locals => {:files => files, :library => session[:library]}
   end
 
   get '/rules' do

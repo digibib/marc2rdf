@@ -159,11 +159,15 @@ class Scheduler
   # 4) if any rules are activated for library, run rules directly on library graph
     
   def start_oai_harvest(params={})
-    params[:start_time]    ||= Time.now 
+    # for now rescue empty timestamp to Time.now
+    params[:from]  = Time.parse(params[:from]).strftime("%F") rescue Date.today.prev_day.to_s
+    params[:until] = Time.parse(params[:until]).strftime("%F") rescue Date.today.to_s
+    
+    start_time = Time.parse("#{params[:start_time]}") rescue Time.now
     params[:tags]          ||= "oaiharvest"
     library = Library.new.find(:id => params[:id].to_i)
     logger.info "Scheduled params: #{params}"
-    job_id = self.scheduler.at params[:start_time], :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
+    job_id = self.scheduler.at start_time, :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
       # result counters
       @countrecords, @deletecount, @modifycount, @harvestcount = 0, 0, 0, 0
@@ -175,10 +179,10 @@ class Scheduler
         :redirects => library.oai["redirects"],
         :set => library.oai["set"])
       # do the OAI dance!
-      run_oai_harvest_cycle(oai, library, params={})    
+      run_oai_harvest_cycle(oai, library, params)    
       
       length = Time.now - timing_start
-      logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => params[:start_time], 
+      logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
                  :length => "#{length} s.", :tags => params[:tags], 
                  :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
       write_history(logline)
@@ -196,7 +200,6 @@ class Scheduler
     @countrecords += oai.records.count  
     # 2)
     convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
-    
     # 3) do the resumption loop...
     until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
       # fetch remainder if resumption token
@@ -217,7 +220,10 @@ class Scheduler
     # 2) convert harvested records, based on Library's chosen mapping
     oairecords.each do |record| 
       unless record.deleted?
-        #record.metadata.collection.add_namespace("marc", "info:lc/xmlns/marcxchange-v1")
+        
+        # hack to add marc namespace to first element of metadata in case of namespace issues
+        record.metadata[0].add_namespace("marc", "info:lc/xmlns/marcxchange-v1")
+        
         xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata[0].to_s)) 
         xmlreader.each do |marcrecord|
           rdf = RDFModeler.new(library.id, marcrecord)
@@ -242,8 +248,8 @@ class Scheduler
   
   # 2a) write converted records to ntriples file if chosen
   def write_record_to_file(rdf, library)
-    FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
-    file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
+    logger.info "Writing to file..."
+    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{Time.now.to_s}_#{library.name}.nt"), 'a+')
     file.write(RDFModeler.write_ntriples(rdf.statements)) if file
   end
 

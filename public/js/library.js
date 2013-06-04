@@ -363,7 +363,7 @@ $(document).ready(function () {
 
     request.success(function ( data ) {
       $('span#conversion_info').html("OAI harvesting started!").show().fadeOut(3000);
-      window.location = '/status';
+      //window.location = '/status';
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
       $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);

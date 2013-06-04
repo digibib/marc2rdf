@@ -1,0 +1,19 @@
+// Main file for download converted files
+h2 Converted files
+- if !library
+  pre No library selected, you must go to <a href="/libraries">libraries</a> and select or create one first 
+- else
+  h3[style="margin-left:24px"] Converted file listing
+  p[style="margin-left:48px"] These files are converted and can be downloaded
+  table id="files_list" class="libraries active tablesorter"
+    thead
+      tr
+        th 
+        th[style="width:240px"] name
+        th[style="width:120px"] size
+    tbody
+    - files.each_with_index do |file,index|
+      tr id="#{index}"
+        td: button[type="button" id="download_file" class="gen"]  = "download"
+        td
+          a href="/convert/#{file}" #{file}

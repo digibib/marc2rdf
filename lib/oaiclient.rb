@@ -26,8 +26,8 @@ class OAIClient
 
   # query OAI from timestamp, default yesterday 
   def query(params={})
-    from_date = params[:from]    ||= Date.today.prev_day.to_s
-    to_date   = params[:until]   ||= Date.today.to_s
+    from_date = Time.parse(params[:from]).strftime("%F") rescue Date.today.prev_day.to_s
+    to_date   = Time.parse(params[:until]).strftime("%F") rescue Date.today.to_s
     set       = params[:set]     ||= self.set
     if params[:resumption_token]
       self.response = self.client.list_records :resumption_token => params[:resumption_token]
