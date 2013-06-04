@@ -52,57 +52,64 @@ class RDFModeler
 # make object array in any case
   generated_objects = []
   
+  # First generating of objects in following priority
+  # 1) get substring on offset+length if set
+  # 2) regex split on string
+  # 3) take whole string 
+  #puts "original string: #{o}"
+  #puts "original string length: #{o.length}"
   # substring must be used on whole marcfield
-    if options.has_key?(:substr_offset)
-      # ignore if substr moves beyond length of string
-      unless o.length > options[:substr_offset] + options[:substr_length]
-        generated_objects << o.slice(options[:substr_offset],options[:substr_length])
-        generated_objects.delete_if {|a| a.nil? } # needed to avoid nil-errors on invalid 008 tags
-        generated_objects.delete_if {|a| a.strip.empty? }
-      end
-    elsif options.has_key?(:regex_split)
-      generated_objects = o.split(/#{options[:regex_split]}/)
-      generated_objects.delete_if {|c| c.empty? }
-    else
-      generated_objects << o
+  if options.has_key?(:substr_offset)
+    # ignore if substr moves beyond length of string
+    if o.length > options[:substr_offset] + options[:substr_length]
+      generated_objects << o.slice(options[:substr_offset],options[:substr_length])
+      generated_objects.delete_if {|a| a.nil? } # needed to avoid nil-errors on invalid 008 tags
+      generated_objects.delete_if {|a| a.strip.empty? }
     end
+  elsif options.has_key?(:regex_split)
+    generated_objects = o.split(/#{options[:regex_split]}/)
+    generated_objects.delete_if {|c| c.empty? }
+  else
+    generated_objects << o
+  end
+  
+  
+  if options.has_key?(:regex_substitute) and not generated_objects.empty?
+    generated_objects.collect! do |obj|
+      obj = obj.gsub(/[\W]+/, '').downcase
+      obj.scan(/#{regex_subs['orig']}/) do |match| 
+        if match then obj = regex_subs['subs'][match] else obj = regex_subs['default'] end
+      end
+    obj # needed to make sure obj is returned, not match
+    end
+  end 
 
-    if options.has_key?(:regex_substitute)
-      generated_objects.collect! do |obj|
-        obj = obj.gsub(/[\W]+/, '').downcase
-        obj.scan(/#{regex_subs['orig']}/) do |match| 
-          if match then obj = regex_subs['subs'][match] else obj = regex_subs['default'] end
+  if options.has_key?(:combine) and not generated_objects.empty?
+    generated_objects.collect! do | obj |
+      obj2 = []
+      options[:combine].each do |combine|
+        options[:marcfield].each do |mrc|
+          obj2 << mrc.value if combine == mrc.code
         end
-      obj # needed to make sure obj is returned, not match
       end
-    end 
-
-    if options.has_key?(:combine)
-      generated_objects.collect! do | obj |
-        obj2 = []
-        options[:combine].each do |combine|
-          options[:marcfield].each do |mrc|
-            obj2 << mrc.value if combine == mrc.code
-          end
-        end
-        obj2.delete_if {|d| d.nil? }
-        obj = obj2.join(options[:combinestring])
-      end
+      obj2.delete_if {|d| d.nil? }
+      obj = obj2.join(options[:combinestring])
     end
+  end
 
-    if options.has_key?(:urlize)
-      downcase = options[:downcase] || false
-      convert_spaces = options[:convert_spaces] || true
-      regexp = options[:regexp] || /[^-_A-Za-z0-9]/
+  if options.has_key?(:urlize) and not generated_objects.empty?
+    downcase = options[:downcase] || false
+    convert_spaces = options[:convert_spaces] || true
+    regexp = options[:regexp] || /[^-_A-Za-z0-9]/
 
-      generated_objects.collect! do |obj| 
-        obj.urlize({:downcase => downcase, :convert_spaces => convert_spaces, :regexp => regexp})
-      end
+    generated_objects.collect! do |obj| 
+      obj.urlize({:downcase => downcase, :convert_spaces => convert_spaces, :regexp => regexp})
     end
-    
-    if options.has_key?(:regex_strip)
-      generated_objects.collect! { |obj| obj.gsub(/#{options[:regex_strip]}/, '') }
-    end
+  end
+  
+  if options.has_key?(:regex_strip) and not generated_objects.empty?
+    generated_objects.collect! { |obj| obj.gsub(/#{options[:regex_strip]}/, '') }
+  end
   
   #puts generated_objects if $debug
   return generated_objects
