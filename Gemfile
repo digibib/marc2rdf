@@ -18,6 +18,7 @@ gem "slim", '~> 1.3'
 gem "tilt", '~> 1.3.6' 
 gem "thin"
 gem "foreman"
+gem "json", '~> 1.7.7'
 
 group :development, :test do
   gem "sinatra-reloader"

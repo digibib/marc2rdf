@@ -40,6 +40,7 @@ GEM
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
     i18n (0.6.1)
+    json (1.7.7)
     libxml-ruby (2.6.0)
     marc (0.5.0)
     method_source (0.8.1)
@@ -137,6 +138,7 @@ DEPENDENCIES
   bundler
   foreman
   grape
+  json (~> 1.7.7)
   libxml-ruby
   marc
   minitest
