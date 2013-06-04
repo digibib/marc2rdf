@@ -74,6 +74,7 @@ class Rule
     self.find(:id => self.id)
   end  
   
+  # modify graph uri by local library
   def localize(library)
     return nil unless self.id and self.script
     self.script.gsub!(/DEFAULT_GRAPH/, RDF::URI(library.config['resource']['default_graph']).to_ntriples)
@@ -81,6 +82,7 @@ class Rule
     self
   end
   
+  # modify graph uri by global setting
   def globalize
     return nil unless self.id and self.script
     self.script.gsub!(/DEFAULT_GRAPH/, RDF::URI(SETTINGS['global']['default_graph']).to_ntriples)
@@ -88,8 +90,8 @@ class Rule
     self
   end
   
+  # need to remove apostrophes and command backticks before running or saving script  
   def sanitize
-    # need to remove apostrophes before saving script
     return nil unless self.id and self.script
     self.script.gsub!('"', "'")
     self.script.gsub!(/(?=[`])/, '\\')

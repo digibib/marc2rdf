@@ -1,4 +1,7 @@
 = marc2rdf CHANGELOG
+0.10.1
+  minor fixes in rules engine
+  connected batch harvesters and rules scheduling to library OAI update
 0.10.0
   Harvester Engine:
     connect one or more Harvester to Library
