@@ -52,7 +52,7 @@ class Oai < Grape::API
         rdf.convert
         rdf.statements.each {|s| rdfrecords.push(s)}
       end
-      file.write(rdfrecords.each {|statement| RDFModeler.write_ntriples(statement)}) if file
+      file.write(RDFModeler.write_ntriples(rdfrecords)) if file
       { :resource => rdfrecords }
     end 
             
@@ -105,7 +105,7 @@ class Oai < Grape::API
             rdf = RDFModeler.new(library.id, marc)
             rdf.set_type(library.config["resource"]["type"])       
             rdf.convert
-            file.write(rdf.statements.each {|statement| RDFModeler.write_ntriples(statement)}) if params[:filename]
+            file.write(RDFModeler.write_ntriples(rdf.statements)) if params[:filename]
           end
         else
           logger.info "deleted record: #{record.header.identifier.split(':').last}"

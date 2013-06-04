@@ -293,10 +293,10 @@ class RDFModeler
   
   ## Class Methods
   
-  # method to output statements as triples
+  # method to output array of statements as triples
   def self.write_ntriples(statements)
     ntriples = RDF::Writer.for(:ntriples).buffer do |writer|
-      statements.each { | statement | writer << statement }
+      Array(statements).each { | statement | writer << statement }
     end
   end
 end
