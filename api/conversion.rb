@@ -36,8 +36,7 @@ class Conversion < Grape::API
         rdf = RDFModeler.new(library.id, record)
         rdf.set_type(library.config["resource"]["type"])
         rdf.convert
-        rdf.write_record
-        rdfrecords << rdf.statements
+        rdf.statements.each {|s| rdfrecords.push(s)}
       end
       { :resource => rdfrecords }
     end
@@ -62,10 +61,9 @@ class Conversion < Grape::API
         rdf = RDFModeler.new(library.id, record)
         rdf.set_type(library.config["resource"]["type"])
         rdf.convert
-        rdf.write_record
-        file.write(rdf.rdf)
-        rdfrecords << rdf.statements
+        rdf.statements.each {|s| rdfrecords.push(s)}
       end
+      file.write(rdfrecords.each {|statement| RDFModeler.write_ntriples(statement)}) if file
       { :resource => rdfrecords[0..2], :filename => filename }
     end
         

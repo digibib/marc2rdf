@@ -44,19 +44,15 @@ class Oai < Grape::API
       xmlreader = MARC::XMLReader.new(StringIO.new(oai.records.record.metadata.to_s)) 
       logger.info "Marc response: #{xmlreader.inspect}"
       rdfrecords = []
-      if params[:filename]
-        file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'a+')
-      end
+      # create an appendable file if save activated
+      file = File.open(File.join(File.dirname(__FILE__), '../db/converted/', "#{params[:filename]}"), 'a+') if params[:filename]
       xmlreader.each do |marc|
         rdf = RDFModeler.new(library.id, marc)
         rdf.set_type(library.config["resource"]["type"])        
         rdf.convert
-        rdfrecords << rdf.statements
-        if file
-          rdf.write_record
-          file.write(rdf.rdf)
-        end
+        rdf.statements.each {|s| rdfrecords.push(s)}
       end
+      file.write(rdfrecords.each {|statement| RDFModeler.write_ntriples(statement)}) if file
       { :resource => rdfrecords }
     end 
             
@@ -109,8 +105,7 @@ class Oai < Grape::API
             rdf = RDFModeler.new(library.id, marc)
             rdf.set_type(library.config["resource"]["type"])       
             rdf.convert
-            rdf.write_record
-            file.write(rdf.rdf) if params[:filename]
+            file.write(rdf.statements.each {|statement| RDFModeler.write_ntriples(statement)}) if params[:filename]
           end
         else
           logger.info "deleted record: #{record.header.identifier.split(':').last}"

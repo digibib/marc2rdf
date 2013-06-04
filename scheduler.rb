@@ -242,8 +242,7 @@ class Scheduler
   def write_record_to_file(rdf, library)
     FileUtils.mkdir_p File.join(File.dirname(__FILE__), 'db', "#{library.id}")
     file = File.open(File.join(File.dirname(__FILE__), 'db', "#{library.id}", 'test.nt'), 'a+')
-    rdf.write_record     # creates rdf ntriples
-    file.write(rdf.rdf)
+    file.write(rdf.statements.each {|statement| RDFModeler.write_ntriples(statement)}) if file
   end
 
   # 2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
