@@ -196,10 +196,9 @@ class Scheduler
   def run_oai_harvest_cycle(oai, library, params={})
     # 1) pull first records from OAI-PMH repo
     oai.query :from => params[:from], :until => params[:until]
-    puts oai.response.inspect
     @countrecords += oai.records.count  
     # 2)
-    convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
+    convert_oai_records(oai.records, library, params)
     # 3) do the resumption loop...
     until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
       # fetch remainder if resumption token
@@ -207,7 +206,7 @@ class Scheduler
       oai.query :resumption_token => oai.response.resumption_token if oai.response.resumption_token
       @countrecords += oai.records.count
       # 2)
-      convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
+      convert_oai_records(oai.records, library, params)
     end
     # 4) Finally run activated rules on updated RDFstore
     logger.info "Running rules on updated set..."
@@ -248,8 +247,7 @@ class Scheduler
   
   # 2a) write converted records to ntriples file if chosen
   def write_record_to_file(rdf, library, params={})
-    logger.info "Writing to file..."
-    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:start_time]}_#{library.name}.nt"), 'a+')
+    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+')
     file.write(RDFModeler.write_ntriples(rdf.statements)) if file
   end
 
