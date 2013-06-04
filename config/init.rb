@@ -32,6 +32,9 @@ SECRET_SESSION_KEY = "alongandveryshortstring"
 # not needed in test environment
 DRBSERVER = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
 
+# set best available XML parser for MARC
+#MARC::XMLReader.best_available!
+
 # load all library files
 Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each do |file|
   require file

@@ -15,7 +15,8 @@ class Oai < Grape::API
         :format => library.oai["format"], 
         :parser => library.oai["parser"], 
         :timeout => library.oai["timeout"],
-        :redirects => library.oai["timeout"])
+        :redirects => library.oai["timeout"],
+        :set => library.oai["set"])
       oai.validate
       return  { :result => "not validated!" } unless oai.identify_response
       { :repo => oai.identify_response, :id => oai.oai_id, :datasets => oai.available_sets }

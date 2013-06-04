@@ -8,6 +8,7 @@ gem "rdf-rdfxml"
 gem "rdf-n3"
 gem "rdf-virtuoso", "~> 0.1.4"
 gem "oai"#, '0.2.0'
+#gem "oai", :git => 'https://github.com/code4lib/ruby-oai.git'
 gem "libxml-ruby" # maybe broken!! but faster OAI processing
 gem "rest-client"
 gem "grape"#, "0.2.4" # json parameter parse broken after 0.2.4

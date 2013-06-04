@@ -20,6 +20,7 @@ class OAIClient
       :http      => self.http
       }
     )
+    params[:set] ? self.set = params[:set] : ''
     self.records = []
   end
 
@@ -31,7 +32,7 @@ class OAIClient
     if params[:resumption_token]
       self.response = self.client.list_records :resumption_token => params[:resumption_token]
     else
-      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set ? set : ''
+      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set
     end
     self.records = []
     self.response.each {|r| self.records << r }
@@ -46,13 +47,9 @@ class OAIClient
   
   # get library OAI identifier
   def get_oai_id
-    xml = self.client.list_identifiers
+    xml = self.client.list_identifiers :set => self.set
     id = xml.first.identifier
     self.oai_id = id.rpartition(':').first
-  end
-  
-  def select_set(set)
-    self.set = set
   end
   
   # get metadata formats

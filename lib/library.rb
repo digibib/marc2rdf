@@ -2,6 +2,7 @@
 # Struct for Libraries saved in json
 Library = Struct.new(:id, :name, :config, :mapping, :oai, :rules, :harvesters)
 class Library
+  # Class methods
   def all
     libraries = []
     file     = File.join(File.dirname(__FILE__), '../db/', 'libraries.json')
@@ -24,7 +25,8 @@ class Library
       self.all.detect {|lib| lib['name'] == params[:name] } 
     end
   end
-
+  
+  # Instance methods
   def create(params={})
     ids = []
     self.all.each {|lib| ids << lib['id']}

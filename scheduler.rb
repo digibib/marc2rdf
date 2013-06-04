@@ -14,7 +14,7 @@ class Scheduler
   
   def logger
     logger = Logger.new(File.expand_path("../logs/scheduler_#{ENV['RACK_ENV']}.log", __FILE__))
-  end  
+  end
   
   ### dummy jobs for testing ###
   def dummyjob(params={})
@@ -172,8 +172,8 @@ class Scheduler
         :format => library.oai["format"], 
         :parser => library.oai["parser"], 
         :timeout => library.oai["timeout"],
-        :redirects => library.oai["redirects"])
-        
+        :redirects => library.oai["redirects"],
+        :set => library.oai["set"])
       # do the OAI dance!
       run_oai_harvest_cycle(oai, library, params={})    
       
@@ -192,6 +192,7 @@ class Scheduler
   def run_oai_harvest_cycle(oai, library, params={})
     # 1) pull first records from OAI-PMH repo
     oai.query :from => params[:from], :until => params[:until]
+    puts oai.response.inspect
     @countrecords += oai.records.count  
     # 2)
     convert_oai_records(oai.records, library, :write_records => params[:write_records], :sparql_update => params[:sparql_update])
@@ -216,7 +217,8 @@ class Scheduler
     # 2) convert harvested records, based on Library's chosen mapping
     oairecords.each do |record| 
       unless record.deleted?
-        xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
+        #record.metadata.collection.add_namespace("marc", "info:lc/xmlns/marcxchange-v1")
+        xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata[0].to_s)) 
         xmlreader.each do |marcrecord|
           rdf = RDFModeler.new(library.id, marcrecord)
           rdf.set_type(library.config['resource']['type'])        
@@ -303,4 +305,9 @@ unless ENV['RACK_ENV'] == 'test'
   #$SAFE = 1   # disable eval() and friends
   DRb.start_service DRBSERVER, Scheduler.new
   DRb.thread.join
+end
+
+# loads all saved schedules if Scheduler is restarted and in production mode
+if ENV['RACK_ENV'] == 'production'
+  #Libraries.all
 end
