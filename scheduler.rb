@@ -223,7 +223,7 @@ class Scheduler
         # hack to add marc namespace to first element of metadata in case of namespace issues on REXML parser
         record.metadata[0].add_namespace("marc", "info:lc/xmlns/marcxchange-v1") if record.metadata[0].is_a? REXML::Element 
 
-        xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata[0].to_s)) 
+        xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
         xmlreader.each do |marcrecord|
           rdf = RDFModeler.new(library.id, marcrecord)
           rdf.set_type(library.config['resource']['type'])        
