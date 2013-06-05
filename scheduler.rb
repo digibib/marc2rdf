@@ -220,9 +220,9 @@ class Scheduler
     oairecords.each do |record| 
       unless record.deleted?
         
-        # hack to add marc namespace to first element of metadata in case of namespace issues
-        record.metadata[0].add_namespace("marc", "info:lc/xmlns/marcxchange-v1")
-        
+        # hack to add marc namespace to first element of metadata in case of namespace issues on REXML parser
+        record.metadata[0].add_namespace("marc", "info:lc/xmlns/marcxchange-v1") if record.metadata[0].is_a? REXML::Element 
+
         xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata[0].to_s)) 
         xmlreader.each do |marcrecord|
           rdf = RDFModeler.new(library.id, marcrecord)
