@@ -12,7 +12,7 @@
         th[style="width:150px"] short name
         th description
     tbody
-    - for h in Harvest.new.all
+    - for h in Harvest.all
       tr id="#{h.id}"
         td: button[type="button" id="clone_harvester" class="gen"]  = "clone"
         td 

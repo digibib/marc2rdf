@@ -23,24 +23,25 @@ describe SparqlUpdate do
       @sparql.preserve.should == ['FOAF.depiction']
     end
     
+    # test private methods
     it "should create proper delete query with minus" do
-      result = @sparql.delete_record
-      result.should == 'DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . } WHERE { <http://example.com/id_0583095> ?p ?o . MINUS { <http://example.com/id_0583095> <http://xmlns.com/foaf/0.1/depiction> ?o . } }'
+      result = @sparql.send(:delete_old_record)
+      result.should == 'DEFINE sql:log-enable 2 DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . } WHERE { <http://example.com/id_0583095> ?p ?o . MINUS { <http://example.com/id_0583095> <http://xmlns.com/foaf/0.1/depiction> ?o . } }'
     end
     
     it "should delete existing authorities before update" do
-      result = @sparql.delete_authorities
+      result = @sparql.send(:delete_old_authorities)
       result.first['id'].to_s.should == "http://data.deichman.no/person/x32026400"
     end
     
     it "should insert new statements" do
-      result = @sparql.insert_record
+      result = @sparql.send(:insert_new_record)
       result.should match('INSERT DATA INTO GRAPH <http://example.com> { <http://example.com/id_0583095>')
     end
 
     it "should purge a record" do
-      result = @sparql.purge_record
-      result.should == 'DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . } WHERE { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . }'
+      result = @sparql.send(:purge_record)
+      result.should == 'DEFINE sql:log-enable 2 DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . } WHERE { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . }'
     end
   end
 end

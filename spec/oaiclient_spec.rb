@@ -12,7 +12,7 @@ describe OAIClient do
         end
       end
       @oaiclient   = OAIClient.new(@url, :http => @oaitest, :format => 'bibliofilmarc')
-      @oaiclient.query :from => "1970-01-01"
+      @oaiclient.query :from => "1970-01-01", :set => ""
       @marcxml     = MARC::XMLReader.new(StringIO.new(@oaiclient.response.first.metadata.to_s))
     end
     
@@ -53,15 +53,16 @@ describe OAIClient do
       r.statements.first.should be_a_kind_of(RDF::Statement)
     end
 
-    it "should support converting a MARCXML record to a RDF statements array" do
+    it "should support converting a MARCXML record to NTriples" do
       record = @marcxml.first
       rdf = RDF::Writer.for(:ntriples).buffer do |writer|
         RDFModeler.class_variable_set(:@@writer, writer)
         r = RDFModeler.new(1, record)
         r.set_type("BIBO.Document")        
         r.convert
-        r.write_record
-        r.statements[1].to_s.should == "<http://example.com/id_103215> <http://purl.org/dc/terms/identifier> 103215 ."
+        nt = RDFModeler.write_ntriples(r.statements)
+        nt.should be_a String
+        nt.should match(/<http:\/\/example\.com\/id_103215>/)
       end
     end
     

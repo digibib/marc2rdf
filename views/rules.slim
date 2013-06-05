@@ -14,7 +14,7 @@
         th[style="width:120px"] tag
         th description
     tbody
-    - for r in Rule.new.all
+    - for r in Rule.all
       - if r.type == 'global'
         tr id="#{r.id}"
           td: button[type="button" id="clone_rule" class="gen"]  = "clone"
@@ -35,7 +35,7 @@
         th[style="width:120px"] tag
         th description
     tbody
-    - for r in Rule.new.all
+    - for r in Rule.all
       - if r.type == 'local'
         tr id="#{r.id}"
           td: button[type="button" id="clone_rule" class="gen"]  = "clone"

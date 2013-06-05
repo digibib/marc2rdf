@@ -9,7 +9,7 @@ table id="available_rules_list" class="libraries active tablesorter"
       th[style="width:400px"] description
       th
   tbody
-  - for rule in Rule.new.all
+  - for rule in Rule.all
     - if rule.type == 'local'
       tr id="#{rule.id}"
         td 
@@ -35,7 +35,7 @@ table id="activated_rules_list" class="libraries active tablesorter"
       th
   tbody
   - for localrule in library.rules.each
-    - rule = Rule.new.find(:id => localrule['id'])
+    - rule = Rule.find(:id => localrule['id'])
     tr id="#{localrule['id']}"
       td #{localrule['frequency']}
       td 

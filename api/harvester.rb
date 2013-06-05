@@ -8,10 +8,10 @@ module API
       get "/" do
         content_type 'json'
         unless params[:id]
-          { :harvester => Harvest.new.all }
+          { :harvester => Harvest.all }
         else
           logger.info params
-          harvester = Harvest.new.find(params)
+          harvester = Harvest.find(params)
           error!("No harvester rule with id: #{params[:id]}", 404) unless harvester
           { :harvester => harvester }        
         end        
@@ -48,7 +48,7 @@ module API
         valid_params = ['id','name','description','protocol','url','params','namespaces','predicates','limits','custom_headers']
         # do we have a valid parameter?
         if valid_params.any? {|p| params.has_key?(p) }
-          harvester = Harvest.new.find(:id => params[:id])
+          harvester = Harvest.find(:id => params[:id])
           harvester.update(params)
           logger.info "updated harvest: #{harvester}"
           { :harvester => harvester}
@@ -64,7 +64,7 @@ module API
         end
       delete "/" do
         content_type 'json'
-        harvester = Harvest.new.find(:id => params[:id])
+        harvester = Harvest.find(:id => params[:id])
         harvester.delete
         logger.info "DELETE: params: #{params} - deleted harvester: #{harvester}"
         { :harvester => harvester }

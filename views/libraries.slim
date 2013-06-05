@@ -7,7 +7,7 @@
   h3[style="margin-left:24px"] select library
   table id="libraries" class="libraries active tablesorter"
     tbody
-      - for library in Library.new.all
+      - for library in Library.all
         tr id="#{library.id}" 
           td: button[type="button" id="clone_library" class="gen"]  = "clone"
           td

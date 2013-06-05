@@ -8,7 +8,7 @@ table id="available_harvesters_list" class="libraries active tablesorter"
       th[style="width:400px"] description
       th
   tbody
-  - for harvester in Harvest.new.all
+  - for harvester in Harvest.all
     tr id="#{harvester.id}"
       td 
         button[type="button" id="test_harvester"] = "test"

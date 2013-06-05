@@ -8,10 +8,10 @@ module API
       get "/" do
         content_type 'json'
         unless params[:id]
-          { :mappings => Mapping.new.all }
+          { :mappings => Mapping.all }
         else
           logger.info params
-          mapping = Mapping.new.find(:id => params[:id])
+          mapping = Mapping.find(:id => params[:id])
           error!("No mapping with id: #{params[:id]}", 404) unless mapping
           { :mapping => mapping }        
         end        
@@ -29,7 +29,7 @@ module API
         valid_params = ['id','name','description','mapping']
         # do we have a valid parameter?
         if valid_params.any? {|p| params.has_key?(p) }
-          mapping = Mapping.new.find(:id => params[:id])
+          mapping = Mapping.find(:id => params[:id])
           mapping.update(params)
           logger.info "updated mapping: #{mapping}"
           { :mapping => mapping}
@@ -45,7 +45,7 @@ module API
         end
       delete "/" do
         content_type 'json'
-        mapping = Mapping.new.find(:id => params[:id])
+        mapping = Mapping.find(:id => params[:id])
         mapping.delete
         logger.info "DELETE: params: #{params} - deleted mapping: #{mapping}"
         { :mapping => mapping }

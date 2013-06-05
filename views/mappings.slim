@@ -11,7 +11,7 @@
         th[style="width:400px"] description
         th[style="width:400px"] used by
     tbody
-    - for m in Mapping.new.all
+    - for m in Mapping.all
       tr id="#{m.id}"
         td: button[type="button" id="clone_mapping" class="gen"]  = "clone"
         td 
@@ -19,7 +19,7 @@
         td #{m.description}
         td 
           // loop libraries to see if anyone uses this mapping
-          - for l in Library.new.all
+          - for l in Library.all
             - if l.mapping == m.id
               a href="/libraries/#{l.id}" = "#{l.name} "
   

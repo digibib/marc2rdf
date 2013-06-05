@@ -9,7 +9,9 @@ class Harvest
   # Harvesting against external sources uses isbn from manifestation
   # Harvest should be managed by Scheduler via API calls
   
-  def all
+  ## Class methods
+  
+  def self.all
     harvests = []
     file     = File.join(File.dirname(__FILE__), '../db/', 'harvest.json')
     template = File.join(File.dirname(__FILE__), '../config/templates/', 'harvest.json')
@@ -23,12 +25,12 @@ class Harvest
     harvests
   end
   
-  def find(params)
+  def self.find(params)
     return nil unless params[:id]
-    self.all.detect {|harvest| harvest.id == params[:id] } # returns nil if not found
+    Harvest.all.detect {|harvest| harvest.id == params[:id] } # returns nil if not found
   end
   
-  
+  ## Instance methods
   # new harvest, repeated or frequent
   def create(params={})
     # populate Harvest Struct    
@@ -46,8 +48,8 @@ class Harvest
   
   def save
     return nil unless self.id
-    harvests = self.all
-    match = self.find(:id => self.id)
+    harvests = Harvest.all
+    match = Harvest.find(:id => self.id)
     if match
       # overwrite harvest if match
       harvests.map! { |harvest| harvest.id == self.id ? self : harvest}
@@ -61,14 +63,14 @@ class Harvest
   
   def delete
     return nil unless self.id
-    harvests = self.all
+    harvests = Harvest.all
     harvests.delete_if {|lib| lib.id == self.id }
     open(File.join(File.dirname(__FILE__), '../db/', 'harvest.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(harvests.to_json))) } 
     harvests
   end
   
   def reload
-    self.find(:id => self.id)
+    Harvest.find(:id => self.id)
   end  
   
 end

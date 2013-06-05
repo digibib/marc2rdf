@@ -8,13 +8,13 @@ class RDFModeler
   ## Instance Methods
   def initialize(library_id, record, params={})
     # populate reocord
-    library = Library.new.find(:id => library_id)
+    library = Library.find(:id => library_id)
     self.library_id = library_id
     self.record  = record
     id           = self.record[library.config["resource"]["identifier_tag"]]
     self.uri     = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{id.value}")
     # choose library's selected mapping if not given as parameter
-    params[:mapping] ? mapping = Mapping.new.find(:id => params[:mapping]) : mapping = Mapping.new.find(:id => library.mapping)
+    params[:mapping] ? mapping = Mapping.find(:id => params[:mapping]) : mapping = Mapping.find(:id => library.mapping)
     self.tags    = mapping.mapping["tags"] if mapping
     self.statements = []
   end

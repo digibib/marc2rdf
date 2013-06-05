@@ -9,7 +9,7 @@ class Oai < Grape::API
       end
     get "/validate" do
       content_type 'json'
-      library = Library.new.find(:id => params[:id].to_i)
+      library = Library.find(:id => params[:id].to_i)
       logger.info "library: #{library.oai}"
       oai = OAIClient.new(library.oai["url"], 
         :format => library.oai["format"], 
@@ -30,7 +30,7 @@ class Oai < Grape::API
       end
     put "/getrecord" do
       content_type 'json'
-      library = Library.new.find(:id => params[:id].to_i)
+      library = Library.find(:id => params[:id].to_i)
       oai = OAIClient.new(library.oai["url"], 
         :format => library.oai["format"], 
         :parser => library.oai["parser"], 
@@ -84,7 +84,7 @@ class Oai < Grape::API
       end
     put "/save" do
       content_type 'json'
-      library = Library.new.find(:id => params[:id].to_i)
+      library = Library.find(:id => params[:id].to_i)
       logger.info "library: #{library.oai}"
       oai = OAIClient.new(library.oai["url"], 
         :format => library.oai["format"], 

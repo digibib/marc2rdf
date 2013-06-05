@@ -6,10 +6,10 @@ module API
       get "/" do
         content_type 'json'
         unless params[:id]
-          { :libraries => Library.new.all }
+          { :libraries => Library.all }
         else
           logger.info params
-          library = Library.new.find(:id => params[:id].to_i)
+          library = Library.find(:id => params[:id].to_i)
           error!("No library with id: #{params[:id]}", 404) unless library
           { :library => library }        
         end
@@ -47,7 +47,7 @@ module API
         valid_params = ['id','name','config','mapping','oai', 'rules', 'harvesters']
         # do we have a valid parameter?
         if valid_params.any? {|p| params.has_key?(p) }
-          library = Library.new.find(:id => params[:id])
+          library = Library.find(:id => params[:id])
           library.update(params)
           logger.info "updated library: #{library}"
           { :library => library}
@@ -63,7 +63,7 @@ module API
         end
       delete "/" do
         content_type 'json'
-        library = Library.new.find(:id => params[:id])
+        library = Library.find(:id => params[:id])
         library.delete
         logger.info "DELETE: params: #{params} - deleted library: #{library}"
         { :library => library }

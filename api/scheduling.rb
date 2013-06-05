@@ -92,11 +92,11 @@ class Scheduling < Grape::API
       end
     put "/run_rule" do
       content_type 'json'
-      rule = Rule.new.find(:id => params[:id])
+      rule = Rule.find(:id => params[:id])
       error!("No rule with id: #{params[:id]}", 404) unless rule
       # Make sure to localize if library param sent
       if params[:library]
-        library = Library.new.find(:id => params[:library].to_i) 
+        library = Library.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         rule.localize(library)
         rule.library = library.id
@@ -119,14 +119,14 @@ class Scheduling < Grape::API
       end
     put "/schedule_rule" do
       content_type 'json'
-      rule = Rule.new.find(:id => params[:id])
+      rule = Rule.find(:id => params[:id])
       error!("No rule with id: #{params[:id]}", 404) unless rule
       # allow override frequency with param 
       rule.frequency = params[:frequency] ? params[:frequency] : rule.frequency
       error!("Missing or invalid frequency!", 404) if rule.frequency.empty?
       # Make sure to localize if library param sent
       if params[:library]
-        library = Library.new.find(:id => params[:library].to_i) 
+        library = Library.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         rule.localize(library)
         rule.library = library.id
@@ -151,7 +151,7 @@ class Scheduling < Grape::API
       end
     put "/stop" do
       content_type 'json'
-      rule = Rule.new.find(:id => params[:id])
+      rule = Rule.find(:id => params[:id])
       begin
         job = Scheduler.find_running_jobs.select {|j| j.job_id == params[:id] }
       rescue ArgumentError => e
@@ -159,7 +159,7 @@ class Scheduling < Grape::API
       end
       if params[:library]
         # make sure to delete rule from library.rules array
-        library = Library.new.find(:id => params[:library].to_i) 
+        library = Library.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         library.rules.delete_if {|r| r['id'] == rule.id }
         library.update(:rules => library.rules)
@@ -176,7 +176,7 @@ class Scheduling < Grape::API
       end
     put "/unschedule" do
       content_type 'json'
-      rule = Rule.new.find(:id => params[:id])
+      rule = Rule.find(:id => params[:id])
       begin
         job = Scheduler.scheduler.find(params[:id])
       rescue ArgumentError => e
@@ -184,7 +184,7 @@ class Scheduling < Grape::API
       end
       if params[:library]
         # make sure to delete rule from library.rules array
-        library = Library.new.find(:id => params[:library].to_i) 
+        library = Library.find(:id => params[:library].to_i) 
         error!("No library with id: #{params[:library]}", 404) unless library
         library.rules.delete_if {|r| r['id'] == rule.id }
         library.update(:rules => library.rules)
@@ -203,9 +203,9 @@ class Scheduling < Grape::API
       end
     put "/activate_harvester" do
       content_type 'json'
-      harvester    = Harvest.new.find(:id => params[:id])
+      harvester    = Harvest.find(:id => params[:id])
       error!("No harvest rule with id: #{params[:id]}", 404) unless harvester
-      library = Library.new.find(:id => params[:library].to_i) 
+      library = Library.find(:id => params[:library].to_i) 
       library.harvesters.push({:id => harvester.id}) unless library.harvesters.any? {|lh| lh['id'] == harvester.id}
       library.update
       { :library => library }
@@ -218,9 +218,9 @@ class Scheduling < Grape::API
       end
     put "/deactivate_harvester" do
       content_type 'json'
-      harvester    = Harvest.new.find(:id => params[:id])
+      harvester    = Harvest.find(:id => params[:id])
       error!("No harvest rule with id: #{params[:id]}", 404) unless harvester
-      library = Library.new.find(:id => params[:library].to_i) 
+      library = Library.find(:id => params[:library].to_i) 
       library.harvesters.delete_if {|lh| lh['id'] == harvester.id}
       library.update
       { :library => library }

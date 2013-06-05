@@ -8,11 +8,15 @@ describe BatchHarvest do
       @harvester.protocol = "http"
       @harvester.url = { "prefix" => 'http://example.com/isbn/', "suffix" => '' }
       @harvester.limits = { "max_limit" => 10, "batch_limit" => 10, "retry_limit" => 3, "delay" => 5 }
-      @harvester.namespaces = { "xmlns" => "http://worldcat.org/xid/isbn/" }
-      @harvester.predicates = { "BIBO.isbn" => {
-                      "datatype" => "literal",
-                      "xpath" => "//xmlns:isbn"
-                      } }
+      @harvester.remote = {} 
+      @harvester.remote["namespaces"] = {"xmlns" => "http://worldcat.org/xid/isbn/" }
+      @harvester.remote["predicates"] = {"BIBO.isbn" => {
+                                          "datatype" => "literal",
+                                          "xpath" => "//xmlns:isbn"
+                                          } }
+      @harvester.local = {} 
+      @harvester.local["subject"] = "edition"
+      @harvester.local["predicate"] = "BIBO.isbn"
       @batch = RDF::Query::Solutions.new
       @batch << RDF::Query::Solution.new(
                   :work => RDF::URI("http://dummywork"), 

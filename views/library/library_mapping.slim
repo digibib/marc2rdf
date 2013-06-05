@@ -9,7 +9,7 @@ table id="mappings_list" class="libraries active tablesorter"
       th[style="width:400px"] description
       th
   tbody
-  - for m in Mapping.new.all
+  - for m in Mapping.all
     tr id="#{m.id}"
       td 
         button[type="button" id="test_mapping" class="gen"] = "test"

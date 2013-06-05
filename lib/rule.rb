@@ -8,7 +8,9 @@ class Rule
   # Rules are either global or connected to a Library
   # Rules are managed by Scheduler via API calls
   
-  def all
+  ## Class methods
+  
+  def self.all
     rules = []
     file     = File.join(File.dirname(__FILE__), '../db/', 'rules.json')
     template = File.join(File.dirname(__FILE__), '../config/templates/', 'rules.json')
@@ -22,13 +24,12 @@ class Rule
     rules
   end
   
-  def find(params)
+  def self.find(params)
     return nil unless params[:id]
-    self.all.detect {|rule| rule.id == params[:id] }
+    Rule.all.detect {|rule| rule.id == params[:id] }
   end
   
-  def find_by_tag()
-  end
+  ## Instance methods  
   
   # new rule, repeated or frequent
   def create(params={})
@@ -48,8 +49,8 @@ class Rule
   
   def save
     return nil unless self.id
-    rules = self.all
-    match = self.find(:id => self.id)
+    rules = Rule.all
+    match = Rule.find(:id => self.id)
     #sanitize # clean script before saving
     if match
       # overwrite rule if match
@@ -64,14 +65,14 @@ class Rule
   
   def delete
     return nil unless self.id
-    rules = self.all
+    rules = Rule.all
     rules.delete_if {|lib| lib.id == self.id }
     open(File.join(File.dirname(__FILE__), '../db/', 'rules.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(rules.to_json))) } 
     rules
   end
   
   def reload
-    self.find(:id => self.id)
+    Rule.find(:id => self.id)
   end  
   
   # modify graph uri by local library

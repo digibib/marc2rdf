@@ -10,7 +10,7 @@ class Conversion < Grape::API
       end
     put "/test" do
       content_type 'json'
-      library = Library.new.find(:id => params[:id])
+      library = Library.find(:id => params[:id])
       reader = MARC::XMLReader.new('./spec/example.normarc.xml')
       record = Marshal.load(Marshal.dump(reader.first))
       rdf = RDFModeler.new(library.id, record, :mapping => params[:mapping])
@@ -29,7 +29,7 @@ class Conversion < Grape::API
       FileUtils.cp(params[:file][:tempfile], filename) 
       logger.info "Success: #{params[:file][:filename]} uploaded."
       # converting ...
-      library = Library.new.find(:id => params[:id])
+      library = Library.find(:id => params[:id])
       reader = MARC::ForgivingReader.new(filename)
       rdfrecords = []
       reader.first(20).each do |record|
@@ -51,7 +51,7 @@ class Conversion < Grape::API
       FileUtils.cp(params[:file][:tempfile], upload) 
       logger.info "Success: #{params[:file][:filename]} uploaded."
       # converting ...
-      library = Library.new.find(:id => params[:id])
+      library = Library.find(:id => params[:id])
       reader = MARC::ForgivingReader.new(upload)
       rdfrecords = []
       filename = "#{params[:file][:filename]}.nt"

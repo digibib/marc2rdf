@@ -5,7 +5,7 @@ Mapping = Struct.new(:id, :name, :description, :mapping)
 class Mapping
 
   # a Mapping is a JSON mapping from MARC 2 RDF
-  def all
+  def self.all
     mappings = []
     file     = File.join(File.dirname(__FILE__), '../db/', 'mappings.json')
     template = File.join(File.dirname(__FILE__), '../config/templates/', 'mappings.json')
@@ -19,9 +19,9 @@ class Mapping
     mappings
   end
   
-  def find(params)
+  def self.find(params)
     return nil unless params[:id]
-    self.all.detect {|mapping| mapping.id == params[:id] }
+    Mapping.all.detect {|mapping| mapping.id == params[:id] }
   end
   
   # new mapping
@@ -43,8 +43,8 @@ class Mapping
   def save
     return nil unless self.mapping
     return nil unless validate_mapping
-    mappings = self.all
-    match = self.find(:id => self.id)
+    mappings = Mapping.all
+    match = Mapping.find(:id => self.id)
     if match
       # overwrite rule if match
       mappings.map! { |mapping| mapping.id == self.id ? self : mapping}
@@ -58,14 +58,14 @@ class Mapping
   
   def delete
     return nil unless self.id
-    mappings = self.all
+    mappings = Mapping.all
     mappings.delete_if {|lib| lib.id == self.id }
     open(File.join(File.dirname(__FILE__), '../db/', 'mappings.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(mappings.to_json))) } 
     mappings
   end
   
   def reload
-    self.find(:id => self.id)
+    Mapping.find(:id => self.id)
   end  
   
   def validate_mapping

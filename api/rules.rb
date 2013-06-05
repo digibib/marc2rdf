@@ -8,10 +8,10 @@ module API
       get "/" do
         content_type 'json'
         unless params[:id]
-          { :rules => Rule.new.all }
+          { :rules => Rule.all }
         else
           logger.info params
-          rule = Rule.new.find(params)
+          rule = Rule.find(params)
           error!("No rule with id: #{params[:id]}", 404) unless rule
           { :rule => rule }        
         end        
@@ -46,7 +46,7 @@ module API
         valid_params = ['id','name','description','script','tag', 'type', 'start_time','frequency']
         # do we have a valid parameter?
         if valid_params.any? {|p| params.has_key?(p) }
-          rule = Rule.new.find(:id => params[:id])
+          rule = Rule.find(:id => params[:id])
           rule.update(params)
           logger.info "updated rule: #{rule}"
           { :rule => rule}
@@ -62,7 +62,7 @@ module API
         end
       delete "/" do
         content_type 'json'
-        rule = Rule.new.find(:id => params[:id])
+        rule = Rule.find(:id => params[:id])
         rule.delete
         logger.info "DELETE: params: #{params} - deleted rule: #{rule}"
         { :rule => rule }
