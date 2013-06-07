@@ -2,9 +2,9 @@ ul class="tabs"
   li[class="active"] Settings
   li OAI
   li Mapping
-  li Conversion
   li Rules
   li Harvesters
+  li Conversion
 div class="panes"
   div class="pane"
     == render :slim, :'library/library_settings', :layout => false, :locals => {:library => library}
@@ -13,9 +13,9 @@ div class="panes"
   div class="pane"
     == render :slim, :'library/library_mapping', :layout => false, :locals => {:library => library}
   div class="pane"
-    == render :slim, :'library/library_conversion', :layout => false, :locals => {:library => library}
-  div class="pane"
     == render :slim, :'library/library_rules', :layout => false, :locals => {:library => library}
   div class="pane"
     == render :slim, :'library/library_harvesters', :layout => false, :locals => {:library => library}      
+  div class="pane"
+    == render :slim, :'library/library_conversion', :layout => false, :locals => {:library => library}
   script src="/js/library.js"
