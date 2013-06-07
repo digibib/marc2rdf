@@ -111,6 +111,7 @@ class Scheduling < Grape::API
       { :result => result }
     end    
 
+    # Schedule Rule: only used on Global Rules, local rules are run as part of OAI update cycle
     desc "Activate Rule as schedule"
       params do
         requires :id,        type: String, desc: "ID of Rule"
@@ -135,12 +136,37 @@ class Scheduling < Grape::API
       end
       rule.sanitize
       result = Scheduler.schedule_isql_rule(rule)
-      # also add rule to library if not already present
-      if params[:library]
-        library.rules.push({:id => rule.id, :frequency => rule.frequency, :job_id => result.job_id}) unless library.rules.any? {|r| r['id'] == rule.id }
-        library.update
-      end
       { :result => result }
+    end
+    
+    desc "Activate Local Rule"
+      params do
+        requires :id,        type: String, desc: "ID of Harvester"
+        requires :library,   type: Integer, desc: "Library ID to run Harvester against"
+      end
+    put "/activate_rule" do
+      content_type 'json'
+      rule    = Rule.find(:id => params[:id])
+      error!("No rule with id: #{params[:id]}", 404) unless rule
+      library = Library.find(:id => params[:library].to_i) 
+      library.rules.push({:id => rule.id}) unless library.rules.any? {|lr| lr['id'] == rule.id}
+      library.update
+      { :library => library }
+    end
+
+    desc "Deactivate Local Rule"
+      params do
+        requires :id,        type: String, desc: "ID of Harvester"
+        requires :library,   type: Integer, desc: "Library ID to run Harvester against"
+      end
+    put "/deactivate_rule" do
+      content_type 'json'
+      rule = Rule.find(:id => params[:id])
+      error!("No rule with id: #{params[:id]}", 404) unless rule
+      library = Library.find(:id => params[:library].to_i) 
+      library.rules.delete_if {|lr| lr['id'] == rule.id}
+      library.update
+      { :library => library }
     end
     
     ### Unschedule/stop ###

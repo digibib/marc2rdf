@@ -11,7 +11,7 @@ div class="divdot inputf"
           select[id="save_rule_type"]
             option[selected=("selected" if rule.type == "global")] global
             option[selected=("selected" if rule.type == "local")] local
-        td (global=Run against entire RDF store, local=run against library Graph)
+        td global=Run against entire RDF store, local=run against library Graph
       tr
         td name
         td: input[type="text" id="save_rule_name" value=(rule.name)]

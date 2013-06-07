@@ -122,12 +122,12 @@ class APP < Sinatra::Base
     slim :rule_menu, :locals => {:library => session[:library], :rule => Rule.find(:id => params[:id])}
   end
       
-  get '/harvester' do
+  get '/harvesters' do
     # Harvester creation and management
     slim :harvester, :locals => {:library => session[:library], :harvester => nil}
   end
 
-  get '/harvester/:id' do
+  get '/harvesters/:id' do
     :json
     # Edit harvester
     slim :harvest_menu, :locals => {:library => session[:library], :harvester => Harvest.find(:id => params[:id])}

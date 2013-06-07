@@ -16,7 +16,7 @@
       tr id="#{h.id}"
         td: button[type="button" id="clone_harvester" class="gen"]  = "clone"
         td 
-          a href="/harvester/#{h.id}" #{h.name if h.name}
+          a href="/harvesters/#{h.id}" #{h.name if h.name}
         td #{h.description if h.description}
 
   h3 Create a new Harvest Rule

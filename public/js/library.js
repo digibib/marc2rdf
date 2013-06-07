@@ -460,7 +460,7 @@ $(document).ready(function () {
     });
   });
   
-  // schedule rule
+  // NOT USED ! schedule rule 
   $('button#schedule_rule').on('click', function() {
     var request = $.ajax({
       url: '/api/scheduler/schedule_rule',
@@ -483,6 +483,59 @@ $(document).ready(function () {
       $('span#rule_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
+  
+    // activate local rule
+  $('button.activate_rule').on('click', function() {
+    var row = $(this).closest('tr');
+    var request = $.ajax({
+      url: '/api/scheduler/activate_rule',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: row.attr('id'),
+        library: id,
+        }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#available_rule_info').html("Activated Local Rule OK!").show().fadeOut(3000);
+      // toggle activate/deactivate buttons
+      row.find('button.deactivate_rule').removeAttr('disabled');
+      row.find('button.activate_rule').attr('disabled', true);
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#available_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  
+  // deactivate local rule
+  $('button.deactivate_rule').on('click', function() {
+    var row = $(this).closest('tr');
+    var request = $.ajax({
+      url: '/api/scheduler/deactivate_rule',
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: row.attr('id'),
+        library: id,
+        }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#available_rule_info').html("Deactivated Local Rule OK!").show().fadeOut(3000);
+      // toggle activate/deactivate buttons
+      row.find('button.activate_rule').removeAttr('disabled');
+      row.find('button.deactivate_rule').attr('disabled', true);
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#available_rule_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  
   // ** END LOCAL RULES
   
   // ** HARVESTERS

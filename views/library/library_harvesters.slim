@@ -1,5 +1,5 @@
 h3 Available Harvesters
-p[style="margin-left:24px"] for creating or editing harvesters visit <a href="/harvester">harvester</a> page
+p[style="margin-left:24px"] for creating or editing harvesters visit <a href="/harvesters">harvester</a> page
 table id="available_harvesters_list" class="libraries active tablesorter"
   thead
     tr
@@ -19,7 +19,7 @@ table id="available_harvesters_list" class="libraries active tablesorter"
           button[type="button" class="activate_harvester"] = "activate"
           button[type="button" class="deactivate_harvester" disabled="true"] = "deactivate"
       td 
-        a href="/harvester/#{harvester.id}" #{harvester.name}
+        a href="/harvesters/#{harvester.id}" #{harvester.name}
       td #{harvester.description}
     
   tr
