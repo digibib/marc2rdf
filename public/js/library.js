@@ -362,11 +362,10 @@ $(document).ready(function () {
     });
 
     request.success(function ( data ) {
-      $('span#conversion_info').html("OAI harvesting started!").show().fadeOut(3000);
-      //window.location = '/status';
+      $('span#oai_update_info').html("OAI harvesting started! check /status for running status and /files for result file if save enabled").show().fadeOut(5000);
     });
     request.error(function(jqXHR, textStatus, errorThrown) {
-      $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
+      $('span#oai_update_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
   

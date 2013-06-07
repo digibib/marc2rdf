@@ -71,7 +71,7 @@ class APP < Sinatra::Base
   get '/libraries/:id' do
     # Library settings
     :json
-    session[:library] = Library.new.find(:id => params[:id].to_i)
+    session[:library] = Library.find(:id => params[:id].to_i)
     slim :library_menu, :locals => {:library => session[:library]}
   end
       
@@ -82,7 +82,7 @@ class APP < Sinatra::Base
   get '/mappings/:id' do
     :json
     # Edit Mapping
-    slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.new.find(:id => params[:id])}
+    slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.find(:id => params[:id])}
   end
 
   get '/oai' do
@@ -119,7 +119,7 @@ class APP < Sinatra::Base
     :json
     # Edit rule
     #slim :rules, :escape_html => false, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
-    slim :rule_menu, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
+    slim :rule_menu, :locals => {:library => session[:library], :rule => Rule.find(:id => params[:id])}
   end
       
   get '/harvester' do
@@ -130,7 +130,7 @@ class APP < Sinatra::Base
   get '/harvester/:id' do
     :json
     # Edit harvester
-    slim :harvest_menu, :locals => {:library => session[:library], :harvester => Harvest.new.find(:id => params[:id])}
+    slim :harvest_menu, :locals => {:library => session[:library], :harvester => Harvest.find(:id => params[:id])}
   end
 
   get '/status' do

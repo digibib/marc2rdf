@@ -165,7 +165,7 @@ class Scheduler
     
     start_time = Time.parse("#{params[:start_time]}") rescue Time.now
     params[:tags]          ||= "oaiharvest"
-    library = Library.new.find(:id => params[:id].to_i)
+    library = Library.find(:id => params[:id].to_i)
     logger.info "Scheduled params: #{params}"
     job_id = self.scheduler.at start_time, :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
@@ -261,7 +261,7 @@ class Scheduler
   def run_external_harvester(rdf, library, params={})
     library.harvesters.each do |h|
       # find harvester
-      harvester = Harvest.new.find :id=>h['id']
+      harvester = Harvest.find :id=>h['id']
       return nil unless harvester
       # need to query converted records through temporary graph to make RDF::Query::Solutions for batch harvesting
       # make temporary graph with converted record
@@ -295,7 +295,7 @@ class Scheduler
   # 4) run rules on library graph
   def run_rules_engine(library)
     library.rules.each do |r|
-      rule = Rule.new.find :id=>r['id']
+      rule = Rule.find :id=>r['id']
       # make sure rule is localized and safe/sanitized before running!
       rule.localize(library)
       rule.library = library.id
