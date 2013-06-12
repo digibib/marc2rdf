@@ -16,7 +16,8 @@ class Scheduler
     logger = Logger.new(File.expand_path("../logs/scheduler_#{ENV['RACK_ENV']}.log", __FILE__))
   end
   
-  ### dummy jobs for testing ###
+  ### TESTING ###
+  
   def dummyjob(params={})
     params[:id]         ||= SecureRandom.uuid
     params[:start_time] ||= Time.now
@@ -48,7 +49,8 @@ class Scheduler
     end
   end
 
-  ### ISQL rules ###
+  ### ISQL RULES ###
+  
   def run_isql_rule(rule)
     return nil unless rule.id and rule.script and rule.start_time
     rule.tag        ||= "dummyrule"
@@ -86,6 +88,8 @@ class Scheduler
       write_history(logline)
     end
   end
+  
+  ### JOB MANAGEMENT ###
   
   def pause(job)
     self.scheduler.pause(job)
@@ -145,19 +149,9 @@ class Scheduler
     log["history"] << logline
     open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(log.to_json))) } 
   end
-            
-  ### Specific AtJobs based on Library updates ###
-  ### OAI harvest jobs ###
-  
-  # The full cycle of an OAI harvest: 
-  # 1) pull records from OAI-PMH repo
-  # 2) convert harvested records, based on Library's chosen mapping
-  #   2a) write converted records to ntriples file if chosen
-  #   2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
-  #   2c) if any harvesters are activated for library, do external harvesting and update RDF store
-  # 3) return to 1) for next OAI batch by resumption token 
-  # 4) if any rules are activated for library, run rules directly on library graph
-  
+
+  ## OAI HARVEST - Library updates ###
+      
   # A scheduled harvest only spawns a job instance of start_oai_harvest with library id as param
   def schedule_oai_harvest(params={})
     logger.info params[:id]
@@ -168,10 +162,21 @@ class Scheduler
     logger.info "Scheduling library OAI harvest of library: #{library.name}"
     logger.info "Params: #{params}"
     cron_id = self.scheduler.cron params[:frequency], :tags => [{:library => library.id, :tags => "oaiharvest"}] do |cron|
-      start_oai_harvest(:id => library.id)
+      # updates a library from yesterday til today, writes records and updates store
+      start_oai_harvest(:id => library.id, :write_records => true, :sparql_update => true)
     end
   end
-    
+  
+  # The full cycle of an OAI harvest: 
+  
+  # 1) pull records from OAI-PMH repo
+  # 2) convert harvested records, based on Library's chosen mapping
+  #   2a) write converted records to ntriples file if chosen
+  #   2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
+  #   2c) if any harvesters are activated for library, do external harvesting and update RDF store
+  # 3) return to 1) for next OAI batch by resumption token 
+  # 4) if any rules are activated for library, run rules directly on library graph
+  
   def start_oai_harvest(params={})
     # for now rescue empty timestamp to Time.now
     params[:from]  = Time.parse(params[:from]).strftime("%F") rescue Date.today.prev_day.to_s
@@ -204,8 +209,7 @@ class Scheduler
     end
   end
   
-  private 
-  # internal functions
+  private # internal functions
   
   def run_oai_harvest_cycle(oai, library, params={})
     # 1) pull first records from OAI-PMH repo

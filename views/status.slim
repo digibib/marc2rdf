@@ -3,7 +3,6 @@ h2 MARC2RDF status
 - if library
   p[style="margin-left:24px"]  <a href="/libraries/#{library.id}">< return to library settings</a>
 h3 Status on running jobs:
-button[type="button" id="run_test_job" class="gen" style="margin-left:48px"]  = "Run test job"
 button[type="button" id="refresh_page" class="gen" style="margin-left:48px"]  = "Refresh_page"
 
 // The status div
@@ -25,7 +24,8 @@ div id="status" class="divdot inputf"
   table id="scheduled-jobs" class="libraries active tablesorter"
     thead
       tr
-        th[style="width:80px"]
+        th[style="width:40px"]
+        th[style="width:40px"]
         th[style="width:240px"] job id
         th[style="width:80px"] library id
         th[style="width:180px"] scheduled time
@@ -96,6 +96,30 @@ javascript:
     return this;
   }
 
+  var reload = function (job) {
+    var request = $.ajax({
+      url: '/api/scheduler/reload',
+      type: 'PUT',
+      cache: false,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+          id: job.id,
+          library: job.library,
+          }),
+      dataType: 'json'
+    });
+
+    request.done(function(data) {
+      console.log(data);
+      window.location.reload();
+    });
+
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR.responseText);
+    });
+    return this;
+  }
+  
   $(document).on('ready', function () {
     // ** get running jobs, populate status table
     $.getJSON('/api/scheduler/running_jobs', function(data) {
@@ -125,7 +149,8 @@ javascript:
         tags         = job.params["tags"][0]["tags"];
         rule_id ? rule_href = '<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>' : rule_href = '<td>';
         $('<tr>').attr('id',i)
-            .append($('<td><button>stop</button></td>').click(function () { unschedule({id: job.job_id, library: rule_library}); }))
+            .append($('<td><button>stop</button>').click(function () { unschedule({id: job.job_id, library: rule_library}); }))
+            .append($('<button>reload</button>').click(function () { reload({id: job.job_id, library: rule_library}); }))
             .append($('<td>').text(job.job_id))
             .append($('<td><a href="/libraries/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.start_time))
