@@ -125,9 +125,9 @@ javascript:
     $.getJSON('/api/scheduler/running_jobs', function(data) {
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id      = job.params["tags"][0]["id"];      
-        rule_library = job.params["tags"][0]["library"];
-        tags         = job.params["tags"][0]["tags"];
+        var rule_id      = job.params["tags"][0]["id"];      
+        var rule_library = job.params["tags"][0]["library"];
+        var tags         = job.params["tags"][0]["tags"];
         rule_id ? rule_href = '<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>' : rule_href = '<td>';
         $('<tr>').attr('id',i)
             .append($('<td><button>stop</button></td>').click(function () { stop({id: job.job_id}); }))
@@ -144,13 +144,13 @@ javascript:
     $.getJSON('/api/scheduler/find_all_jobs', function(data) {
       var rows = $('<tr>');
       $.each(data.jobs, function(i,job){
-        rule_id      = job.params["tags"][0]["id"]; 
-        rule_library = job.params["tags"][0]["library"]; 
-        tags         = job.params["tags"][0]["tags"];
+        var rule_id      = job.params["tags"][0]["id"]; 
+        var rule_library = job.params["tags"][0]["library"]; 
+        var tags         = job.params["tags"][0]["tags"];
         rule_id ? rule_href = '<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>' : rule_href = '<td>';
         $('<tr>').attr('id',i)
             .append($('<td><button>stop</button>').click(function () { unschedule({id: job.job_id, library: rule_library}); }))
-            .append($('<button>reload</button>').click(function () { reload({id: job.job_id, library: rule_library}); }))
+            .append($('<td><button>reload</button>').click(function () { reload({id: job.job_id, library: rule_library}); }))
             .append($('<td>').text(job.job_id))
             .append($('<td><a href="/libraries/'+rule_library+'">'+rule_library+'</a></td>'))
             .append($('<td>').text(job.start_time))

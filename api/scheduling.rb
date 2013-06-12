@@ -214,7 +214,7 @@ class Scheduling < Grape::API
     desc "Reload scheduled job"
       params do
         requires :id,      type: String, desc: "ID of Job"
-        optional :library, type: Integer, desc: "Library ID to run rule against"
+        requires :library, type: Integer, desc: "Library ID to run rule against"
       end
     put "/reload" do
       content_type 'json'
@@ -224,7 +224,7 @@ class Scheduling < Grape::API
         error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
       end
       job.unschedule
-      result = Scheduler.schedule_oai_harvest(:id => params[:library])
+      result = Scheduler.schedule_oai_harvest(:id => params[:library].to_i)
       { :result => result }
     end 
         
