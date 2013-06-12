@@ -32,7 +32,11 @@ class OAIClient
     if params[:resumption_token]
       self.response = self.client.list_records :resumption_token => params[:resumption_token]
     else
-      self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set
+      unless set.empty?
+        self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set
+      else
+        self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
+      end
     end
     self.records = []
     self.response.each {|r| self.records << r }
@@ -47,7 +51,11 @@ class OAIClient
   
   # get library OAI identifier
   def get_oai_id
-    xml = self.client.list_identifiers :set => self.set
+    unless self.set.empty?
+      xml = self.client.list_identifiers :set => self.set
+    else
+      xml = self.client.list_identifiers
+    end
     id = xml.first.identifier
     self.oai_id = id.rpartition(':').first
   end
