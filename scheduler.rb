@@ -157,6 +157,20 @@ class Scheduler
   #   2c) if any harvesters are activated for library, do external harvesting and update RDF store
   # 3) return to 1) for next OAI batch by resumption token 
   # 4) if any rules are activated for library, run rules directly on library graph
+  
+  # A scheduled harvest only spawns a job instance of start_oai_harvest with library id as param
+  def schedule_oai_harvest(params={})
+    logger.info params[:id]
+    library = Library.find(:id => params[:id].to_i)
+    params[:frequency] = params[:frequency] ? params[:frequency] : library.oai["schedule"]
+    # we need a frequency to schedule
+    return nil if params[:frequency].empty?
+    logger.info "Scheduling library OAI harvest of library: #{library.name}"
+    logger.info "Params: #{params}"
+    cron_id = self.scheduler.cron params[:frequency], :tags => [{:library => library.id, :tags => "oaiharvest"}] do |cron|
+      start_oai_harvest(:id => library.id)
+    end
+  end
     
   def start_oai_harvest(params={})
     # for now rescue empty timestamp to Time.now
@@ -309,9 +323,4 @@ unless ENV['RACK_ENV'] == 'test'
   #$SAFE = 1   # disable eval() and friends
   DRb.start_service DRBSERVER, Scheduler.new
   DRb.thread.join
-end
-
-# loads all saved schedules if Scheduler is restarted and in production mode
-if ENV['RACK_ENV'] == 'production'
-  #Libraries.all
 end

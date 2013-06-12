@@ -14,6 +14,6 @@ h2 Converted files
     tbody
     - files.each_with_index do |file,index|
       tr id="#{index}"
-        td: button[type="button" id="download_file" class="gen"]  = "download"
+        td
         td
           a href="/convert/#{file}" #{file}

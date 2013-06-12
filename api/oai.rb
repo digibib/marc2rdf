@@ -70,10 +70,26 @@ class Oai < Grape::API
       content_type 'json'
       # Schedule harvest with from/until optional params, default from yesterday
       logger.info "OAI harvest params: #{params}"
-      result = Scheduler.start_oai_harvest params
+      result = Scheduler.start_oai_harvest(params)
       { :result => result }
     end 
 
+    desc "schedule an OAI harvest"
+      params do
+        requires :id,            type: Integer,  desc: "ID of library"
+        optional :frequency,     type: String,   desc: "Frequency"
+        optional :tags,          type: String,   desc: "Tags"
+        optional :write_records, type: Boolean,  desc: "Write converted records to file"
+        optional :sparql_update, type: Boolean,  desc: "Update Repository directly"
+      end
+    put "/schedule_harvest" do
+      content_type 'json'
+      # Schedule harvest with from/until optional params, default from yesterday
+      #logger.info "OAI harvest params: #{params}"
+      result = Scheduler.schedule_oai_harvest(params)
+      { :result => result }
+    end 
+    
     ## NEEDS FIXING ##
     desc "saves a record batch"
       params do

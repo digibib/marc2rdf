@@ -28,5 +28,24 @@ task :scheduler do
   scheduler.join
 end
 
+desc "activates all saved schedules if Scheduler is restarted and in production mode"
+task :load_activated_schedules do
+  require_relative "./config/init.rb"
+  
+  t = Thread.new do 
+    sleep(5)
+    begin
+      Scheduler = DRbObject.new_with_uri DRBSERVER
+      Library.all.each do |library|
+        Scheduler.schedule_oai_harvest(:id => library.id) unless library.oai["schedule"].empty?
+      end
+    rescue Exception => e
+      puts "error #{e}: must be activated after app is running"
+      
+    end
+    sleep()
+  end
+  t.join
+end
 
 

@@ -1,5 +1,6 @@
 h3 Convert single record from OAI
-pre Be sure to select mapping and test it first!
+pre Be sure to select mapping and test it first! <br/>Converted files are found in <a href="/files">files</a> dir
+
 table id="single_conversion" class="libraries active tablesorter"
   thead
     tr
@@ -22,12 +23,20 @@ table id="single_conversion" class="libraries active tablesorter"
         span[id="conversion_info" class="info" style="margin-left:48px"]
         span[id="conversion_error" class="error" style="margin-left:48px"]
 
-h3 Update library from OAI
+h3 Convert from file
+div class="divdot inputf"
+  form id="upload_file_form" enctype="multipart/form-data"
+    input[type="file" name="file" id="filename" class="gen"]
+    span[style="margin-left:12px"]
+      button[type="button" id="uploadtest" class="gen"] = "upload test"
+      button[type="button" id="upload" class="gen"] = "upload and convert!"
+
+h3 Manual update from OAI
+p[style="margin-left:24px"] default: from yesterday until today
 table id="oai_harvest" class="libraries active tablesorter"
   thead
     tr
       th
-      th[style="width:180px" title="Min Hour DayofMonth Month DayOfWeek" disabled="true"] schedule
       th[style="width:180px"] from date<br/>(yyyy-mm-dd)
       th[style="width:180px"] to date<br/>(yyyy-mm-dd)
       th[style="width:80px" title="Write converted records to file"] write file
@@ -36,8 +45,6 @@ table id="oai_harvest" class="libraries active tablesorter"
     tr
       td 
         button[type="button" id="oai_harvest_test" class="gen"] = "run"
-        button[type="button" id="oai_convert_full" class="gen" disabled="true"] = "full"
-      td: input[size="10" type="text" id="oai_harvest_schedule" class="gen" value=(library.oai['schedule'])]
       td: input[size="10" type="text" id="oai_harvest_from" class="gen"]
       td: input[size="10" type="text" id="oai_harvest_until" class="gen"]
       td: input[type="checkbox" id="write_records" class="gen" value="false"]
@@ -45,16 +52,7 @@ table id="oai_harvest" class="libraries active tablesorter"
     tr
       td
         span[id="oai_update_info" class="info" style="margin-left:48px"]
-        span[id="oai_update_error" class="error" style="margin-left:48px"]      
-
-h3 Convert from file
-div class="divdot inputf"
-  form id="upload_file_form" enctype="multipart/form-data"
-    input[type="file" name="file" id="filename" class="gen"]
-    span[style="margin-left:12px"]
-      button[type="button" id="uploadtest" class="gen"] = "upload test"
-      button[type="button" id="upload" class="gen"] = "upload and convert!"
-            
+        span[id="oai_update_error" class="error" style="margin-left:48px"]            
 // The content div
 div id="converted_content"  
 

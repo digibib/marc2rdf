@@ -24,10 +24,6 @@ class APP < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
     log = File.new("logs/development.log", "a+") 
-    #STDOUT.reopen(log)
-    #STDERR.reopen(log)
-    #STDOUT.sync = true
-    #STDERR.sync = true
   end
   
   configure :production do

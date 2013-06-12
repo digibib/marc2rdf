@@ -177,19 +177,19 @@ class Scheduling < Grape::API
       end
     put "/stop" do
       content_type 'json'
-      rule = Rule.find(:id => params[:id])
+      #rule = Rule.find(:id => params[:id])
       begin
         job = Scheduler.find_running_jobs.select {|j| j.job_id == params[:id] }
       rescue ArgumentError => e
         error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
       end
-      if params[:library]
-        # make sure to delete rule from library.rules array
-        library = Library.find(:id => params[:library].to_i) 
-        error!("No library with id: #{params[:library]}", 404) unless library
-        library.rules.delete_if {|r| r['id'] == rule.id }
-        library.update(:rules => library.rules)
-      end
+      #if params[:library]
+      #  # make sure to delete rule from library.rules array
+      #  library = Library.find(:id => params[:library].to_i) 
+      #  error!("No library with id: #{params[:library]}", 404) unless library
+      #  library.rules.delete_if {|r| r['id'] == rule.id }
+      #  library.update(:rules => library.rules)
+      #end
       #result = Scheduler.unschedule(job)
       result = job.first.last_job_thread.kill
       { :result => result }
@@ -202,19 +202,19 @@ class Scheduling < Grape::API
       end
     put "/unschedule" do
       content_type 'json'
-      rule = Rule.find(:id => params[:id])
+      #rule = Rule.find(:id => params[:id])
       begin
         job = Scheduler.scheduler.find(params[:id])
       rescue ArgumentError => e
         error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
       end
-      if params[:library]
-        # make sure to delete rule from library.rules array
-        library = Library.find(:id => params[:library].to_i) 
-        error!("No library with id: #{params[:library]}", 404) unless library
-        library.rules.delete_if {|r| r['id'] == rule.id }
-        library.update(:rules => library.rules)
-      end
+      #if params[:library]
+      #  # make sure to delete rule from library.rules array
+      #  library = Library.find(:id => params[:library].to_i) 
+      #  error!("No library with id: #{params[:library]}", 404) unless library
+      #  library.rules.delete_if {|r| r['id'] == rule.id }
+      #  library.update(:rules => library.rules)
+      #end
       #result = Scheduler.unschedule(job)
       result = job.unschedule
       { :result => result }
