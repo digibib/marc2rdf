@@ -87,6 +87,7 @@ class Oai < Grape::API
       # Schedule harvest with from/until optional params, default from yesterday
       #logger.info "OAI harvest params: #{params}"
       result = Scheduler.schedule_oai_harvest(params)
+      error!("Missing schedule frequency in library or supplied params!", 400) unless result
       { :result => result }
     end 
     

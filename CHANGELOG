@@ -1,4 +1,8 @@
 = marc2rdf CHANGELOG
+0.1.3
+  Minor robustifyings:
+    OAI harvest, validate repo first
+    Sparql Update, handle exceptions and continue
 0.1.2
   ruby 2.0.0 support
   rubygems updated

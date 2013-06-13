@@ -197,6 +197,12 @@ class Scheduler
         :timeout => library.oai["timeout"],
         :redirects => library.oai["redirects"],
         :set => library.oai["set"])
+      # validate OAI first!
+      oai.validate
+      unless oai.identify_response
+        logger.error "Failed to validate oai before harvest!\nOAI repo: #{library.oai['url']}\nIdentify response: #{oai.identify_response}"
+        return nil
+      end
       # do the OAI dance!
       run_oai_harvest_cycle(oai, library, params)    
       
@@ -271,8 +277,13 @@ class Scheduler
 
   # 2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
   def update_record(rdf, library, params={})
-    s = SparqlUpdate.new(rdf, library)
-    params[:delete] ? s.delete_record : s.modify_record
+    # need rescue clause to pick up insert errors
+    begin
+      s = SparqlUpdate.new(rdf, library)
+      params[:delete] ? s.delete_record : s.modify_record
+    rescue Exception => e
+      logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{rdf.uri}\nStack trace: #{e}"
+    end
   end
 
   # 2c) if any harvesters are activated for library, do external harvesting and update RDF store

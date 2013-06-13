@@ -170,6 +170,7 @@ class Scheduling < Grape::API
     end
     
     ### Unschedule/stop ###
+    
     desc "Stop/kill running job"
       params do
         requires :id,      type: String, desc: "ID of Job"
@@ -177,20 +178,11 @@ class Scheduling < Grape::API
       end
     put "/stop" do
       content_type 'json'
-      #rule = Rule.find(:id => params[:id])
       begin
         job = Scheduler.find_running_jobs.select {|j| j.job_id == params[:id] }
       rescue ArgumentError => e
         error!("Error: #{e}, job with id: #{params[:id]} not found", 404)
       end
-      #if params[:library]
-      #  # make sure to delete rule from library.rules array
-      #  library = Library.find(:id => params[:library].to_i) 
-      #  error!("No library with id: #{params[:library]}", 404) unless library
-      #  library.rules.delete_if {|r| r['id'] == rule.id }
-      #  library.update(:rules => library.rules)
-      #end
-      #result = Scheduler.unschedule(job)
       result = job.first.last_job_thread.kill
       { :result => result }
     end
@@ -211,7 +203,7 @@ class Scheduling < Grape::API
       { :result => result }
     end    
 
-    desc "Reload scheduled job"
+    desc "Reload scheduled job with new settings"
       params do
         requires :id,      type: String, desc: "ID of Job"
         requires :library, type: Integer, desc: "Library ID to run rule against"
