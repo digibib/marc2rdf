@@ -1,21 +1,20 @@
 #encoding: utf-8
 $stdout.sync = true # gives foreman full stdout
-require_relative "./config/init.rb"
+require_relative './config/init.rb'
+require_relative 'lib/auth'
 
 class APP < Sinatra::Base
+  register Sinatra::SessionAuth
   # Global constants
-  #Faraday.default_adapter = :em_synchrony  
   configure do
   # Sinatra configs
-    #register Sinatra::Synchrony
-    #Sinatra::Synchrony.overload_tcpsocket!
     set :app_file, __FILE__
     set :port, 3000
     set :server, 'thin'
-    set :username,'bob'
-    set :token,'schabogaijk13@[]5fukkksiur!&&%&%'
+    set :username, SETTINGS["repository"]["username"]
+    set :password, SETTINGS["repository"]["password"]
+    set :token, 'schabogaijk13@[]5fukkksiur!&&%&%'
     set :session_secret, 'supersecrettokeepsessionsconsistent!'
-    set :password,'secret'
     enable :logging, :dump_errors, :raise_errors
     enable :reload_templates
     enable :sessions
@@ -35,16 +34,15 @@ class APP < Sinatra::Base
   globalsession = {}
 
   # Very simple authentication
-  helpers do
-    #Sinatra::Streaming
-    def admin? ; request.cookies[settings.username] == settings.token ; end
-    def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
-  end
-  
+ # helpers do
+ #   def admin? ; request.cookies[settings.username] == settings.token ; end
+ #   def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
+ # end
+
   # Routing
   get '/' do
     # Front page
-    if admin?
+    if authorized?
       slim :index, :locals => {:library => session[:library]}
     else
       slim :about, :locals => {:library => session[:library]}
@@ -53,6 +51,7 @@ class APP < Sinatra::Base
 
   get '/libraries' do
     # Library selection
+    authorize!
     :json
     session[:library] = nil
     slim :libraries, :locals => {:library => session[:library]}
@@ -66,22 +65,26 @@ class APP < Sinatra::Base
   
   get '/libraries/:id' do
     # Library settings
+    authorize!
     :json
     session[:library] = Library.find(:id => params[:id].to_i)
     slim :library_menu, :locals => {:library => session[:library]}
   end
       
   get '/mappings' do
+    authorize!
     slim :mappings, :locals => {:library => session[:library], :mapping => nil}
   end
 
   get '/mappings/:id' do
+    authorize!
     :json
     # Edit Mapping
     slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.find(:id => params[:id])}
   end
 
   get '/oai' do
+    authorize!
     # oai settings
     :json
     # reload session if updated, can be optimzed!
@@ -90,6 +93,7 @@ class APP < Sinatra::Base
   end
   
   get '/convert' do
+    authorize!
     # Main conversion tool
     slim :convert, :locals => {:library => session[:library]}
   end
@@ -101,17 +105,20 @@ class APP < Sinatra::Base
   
   # show list of files
   get '/files' do
+    authorize!
     files = Dir.glob("./db/converted/*.*").map{|f| f.split('/').last}
     # render list here
     slim :files, :locals => {:files => files, :library => session[:library]}
   end
 
   get '/rules' do
+    authorize!
     # Rules creation and management
     slim :rules, :locals => {:library => session[:library], :rule => nil}
   end
 
   get '/rules/:id' do
+    authorize!
     :json
     # Edit rule
     #slim :rules, :escape_html => false, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
@@ -119,32 +126,37 @@ class APP < Sinatra::Base
   end
       
   get '/harvesters' do
+    authorize!
     # Harvester creation and management
     slim :harvester, :locals => {:library => session[:library], :harvester => nil}
   end
 
   get '/harvesters/:id' do
+    authorize!
     :json
     # Edit harvester
     slim :harvest_menu, :locals => {:library => session[:library], :harvester => Harvest.find(:id => params[:id])}
   end
 
   get '/status' do
+    authorize!
     # status on running/scheduled jobs
     :json
     slim :status, :locals => {:library => session[:library]}
   end
   
   get '/settings' do
+    authorize!
     # Misc. settings
     slim :settings, :locals => {:library => session[:library], :settings => SETTINGS}
   end
   
   get '/about' do
+    authorize!
     # Front page
     slim :about, :locals => {:library => session[:library]}
   end
-  
+=begin
   get '/login' do
     # Login page
     slim :login
@@ -164,6 +176,7 @@ class APP < Sinatra::Base
     session = {}
     redirect '/'
   end
+=end
 
   # start the server if ruby file executed directly
   run! if app_file == $0

@@ -1,11 +1,6 @@
-- if admin?
-  h2 Dashboard
-  // if session[:library] is set, show library settings form
-  - if library
-    == render :slim, :'library_menu', :layout => false, :locals => {:library => library}
-  - else
-    pre Hint: Choose or create a <a href="/libraries">library</a> to get started
-
+h2 Dashboard
+// if session[:library] is set, show library settings form
+- if library
+  == render :slim, :'library_menu', :layout => false, :locals => {:library => library}
 - else
-  p Read about it on:
-  a[href="/about"]: about
+  pre Hint: Choose or create a <a href="/libraries">library</a> to get started
