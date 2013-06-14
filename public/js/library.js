@@ -154,7 +154,7 @@ $(document).ready(function () {
   $('button#oai_settings_validate').on('click', function() {
     $.get('/api/oai/validate', { id: id })
       .done(function(data) {
-        $('input#oai_id').val(data.id);
+        $('input#oai_id').val(data.id); //update oai id field
         $('span#oai_info').html(JSON.stringify(data)).show();
       })
       .fail(function() { $('span#oai_error').html("Failed to validate, check URL or enter OAI Resource ID manually").show().fadeOut(10000); });
@@ -169,7 +169,6 @@ $(document).ready(function () {
       var val=$(this).attr('value');
       preserve_array.push(val);
     });
-    //alert(preserve_array);
     
     var request = $.ajax({
       url: '/api/library',
@@ -202,6 +201,31 @@ $(document).ready(function () {
       $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
   });
+  
+  // ** activate oai schedule
+  $('button#oai_settings_activate_schedule').on('click', function() {
+    var request = $.ajax({
+      url: '/api/oai/schedule_harvest',
+      type: 'PUT',
+      cache: false,
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        id: id,
+        frequency: $('input#oai_schedule').val(),
+        }),
+      dataType: 'json'
+    });
+
+    request.success(function(data) {
+      $('span#oai_info').html("Activated OAI schedule !").show().fadeOut(3000);
+      window.location.reload();
+    });
+
+    request.error(function(jqXHR, textStatus, errorThrown) {
+      $('span#oai_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  });
+  
   // ** end OAI
   
   // ** MAPPING
