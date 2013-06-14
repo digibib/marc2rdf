@@ -287,7 +287,7 @@ class Scheduler
       s = SparqlUpdate.new(rdf, library)
       params[:delete] ? s.delete_record : s.modify_record
     rescue Exception => e
-      logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{rdf.uri}\nStack trace: #{e}"
+      logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{rdf.inspect}\nStack trace: #{e}"
     end
   end
 

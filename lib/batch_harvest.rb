@@ -83,7 +83,7 @@ class BatchHarvest
       minus.each {|m| query.minus(m) } if minus
     query.offset(params[:offset]) if params[:offset]
     query.limit(params[:limit])
-    puts query
+    #puts query
     solutions = REPO.select(query)
     return nil if solutions.empty?
     solutions
@@ -93,7 +93,7 @@ class BatchHarvest
   def run_harvester(solutions)
     return nil unless self.harvester # require harvester
     self.statements = []
-    puts "Solutions to run harvest on #{solutions.inspect}"
+    #puts "Solutions to run harvest on #{solutions.inspect}"
     solutions.each do |solution|
       next unless solution.object # ignore if no object variable in solution
       url = "#{self.harvester.url["prefix"]}#{solution.object}#{self.harvester.url["suffix"]}"
@@ -102,7 +102,7 @@ class BatchHarvest
       
       self.harvester.remote["predicates"].each do |predicate, opts|
         results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"] )
-        puts "Harvester results: #{results.inspect}"
+        #puts "Harvester results: #{results.inspect}"
         if results
           # make RDF::URIs if datatype uri
           results.map! { |obj| RDF::URI("#{obj}") } if opts["datatype"] == "uri"
@@ -131,11 +131,11 @@ class BatchHarvest
       results = []
       #xml.xpath("#{opts[:xpath]}", opts[:namespaces]).each { | elem | results << elem.text }
       xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces])).each {|node| results << node.text}
-      puts "xpath results: #{results}"
+      #puts "xpath results: #{results}"
       return nil if results.empty?
       # optional regex strip      
       results.map { |result| result.to_s.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
-      puts "regex stripped XML results #{results}"
+      #puts "regex stripped XML results #{results}"
       return results
     end
   end
