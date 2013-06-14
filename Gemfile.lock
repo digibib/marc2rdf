@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/bensinober/ruby-oai.git
-  revision: 28d16b1aebcaca1577b70547d8d79469d5392697
-  specs:
-    oai (0.3.0)
-      builder (>= 2.0.0)
-      faraday
-      faraday_middleware
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -61,6 +52,10 @@ GEM
     multipart-post (1.2.0)
     net-http-persistent (2.8)
     nokogiri (1.5.9)
+    oai (0.3.0)
+      builder (>= 2.0.0)
+      faraday
+      faraday_middleware
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -151,7 +146,7 @@ DEPENDENCIES
   marc
   minitest
   nokogiri
-  oai!
+  oai
   pry
   rake
   rdf

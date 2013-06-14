@@ -1,6 +1,7 @@
 = marc2rdf CHANGELOG
 0.1.4
   Stubbed out auth
+  OAI rubygem fixed 
   Library reschedule harvests
   Find harvest jobs by library id or tag
 0.1.3
