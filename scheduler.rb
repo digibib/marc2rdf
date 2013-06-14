@@ -1,6 +1,6 @@
 #encoding: utf-8
 # Scheduler Server 
-#$stdout.sync = true
+$stdout.sync = true
 require_relative "./config/init.rb"
 require 'logger'
 require 'eventmachine'
@@ -129,11 +129,17 @@ class Scheduler
   end
 
   # patched scheduler to allow finding job by tag
-  def find_jobs_by_tag(t)
+  def find_jobs_by_tag(tag)
     #jobs = self.scheduler.find_by_tag({:tags => t})
-    jobs = self.scheduler.all_jobs.values.select { |j| j.tags[0][:tags].include?(t) }
+    jobs = self.scheduler.all_jobs.select { |k,v| v.params[:tags][0][:tags] == tag }
     logger.info "all jobs by tag: #{jobs}"
     jobs
+  end
+  
+  def find_jobs_by_library(library)
+    jobs = self.scheduler.all_jobs.select { |k,v| v.params[:tags][0][:library].to_i == library.to_i  }
+    logger.info "all jobs by tag: #{jobs}"
+    jobs    
   end
   
   ### History 
@@ -154,7 +160,6 @@ class Scheduler
       
   # A scheduled harvest only spawns a job instance of start_oai_harvest with library id as param
   def schedule_oai_harvest(params={})
-    logger.info params[:id]
     library = Library.find(:id => params[:id].to_i)
     params[:frequency] = params[:frequency] ? params[:frequency] : library.oai["schedule"]
     # we need a frequency to schedule
@@ -301,7 +306,7 @@ class Scheduler
         pattern [:edition, RDF.type, RDF.module_eval("#{library.config['resource']['type']}") ]
         pattern [:edition, RDF.module_eval("#{harvester.local['predicate']}"), :object ]
       end
-      logger.info "Batch Harvest solutions #{batchsolutions.inspect}"
+      #logger.info "Batch Harvest solutions #{batchsolutions.inspect}"
       if harvester.local['subject'] == 'work'
         # TODO!
         # if harvester subject is set to 'work' then a RDFstore lookup must be made to get work URI
@@ -314,7 +319,7 @@ class Scheduler
       bh = BatchHarvest.new harvester, batchsolutions
       bh.start_harvest
       next if bh.statements.empty?
-      logger.info "Batch Harvest results #{bh.statements.inspect}"
+      #logger.info "Batch Harvest results #{bh.statements.inspect}"
       # and insert harvested triples into RDF store
       SparqlUpdate.insert_harvested_triples(library.config['resource']['default_graph'], bh.statements)
       @harvestcount += bh.statements.count

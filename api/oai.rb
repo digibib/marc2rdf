@@ -86,6 +86,10 @@ class Oai < Grape::API
       content_type 'json'
       # Schedule harvest with from/until optional params, default from yesterday
       #logger.info "OAI harvest params: #{params}"
+      # first check if library is not already scheduled
+      test = Scheduler.find_jobs_by_library(params[:id])
+      puts test.inspect
+      error!("Library already scheduled for harvest!", 400) unless test.empty?
       result = Scheduler.schedule_oai_harvest(params)
       error!("Missing schedule frequency in library or supplied params!", 400) unless result
       { :result => result }

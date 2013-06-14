@@ -67,12 +67,46 @@ class Scheduling < Grape::API
     end
         
     desc "find jobs by tag"
+      params do
+        requires :tag, type: String, desc: "tag to search for"
+      end
     get "/find_jobs_by_tag" do
       content_type 'json'
-      jobs = Scheduler.find_jobs_by_tag('conversion')
+      result = Scheduler.find_jobs_by_tag(params[:tag])
+      jobs = []
+      result.each do |name, job|
+        jobs.push({:job_id    => job.job_id,
+                  :scheduler => job.scheduler,
+                  :start_time => job.t,
+                  :last_job_thread => job.last_job_thread,
+                  :params => job.params,
+                  :block => job.block,
+                  :schedule_info => job.schedule_info,
+                  :run_time => job.last})
+      end
       { :result => result, :jobs => jobs }
     end
 
+    desc "find jobs by library"
+      params do
+        requires :library, type: Integer, desc: "ID of library"
+      end
+    get "/find_jobs_by_library" do
+      content_type 'json'
+      result = Scheduler.find_jobs_by_library(params[:library])
+      jobs = []
+      result.each do |name, job|
+        jobs.push({:job_id    => job.job_id,
+                  :scheduler => job.scheduler,
+                  :start_time => job.t,
+                  :last_job_thread => job.last_job_thread,
+                  :params => job.params,
+                  :block => job.block,
+                  :schedule_info => job.schedule_info,
+                  :run_time => job.last})
+      end
+      { :result => result, :jobs => jobs }
+    end
     ### Run/Schedule Rules ###
     
     desc "run test job"
