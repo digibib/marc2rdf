@@ -9,7 +9,7 @@ class OAIClient
   # initialize OAI client with optional parameters. 
   # faraday connection can be overridden by passing a faraday object as :http arg
   def initialize(repo, params={}) 
-    faraday = Faraday.new :request => {:open_timeout => 20, :timeout => params[:timeout].to_i }
+    faraday = Faraday.new :request => {:open_timeout => 20, :timeout => params[:timeout].to_i, :retry => 3}
     self.format = params[:format] ||= 'bibliofilmarc'
     self.parser = params[:parser] ||= 'rexml'
     self.http   = params[:http]   ||= faraday
@@ -29,14 +29,18 @@ class OAIClient
     from_date = Time.parse(params[:from]).strftime("%F") rescue Date.today.prev_day.to_s
     to_date   = Time.parse(params[:until]).strftime("%F") rescue Date.today.to_s
     set       = params[:set]     ||= self.set
-    if params[:resumption_token]
-      self.response = self.client.list_records :resumption_token => params[:resumption_token]
-    else
-      unless set.empty?
-        self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set
+    begin
+      if params[:resumption_token]
+        self.response = self.client.list_records :resumption_token => params[:resumption_token]
       else
-        self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
+        unless set.empty?
+          self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date, :set => set
+        else
+          self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
+        end
       end
+    rescue Timeout::Error => e
+      logger.error "Error in OAI query: #{e}"
     end
     self.records = []
     self.response.each {|r| self.records << r }
@@ -46,7 +50,11 @@ class OAIClient
   # query OAI for specific records
   def get_record(params={})
     identifier     = params[:identifier]      ||= 'oai:bibliofil.no:NO-2030000:14890'
-    self.records = self.client.get_record :identifier => params[:identifier], :metadata_prefix => self.format
+    begin
+      self.records = self.client.get_record :identifier => params[:identifier], :metadata_prefix => self.format
+    rescue Exception => e
+      logger.error "Error in OAI query: #{e}"
+    end
   end
   
   # get library OAI identifier
