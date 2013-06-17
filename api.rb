@@ -50,6 +50,11 @@ module API
       end
     end
 
+    # simply lock entire API with session key
+    before do
+      error!('Unauthorized', 401) unless env['HTTP_SECRET_SESSION_KEY'] == SECRET_SESSION_KEY
+    end
+
     # load all external api libraries
     Dir[File.dirname(__FILE__) + '/api/*.rb'].each do |file|
       require file

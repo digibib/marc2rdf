@@ -33,17 +33,11 @@ class APP < Sinatra::Base
   # not used yet
   globalsession = {}
 
-  # Very simple authentication
- # helpers do
- #   def admin? ; request.cookies[settings.username] == settings.token ; end
- #   def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
- # end
-
   # Routing
   get '/' do
     # Front page
     if authorized?
-      slim :index, :locals => {:library => session[:library]}
+      slim :index, :locals => {:library => session[:library], :session_key => session[:secret_key]}
     else
       slim :about, :locals => {:library => session[:library]}
     end
@@ -54,7 +48,7 @@ class APP < Sinatra::Base
     authorize!
     :json
     session[:library] = nil
-    slim :libraries, :locals => {:library => session[:library]}
+    slim :libraries, :locals => {:library => session[:library], :session_key => session[:secret_key]}
   end
 
   get '/reset' do
@@ -68,19 +62,19 @@ class APP < Sinatra::Base
     authorize!
     :json
     session[:library] = Library.find(:id => params[:id].to_i)
-    slim :library_menu, :locals => {:library => session[:library]}
+    slim :library_menu, :locals => {:library => session[:library], :session_key => session[:secret_key]}
   end
       
   get '/mappings' do
     authorize!
-    slim :mappings, :locals => {:library => session[:library], :mapping => nil}
+    slim :mappings, :locals => {:library => session[:library], :mapping => nil, :session_key => session[:secret_key]}
   end
 
   get '/mappings/:id' do
     authorize!
     :json
     # Edit Mapping
-    slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.find(:id => params[:id])}
+    slim :mappings, :locals => {:library => session[:library], :mapping => Mapping.find(:id => params[:id]), :session_key => session[:secret_key]}
   end
 
   get '/oai' do
@@ -89,13 +83,13 @@ class APP < Sinatra::Base
     :json
     # reload session if updated, can be optimzed!
     session[:library] = session[:library].reload if session[:library] 
-    slim :oai, :locals => {:library => session[:library]}
+    slim :oai, :locals => {:library => session[:library], :session_key => session[:secret_key]}
   end
   
   get '/convert' do
     authorize!
     # Main conversion tool
-    slim :convert, :locals => {:library => session[:library]}
+    slim :convert, :locals => {:library => session[:library], :session_key => session[:secret_key]}
   end
 
   # download converted file  
@@ -108,13 +102,13 @@ class APP < Sinatra::Base
     authorize!
     files = Dir.glob("./db/converted/*.*").map{|f| f.split('/').last}
     # render list here
-    slim :files, :locals => {:files => files, :library => session[:library]}
+    slim :files, :locals => {:files => files, :library => session[:library], :session_key => session[:secret_key]}
   end
 
   get '/rules' do
     authorize!
     # Rules creation and management
-    slim :rules, :locals => {:library => session[:library], :rule => nil}
+    slim :rules, :locals => {:library => session[:library], :rule => nil, :session_key => session[:secret_key]}
   end
 
   get '/rules/:id' do
@@ -122,62 +116,40 @@ class APP < Sinatra::Base
     :json
     # Edit rule
     #slim :rules, :escape_html => false, :locals => {:library => session[:library], :rule => Rule.new.find(:id => params[:id])}
-    slim :rule_menu, :locals => {:library => session[:library], :rule => Rule.find(:id => params[:id])}
+    slim :rule_menu, :locals => {:library => session[:library], :rule => Rule.find(:id => params[:id]), :session_key => session[:secret_key]}
   end
       
   get '/harvesters' do
     authorize!
     # Harvester creation and management
-    slim :harvester, :locals => {:library => session[:library], :harvester => nil}
+    slim :harvester, :locals => {:library => session[:library], :harvester => nil, :session_key => session[:secret_key]}
   end
 
   get '/harvesters/:id' do
     authorize!
     :json
     # Edit harvester
-    slim :harvest_menu, :locals => {:library => session[:library], :harvester => Harvest.find(:id => params[:id])}
+    slim :harvest_menu, :locals => {:library => session[:library], :harvester => Harvest.find(:id => params[:id]), :session_key => session[:secret_key]}
   end
 
   get '/status' do
     authorize!
     # status on running/scheduled jobs
     :json
-    slim :status, :locals => {:library => session[:library]}
+    slim :status, :locals => {:library => session[:library], :session_key => session[:secret_key]}
   end
   
   get '/settings' do
     authorize!
     # Misc. settings
-    slim :settings, :locals => {:library => session[:library], :settings => SETTINGS}
+    slim :settings, :locals => {:library => session[:library], :settings => SETTINGS, :session_key => session[:secret_key]}
   end
   
   get '/about' do
-    authorize!
     # Front page
     slim :about, :locals => {:library => session[:library]}
   end
-=begin
-  get '/login' do
-    # Login page
-    slim :login
-  end
   
-  post '/login' do
-    if params['username']==settings.username&&params['password']==settings.password
-        response.set_cookie(settings.username,settings.token) 
-        redirect '/'
-      else
-        "Username or Password incorrect"
-      end
-  end
-  
-  get '/logout' do
-    response.set_cookie(settings.username, false) 
-    session = {}
-    redirect '/'
-  end
-=end
-
   # start the server if ruby file executed directly
   run! if app_file == $0
 end

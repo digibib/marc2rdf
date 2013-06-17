@@ -25,7 +25,7 @@ REPO          = RDF::Virtuoso::Repository.new(
               :auth_method => SETTINGS["repository"]["auth_method"])
 
 QUERY              = RDF::Virtuoso::Query
-SECRET_SESSION_KEY = "alongandveryshortstring"
+SECRET_SESSION_KEY = SETTINGS["secret_session_key"]
 
 # dynamic ruby object socket
 # allows isolated processes to interact

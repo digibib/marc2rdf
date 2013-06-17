@@ -50,6 +50,7 @@ div id="history" class="divdot inputf"
     tbody
 
 javascript:
+  
   var unschedule = function (job) {
     var request = $.ajax({
       url: '/api/scheduler/unschedule',
@@ -73,6 +74,7 @@ javascript:
     });
     return this;
   }
+  
   var stop = function (job) {
     var request = $.ajax({
       url: '/api/scheduler/stop',
@@ -121,25 +123,38 @@ javascript:
   }
   
   $(document).on('ready', function () {
-    // ** get running jobs, populate status table
-    $.getJSON('/api/scheduler/running_jobs', function(data) {
-      var rows = $('<tr>');
-      $.each(data.jobs, function(i,job){
-        var rule_id      = job.params["tags"][0]["id"];      
-        var rule_library = job.params["tags"][0]["library"];
-        var tags         = job.params["tags"][0]["tags"];
-        rule_id ? rule_href = '<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>' : rule_href = '<td>';
-        $('<tr>').attr('id',i)
-            .append($('<td><button>stop</button></td>').click(function () { stop({id: job.job_id}); }))
-            .append($('<td>').text(job.job_id))
-            .append($('<td><a href="/libraries/'+rule_library+'">'+rule_library+'</a></td>'))
-            .append($('<td>').text(job.run_time))
-            .append($(rule_href))
-            .append($('<td>').text(tags))
-            .appendTo('#running-jobs tbody');
-      });
-    });
+    var session_key = $('#active_session_key').html();
+    console.log(session_key)
+    $.ajaxSetup({ headers: {"SECRET_SESSION_KEY": session_key}});
     
+    // ** get running jobs, populate status table
+    var request = $.ajax({
+      url: '/api/scheduler/running_jobs', 
+      type: 'GET',
+      cache: false,
+      //headers: {"SECRET_SESSION_KEY": "afjaslkfjasf"},
+      success: function(data) {
+        var rows = $('<tr>');
+        $.each(data.jobs, function(i,job){
+          var rule_id      = job.params["tags"][0]["id"];      
+          var rule_library = job.params["tags"][0]["library"];
+          var tags         = job.params["tags"][0]["tags"];
+          rule_id ? rule_href = '<td><a href="/rules/'+rule_id+'">'+rule_id+'</a></td>' : rule_href = '<td>';
+          $('<tr>').attr('id',i)
+              .append($('<td><button>stop</button></td>').click(function () { stop({id: job.job_id}); }))
+              .append($('<td>').text(job.job_id))
+              .append($('<td><a href="/libraries/'+rule_library+'">'+rule_library+'</a></td>'))
+              .append($('<td>').text(job.run_time))
+              .append($(rule_href))
+              .append($('<td>').text(tags))
+              .appendTo('#running-jobs tbody');
+        });
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.responseText);
+      }
+    });
+        
     // ** get scheduled jobs, populate status table
     $.getJSON('/api/scheduler/find_all_jobs', function(data) {
       var rows = $('<tr>');

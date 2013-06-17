@@ -1,4 +1,7 @@
 = marc2rdf CHANGELOG
+0.1.5
+  Locked API internally
+  Retry and rescue OAI harvest (max 3 times)
 0.1.4
   Stubbed out auth
   OAI rubygem fixed 

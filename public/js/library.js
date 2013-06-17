@@ -1,5 +1,6 @@
 $(document).ready(function () {
   // ** global vars
+  
   //$('change_rdfstore_settings_form').remotize({spinner: $('/img/ajax-loader.gif')});
   var id = $('#active_library_id').html();
 

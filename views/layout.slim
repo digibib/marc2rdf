@@ -29,7 +29,8 @@ html
  
         div id="header-buttons"
           ul
-            - if authorized? 
+            - if authorized?
+              span[id="active_session_key" style="display:none" value=(session_key)]
               - if library
                 // needed for javascript referencing to active library
                 span[id="active_library_id" style="display:none"] #{library.id}

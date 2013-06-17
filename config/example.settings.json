@@ -22,5 +22,6 @@
     "host": "localhost",
     "port": 1111,
     "binary": "/usr/bin/isql-vt"
-  }
+  },
+  "secret_session_key": "alongandveryshortstring"
 }
