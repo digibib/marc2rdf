@@ -135,7 +135,26 @@ class BatchHarvest
       return nil if results.empty?
       # optional regex strip      
       results.map { |result| result.to_s.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
-      #puts "regex stripped XML results #{results}"
+      # puts "regex stripped XML results #{results}"
+      
+      # checksum test on coverart, made on tempfile that are garbage collected
+      # delete if checksum matches
+      # Needs to be made part of library test
+      results.delete_if do |result|
+        begin
+          img = client.request URI.parse result 
+          file = Tempfile.new('temp_file')
+          file.write(img.body)
+          hash = Digest::MD5.hexdigest(File.read(file))
+          file.close
+          file.unlink
+          true if hash == "0a993cc6694e9249965e626eb4e037c7"
+        rescue Exception => e
+          puts "Error during checksum test: #{e}"
+          true
+        end
+      end
+
       return results
     end
   end
