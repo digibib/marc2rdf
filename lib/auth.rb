@@ -36,7 +36,7 @@ module Sinatra
       app.post '/login' do
         if params[:user] == settings.username && params[:pass] == settings.password
           session[:authorized] = true
-          session[:secret_key] = SETTINGS["secret_session_key"]
+          session[:secret_key] = ::SETTINGS["secret_session_key"]
           redirect '/'
         else
           #session = {}

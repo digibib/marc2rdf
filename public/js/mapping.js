@@ -1,6 +1,7 @@
 $(document).ready(function () {
   // ** global vars
-  //$('change_rdfstore_settings_form').remotize({spinner: $('/img/ajax-loader.gif')});
+  var session_key = $('#active_session_key').html();
+  $.ajaxSetup({ headers: {"SECRET_SESSION_KEY": session_key}});
   var id = $('#active_library_id').html();
 
   // ** options tabs handling **

@@ -14,7 +14,7 @@ class APP < Sinatra::Base
     set :username, SETTINGS["repository"]["username"]
     set :password, SETTINGS["repository"]["password"]
     set :token, 'schabogaijk13@[]5fukkksiur!&&%&%'
-    set :session_secret, 'supersecrettokeepsessionsconsistent!'
+    set :session_secret, 'supersecrettokeepsessionsconsistent!' #needed for keeping session
     enable :logging, :dump_errors, :raise_errors
     enable :reload_templates
     enable :sessions
