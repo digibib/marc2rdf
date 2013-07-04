@@ -4,6 +4,7 @@ $stdout.sync = true
 require_relative "./config/init.rb"
 require 'logger'
 require 'eventmachine'
+require 'tempfile'
 
 Scheduler = Struct.new(:scheduler)
 class Scheduler
@@ -63,8 +64,19 @@ class Scheduler
     job_id = self.scheduler.at start_time, :tags => [{:id => rule.id, :library => rule.library, :tags => rule.tag}] do |job|
       timing_start = Time.now
       logger.info "Running rule: #{rule.id}"
-      logger.info "Script:\n#{rule.script}"
-      rule.last_result = %x[(echo "#{rule.script.to_s}") | #{SETTINGS['isql']['binary']} #{SETTINGS['isql']['port']} #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
+      #logger.info "Script:\n#{rule.script}"
+      # run serialized script as tempfile with isql 
+      begin
+        file = Tempfile.new('script')
+        file.write(rule.script)
+        file.rewind
+        #rule.last_result = %x[(echo "#{rule.script.to_s}") | #{SETTINGS['isql']['binary']} #{SETTINGS['isql']['port']} #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
+        rule.last_result = %x[#{SETTINGS['isql']['binary']} #{SETTINGS['isql']['port']} #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout #{file.path}]
+        file.close
+        file.unlink
+      rescue Exception => e
+        logger.error "Error in sparql script tempfile generation:\n #{e}"
+      end
       logger.info "Time to complete: #{Time.now - timing_start} s."
       logger.info "Result:\n#{rule.last_result}"
       logline = {:time => Time.now, :rule => rule.id, :job_id => job.job_id, :cron_id => nil, :library => rule.library, :start_time => timing_start, 
@@ -79,8 +91,17 @@ class Scheduler
     cron_id = self.scheduler.cron rule.frequency, :tags => [{:id => rule.id, :library => rule.library, :tags => rule.tag}] do |cron|
       timing_start = Time.now
       logger.info "Running scheduled rule: #{rule.id}"
-      logger.info "Script:\n #{rule.script}"
-      rule.last_result = %x[(echo "#{rule.script.to_s}") | #{SETTINGS['isql']['binary']} #{SETTINGS['isql']['port']} #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
+      # run serialized script as tempfile with isql 
+      begin
+        file = Tempfile.new('script')
+        file.write(rule.script)
+        file.rewind
+        rule.last_result = %x[#{SETTINGS['isql']['binary']} #{SETTINGS['isql']['port']} #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout #{file.path}]
+        file.close
+        file.unlink
+      rescue Exception => e
+        logger.error "Error in sparql script tempfile generation:\n #{e}"
+      end
       logger.info "Time to complete: #{Time.now - timing_start} s."
       logger.info "Result:\n#{rule.last_result}"
       logline = {:time => Time.now, :rule => rule.id, :job_id => nil, :cron_id => cron.job_id, :library => rule.library, :start_time => timing_start, 
@@ -333,7 +354,7 @@ class Scheduler
       # make sure rule is localized and safe/sanitized before running!
       rule.localize(library)
       rule.library = library.id
-      rule.sanitize
+      #rule.sanitize
       run_isql_rule(rule) if rule
     end
   end

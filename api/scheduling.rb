@@ -137,7 +137,7 @@ class Scheduling < Grape::API
       else
         rule.globalize
       end
-      rule.sanitize
+      #rule.sanitize
       # start time by either: 1) param, 2) rule's start_time or 3) now 
       rule.start_time = params[:start_time] ? params[:start_time] :
         rule.start_time.empty? ? Time.now : rule.start_time
@@ -168,7 +168,7 @@ class Scheduling < Grape::API
       else
         rule.globalize
       end
-      rule.sanitize
+      #rule.sanitize
       result = Scheduler.schedule_isql_rule(rule)
       { :result => result }
     end

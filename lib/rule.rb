@@ -91,6 +91,7 @@ class Rule
     self
   end
   
+  # DEPRECATED: uses tempfile instead of bash string = safer!
   # need to remove apostrophes and command backticks before running or saving script  
   def sanitize
     return nil unless self.id and self.script
