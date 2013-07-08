@@ -334,8 +334,9 @@ class Scheduler
       tempgraph = RDF::Graph.new('temp')
       rdf.statements.each {|s| tempgraph << s }
       # query for :edition and :object
+      types = library.config['resource']['type'].delete(' ').split(',') # types can be comma-separated
       batchsolutions = RDF::Query.execute(tempgraph) do
-        pattern [:edition, RDF.type, RDF.module_eval("#{library.config['resource']['type']}") ]
+        pattern [:edition, RDF.type, RDF.module_eval("#{types.first}") ]
         pattern [:edition, RDF.module_eval("#{harvester.local['predicate']}"), :object ]
       end
       #logger.info "Batch Harvest solutions #{batchsolutions.inspect}"
