@@ -19,8 +19,12 @@ class RDFModeler
     self.statements = []
   end
   
-  def set_type(t)
-    self.statements << RDF::Statement.new(self.uri, RDF.type, RDF.module_eval("#{t}"))
+  # allow array or comma-separated list of types
+  def set_type(types)
+    types = types.delete(' ').split(',') unless types.is_a?(Array)
+    types.each do |type|
+      self.statements << RDF::Statement.new(self.uri, RDF.type, RDF.module_eval("#{type}"))
+    end
   end
   
   def generate_uri(s, prefix=nil)

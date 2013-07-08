@@ -278,7 +278,7 @@ class Scheduler
         xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
         xmlreader.each do |marcrecord|
           rdf = RDFModeler.new(library.id, marcrecord)
-          rdf.set_type(library.config['resource']['type'])        
+          rdf.set_type(library.config['resource']['type'])
           rdf.convert
           # the conversion, rules, harvesting and updating
           write_record_to_file(rdf, library, params)   if params[:write_records]  # a)
