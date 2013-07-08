@@ -97,7 +97,7 @@ class Rule
     return nil unless self.id and self.script
     #self.script.gsub!('"', "'")
     #self.script.gsub!(/(?=[`])/, '\\')
-    self.script.gsub!('$', '\x24')
+    self.script.gsub!('$', '\\x24')
     self
   end
 end
