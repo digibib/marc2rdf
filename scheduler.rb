@@ -353,11 +353,12 @@ class Scheduler
   def run_rules_engine(library)
     library.rules.each do |r|
       rule = Rule.find :id=>r['id']
-      # make sure rule is localized and safe/sanitized before running!
-      rule.localize(library)
-      rule.library = library.id
-      #rule.sanitize
-      run_isql_rule(rule) if rule
+      if rule
+        # make sure rule is localized before running!
+        rule.localize(library)
+        rule.library = library.id
+        run_isql_rule(rule)
+      end
     end
   end
 end

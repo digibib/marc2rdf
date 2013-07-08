@@ -29,6 +29,8 @@ class OAIClient
     from_date = Time.parse(params[:from]).strftime("%F") rescue Date.today.prev_day.to_s
     to_date   = Time.parse(params[:until]).strftime("%F") rescue Date.today.to_s
     set       = params[:set]     ||= self.set
+    # allow 3 retries of connection
+    attempts = 0
     begin
       if params[:resumption_token]
         self.response = self.client.list_records :resumption_token => params[:resumption_token]
@@ -39,8 +41,56 @@ class OAIClient
           self.response = self.client.list_records :metadata_prefix => self.format, :from => from_date, :until => to_date
         end
       end
-    rescue Timeout::Error => e
-      logger.error "Error in OAI query: #{e}"
+    rescue TimeoutError => e # Connection timed out
+      logger.error "TimeoutError in OAI query:\n#{e}"
+      if (attempts += 1) < 4
+        logger.error "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        logger.error "...giving up!"
+        exit -1
+      end
+    rescue Errno::ECONNRESET => e # Connection reset by peer 
+      logger.error "Connection reset in OAI query:\n#{e}"
+      if (attempts += 1) < 4
+        logger.error "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        logger.error "...giving up!"
+        exit -1
+      end
+    rescue Errno::ECONNREFUSED => e # Connection refused 
+      logger.error "Connection refused in OAI query:\n#{e}"
+      if (attempts += 1) < 4
+        logger.error "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        logger.error "...giving up!"
+        exit -1
+      end
+    rescue StandardError => e # StandardError
+      logger.error "StandardError in OAI query:\n#{e}"
+      if (attempts += 1) < 4
+        logger.error "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        logger.error "...giving up!"
+        exit -1
+      end
+    rescue Exception => e # Any other Exception
+      logger.error "StandardError in OAI query:\n#{e}"
+      if (attempts += 1) < 4
+        logger.error "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        logger.error "...giving up!"
+        exit -1
+      end      
     end
     self.records = []
     self.response.each {|r| self.records << r }
