@@ -232,14 +232,23 @@ class Scheduler
         return nil
       end
       # do the OAI dance!
-      run_oai_harvest_cycle(oai, library, params)    
+      begin
+        run_oai_harvest_cycle(oai, library, params)    
       
-      length = Time.now - timing_start
-      logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
-                 :length => "#{length} s.", :tags => params[:tags], 
-                 :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
-      write_history(logline)
-      logger.info "Time to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"
+        length = Time.now - timing_start
+        logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
+                   :length => "#{length} s.", :tags => params[:tags], 
+                   :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
+        write_history(logline)
+        logger.info "Time to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"
+      rescue Exception => e
+        length = Time.now - timing_start
+        logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
+                   :length => "#{length} s.", :tags => params[:tags], 
+                   :result => "Error in OAI harvest: #{e}\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
+        write_history(logline)
+        logger.info "Error in OAI harvest: #{e}\nTime to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"      
+      end
     end
   end
   
