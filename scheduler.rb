@@ -68,6 +68,7 @@ class Scheduler
       # run serialized script as tempfile with isql 
       begin
         file = Tempfile.new('script')
+        rule.sanitize
         file.write(rule.script)
         file.rewind
         #rule.last_result = %x[(echo "#{rule.script.to_s}") | #{SETTINGS['isql']['binary']} #{SETTINGS['isql']['port']} #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout ]
@@ -94,6 +95,7 @@ class Scheduler
       # run serialized script as tempfile with isql 
       begin
         file = Tempfile.new('script')
+        rule.sanitize
         file.write(rule.script)
         file.rewind
         rule.last_result = %x[#{SETTINGS['isql']['binary']} #{SETTINGS['isql']['port']} #{REPO.username} #{REPO.password} VERBOSE=ON BANNER=OFF PROMPT=OFF ECHO=OFF BLOBS=ON ERRORS=stdout #{file.path}]

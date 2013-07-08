@@ -91,12 +91,13 @@ class Rule
     self
   end
   
-  # DEPRECATED: uses tempfile instead of bash string = safer!
-  # need to remove apostrophes and command backticks before running or saving script  
+  # now uses tempfile instead of bash string = safer!
+  # still need to convert $ to hex x24 at runtime as virtuoso uses $ for macros
   def sanitize
     return nil unless self.id and self.script
-    self.script.gsub!('"', "'")
-    self.script.gsub!(/(?=[`])/, '\\')
+    #self.script.gsub!('"', "'")
+    #self.script.gsub!(/(?=[`])/, '\\')
+    self.script.gsub!('$', '\x24')
     self
   end
 end
