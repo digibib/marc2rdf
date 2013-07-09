@@ -42,53 +42,53 @@ class OAIClient
         end
       end
     rescue TimeoutError => e # Connection timed out
-      logger.error "TimeoutError in OAI query:\n#{e}"
+      puts "TimeoutError in OAI query:\n#{e}"
       if (attempts += 1) < 4
-        logger.error "retry...#{attempts}"
+        puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
       else
-        logger.error "...giving up!"
+        puts "...giving up!"
         exit -1
       end
     rescue Errno::ECONNRESET => e # Connection reset by peer 
-      logger.error "Connection reset in OAI query:\n#{e}"
+      puts "Connection reset in OAI query:\n#{e}"
       if (attempts += 1) < 4
-        logger.error "retry...#{attempts}"
+        puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
       else
-        logger.error "...giving up!"
+        puts "...giving up!"
         exit -1
       end
     rescue Errno::ECONNREFUSED => e # Connection refused 
-      logger.error "Connection refused in OAI query:\n#{e}"
+      puts "Connection refused in OAI query:\n#{e}"
       if (attempts += 1) < 4
-        logger.error "retry...#{attempts}"
+        puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
       else
-        logger.error "...giving up!"
+        puts "...giving up!"
         exit -1
       end
     rescue StandardError => e # StandardError
-      logger.error "StandardError in OAI query:\n#{e}"
+      puts "StandardError in OAI query:\n#{e}"
       if (attempts += 1) < 4
-        logger.error "retry...#{attempts}"
+        puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
       else
-        logger.error "...giving up!"
+        puts "...giving up!"
         exit -1
       end
     rescue Exception => e # Any other Exception
-      logger.error "StandardError in OAI query:\n#{e}"
+      puts "StandardError in OAI query:\n#{e}"
       if (attempts += 1) < 4
-        logger.error "retry...#{attempts}"
+        puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
       else
-        logger.error "...giving up!"
+        puts "...giving up!"
         exit -1
       end      
     end
@@ -103,7 +103,7 @@ class OAIClient
     begin
       self.records = self.client.get_record :identifier => params[:identifier], :metadata_prefix => self.format
     rescue Exception => e
-      logger.error "Error in OAI query: #{e}"
+      puts "Error in OAI query: #{e}"
     end
   end
   
@@ -131,7 +131,7 @@ class OAIClient
       get_oai_id
       get_available_sets
     rescue ArgumentError => e
-      puts e if ENV['RACK_ENV'] == "development"
+      puts "#{e}" if ENV['RACK_ENV'] == "development"
       self.identify_response = nil
     end
   end
