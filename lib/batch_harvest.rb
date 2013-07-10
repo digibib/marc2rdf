@@ -5,7 +5,10 @@ BatchHarvest   = Struct.new(:harvester, :params, :client, :count, :solutions, :r
 class BatchHarvest
   # A Batch accepts an RDF::Query::Solutions as input or from a query against RDF store
   # NB! Make sure that RDF::Query::Solutions includes :object binding, as its value is used for harvesting
-
+  
+  
+  ## Instance methods
+  
   def initialize(harvester, batch = nil)
     self.harvester = harvester
     self.solutions = batch if batch.is_a?(RDF::Query::Solutions) # set solutions if harvest from batch
@@ -65,30 +68,6 @@ class BatchHarvest
     self.disconnect
   end
   
-  # SPARQL lookup in RDF store, BIBO.isbn is default
-  def rdfstore_query(params={})
-    # takes params minuses|limit|offset|predicate
-    params[:limit]     ||= 10
-    params[:type]      ||= "RDF::BIBO.Document"
-    params[:predicate] ||= "RDF::BIBO.isbn"
-    params[:graph]     ||= SETTINGS["global"]["default_graph"]
-    minus = params[:minuses].map { |m| [:edition, RDF.module_eval("#{m}"), :object] } if params[:minuses]
-
-    query = QUERY.select(:work, :edition, :object)
-    query.from(RDF::URI(params[:graph]))
-    query.where(
-      [:edition, RDF.type, RDF.module_eval("#{params[:type]}")],
-      [:edition, RDF.module_eval("#{params[:predicate]}"), :object],
-      [:work, RDF::FABIO.hasManifestation, :edition])
-      minus.each {|m| query.minus(m) } if minus
-    query.offset(params[:offset]) if params[:offset]
-    query.limit(params[:limit])
-    #puts query
-    solutions = REPO.select(query)
-    return nil if solutions.empty?
-    solutions
-  end
-  
   ### Harvesting methods
   def run_harvester(solutions)
     return nil unless self.harvester # require harvester
@@ -123,11 +102,37 @@ class BatchHarvest
     self.response = self.client.request URI.parse url
   end
   
-  def parse_xml(http_response, opts={})
+  ## Class methods
+
+  # SPARQL lookup in RDF store, BIBO.isbn is default
+  def self.rdfstore_query(params={})
+    # takes params minuses|limit|offset|predicate
+    params[:limit]     ||= 10
+    params[:type]      ||= "RDF::BIBO.Document"
+    params[:predicate] ||= "RDF::BIBO.isbn"
+    params[:graph]     ||= SETTINGS["global"]["default_graph"]
+    minus = params[:minuses].map { |m| [:edition, RDF.module_eval("#{m}"), :object] } if params[:minuses]
+
+    query = QUERY.select(:work, :edition, :object)
+    query.from(RDF::URI(params[:graph]))
+    query.where(
+      [:edition, RDF.type, RDF.module_eval("#{params[:type]}")],
+      [:edition, RDF.module_eval("#{params[:predicate]}"), :object],
+      [:work, RDF::FABIO.hasManifestation, :edition])
+      minus.each {|m| query.minus(m) } if minus
+    query.offset(params[:offset]) if params[:offset]
+    query.limit(params[:limit])
+    #puts query
+    solutions = REPO.select(query)
+    return nil if solutions.empty?
+    solutions
+  end
+    
+  def self.parse_xml(http_response, opts={})
     opts.delete_if {|k,v| v.nil?} #delete unused conditions
     # make sure we get valid response
     if http_response.code == "200" || http_response.code == "302" 
-      xml = Nokogiri::XML(http_response.body)
+      xml = Nokogiri::XML(http_response.body.force_encoding("UTF-8"))
       results = []
       #xml.xpath("#{opts[:xpath]}", opts[:namespaces]).each { | elem | results << elem.text }
       xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces])).each {|node| results << node.text}
@@ -137,26 +142,33 @@ class BatchHarvest
       results.map { |result| result.to_s.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
       # puts "regex stripped XML results #{results}"
       
-      # checksum test on coverart, made on tempfile that are garbage collected
-      # delete if checksum matches
-      # Needs to be made part of library test
-      results.delete_if do |result|
-        begin
-          img = client.request URI.parse result 
-          file = Tempfile.new('temp_file')
-          file.write(img.body)
-          hash = Digest::MD5.hexdigest(File.read(file))
-          file.close
-          file.unlink
-          true if hash == "0a993cc6694e9249965e626eb4e037c7"
-        rescue Exception => e
-          puts "Error during checksum test: #{e}"
-          true
-        end
+      # only run dummy cover filter on bokkilden urls
+      if results.any? { |str| "bokkilden".include?(str) }
+        results = filter_dummy_covers(results)
+      else 
+        results
       end
-
-      return results
     end
   end
 
+  def self.filter_dummy_covers(results)
+    # checksum test on coverart, made on tempfile that are garbage collected
+    # delete if checksum matches
+    # Needs to be made part of library test
+    results.delete_if do |result|
+      begin
+        img = client.request URI.parse result 
+        file = Tempfile.new('temp_file')
+        file.write(img.body)
+        hash = Digest::MD5.hexdigest(File.read(file))
+        file.close
+        file.unlink
+        true if hash == "0a993cc6694e9249965e626eb4e037c7"
+      rescue Exception => e
+        puts "Error during checksum test: #{e}"
+        true
+      end
+    end
+    return results
+  end
 end

@@ -55,16 +55,16 @@ div class="divdot inputf"
         td subject
         td
           select[id="save_harvester_local_subject"]
-            option[selected=("selected" if harvester.local['subject'] == "work")] work
-            option[selected=("selected" if harvester.local['subject'] == "edition")] edition
+            option[selected=("selected" if harvester.to_map.fetch(:local){{}}.fetch('subject'){}.to_s == "work")] work
+            option[selected=("selected" if harvester.to_map.fetch(:local){{}}.fetch('subject'){}.to_s == "edition")] edition
         td work: harvest to local Work, edition: harvest to local Edition
       tr
         td predicate
-        td: input[type="text" id="save_harvester_local_predicate" value=(harvester.to_map.fetch('local'){{}}.fetch('predicate'){} )]
+        td: input[type="text" id="save_harvester_local_predicate" value=(harvester.to_map.fetch(:local){{}}.fetch('predicate'){} )]
         td the predicate in local RDF store or batch to use for harvesting
       tr
         td object
-        td: input[type="text" id="save_harvester_local_object" value=(harvester.to_map.fetch('local'){{}}.fetch('object'){} ) disabled="true"]
+        td: input[type="text" id="save_harvester_local_object" value=(harvester.to_map.fetch(:local){{}}.fetch('object'){} ) disabled="true"]
         td the object in local RDF store or batch to use for harvesting (NOT USED)
       tr
         td: hr
@@ -76,7 +76,7 @@ div class="divdot inputf"
           td: button[type='button' class="add_table_row"]  = "add row"
           td namespace
           td url
-        - unless harvester.remote['namespaces'].nil? or harvester.remote['namespaces'].empty?
+        - unless harvester.remote.nil? or harvester.remote['namespaces'].nil? or harvester.remote['namespaces'].empty?
           - harvester.remote['namespaces'].each do |k,v|
             tr
               td
@@ -92,7 +92,7 @@ div class="divdot inputf"
           td datatype
           td xpath
           td regex_strip
-        - unless harvester.remote['predicates'].nil? or harvester.remote['predicates'].empty?
+        - unless harvester.remote.nil? or harvester.remote['predicates'].nil? or harvester.remote['predicates'].empty?
           - harvester.remote['predicates'].each do |k,v|
             tr
               td
@@ -109,6 +109,13 @@ div class="divdot inputf"
         td 
           button[type="button" id="save_harvester" class="gen"]  = "Save"
           button[type="button" id="delete_harvester" class="gen"]  = "Delete"
+      tr
+        td 
+          button[type="button" id="test_harvester" class="gen"]  = "Test >"
+          input[type="text" id="test_harvester_id" value="input test id"] save before testing!
+          
         td
           span[id="save_harvester_info" class="info" style="margin-left:48px"]
-          span[id="save_harvester_error" class="error" style="margin-left:48px"]    
+          span[id="save_harvester_error" class="error" style="margin-left:48px"]
+// The test div
+div id="harvester_test"

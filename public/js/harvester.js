@@ -1,7 +1,9 @@
 $(document).ready(function () {
   // ** global vars
   var session_key = $('#active_session_key').html();
-  $.ajaxSetup({ headers: {"SECRET_SESSION_KEY": session_key}});
+  $(document).ajaxSend(function(e, xhr, settings) {
+    xhr.setRequestHeader('SECRET_SESSION_KEY', session_key);
+  });
   var id = $('#active_library_id').html();
 
   // ** options tabs handling **
@@ -63,7 +65,7 @@ $(document).ready(function () {
 
     request.done(function(data) {
       $('span#create_harvester_info').html("Created harvester OK!").show().fadeOut(3000);
-      window.location = '/harvester/'+data.harvester["id"];
+      window.location = '/harvesters/'+data.harvester["id"];
     });
 
     request.fail(function(jqXHR, textStatus, errorThrown) {
@@ -177,7 +179,7 @@ $(document).ready(function () {
   
       request.done(function(data) {
         $('span#save_harvester_info').html("Deleted harvester rule OK!").show().fadeOut(3000);
-        window.location = '/harvester';
+        window.location = '/harvesters';
       });
   
       request.fail(function(jqXHR, textStatus, errorThrown) {
@@ -186,4 +188,32 @@ $(document).ready(function () {
     }
   }); 
 
+  // ** test harvester
+  $('button#test_harvester').on('click', function() {
+    var request = $.ajax({
+      url: '/api/harvester/test',
+      type: 'GET',
+      cache: false,
+      data: { 
+          id: $('input#save_harvester_id').val(),
+          teststring: $('input#test_harvester_id').val()
+          },
+      dataType: 'json'
+    });
+
+    $(this).addClass('loading');
+    request.done(function ( data ) {
+      $('button#test_harvester').removeClass('loading');
+      if( console && console.log ) {
+        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+      }
+      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+      $("#harvester_test").html('<br/><pre>' + result + '</pre>');
+    });
+      
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('button#test_harvester').removeClass('loading');
+      $('#harvester_test').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+  }); 
 });

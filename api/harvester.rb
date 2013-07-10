@@ -68,7 +68,26 @@ module API
         harvester.delete
         logger.info "DELETE: params: #{params} - deleted harvester: #{harvester}"
         { :harvester => harvester }
-      end        
+      end    
+      
+      desc "test a harvester by some string lookup"
+        params do
+          requires :id, type: String, desc: "ID of harvester"
+          requires :teststring, type: String, desc: "String to send to external API"
+        end
+      get "/test" do
+        content_type 'json'
+          logger.info params
+          harvester = Harvest.find(:id => params[:id])
+          error!("No harvester rule with id: #{params[:id]}", 404) unless harvester
+          url = harvester.url['prefix'] + params[:teststring].to_s + harvester.url['suffix']
+          response = Net::HTTP.get_response URI.parse url
+          results = []
+          harvester.remote['predicates'].each do | predicate, opts |
+            results << { predicate => BatchHarvest.parse_xml(response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => harvester.remote["namespaces"] ) }
+          end
+          { :harvester => harvester, :response => response.body, :results => results }        
+      end            
     end # end harvester namespace    
   end
 end

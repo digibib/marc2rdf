@@ -1,7 +1,9 @@
 $(document).ready(function () {
   // ** global vars
   var session_key = $('#active_session_key').html();
-  $.ajaxSetup({ headers: {"SECRET_SESSION_KEY": session_key}});
+  $(document).ajaxSend(function(e, xhr, settings) {
+    xhr.setRequestHeader('SECRET_SESSION_KEY', session_key);
+  });
   var id = $('#active_library_id').html();
 
   // ** options tabs handling **
