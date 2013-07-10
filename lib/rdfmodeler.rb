@@ -28,7 +28,12 @@ class RDFModeler
   end
   
   def generate_uri(s, prefix=nil)
-    u = RDF::URI("#{prefix}#{s}")
+    begin
+      uri = URI.escape("#{prefix}#{s}")
+      u = RDF::URI(uri)
+    rescue
+      u = RDF::Literal("#{prefix}#{s}")
+    end
   end
   
   def generate_objects(o, options={})
@@ -276,7 +281,7 @@ class RDFModeler
                     objects.each do | o |  
                       if subfields[1]['object']['datatype'] == "uri"
                         object_uri = generate_uri(o, "#{subfields[1]['object']['prefix']}")
-                        assert(@predicate, RDF::URI(object_uri))
+                        assert(@predicate, object_uri)
                       elsif subfields[1]['object']['datatype'] == "integer"
                         assert(@predicate, RDF::Literal("#{o}", :datatype => RDF::XSD.integer))
                       elsif subfields[1]['object']['datatype'] == "float"
