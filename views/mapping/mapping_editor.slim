@@ -10,8 +10,14 @@ div id="auto"
     div id="jsoneditor" 
     div id="splitter" 
     div id="jsonformatter"
-    
+
 javascript:
+  // ** global vars
+  var session_key = $('#active_session_key').html();
+  $(document).ajaxSend(function(e, xhr, settings) {
+    xhr.setRequestHeader('SECRET_SESSION_KEY', session_key);
+  });
+  
   // disable Firefox spellcheck
   document.body.spellcheck = false;
   
@@ -39,10 +45,10 @@ javascript:
   toForm.innerHTML = '<div class="convert-left"></div>';
   domSplitter.appendChild(document.createElement('br'));
   domSplitter.appendChild(document.createElement('br'));    
-  domSplitter.appendChild(toForm);    
-  
+  domSplitter.appendChild(toForm);
   // ** end JSON editor
-
+  
+  // get JSON mapping
   var json = $.getJSON('/api/mappings/?id=#{mapping.id}', function() {
       editor.set(JSON.parse(json.responseText).mapping["mapping"]);
       formatter.set(editor.get());
@@ -61,4 +67,4 @@ javascript:
       editor.set(JSON.parse(json.responseText).mapping);
       formatter.set(editor.get());
     });
-  });   
+  }); 
