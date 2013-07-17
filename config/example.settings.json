@@ -4,7 +4,8 @@
     "sparul_endpoint": "http://localhost:8890/sparql-auth/", 
     "username": "dba", 
     "password": "dba", 
-    "auth_method": "digest"
+    "auth_method": "digest",
+    "timeout": 5
   },
   "global": {
     "default_graph": "http://example.com/graph",

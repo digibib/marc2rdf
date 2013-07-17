@@ -2,11 +2,13 @@ source "https://rubygems.org"
 gem "builder"
 gem "bundler"
 gem "nokogiri"
+gem "net-http-persistent"
 gem "marc"
 gem "rdf"
 gem "rdf-rdfxml"
 gem "rdf-n3"
 gem "rdf-virtuoso"#, "~> 0.1.4"
+#gem "rdf-virtuoso", :path => '../rdf-virtuoso'
 gem "oai"#, '0.2.0'
 #gem "oai", :git => 'https://github.com/bensinober/ruby-oai.git'
 gem "libxml-ruby" # maybe broken!! but faster OAI processing

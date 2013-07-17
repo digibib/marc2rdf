@@ -97,7 +97,9 @@ class SparqlUpdate
       response = REPO.delete(query)
   end
   
-  # Class method to insert new harvested triples
+  ## Class methods
+  
+  # insert new harvested triples
   def self.insert_harvested_triples(graph, statements)
     query = QUERY.insert_data(statements)
     query.graph(graph)

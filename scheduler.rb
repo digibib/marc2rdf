@@ -314,12 +314,33 @@ class Scheduler
 
   # 2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
   def update_record(rdf, library, params={})
+    s = SparqlUpdate.new(rdf, library)
     # need rescue clause to pick up insert errors
+    attempts = 0
     begin
-      s = SparqlUpdate.new(rdf, library)
       params[:delete] ? s.delete_record : s.modify_record
+    rescue TimeoutError => e # Connection timed out
+      puts "TimeoutError in Sparql Update:\n#{e}"
+      if (attempts += 1) < 4
+        puts "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        puts "...giving up!"
+        exit(1)
+      end
+      logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{s.record}"
     rescue Exception => e
-      logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{rdf.inspect}\nStack trace: #{e}"
+      puts "Error in Sparql Update:\n#{e}"
+      if (attempts += 1) < 4
+        puts "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        puts "...giving up!"
+        exit(1)
+      end
+      logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{s.record}"
     end
   end
 

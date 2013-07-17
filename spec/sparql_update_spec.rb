@@ -26,7 +26,7 @@ describe SparqlUpdate do
     # test private methods
     it "should create proper delete query with minus" do
       result = @sparql.send(:delete_old_record)
-      result.should == 'DEFINE sql:log-enable 2 DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . } WHERE { <http://example.com/id_0583095> ?p ?o . MINUS { <http://example.com/id_0583095> <http://xmlns.com/foaf/0.1/depiction> ?o . } }'
+      result.should == 'DEFINE sql:log-enable 3 DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . } WHERE { <http://example.com/id_0583095> ?p ?o . MINUS { <http://example.com/id_0583095> <http://xmlns.com/foaf/0.1/depiction> ?o . } }'
     end
     
     it "should delete existing authorities before update" do
@@ -41,7 +41,7 @@ describe SparqlUpdate do
 
     it "should purge a record" do
       result = @sparql.send(:purge_record)
-      result.should == 'DEFINE sql:log-enable 2 DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . } WHERE { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . }'
+      result.should == 'DEFINE sql:log-enable 3 DELETE FROM <http://example.com> { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . } WHERE { <http://example.com/id_0583095> ?p ?o . ?x ?y <http://example.com/id_0583095> . }'
     end
   end
 end

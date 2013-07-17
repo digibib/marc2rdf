@@ -71,6 +71,16 @@ class OAIClient
         puts "...giving up!"
         exit -1
       end
+    rescue REXML::ParseException => e # xml parsing error
+      puts "XML parsing error in response:\n#{e}"
+      if (attempts += 1) < 4
+        puts "retry...#{attempts}"
+        sleep(5 * attempts)
+        retry
+      else
+        puts "...giving up!"
+        exit -1
+      end
     rescue StandardError => e # StandardError
       puts "StandardError in OAI query:\n#{e}"
       if (attempts += 1) < 4

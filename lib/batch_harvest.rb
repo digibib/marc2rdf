@@ -60,7 +60,7 @@ class BatchHarvest
     else
       # do rdf lookups and iterate until end
       while offset <= max_limit
-        solutions = rdfstore_query(params)
+        solutions = self.class.rdfstore_query(params)
         run_harvester(solutions)
         offset += batch_limit
       end
@@ -80,7 +80,7 @@ class BatchHarvest
       next unless self.response
       
       self.harvester.remote["predicates"].each do |predicate, opts|
-        results = parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"] )
+        results = self.class.parse_xml(self.response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => self.harvester.remote["namespaces"] )
         #puts "Harvester results: #{results.inspect}"
         if results
           # make RDF::URIs if datatype uri

@@ -22,7 +22,8 @@ REPO          = RDF::Virtuoso::Repository.new(
               :update_uri => SETTINGS["repository"]["sparul_endpoint"],
               :username => SETTINGS["repository"]["username"],
               :password => SETTINGS["repository"]["password"],
-              :auth_method => SETTINGS["repository"]["auth_method"])
+              :auth_method => SETTINGS["repository"]["auth_method"],
+              :timeout => SETTINGS["repository"]["timeout"] ? SETTINGS["repository"]["timeout"] : 5)
 
 QUERY              = RDF::Virtuoso::Query
 SECRET_SESSION_KEY = SETTINGS["secret_session_key"]
