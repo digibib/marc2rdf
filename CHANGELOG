@@ -1,4 +1,8 @@
 = marc2rdf CHANGELOG
+0.1.7
+  More bugfixes in scheduler and OAI client
+  External harvester can harvest to Work
+  Timeout/retry handling in Sparql Update 
 0.1.6
   Many bugfixes and robustified OAI harvester
   Fix in internal authentication for Chromium and IE 9

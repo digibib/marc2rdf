@@ -345,6 +345,7 @@ class Scheduler
   end
 
   # 2c) if any harvesters are activated for library, do external harvesting and update RDF store
+  # batchsolutions = RDF::Query::Solutions with :work, :edition, and :object used for harvesting
   def run_external_harvester(rdf, library, params={})
     library.harvesters.each do |h|
       # find harvester
@@ -360,16 +361,22 @@ class Scheduler
         pattern [:edition, RDF.type, RDF.module_eval("#{types.first}") ]
         pattern [:edition, RDF.module_eval("#{harvester.local['predicate']}"), :object ]
       end
+      next if batchsolutions.empty? 
       #logger.info "Batch Harvest solutions #{batchsolutions.inspect}"
       if harvester.local['subject'] == 'work'
-        # TODO!
-        # if harvester subject is set to 'work' then a RDFstore lookup must be made to get work URI
+        # RDFstore lookup to find work URI
+        query = QUERY.select(:work).from(library.config['resource'])
+          query.where([:work, RDF::FABIO.hasManifestation, batchsolutions.first.edition])
+          query.limit(1)
+        results = REPO.select(query)
+        next if results.empty?
+        batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:work => results.first.work))}
       else
-        # just say work = edition for now
+        # work = edition
         batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:work => batchsolutions.first.edition))}
       end
       
-      # then harvest
+      # Got our work, edition and object? then harvest!
       bh = BatchHarvest.new harvester, batchsolutions
       bh.start_harvest
       next if bh.statements.empty?
