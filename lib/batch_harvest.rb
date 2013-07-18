@@ -138,10 +138,12 @@ class BatchHarvest
       xml.xpath("#{opts[:xpath]}", xml.namespaces.merge(opts[:namespaces])).each {|node| results << node.text}
       #puts "xpath results: #{results}"
       return nil if results.empty?
-      # optional regex strip      
-      results.map { |result| result.to_s.gsub!("#{opts[:regexp_strip]}", "") } if opts[:regexp_strip]
-      # puts "regex stripped XML results #{results}"
       
+      results.reject!(&:empty?||:nil?) # remove blank results
+      
+      # optional regex strip      
+      results.each { |result| result.to_s.gsub!(/#{opts[:regexp_strip]}/, "") } if opts[:regexp_strip]
+      # puts "regex stripped XML results #{results}"
       # only run dummy cover filter on bokkilden urls
       if results.any? { |str| "bokkilden".include?(str) }
         results = filter_dummy_covers(results)
