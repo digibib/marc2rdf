@@ -74,6 +74,21 @@ class Oai < Grape::API
       { :result => result }
     end 
 
+    desc "harvest a full set"
+      params do
+        requires :id,            type: Integer,  desc: "ID of library"
+        optional :tags,          type: String,   desc: "Tags"
+        optional :write_records, type: Boolean,  desc: "Write converted records to file"
+        optional :sparql_update, type: Boolean,  desc: "Update Repository directly"
+      end
+    put "/harvest_full" do
+      content_type 'json'
+      # Schedule full harvest of set
+      logger.info "OAI full harvest params: #{params}"
+      result = Scheduler.convert_full_oai_set(params)
+      { :result => result }
+    end 
+    
     desc "schedule an OAI harvest"
       params do
         requires :id,            type: Integer,  desc: "ID of library"

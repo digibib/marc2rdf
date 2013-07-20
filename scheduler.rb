@@ -252,6 +252,50 @@ class Scheduler
     end
   end
   
+  def convert_full_oai_set(params={})
+    start_time = Time.parse("#{params[:start_time]}") rescue Time.now
+    params[:tags]          ||= "oaiharvest"
+    library = Library.find(:id => params[:id].to_i)
+    logger.info "Scheduled params: #{params}"
+    job_id = self.scheduler.at start_time, :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
+      timing_start = Time.now
+      # result counters
+      @countrecords, @deletecount, @modifycount, @harvestcount = 0, 0, 0, 0
+      logger.info "library oai: #{library.oai}"
+      oai = OAIClient.new(library.oai["url"], 
+        :format => library.oai["format"], 
+        :parser => library.oai["parser"], 
+        :timeout => library.oai["timeout"],
+        :redirects => library.oai["redirects"],
+        :set => library.oai["set"])
+      # validate OAI first!
+      oai.validate
+      unless oai.identify_response
+        logger.error "Failed to validate oai before harvest!\nOAI repo: #{library.oai['url']}\nIdentify response: #{oai.identify_response}"
+        return nil
+      end
+      begin
+        oai.client.list_records.full.each do |record|
+          convert_record(record, library, params={})
+        end
+      
+        length = Time.now - timing_start
+        logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
+                   :length => "#{length} s.", :tags => params[:tags], 
+                   :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
+        write_history(logline)
+        logger.info "Time to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"
+      rescue Exception => e
+        length = Time.now - timing_start
+        logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
+                   :length => "#{length} s.", :tags => params[:tags], 
+                   :result => "Error in OAI harvest: #{e}\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
+        write_history(logline)
+        logger.info "Error in OAI harvest: #{e}\nTime to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"      
+      end
+    end
+  end
+  
   private # internal functions
   
   def run_oai_harvest_cycle(oai, library, params={})
@@ -278,32 +322,34 @@ class Scheduler
     timing_start = Time.now
     @rdfrecords = []
     # 2) convert harvested records, based on Library's chosen mapping
-    oairecords.each do |record| 
-      unless record.deleted?
-        
-        # hack to add marc namespace to first element of metadata in case of namespace issues on REXML parser
-        record.metadata[0].add_namespace("marc", "info:lc/xmlns/marcxchange-v1") if record.metadata[0].is_a? REXML::Element 
-
-        xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
-        xmlreader.each do |marcrecord|
-          rdf = RDFModeler.new(library.id, marcrecord)
-          rdf.set_type(library.config['resource']['type'])
-          rdf.convert
-          # the conversion, rules, harvesting and updating
-          write_record_to_file(rdf, library, params)   if params[:write_records]  # a)
-          update_record(rdf, library, params)          if params[:sparql_update]  # b)
-          run_external_harvester(rdf, library, params) # c)
-          @rdfrecords << rdf.statements
-          @modifycount += 1
-        end
-      else
-        deletedrecord = record.header.identifier.split(':').last
-        update_record(deletedrecord, library, :delete => true) if params[:sparql_update] # schedule writing to repository
-        @deletecount += 1
-        #puts "deleted record: #{deletedrecord}"
-      end
-    end
+    oairecords.each { |record| convert_record(record, library, params={}) } 
     logger.info "Time to convert #{oairecords.count} records: #{Time.now - timing_start} s."
+  end
+  
+  def convert_record(record, library, params={})
+    unless record.deleted?
+      
+      # hack to add marc namespace to first element of metadata in case of namespace issues on REXML parser
+      record.metadata[0].add_namespace("marc", "info:lc/xmlns/marcxchange-v1") if record.metadata[0].is_a? REXML::Element 
+
+      xmlreader = MARC::XMLReader.new(StringIO.new(record.metadata.to_s)) 
+      xmlreader.each do |marcrecord|
+        rdf = RDFModeler.new(library.id, marcrecord)
+        rdf.set_type(library.config['resource']['type'])
+        rdf.convert
+        # the conversion, rules, harvesting and updating
+        write_record_to_file(rdf, library, params)   if params[:write_records]  # a)
+        update_record(rdf, library, params)          if params[:sparql_update]  # b)
+        run_external_harvester(rdf, library, params) # c)
+        @rdfrecords << rdf.statements
+        @modifycount += 1
+      end
+    else
+      deletedrecord = record.header.identifier.split(':').last
+      update_record(deletedrecord, library, :delete => true) if params[:sparql_update] # schedule writing to repository
+      @deletecount += 1
+      #puts "deleted record: #{deletedrecord}"
+    end  
   end
   
   # 2a) write converted records to ntriples file if chosen
@@ -316,12 +362,13 @@ class Scheduler
   def update_record(rdf, library, params={})
     s = SparqlUpdate.new(rdf, library)
     # need rescue clause to pick up insert errors
+    retries  = 5
     attempts = 0
     begin
       params[:delete] ? s.delete_record : s.modify_record
     rescue TimeoutError => e # Connection timed out
       puts "TimeoutError in Sparql Update:\n#{e}"
-      if (attempts += 1) < 4
+      if (attempts += 1) >= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
@@ -332,7 +379,7 @@ class Scheduler
       logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{s.record}"
     rescue Exception => e
       puts "Error in Sparql Update:\n#{e}"
-      if (attempts += 1) < 4
+      if (attempts += 1) >= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
