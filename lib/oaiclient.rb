@@ -50,7 +50,7 @@ class OAIClient
         retry
       else
         puts "...giving up!"
-        exit -1
+        exit(1)
       end
     rescue Errno::ECONNRESET => e # Connection reset by peer 
       puts "Connection reset in OAI query:\n#{e}"
@@ -60,7 +60,7 @@ class OAIClient
         retry
       else
         puts "...giving up!"
-        exit -1
+        exit(1)
       end
     rescue Errno::ECONNREFUSED => e # Connection refused 
       puts "Connection refused in OAI query:\n#{e}"
@@ -70,7 +70,7 @@ class OAIClient
         retry
       else
         puts "...giving up!"
-        exit -1
+        exit(1)
       end
     rescue REXML::ParseException => e # xml parsing error
       puts "XML parsing error in response:\n#{e}"
@@ -80,7 +80,7 @@ class OAIClient
         retry
       else
         puts "...giving up!"
-        exit -1
+        exit(1)
       end
     rescue StandardError => e # StandardError
       puts "StandardError in OAI query:\n#{e}"
@@ -90,7 +90,7 @@ class OAIClient
         retry
       else
         puts "...giving up!"
-        exit -1
+        exit(1)
       end
     rescue Exception => e # Any other Exception
       puts "StandardError in OAI query:\n#{e}"
@@ -100,7 +100,7 @@ class OAIClient
         retry
       else
         puts "...giving up!"
-        exit -1
+        exit(1)
       end      
     end
     self.records = []

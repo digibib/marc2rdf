@@ -275,6 +275,7 @@ class Scheduler
         return nil
       end
       begin
+        
         oai.client.list_records.full.each do |record|
           convert_record(record, library, params={})
         end
@@ -304,6 +305,7 @@ class Scheduler
     @countrecords += oai.records.count  
     # 2)
     convert_oai_records(oai.records, library, params)
+    write_oairesponse_to_file(oai.records, library, params) if params[:save_oairesponse]
     # 3) do the resumption loop...
     until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
       # fetch remainder if resumption token
@@ -312,6 +314,7 @@ class Scheduler
       @countrecords += oai.records.count
       # 2)
       convert_oai_records(oai.records, library, params)
+      write_oairesponse_to_file(oai.records, library, params) if params[:save_oairesponse]
     end
     # 4) Finally run activated rules on updated RDFstore
     logger.info "Running rules on updated set..."
@@ -338,7 +341,7 @@ class Scheduler
         rdf.set_type(library.config['resource']['type'])
         rdf.convert
         # the conversion, rules, harvesting and updating
-        write_record_to_file(rdf, library, params)   if params[:write_records]  # a)
+        write_converted_record_to_file(rdf, library, params)   if params[:write_records]  # a)
         update_record(rdf, library, params)          if params[:sparql_update]  # b)
         run_external_harvester(rdf, library, params) # c)
         @rdfrecords << rdf.statements
@@ -352,8 +355,14 @@ class Scheduler
     end  
   end
   
+  # 2a) dup oai records to file if chosen
+  def write_oairesponse_to_file(oairesponse, library, params={})
+    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
+    file.write(oairesponse.doc)) if file
+  end
+    
   # 2a) write converted records to ntriples file if chosen
-  def write_record_to_file(rdf, library, params={})
+  def write_converted_record_to_file(rdf, library, params={})
     file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+')
     file.write(RDFModeler.write_ntriples(rdf.statements)) if file
   end

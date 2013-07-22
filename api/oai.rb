@@ -80,6 +80,7 @@ class Oai < Grape::API
         optional :tags,          type: String,   desc: "Tags"
         optional :write_records, type: Boolean,  desc: "Write converted records to file"
         optional :sparql_update, type: Boolean,  desc: "Update Repository directly"
+        optional :save_oairesponse, type: Boolean,  desc: "Dump oai response to file"
       end
     put "/harvest_full" do
       content_type 'json'
