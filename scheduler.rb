@@ -444,7 +444,7 @@ class Scheduler
   # 2d) dup oai records to file if chosen
   def write_oairesponse_to_file(oairecords, library, params={})
     file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
-    file.write(oairecords.doc) if file
+    oairecords.each {|rec| file.write(rec.to_s) } if file
   end
   
   # 4) run rules on library graph
