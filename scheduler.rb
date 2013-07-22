@@ -202,6 +202,7 @@ class Scheduler
   #   2a) write converted records to ntriples file if chosen
   #   2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
   #   2c) if any harvesters are activated for library, do external harvesting and update RDF store
+  #   2d) save oai response if param[:save_oairesponse]
   # 3) return to 1) for next OAI batch by resumption token 
   # 4) if any rules are activated for library, run rules directly on library graph
   
@@ -305,7 +306,10 @@ class Scheduler
     @countrecords += oai.records.count  
     # 2)
     convert_oai_records(oai.records, library, params)
-    write_oairesponse_to_file(oai.response, library, params) if params[:save_oairesponse]
+    if params[:save_oairesponse]
+      #file = Tempfile.new('oairesponse')
+      write_oairesponse_to_file(oai.response.entries, library, params) 
+    end
     # 3) do the resumption loop...
     until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
       # fetch remainder if resumption token
@@ -314,7 +318,7 @@ class Scheduler
       @countrecords += oai.records.count
       # 2)
       convert_oai_records(oai.records, library, params)
-      write_oairesponse_to_file(oai.records, library, params) if params[:save_oairesponse]
+      write_oairesponse_to_file(oai.response.entries, library, params) if params[:save_oairesponse]
     end
     # 4) Finally run activated rules on updated RDFstore
     logger.info "Running rules on updated set..."
@@ -355,12 +359,6 @@ class Scheduler
     end  
   end
   
-  # 2a) dup oai records to file if chosen
-  def write_oairesponse_to_file(oairesponse, library, params={})
-    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
-    file.write(oairesponse.doc) if file
-  end
-    
   # 2a) write converted records to ntriples file if chosen
   def write_converted_record_to_file(rdf, library, params={})
     file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+')
@@ -443,6 +441,12 @@ class Scheduler
     end
   end
 
+  # 2d) dup oai records to file if chosen
+  def write_oairesponse_to_file(oairecords, library, params={})
+    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
+    file.write(oairesponse.doc) if file
+  end
+  
   # 4) run rules on library graph
   def run_rules_engine(library)
     library.rules.each do |r|
