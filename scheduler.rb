@@ -303,6 +303,7 @@ class Scheduler
   def run_oai_harvest_cycle(oai, library, params={})
     # 1) pull first records from OAI-PMH repo
     oai.query :from => params[:from], :until => params[:until]
+    write_oairesponse_to_file(oai.response, library, params) if params[:save_oairesponse] # 2d)
     @countrecords += oai.records.count  
     # 2)
     convert_oai_records(oai.records, library, params)
@@ -311,6 +312,7 @@ class Scheduler
       # fetch remainder if resumption token
       # 1)
       oai.query :resumption_token => oai.response.resumption_token if oai.response.resumption_token
+      write_oairesponse_to_file(oai.response, library, params) if params[:save_oairesponse] # 2d)
       @countrecords += oai.records.count
       # 2)
       convert_oai_records(oai.records, library, params)
@@ -329,8 +331,6 @@ class Scheduler
   end
   
   def convert_record(record, library, params={})
-    write_oairecord_to_file(record, library, params) if params[:save_oairesponse] # d)
-    
     unless record.deleted?
       
       # hack to add marc namespace to first element of metadata in case of namespace issues on REXML parser
@@ -439,11 +439,11 @@ class Scheduler
   end
 
   # 2d) dump oai records to file if chosen
-  def write_oairecord_to_file(oairecord, library, params={})
+  def write_oairesponse_to_file(oairesponse, library, params={})
     counter = 0
-    file_id = "%03d" % counter += 1
+    file_id = "%04d" % counter += 1
     file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{file_id}_#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
-    file.write(oairecord.doc) if file
+    file.write(oairesponse.doc)
   end
   
   # 4) run rules on library graph
