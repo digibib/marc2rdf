@@ -218,7 +218,7 @@ class Scheduler
     job_id = self.scheduler.at start_time, :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
       # result counters
-      @countrecords, @deletecount, @modifycount, @harvestcount = 0, 0, 0, 0
+      @querycounter, @countrecords, @deletecount, @modifycount, @harvestcount = 0, 0, 0, 0, 0
       logger.info "library oai: #{library.oai}"
       oai = OAIClient.new(library.oai["url"], 
         :format => library.oai["format"], 
@@ -261,7 +261,7 @@ class Scheduler
     job_id = self.scheduler.at start_time, :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
       # result counters
-      @countrecords, @deletecount, @modifycount, @harvestcount = 0, 0, 0, 0
+      @querycounter, @countrecords, @deletecount, @modifycount, @harvestcount = 0, 0, 0, 0, 0
       logger.info "library oai: #{library.oai}"
       oai = OAIClient.new(library.oai["url"], 
         :format => library.oai["format"], 
@@ -302,6 +302,7 @@ class Scheduler
   
   def run_oai_harvest_cycle(oai, library, params={})
     # 1) pull first records from OAI-PMH repo
+    
     oai.query :from => params[:from], :until => params[:until]
     write_oairesponse_to_file(oai.response, library, params) if params[:save_oairesponse] # 2d)
     @countrecords += oai.records.count  
@@ -440,8 +441,7 @@ class Scheduler
 
   # 2d) dump oai records to file if chosen
   def write_oairesponse_to_file(oairesponse, library, params={})
-    counter = 0
-    file_id = "%04d" % counter += 1
+    file_id = "%04d" % @querycounter += 1
     file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{file_id}_#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
     file.write(oairesponse.doc)
   end
