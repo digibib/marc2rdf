@@ -305,7 +305,7 @@ class Scheduler
     @countrecords += oai.records.count  
     # 2)
     convert_oai_records(oai.records, library, params)
-    write_oairesponse_to_file(oai.records, library, params) if params[:save_oairesponse]
+    write_oairesponse_to_file(oai.response, library, params) if params[:save_oairesponse]
     # 3) do the resumption loop...
     until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
       # fetch remainder if resumption token
