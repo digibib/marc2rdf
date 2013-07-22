@@ -358,7 +358,7 @@ class Scheduler
   # 2a) dup oai records to file if chosen
   def write_oairesponse_to_file(oairesponse, library, params={})
     file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
-    file.write(oairesponse.doc)) if file
+    file.write(oairesponse.doc) if file
   end
     
   # 2a) write converted records to ntriples file if chosen
