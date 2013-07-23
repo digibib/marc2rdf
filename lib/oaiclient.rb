@@ -113,7 +113,7 @@ class OAIClient
     xml = IO.read(file).force_encoding('ASCII-8BIT')
     response = Faraday.new(:url => 'http://example.com') do |builder|
       builder.adapter :test do |stub|
-        stub.get('/oai', :from => "1970-01-01", :metadataPrefix => 'bibliofilmarc', :until=> '1970-01-01', :verb=>'ListRecords') {[200, {}, xml]}
+        stub.get('/oai?from=1970-01-01&metadataPrefix=bibliofilmarc&until=1970-01-01&verb=ListRecords') {[200, {}, xml]}
       end
     end
     dummyoai = OAIClient.new('http://example.com/oai', :http => response, :format => 'bibliofilmarc')
