@@ -110,7 +110,6 @@ class OAIClient
   
   # load response from previously saved file  
   def query_from_file(file, params={})
-    file = params
     xml = IO.read(file).force_encoding('ASCII-8BIT')
     response = Faraday.new(:url => 'http://example.com/oai') do |builder|
       builder.adapter :test do |stub|
