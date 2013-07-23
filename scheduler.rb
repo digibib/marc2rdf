@@ -276,10 +276,15 @@ class Scheduler
         return nil
       end
       begin
-        
-        oai.client.list_records.full.each do |record|
-          convert_record(record, library, params={})
+        files = Dir.glob("../db/converted/full/*").sort  
+        files.each do |file|
+          oai.query_from_file(file)
+          convert_oai_records(oai.records, library, params)
         end
+        # impossibly slow, convert from saved files instead
+        #oai.client.list_records.full.each do |record|
+        #  convert_record(record, library, params={})
+        #end
       
         length = Time.now - timing_start
         logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 

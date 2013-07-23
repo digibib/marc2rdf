@@ -107,6 +107,22 @@ class OAIClient
     self.response.each {|r| self.records << r }
     self.records
   end
+  
+  # load response from previously saved file  
+  def query_from_file(file, params={})
+    file = params
+    xml = IO.read(file).force_encoding('ASCII-8BIT')
+    response = Faraday.new(:url => 'http://example.com/oai') do |builder|
+      builder.adapter :test do |stub|
+        stub.get('/') {[200, {}, xml]}
+      end
+    end
+    oai = OAIClient.new('http://example.com/oai', :http => response, :format => 'bibliofilmarc')
+    oai.query :from => "1970-01-01", :set => ""
+    self.records = []
+    self.response.each {|r| self.records << r }
+    self.records
+  end
     
   # query OAI for specific records
   def get_record(params={})
