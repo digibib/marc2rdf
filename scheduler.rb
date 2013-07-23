@@ -276,7 +276,7 @@ class Scheduler
         return nil
       end
       begin
-        files = Dir.glob("../db/converted/full/*").sort  
+        files = Dir.glob(File.join(File.dirname(__FILE__),'db','converted','full', '*')).sort  
         files.each do |file|
           oai.query_from_file(file)
           convert_oai_records(oai.records, library, params)

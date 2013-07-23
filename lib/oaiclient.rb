@@ -117,8 +117,8 @@ class OAIClient
         stub.get('/') {[200, {}, xml]}
       end
     end
-    oai = OAIClient.new('http://example.com/oai', :http => response, :format => 'bibliofilmarc')
-    oai.query :from => "1970-01-01", :set => ""
+    dummyoai = OAIClient.new('http://example.com/oai', :http => response, :format => 'bibliofilmarc')
+    self.response = dummyoai.query :from => "1970-01-01", :set => ""
     self.records = []
     self.response.each {|r| self.records << r }
     self.records
