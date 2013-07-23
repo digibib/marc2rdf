@@ -111,13 +111,13 @@ class OAIClient
   # load response from previously saved file  
   def query_from_file(file, params={})
     xml = IO.read(file).force_encoding('ASCII-8BIT')
-    response = Faraday.new(:url => 'http://example.com/oai') do |builder|
+    response = Faraday.new(:url => 'http://example.com') do |builder|
       builder.adapter :test do |stub|
-        stub.get('/') {[200, {}, xml]}
+        stub.get('/oai', :from => "1970-01-01", :metadataPrefix => 'bibliofilmarc', :until=> '1970-01-01', :verb=>'ListRecords') {[200, {}, xml]}
       end
     end
     dummyoai = OAIClient.new('http://example.com/oai', :http => response, :format => 'bibliofilmarc')
-    self.response = dummyoai.query :from => "1970-01-01", :set => ""
+    self.response = dummyoai.query :from => "1970-01-01", :until => "1970-01-01", :set => ""
     self.records = []
     self.response.each {|r| self.records << r }
     self.records
