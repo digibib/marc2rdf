@@ -253,6 +253,8 @@ class Scheduler
     end
   end
   
+  # convert a previously harvested set
+  # NOTE: for now, only converts from previosly saved oai response
   def convert_full_oai_set(params={})
     start_time = Time.parse("#{params[:start_time]}") rescue Time.now
     params[:tags]          ||= "oaiharvest"
@@ -332,7 +334,7 @@ class Scheduler
     timing_start = Time.now
     @rdfrecords = []
     # 2) convert harvested records, based on Library's chosen mapping
-    oairecords.each { |record| convert_record(record, library, params={}) } 
+    oairecords.each { |record| convert_record(record, library, params) } 
     logger.info "Time to convert #{oairecords.count} records: #{Time.now - timing_start} s."
   end
   
