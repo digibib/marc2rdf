@@ -108,8 +108,8 @@ class BatchHarvest
   def self.rdfstore_query(params={})
     # takes params minuses|limit|offset|predicate
     params[:limit]     ||= 10
-    params[:type]      ||= "RDF::BIBO.Document"
-    params[:predicate] ||= "RDF::BIBO.isbn"
+    params[:type]      ||= "BIBO.Document"
+    params[:predicate] ||= "BIBO.isbn"
     params[:graph]     ||= SETTINGS["global"]["default_graph"]
     minus = params[:minuses].map { |m| [:edition, RDF.module_eval("#{m}"), :object] } if params[:minuses]
 

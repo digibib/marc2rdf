@@ -166,10 +166,11 @@ class Scheduler
   end
   
   ### History 
-  def read_history
+  def read_history(limit=20)
     logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
     open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
     log = JSON.parse(IO.read(logfile))
+    {"history" => log["history"].take(limit)}
   end
   
   def write_history(logline)
@@ -424,14 +425,14 @@ class Scheduler
       #logger.info "Batch Harvest solutions #{batchsolutions.inspect}"
       if harvester.local['subject'] == 'work'
         # RDFstore lookup to find work URI
-        query = QUERY.select(:work).from(library.config['resource'])
+        query = QUERY.select(:work).from(library.config['resource']['default_graph'])
           query.where([:work, RDF::FABIO.hasManifestation, batchsolutions.first.edition])
           query.limit(1)
         results = REPO.select(query)
         next if results.empty?
         batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:work => results.first.work))}
       else
-        # work = edition
+        # dummy work = edition
         batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:work => batchsolutions.first.edition))}
       end
       
@@ -443,6 +444,11 @@ class Scheduler
       # and insert harvested triples into RDF store
       SparqlUpdate.insert_harvested_triples(library.config['resource']['default_graph'], bh.statements)
       @harvestcount += bh.statements.count
+      # write harvested ntriples to file if chosen
+      if params[:write_records]
+        file = File.open(File.join(File.dirname(__FILE__), "./db/harvested", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+')
+        file.write(RDFModeler.write_ntriples(bh.statements)) if file
+      end
     end
   end
 
