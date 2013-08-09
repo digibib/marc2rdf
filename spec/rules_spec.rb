@@ -79,7 +79,7 @@ describe Rule do
       cron_id = @scheduler.schedule_isql_rule(@rule)
       find_jobs = @scheduler.find_jobs_by_tag('A dummy tag')
       find_jobs.should_not be_empty
-      find_jobs.first.job_id.should == cron_id.job_id
+      find_jobs[find_jobs.keys.first].job_id.should == cron_id.job_id
     end   
   end
 end

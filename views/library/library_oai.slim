@@ -29,7 +29,7 @@ h3 OAI harvester settings
             select[id="oai_parser"]
               option[selected=("selected" if library.oai['parser'] == "libxml")] libxml
               option[selected=("selected" if library.oai['parser'] == "rexml")] rexml
-          td parser for OAI XML response (libxml deactivated for now, segfaults)
+          td parser for OAI XML response (NB: test libxml before production, may segfault)
         tr
           td timeout
           td: input[type="text" id="oai_timeout" value=(library.oai['timeout']) ]

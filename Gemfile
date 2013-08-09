@@ -30,10 +30,9 @@ group :development, :test do
 end
 
 group :test do
-#  gem "sinatra-spec"
   gem "rspec"
   gem "rdf-spec"
-  gem "rspec-mocks"
+  gem "rack-test"
   gem "webmock"
   gem "minitest"
 end
