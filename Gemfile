@@ -7,9 +7,8 @@ gem "marc"
 gem "rdf"
 gem "rdf-rdfxml"
 gem "rdf-n3"
-gem "rdf-virtuoso"#, "~> 0.1.5"
-#gem "rdf-virtuoso", :path => '../rdf-virtuoso'
-gem "oai"#, '0.2.0'
+gem "rdf-virtuoso", :require => 'rdf/virtuoso'
+gem "oai", :git => 'https://github.com/code4lib/ruby-oai.git'
 gem "libxml-ruby" # maybe broken!! but faster OAI processing
 gem "rest-client"
 gem "rake"

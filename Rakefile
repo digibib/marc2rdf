@@ -19,7 +19,7 @@ end
 desc "Run IRB console with app environment"
 task :console do
   puts "Loading development console..."
-  system("irb -r ./config/boot.rb")
+  system("irb -r ./api.rb")
 end
 
 desc "Starts the Scheduler worker"
@@ -33,15 +33,20 @@ task :load_activated_schedules do
   require_relative "./config/init.rb"
   
   t = Thread.new do 
+    puts "waiting 5 sec before activating schedules..."
     sleep(5)
     Scheduler = DRbObject.new_with_uri DRBSERVER
     begin
       ### activate library OAI schedules ###
       Library.all.each do |library|
-        Scheduler.schedule_oai_harvest(:id => library.id) unless library.oai["schedule"].empty?
+        next unless library.oai["schedule"]
+        unless library.oai["schedule"].empty?
+          Scheduler.schedule_oai_harvest(:id => library.id) 
+          puts "Activating OAI scheduled harvest: #{library.name}"
+        end
       end
     rescue Exception => e
-      puts "error #{e}: must be activated after app is running"
+      puts "error #{e}"
     end
     begin
       ### activate scheduled global Rules ###
@@ -49,13 +54,14 @@ task :load_activated_schedules do
         if not rule.frequency.empty? and rule.type == "global"
           rule.globalize
           rule.sanitize
-          puts rule
+          puts "Activating scheduled rule: #{rule.name}"
           Scheduler.schedule_isql_rule(rule) 
         end
       end
     rescue Exception => e
-      puts "error #{e}: must be activated after app is running"
+      puts "error #{e}"
     end
+    puts "...done"
     sleep()
   end
   t.join
