@@ -175,6 +175,7 @@ class Scheduler
   
   def write_history(logline)
     logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
+    open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
     log = self.read_history
     log["history"] << logline
     open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(log.to_json))) } 
