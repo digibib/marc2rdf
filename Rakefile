@@ -24,13 +24,13 @@ end
 
 desc "Starts the Scheduler worker"
 task :scheduler do
-  require './lib/rules.rb'
+  require File.join(File.dirname(__FILE__), 'lib', 'rules.rb')
   scheduler.join
 end
 
 desc "activates all saved schedules and scheduled rules if Scheduler is restarted and in production mode"
 task :load_activated_schedules do
-  require_relative "./config/init.rb"
+  require File.join(File.dirname(__FILE__), 'config', 'init.rb')
   
   t = Thread.new do 
     puts "waiting 5 sec before activating schedules..."

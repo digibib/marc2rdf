@@ -1,7 +1,7 @@
 #encoding: utf-8
 # Scheduler Server 
 $stdout.sync = true
-require_relative "./config/init.rb"
+require File.join(File.dirname(__FILE__), 'config', 'init.rb')
 require 'logger'
 require 'eventmachine'
 require 'tempfile'
@@ -170,7 +170,7 @@ class Scheduler
     logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
     open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
     log = JSON.parse(IO.read(logfile))
-    {"history" => log["history"].take(limit)}
+    {"history" => log["history"].reverse.take(limit)}
   end
   
   def write_history(logline)

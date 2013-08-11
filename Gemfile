@@ -2,20 +2,20 @@ source "https://rubygems.org"
 gem "builder"
 gem "bundler"
 gem "nokogiri"
-gem "net-http-persistent"
+gem "net-http-persistent", :require => 'net/http/persistent'
 gem "marc"
 gem "rdf"
-gem "rdf-rdfxml"
-gem "rdf-n3"
+gem "rdf-rdfxml", :require => 'rdf/rdfxml'
+gem "rdf-n3", :require => 'rdf/n3'
 gem "rdf-virtuoso", :require => 'rdf/virtuoso'
 gem "oai", :git => 'https://github.com/code4lib/ruby-oai.git'
-gem "libxml-ruby" # maybe broken!! but faster OAI processing
+gem "libxml-ruby"# maybe broken!! but faster OAI processing
 gem "rest-client"
 gem "rake"
 gem "grape"#, "0.2.4" # json parameter parse broken after 0.2.4
 gem "sinatra"
-gem "sinatra-contrib"
-gem "rufus-scheduler"
+gem "sinatra-contrib", :require => 'sinatra/contrib'
+gem "rufus-scheduler", :require => 'rufus/scheduler'
 gem "slim"
 gem "tilt"
 gem "thin"

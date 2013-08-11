@@ -14,7 +14,7 @@ require 'drb'
 Encoding.default_external = Encoding::UTF_8
 
 # read configuration file into constants
-CONFIG_FILE   = File.join(File.dirname(__FILE__), '../config/', 'settings.json')
+CONFIG_FILE   = File.join(File.dirname(__FILE__), '..', 'config', 'settings.json')
 SETTINGS      = JSON.parse(IO.read(CONFIG_FILE))
 REPO          = RDF::Virtuoso::Repository.new(
               SETTINGS["repository"]["sparql_endpoint"],
@@ -36,6 +36,6 @@ DRBSERVER = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
 #MARC::XMLReader.best_available!
 
 # load all library files
-Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each do |file|
+Dir[File.join(File.dirname(__FILE__), '..', 'lib', '*.rb')].each do |file|
   require file
 end
