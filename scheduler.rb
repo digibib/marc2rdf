@@ -170,7 +170,7 @@ class Scheduler
     logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
     open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
     log = JSON.parse(IO.read(logfile))
-    {"history" => log["history"].reverse.take(limit)}
+    {"history" => log["history"].take(limit)}
   end
   
   def write_history(logline)

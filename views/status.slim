@@ -179,7 +179,7 @@ javascript:
     // ** get history, populate status table
     $.getJSON('/api/scheduler/history', function(data) {
       var rows = $('<tr>');
-      $.each(data.history(), function(i,job){
+      $.each(data.history, function(i,job){
         job.job_id ? job_id = job.job_id : job_id = job.cron_id;
         job.rule ? rule_href = '<td><a href="/rules/'+job.rule+'">'+job.rule+'</a></td>' : rule_href = '<td>';
         $('<tr>').attr('id',i)

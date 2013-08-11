@@ -288,10 +288,14 @@ class Scheduling < Grape::API
                 
     ### History ###
     desc "get scheduler history"
+      params do
+        optional :limit,  type: Integer, desc: "limit history result"
+      end
     get "/history" do
       content_type 'json'
-      log = Scheduler.read_history
-      { :history => log["history"] }
+      params[:limit] ||= 20
+      log = Scheduler.read_history(params[:limit])
+      { :history => log["history"].reverse }
     end
   end # end scheduler namespace
 end
