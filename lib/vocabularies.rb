@@ -1,32 +1,75 @@
 #encoding: utf-8
 
-# Initialize additional vocabularies we will be drawing from
-# Existing vocabularies are listed on http://rdf.rubyforge.org/
-# NB! protected methods must be overridden! (with e.g. property :name)
-module RDF
-  class BIBO < RDF::Vocabulary("http://purl.org/ontology/bibo/");end
-  class RDFS < RDF::Vocabulary("http://www.w3.org/2000/01/rdf-schema#");end
-  class XFOAF < RDF::Vocabulary("http://www.foafrealm.org/xfoaf/0.1/")
-    property :name
+Vocabulary = Struct.new(:prefix, :uri)
+class Vocabulary
+  # Simple Class for RDF Vocabularies used in app 
+  
+  ## Class methods
+  
+  def self.all
+    vocabularies = []
+    file     = File.join(File.dirname(__FILE__), '../db/', 'vocabularies.json')
+    template = File.join(File.dirname(__FILE__), '../config/templates/', 'vocabularies.json')
+    # first create vocabularies.json file from template if it doesn't exist already
+    unless File.exist?(file)
+      open(file, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(IO.read(template))))}
+    end
+    File.copy(template, file) unless File.exist?(file)
+    data = JSON.parse(IO.read(file))
+    data.each {|vocabulary| vocabularies << vocabulary.to_struct("Vocabulary") }
+    vocabularies
   end
-  class LEXVO < RDF::Vocabulary("http://lexvo.org/ontology#")
-    property :name
+  
+  def self.find(params)
+    return nil unless params[:prefix]
+    Vocabulary.all.detect {|vocab| vocab.prefix == params[:prefix] }
   end
-  class DEICH < RDF::Vocabulary("http://data.deichman.no/");end
-  class REV < RDF::Vocabulary("http://purl.org/stuff/rev#");end
-  class DBO < RDF::Vocabulary("http://dbpedia.org/ontology/");end
-  class FABIO < RDF::Vocabulary("http://purl.org/spar/fabio/");end
-  class FRBR < RDF::Vocabulary("http://purl.org/vocab/frbr/core#");end  
-  class RDA < RDF::Vocabulary("http://rdvocab.info/Elements/");end  
-  class GEONAMES < RDF::Vocabulary("http://www.geonames.org/ontology#")
-    property :name
+
+  ## Instance methods  
+  
+  # add new vocabulary
+  def create(params={})
+    self.members.each {|name| self[name] = params[name] unless params[name].nil? } 
+    self
+  end
+  
+  def update(params={})
+    self.members.each {|name| self[name] = params[name] unless params[name].nil? }
+    save
+  end
+  
+  def save
+    return nil unless self.prefix
+    vocabularies = Vocabulary.all
+    match = Vocabulary.find(:prefix => self.prefix)
+    if match
+      # overwrite vocab if match
+      vocabularies.map! { |vocab| vocab.prefix == self.prefix ? self : vocab}
+    else
+      # new vocab if no match
+      vocabularies << self
+    end 
+    open(File.join(File.dirname(__FILE__), '../db/', 'vocabularies.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(vocabularies.to_json))) } 
+    self.set
+    self
+  end
+  
+  def delete
+    vocabularies = Vocabulary.all
+    vocabularies.delete_if {|vocab| vocab.prefix == self.prefix }
+    open(File.join(File.dirname(__FILE__), '../db/', 'vocabularies.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(vocabularies.to_json))) } 
+    self.unset
+    vocabularies
+  end
+  
+  # imports RDF Vocabulary
+  def set
+    RDF.const_set(self.prefix.upcase, RDF::Vocabulary.new("#{self.uri}"))
   end  
-  class MO < RDF::Vocabulary("http://purl.org/ontology/mo/");end
-  class YAGO < RDF::Vocabulary("http://dbpedia.org/class/yago/");end 
-  class CTAG < RDF::Vocabulary("http://commontag.org/ns#");end 
-  class RADATANA < RDF::Vocabulary("http://def.bibsys.no/xmlns/radatana/1.0#");end 
-  class SIOC < RDF::Vocabulary("http://rdfs.org/sioc/ns#");end
-  class ACC < RDF::Vocabulary("http://purl.org/NET/acc#");end
-  class ORG < RDF::Vocabulary("http://www.w3.org/ns/org#");end
-  class IFACE < RDF::Vocabulary("http://www.multimedian.nl/projects/n9c/interface#");end
+
+  # undefines RDF constant
+  def unset
+    RDF.send(:remove_const, self.prefix.upcase.to_sym)
+  end
+  
 end

@@ -73,6 +73,7 @@ module API
     mount API::Scheduling
     mount API::Rules
     mount API::Harvester
+    mount API::Vocabularies
       
     before do
       # Of course this makes the request.body unavailable afterwards.

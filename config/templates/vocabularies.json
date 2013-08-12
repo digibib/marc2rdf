@@ -1,0 +1,10 @@
+[
+  {
+      "prefix": "foo",
+      "uri": "http://foo/"
+  },
+  {
+      "prefix": "bar",
+      "uri": "http://bar#"
+  }
+]

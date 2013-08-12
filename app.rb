@@ -1,7 +1,7 @@
 #encoding: utf-8
 $stdout.sync = true # gives foreman full stdout
-require_relative './config/init.rb'
-require_relative 'lib/auth'
+require File.join(File.dirname(__FILE__), 'config', 'init')
+require File.join(File.dirname(__FILE__), 'lib', 'auth')
 
 class APP < Sinatra::Base
   register Sinatra::SessionAuth
@@ -22,17 +22,13 @@ class APP < Sinatra::Base
   
   configure :development do
     register Sinatra::Reloader
-    log = File.new("logs/development.log", "a+") 
+    log = File.new(File.join(File.dirname(__FILE__), 'logs', 'development.log'), "a+") 
   end
   
   configure :production do
-    log = File.new("logs/development.log", "a+") 
+    log = File.new(File.join(File.dirname(__FILE__), 'logs', 'production.log'), "a+") 
   end
   
-  # use internal session hash for global session, not cookies
-  # not used yet
-  globalsession = {}
-
   # Routing
   get '/' do
     # Front page
@@ -94,13 +90,13 @@ class APP < Sinatra::Base
 
   # download converted file  
   get '/convert/:filename' do |filename|
-    send_file "./db/converted/#{filename}", :filename => filename, :type => 'text/plain'
+    send_file File.join(File.dirname(__FILE__), 'db', 'converted', "#{filename}"), :filename => filename, :type => 'text/plain'
   end
   
   # show list of files
   get '/files' do
     authorize!
-    files = Dir.glob("./db/converted/*.*").map{|f| f.split('/').last}
+    files = Dir.glob(File.join(File.dirname(__FILE__), 'db', 'converted', "*")).map{|f| f.split('/').last}
     # render list here
     slim :files, :locals => {:files => files, :library => session[:library], :session_key => session[:secret_key]}
   end

@@ -197,7 +197,7 @@ class RDFModeler
                   subfields[1]['conditions']['subfield'].each do | key,value |
                     m = "#{marcfield[key]}"
                     unless m.empty?
-                      predicate = m.gsub(/[\W]+/, '').downcase
+                      predicate = m.gsub(/[\.\-]+/, '').downcase
                       predicate.scan(/#{value['orig']}/) do |match| 
                         @predicate = value['subs'][match]
                       end
@@ -225,7 +225,7 @@ class RDFModeler
                 @predicate = subfields[1]['predicate']
               end   
               ####
-        ## RELATIONS: make class and create relations from subfields
+              ## RELATIONS: make class and create relations from subfields
               ####
               if subfields[1].has_key?('relation')
 =begin

@@ -51,7 +51,7 @@ class Rule
     return nil unless self.id
     rules = Rule.all
     match = Rule.find(:id => self.id)
-    #sanitize # clean script before saving
+    sanitize # clean script before saving
     if match
       # overwrite rule if match
       rules.map! { |rule| rule.id == self.id ? self : rule}
@@ -66,7 +66,7 @@ class Rule
   def delete
     return nil unless self.id
     rules = Rule.all
-    rules.delete_if {|lib| lib.id == self.id }
+    rules.delete_if {|rule| rule.id == self.id }
     open(File.join(File.dirname(__FILE__), '../db/', 'rules.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(rules.to_json))) } 
     rules
   end

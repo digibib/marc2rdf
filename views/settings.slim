@@ -1,6 +1,6 @@
 // This file contains advanced settings for rdf store and harvesting
 h2 Settings
-h3[style="margin-left:24px"] RDF-store (saving is disabled)
+h3[style="margin-left:24px"] RDF-store
 
 // This form contains RDF store settings
 div class="divdot inputf"  
@@ -20,11 +20,11 @@ div class="divdot inputf"
         td url to sparql update endpoint    
       tr
         td username
-        td: input[type="text" id="username" disabled="true" value="*******"]
+        td: input[type="text" id="username" value=(settings['repository']['username'])]
         td username for sparql update
       tr
         td password
-        td: input[type="text" id="password" disabled="true" value="*******"]
+        td: input[type="password" id="password" value=(settings['repository']['password'])]
         td password for sparql update   
       tr
         td auth_method
@@ -34,22 +34,180 @@ div class="divdot inputf"
             option[selected=("selected" if settings['repository']['auth_method'] == "basic")] basic
         td sparql update authentication method
       tr
+        td timeout
+        td: input[type="text" id="username" value=(settings['repository']['timeout']) ]
+        td timeout for sparql requests        
+      tr
         td: button[type="button" id="rdfstore_settings_save" class="gen"]  = "Save"
         td
-          span[id="rdfstore_info" class="info" style="margin-left:48px"]
-          span[id="rdfstore_error" class="error" style="margin-left:48px"]
+          span[id="rdfstore_settings_info" class="info" style="margin-left:48px"]
+          span[id="rdfstore_settings_error" class="error" style="margin-left:48px"]
 
-h3[style="margin-left:24px"] Global settings (saving is disabled)
+h3[style="margin-left:24px"] Global settings
 
 // This form contains Global settings
 div class="divdot inputf"  
   table class="genform"
-    form id="change_rdfstore_settings_form" 
+    form id="change_global_settings_form" 
       tr
         td default graph
         td: input[type="text" id="default_graph" value=(settings['global']['default_graph'])]
         td 
       tr
         td default prefix
-        td: input[type="text" id="default_graph" value=(settings['global']['default_prefix'])]
+        td: input[type="text" id="default_prefix" value=(settings['global']['default_prefix'])]
         td default prefix used in Rules to generate URIs
+      tr
+        td: button[type="button" id="global_settings_save" class="gen"]  = "Save"
+        td
+          span[id="global_settings_info" class="info" style="margin-left:48px"]
+          span[id="global_settings_error" class="error" style="margin-left:48px"]
+
+h3[style="margin-left:24px"] Vocabularies
+
+// This form contains Vocabularies
+div class="divdot inputf"
+  table class="genform" id="change_vocabularies"
+    form 
+      thead
+        tr
+          th: button[type='button' class="add_vocabulary"]  = "add new"
+          th prefix
+          th uri
+      tbody
+        - Vocabulary.all.each do |vocab|
+          tr
+            td
+            td: input[style="width:80px" type="text" class="vocabulary_prefix" value=(vocab.prefix)]
+            td: input[style="width:320px" type="text" class="vocabulary_uri" value=(vocab.uri)]
+            td: button[type='button' class="delete_vocabulary"] = "delete"
+        tr
+          td
+            span[id="vocabularies_info" class="info" style="margin-left:48px"]
+            span[id="vocabularies_error" class="error" style="margin-left:48px"]
+  
+javascript:
+  
+  $(document).on('ready', function () {
+    var session_key = $('#active_session_key').html();
+    $(document).ajaxSend(function(e, xhr, settings) {
+      xhr.setRequestHeader('SECRET_SESSION_KEY', session_key);
+    });
+    
+    // ** save rdfstore settings
+    $('#rdfstore_settings_save').on('click', function() {
+      var request = $.ajax({
+        url: '/api/settings/save',
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        cache: false,
+        data: JSON.stringify({
+            store: $('input#store').val(),
+            sparql_endpoint: $('input#sparql_endpoint').val(),
+            sparul_endpoint: $('input#save_mapping_name').val(),
+            username: $('input#username').val(),
+            password: $('input#password').val(),
+            timeout: $('input#timeout').val()
+            }),
+        dataType: 'json'
+      });
+      request.done(function(data) {
+        if( console && console.log ) {
+          console.log("updated settings:", JSON.stringify(data).slice(0, 300));
+        }
+        $('span#rdfstore_settings_info').html("Saved settings OK!").show().fadeOut(3000);
+      });
+
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#rdfstore_settings_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });        
+
+    // ** save global settings
+    $('#global_settings_save').on('click', function() {
+      var map_id = $('input#save_mapping_id').val();
+      var request = $.ajax({
+        url: '/api/settings/save',
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        cache: false,
+        data: JSON.stringify({
+            default_graph: $('input#default_graph').val(),
+            default_prefix: $('input#default_prefix').val()
+            }),
+        dataType: 'json'
+      });
+      request.done(function(data) {
+        if( console && console.log ) {
+          console.log("updated global settings:", JSON.stringify(data).slice(0, 300));
+        }
+        $('span#global_settings_info').html("Saved global settings OK!").show().fadeOut(3000);
+      });
+
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#global_settings_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    }); 
+
+    // ** VOCABULARY
+
+    $("#change_vocabularies").delegate(".add_vocabulary", "click", function(){
+      var data = '<tr><td></td>' + 
+         '<td><input type="text" class="vocabulary_prefix" style="width:80px" /></td>' +
+         '<td><input type="text" class="vocabulary_uri" style="width:320px" /></td>' +
+         '<td><button class="save_vocabulary">save</button></td></tr>';
+         
+      $("#change_vocabularies").append(data);
+      return false;
+    });
+        
+    // save vocabulary
+    $('button.save_vocabulary').on('click', function() {
+      var row = $(this).closest('tr');
+      var request = $.ajax({
+        url: '/api/vocabularies',
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+          prefix: row.attr('vocabulary_prefix'),
+          uri: row.attr('vocabulary_uri')
+          }),
+        cache: false,
+        dataType: 'json'
+      });
+      
+      request.done(function(data) {
+        $('span#vocabularies_info').html("Activated Local Rule OK!").show().fadeOut(3000);
+        // toggle activate/deactivate buttons
+        row.find('button.save_vocabulary').hide();
+        row.append('<input type="button" value="delete" class="delete_vocabulary">')
+      });
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#vocabularies_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });
+
+    // delete vocabulary
+    $('button.delete_vocabulary').on('click', function() {
+      var row = $(this).closest('tr');
+      var request = $.ajax({
+        url: '/api/vocabularies',
+        type: 'DELETE',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ 
+          prefix: row.attr('vocabulary_prefix')
+          }),
+        cache: false,
+        dataType: 'json'
+      });
+      
+      request.done(function(data) {
+        $('span#vocabularies_info').html("Deleted vocabulary OK!").show().fadeOut(3000);
+        $(this).closest("tr").remove();
+      });
+      request.fail(function(jqXHR, textStatus, errorThrown) {
+        $('span#vocabularies_error').html(jqXHR.responseText).show().fadeOut(5000);
+      });
+    });    
+            
+  });

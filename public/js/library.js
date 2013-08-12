@@ -511,7 +511,7 @@ $(document).ready(function () {
     });
   });
   
-    // activate local rule
+  // activate local rule
   $('button.activate_rule').on('click', function() {
     var row = $(this).closest('tr');
     var request = $.ajax({
