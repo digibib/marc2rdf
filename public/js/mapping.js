@@ -125,4 +125,62 @@ $(document).ready(function () {
     }
   }); 
 
+  // ** VOCABULARY
+
+  $("#change_vocabularies").delegate(".add_vocabulary", "click", function(){
+    var data = '<tr><td></td>' + 
+       '<td><input type="text" class="vocabulary_prefix" style="width:80px" /></td>' +
+       '<td><input type="text" class="vocabulary_uri" style="width:320px" /></td>' +
+       '<td><button class="save_vocabulary">save</button></td></tr>';
+       
+    $("#change_vocabularies").append(data);
+    return false;
+  });
+      
+  // save vocabulary
+  $("#change_vocabularies").delegate('.save_vocabulary', 'click', function() {
+    var row = $(this).closest('tr');
+    var request = $.ajax({
+      url: '/api/vocabularies',
+      type: 'POST',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({ 
+        prefix: row.find('.vocabulary_prefix').val(),
+        uri: row.find('.vocabulary_uri').val()
+        }),
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#vocabularies_info').html("Added vocabulary OK!").show().fadeOut(3000);
+      // toggle save/delete button
+      row.find('button.save_vocabulary').removeClass('save_vocabulary').addClass('delete_vocabulary').text('delete');
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#vocabularies_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+    return false;
+  });
+
+  // delete vocabulary
+  $("#change_vocabularies").delegate('.delete_vocabulary', 'click', function() {
+    var row = $(this).closest('tr');
+    var request = $.ajax({
+      url: '/api/vocabularies/' + row.find('.vocabulary_prefix').val(),
+      type: 'DELETE',
+      contentType: "application/json; charset=utf-8",
+      cache: false,
+      dataType: 'json'
+    });
+    
+    request.done(function(data) {
+      $('span#vocabularies_info').html("Deleted vocabulary OK!").show().fadeOut(3000);
+      row.remove();
+    });
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('span#vocabularies_error').html(jqXHR.responseText).show().fadeOut(5000);
+    });
+    return false;
+  });
 });

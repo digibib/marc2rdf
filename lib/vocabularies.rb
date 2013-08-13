@@ -41,6 +41,11 @@ class Vocabulary
   
   def save
     return nil unless self.prefix
+    protected = [:VERSION, :VOCABS, :RDFXML, :XML, :N3, :IRI, :URI]
+    # ignore predefined? presently no
+    ignore = [:DC, :FOAF, :DC11, :RDFS, :WOT, :XSD, :HTTP, :MA, :DOAP, :RSS, :CC, :GEO, :EXIF, 
+        :CERT, :SIOC, :SKOS, :OWL, :XHTML, :RSA, :LOG, :REI]
+    return nil if protected.any? {|p| self.prefix.upcase.to_sym == p }
     vocabularies = Vocabulary.all
     match = Vocabulary.find(:prefix => self.prefix)
     if match
@@ -60,17 +65,17 @@ class Vocabulary
     vocabularies.delete_if {|vocab| vocab.prefix == self.prefix }
     open(File.join(File.dirname(__FILE__), '..', 'db', 'vocabularies.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(vocabularies.to_json))) } 
     self.unset
-    vocabularies
   end
   
   # defines RDF Vocabulary
   def set
-    RDF.const_set(self.prefix.upcase, RDF::Vocabulary.new("#{self.uri}"))
+    RDF.send(:const_set, self.prefix.upcase.to_sym, RDF::Vocabulary.new("#{self.uri}"))
   end  
 
-  # undefines RDF constant
+  # undefines RDF Vocabulary
   def unset
-    RDF.send(:remove_const, self.prefix.upcase.to_sym)
+    const = self.prefix.upcase.to_sym
+    RDF.send(:remove_const, const) if RDF.const_defined?(const)
   end
   
 end

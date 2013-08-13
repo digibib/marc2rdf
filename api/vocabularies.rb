@@ -8,7 +8,7 @@ module API
       get "/" do
         content_type 'json'
         unless params[:prefix]
-          { :vocabularies => Vocabulary.all }
+          { :vocabularies => Vocabulary.all.sort_by {|v|v.prefix} }
         else
           logger.info params
           vocabulary = Vocabulary.find(params)
@@ -25,9 +25,10 @@ module API
       post "/" do
         content_type 'json'
         vocabulary = Vocabulary.new.create(params)
-        vocabulary.save
-        logger.info "POST: params: #{params} - created vocabulary: #{vocabulary}"
-        { :vocabulary => vocabulary }
+        result = vocabulary.save
+        error!("Illegal or protected prefix", 404) unless result
+        logger.info "POST: params: #{params} - created vocabulary: #{result}"
+        { :vocabulary => result }
       end
       
       desc "edit/update vocabulary"
@@ -38,18 +39,20 @@ module API
       put "/" do
         content_type 'json'
         vocabulary = Vocabulary.find(:prefix => params[:prefix])
-        vocabulary.update(params)
-        logger.info "updated vocabulary: #{vocabulary}"
-        { :vocabulary => vocabulary}
+        result = vocabulary.update(params)
+        error!("Illegal or protected prefix", 404) unless result
+        logger.info "updated vocabulary: #{result}"
+        { :vocabulary => result}
       end
       
       desc "delete a vocabulary"
       delete "/:prefix" do
         content_type 'json'
         vocabulary = Vocabulary.find(:prefix => params[:prefix])
-        vocabulary.delete
-        logger.info "DELETE: params: #{params} - deleted vocabulary: #{vocabulary}"
-        { :vocabulary => vocabulary }
+        error!("Vocabulary not found", 404) unless vocabulary
+        result = vocabulary.delete
+        logger.info "DELETE: params: #{params} - deleted vocabulary: #{result}"
+        { :vocabulary => result }
       end        
     end # end vocabularies namespace    
   end

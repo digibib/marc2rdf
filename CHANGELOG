@@ -1,4 +1,10 @@
 = marc2rdf CHANGELOG
+0.1.9
+  Vocabularies can be edited in settings
+  Preparing for 1.0.0 release
+0.1.8
+  Repository and global settings editable
+  Minor bugfixes 
 0.1.7
   More bugfixes in scheduler and OAI client
   External harvester can harvest to Work

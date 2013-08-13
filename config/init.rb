@@ -39,3 +39,6 @@ DRBSERVER = 'druby://localhost:9009' unless ENV['RACK_ENV'] == 'test'
 Dir[File.join(File.dirname(__FILE__), '..', 'lib', '*.rb')].each do |file|
   require file
 end
+
+# import custom vocabularies
+Vocabulary.all.each {|v| v.set}

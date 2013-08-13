@@ -1,10 +1,94 @@
 [
   {
-      "prefix": "foo",
-      "uri": "http://foo/"
+    "prefix": "bibo",
+    "uri": "http://purl.org/ontology/bibo/"
   },
   {
-      "prefix": "bar",
-      "uri": "http://bar#"
+    "prefix": "rdfs",
+    "uri": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  {
+    "prefix": "xfoaf",
+    "uri": "http://www.foafrealm.org/xfoaf/0.1/"
+  },
+  {
+    "prefix": "lexvo",
+    "uri": "http://lexvo.org/ontology#"
+  },
+  {
+    "prefix": "deich",
+    "uri": "http://data.deichman.no/"
+  },
+  {
+    "prefix": "rev",
+    "uri": "http://purl.org/stuff/rev#"
+  },
+  {
+    "prefix": "dbo",
+    "uri": "http://dbpedia.org/ontology/"
+  },
+  {
+    "prefix": "fabio",
+    "uri": "http://purl.org/spar/fabio/"
+  },
+  {
+    "prefix": "frbr",
+    "uri": "http://purl.org/vocab/frbr/core#"
+  },
+  {
+    "prefix": "rda",
+    "uri": "http://rdvocab.info/Elements/"
+  },
+  {
+    "prefix": "geonames",
+    "uri": "http://www.geonames.org/ontology#"
+  },
+  {
+    "prefix": "mo",
+    "uri": "http://purl.org/ontology/mo/"
+  },
+  {
+    "prefix": "yago",
+    "uri": "http://dbpedia.org/class/yago/"
+  },
+  {
+    "prefix": "ctag",
+    "uri": "http://commontag.org/ns#"
+  },
+  {
+    "prefix": "radatana",
+    "uri": "http://def.bibsys.no/xmlns/radatana/1.0#"
+  },
+  {
+    "prefix": "sioc",
+    "uri": "http://rdfs.org/sioc/ns#"
+  },
+  {
+    "prefix": "acc",
+    "uri": "http://purl.org/NET/acc#"
+  },
+  {
+    "prefix": "org",
+    "uri": "http://www.w3.org/ns/org#"
+  },
+  {
+    "prefix": "iface",
+    "uri": "http://www.multimedian.nl/projects/n9c/interface#"
+  },
+  {
+    "prefix": "skos",
+    "uri": "http://www.w3.org/2004/02/skos/core#"
+  },
+  {
+    "prefix": "owl",
+    "uri": "http://www.w3.org/2002/07/owl#"
+  },
+  {
+    "prefix": "foaf",
+    "uri": "http://xmlns.com/foaf/0.1/"
+  },
+  {
+    "prefix": "dc",
+    "uri": "http://purl.org/dc/terms/"
   }
 ]

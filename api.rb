@@ -66,6 +66,7 @@ module API
     content_type :jpeg, "image/jpeg"
     use ApiErrorHandler
     
+    mount API::Settings
     mount API::Mappings
     mount API::Libraries
     mount API::Conversion

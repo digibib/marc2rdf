@@ -1,15 +1,29 @@
 h3 Mapping Editor
 // The mapping div
-button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Basic Template"
-button[type="button" id="save_mapping" class="gen"]  = "Update Mapping"
+div id="buttons"
+  button[type="button" id="load_template" class="gen" style="margin-left:48px"]  = "Load Basic Template"
+  button[type="button" id="save_mapping" class="gen"]  = "Update Mapping"
+  button[type="button" id="toJSON" class="convert" title="Copy from Editor to JSON" style="margin-left:800px"] = "Editor to JSON"
+  button[type="button" id="toForm" class="convert" title="Copy from JSON to Editor" style="margin-left:12px"] = "JSON to Editor"
+  
+  
 span[id="mapping_info" class="info" style="margin-left:48px"]
 span[id="mapping_error" class="error" style="margin-left:48px"]
     
 div id="auto"
   div id="contents"
-    div id="jsoneditor" 
-    div id="splitter" 
+    div id="jsoneditor"
+      h2 Editor
+    div id="splitter"
+      p Vocabularies
+      button[type="button" id="reload_vocabularies_list" class="gen"]  = "reload"
+      ul id="vocabularies_list"
+        - vocabs = Vocabulary.all.sort_by {|v|v.prefix}
+        - vocabs.each do |vocab|
+          li[title=(vocab.uri)] #{vocab.prefix.upcase}
     div id="jsonformatter"
+      h2 JSON
+      pre NB! if editing JSON directly below, remember to click 'JSON to Editor' button (upper right) before 'Update Mapping'
 
 javascript:
   // ** global vars
@@ -27,25 +41,10 @@ javascript:
   var editor = new jsoneditor.JSONEditor(editor_div);
   var formatter = new jsoneditor.JSONFormatter(text_div);
   
-  domSplitter.appendChild(document.createElement('br'));
-  var toJSON = document.createElement('button');
-  domSplitter.appendChild(document.createElement('br'));
-  domSplitter.appendChild(document.createElement('br'));
-  
-  toJSON.id = 'toJSON';
-  toJSON.title = 'Editor to JSON';
-  toJSON.className = 'convert';
+  var toJSON = document.getElementById('toJSON');
   toJSON.innerHTML = '<div class="convert-right"></div>';
-  domSplitter.appendChild(toJSON);
-  
-  var toForm = document.createElement('button');
-  toForm.id = 'toForm';
-  toForm.title = 'JSON to Editor';
-  toForm.className = 'convert';
+  var toForm = document.getElementById('toForm');
   toForm.innerHTML = '<div class="convert-left"></div>';
-  domSplitter.appendChild(document.createElement('br'));
-  domSplitter.appendChild(document.createElement('br'));    
-  domSplitter.appendChild(toForm);
   // ** end JSON editor
   
   // get JSON mapping
@@ -68,3 +67,14 @@ javascript:
       formatter.set(editor.get());
     });
   }); 
+
+  // ** reload vocabularies listing
+  $('#reload_vocabularies_list').on('click', function() {
+    var json = $.getJSON('/api/vocabularies', function(response) {
+      $("#vocabularies_list").empty();
+      $.each(response["vocabularies"], function(index, vocab){
+        var data = '<li title="'+vocab.uri+'">'+vocab.prefix.toUpperCase()+'</li>';
+        $("#vocabularies_list").append(data);
+      });
+    });
+  });

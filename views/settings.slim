@@ -5,11 +5,10 @@ h3[style="margin-left:24px"] RDF-store
 // This form contains RDF store settings
 div class="divdot inputf"  
   table class="genform"
-    form id="change_rdfstore_settings_form" 
+    form id="change_repository_settings_form" 
       tr
         td store
         td: input[type="text" id="store" value="virtuoso" disabled="true"]
-        td why alternatives ...?
       tr
         td sparql_endpoint
         td: input[type="text" id="sparql_endpoint" value=(settings['repository']['sparql_endpoint'])]
@@ -35,13 +34,13 @@ div class="divdot inputf"
         td sparql update authentication method
       tr
         td timeout
-        td: input[type="text" id="username" value=(settings['repository']['timeout']) ]
+        td: input[type="text" id="timeout" value=(settings['repository']['timeout']) ]
         td timeout for sparql requests        
       tr
-        td: button[type="button" id="rdfstore_settings_save" class="gen"]  = "Save"
+        td: button[type="button" id="repository_settings_save" class="gen"]  = "Save"
         td
-          span[id="rdfstore_settings_info" class="info" style="margin-left:48px"]
-          span[id="rdfstore_settings_error" class="error" style="margin-left:48px"]
+          span[id="repository_settings_info" class="info" style="margin-left:48px"]
+          span[id="repository_settings_error" class="error" style="margin-left:48px"]
 
 h3[style="margin-left:24px"] Global settings
 
@@ -52,7 +51,7 @@ div class="divdot inputf"
       tr
         td default graph
         td: input[type="text" id="default_graph" value=(settings['global']['default_graph'])]
-        td 
+        td default graph used in global Rules
       tr
         td default prefix
         td: input[type="text" id="default_prefix" value=(settings['global']['default_prefix'])]
@@ -73,18 +72,17 @@ div class="divdot inputf"
         tr
           th: button[type='button' class="add_vocabulary"]  = "add new"
           th prefix
-          th uri
+          th 
+            span[id="vocabularies_info" class="info" style="margin-left:48px"]
+            span[id="vocabularies_error" class="error" style="margin-left:48px"]      
       tbody
-        - Vocabulary.all.each do |vocab|
+        - vocabs = Vocabulary.all.sort_by {|v|v.prefix}
+        - vocabs.each do |vocab|
           tr
             td
             td: input[style="width:80px" type="text" class="vocabulary_prefix" value=(vocab.prefix)]
             td: input[style="width:320px" type="text" class="vocabulary_uri" value=(vocab.uri)]
             td: button[type='button' class="delete_vocabulary"] = "delete"
-        tr
-          td
-            span[id="vocabularies_info" class="info" style="margin-left:48px"]
-            span[id="vocabularies_error" class="error" style="margin-left:48px"]
   
 javascript:
   
@@ -94,17 +92,17 @@ javascript:
       xhr.setRequestHeader('SECRET_SESSION_KEY', session_key);
     });
     
-    // ** save rdfstore settings
-    $('#rdfstore_settings_save').on('click', function() {
+    // ** save repository settings
+    $('#repository_settings_save').on('click', function() {
       var request = $.ajax({
-        url: '/api/settings/save',
+        url: '/api/settings/repository',
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         cache: false,
         data: JSON.stringify({
             store: $('input#store').val(),
             sparql_endpoint: $('input#sparql_endpoint').val(),
-            sparul_endpoint: $('input#save_mapping_name').val(),
+            sparul_endpoint: $('input#sparul_endpoint').val(),
             username: $('input#username').val(),
             password: $('input#password').val(),
             timeout: $('input#timeout').val()
@@ -115,11 +113,11 @@ javascript:
         if( console && console.log ) {
           console.log("updated settings:", JSON.stringify(data).slice(0, 300));
         }
-        $('span#rdfstore_settings_info').html("Saved settings OK!").show().fadeOut(3000);
+        $('span#repository_settings_info').html("Saved repository settings OK!").show().fadeOut(3000);
       });
 
       request.fail(function(jqXHR, textStatus, errorThrown) {
-        $('span#rdfstore_settings_error').html(jqXHR.responseText).show().fadeOut(5000);
+        $('span#repository_settings_error').html(jqXHR.responseText).show().fadeOut(5000);
       });
     });        
 
@@ -127,7 +125,7 @@ javascript:
     $('#global_settings_save').on('click', function() {
       var map_id = $('input#save_mapping_id').val();
       var request = $.ajax({
-        url: '/api/settings/save',
+        url: '/api/settings/global',
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         cache: false,
@@ -200,7 +198,7 @@ javascript:
       
       request.done(function(data) {
         $('span#vocabularies_info').html("Deleted vocabulary OK!").show().fadeOut(3000);
-        $(this).closest("tr").remove();
+        row.remove();
       });
       request.fail(function(jqXHR, textStatus, errorThrown) {
         $('span#vocabularies_error').html(jqXHR.responseText).show().fadeOut(5000);

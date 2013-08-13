@@ -1,9 +1,12 @@
 ul class="tabs"
   li[class="active"] Settings
   li Editor
+  li Vocabularies
 div class="panes"
   div class="pane"
     == render :slim, :'mapping/mapping_settings', :layout => false, :locals => {:library => library, :mapping => mapping}
   div class="pane"
     == render :slim, :'mapping/mapping_editor', :layout => false, :locals => {:library => library, :mapping => mapping}
+  div class="pane"
+    == render :slim, :'mapping/mapping_vocabularies', :layout => false, :locals => {:library => library, :mapping => mapping}    
   script src="/js/mapping.js"

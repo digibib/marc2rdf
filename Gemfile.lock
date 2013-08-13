@@ -50,7 +50,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.6.4)
     json (1.8.0)
-    libxml-ruby (2.7.0)
+    libxml-ruby (2.6.0)
     marc (0.5.1)
     method_source (0.8.2)
     mime-types (1.23)
@@ -148,7 +148,7 @@ DEPENDENCIES
   foreman
   grape
   json
-  libxml-ruby
+  libxml-ruby (~> 2.6.0)
   marc
   minitest
   net-http-persistent

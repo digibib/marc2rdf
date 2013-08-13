@@ -1,0 +1,20 @@
+h2 Vocabularies
+h3[style="margin-left:24px"] Existing Vocabularies
+div class="divdot inputf"
+  table class="genform" id="change_vocabularies"
+    form 
+      thead
+        tr
+          th: button[type='button' class="add_vocabulary"]  = "add new"
+          th prefix
+          th 
+            span[id="vocabularies_info" class="info" style="margin-left:48px"]
+            span[id="vocabularies_error" class="error" style="margin-left:48px"]      
+      tbody
+        - vocabs = Vocabulary.all.sort_by {|v|v.prefix}
+        - vocabs.each do |vocab|
+          tr
+            td
+            td: input[style="width:80px" type="text" class="vocabulary_prefix" value=(vocab.prefix)]
+            td: input[style="width:320px" type="text" class="vocabulary_uri" value=(vocab.uri)]
+            td: button[type='button' class="delete_vocabulary"] = "delete"  

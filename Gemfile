@@ -9,7 +9,7 @@ gem "rdf-rdfxml", :require => 'rdf/rdfxml'
 gem "rdf-n3", :require => 'rdf/n3'
 gem "rdf-virtuoso", :require => 'rdf/virtuoso'
 gem "oai", :git => 'https://github.com/code4lib/ruby-oai.git'
-gem "libxml-ruby"# maybe broken!! but faster OAI processing
+gem "libxml-ruby" # seems broken!! test before using. (faster OAI processing)
 gem "rest-client"
 gem "rake"
 gem "grape"#, "0.2.4" # json parameter parse broken after 0.2.4
