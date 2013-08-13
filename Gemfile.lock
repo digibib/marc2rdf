@@ -144,11 +144,11 @@ PLATFORMS
 
 DEPENDENCIES
   builder
-  bundler
+  bundler (~> 1.3.5)
   foreman
   grape
   json
-  libxml-ruby (~> 2.6.0)
+  libxml-ruby
   marc
   minitest
   net-http-persistent

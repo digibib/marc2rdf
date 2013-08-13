@@ -68,6 +68,7 @@ Scheduler takes these job types:
 ### REQUIREMENTS
 
 * ruby >= 1.9.3, recommended installed via Ruby Version Manager (rvm)
+* ruby bundler >= 1.3.5, install by `gem install bundler`
 
 Requirements for tools/marcfix.pl
 
@@ -89,7 +90,7 @@ Here is a short walk-trough on how to install the needed tools and libraries.
 	Debian adds a version postfix to the ruby executables. Thus all references to `ruby` becomes 
 	`ruby1.8` and references to `gem` becomes `gem1.8`.
 
-1. Install RubyGems bundler  
+1. Install/Update RubyGems bundler  
 	```sudo gem install bundler```  
 	If you can not or do not want to install RubyGems into system folder locations, please have a look at 
 	http://docs.rubygems.org/read/chapter/3/
