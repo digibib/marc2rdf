@@ -100,12 +100,22 @@ Here is a short walk-trough on how to install the needed tools and libraries.
 	bundle install
 	```
 
-1. Copy configuration file  
+### Configuration
+
+  Most configurations are made within app, but for startup repository connection, copy configuration file  :
 	```
 	cp ./config/example.settings.json ./config/settings.json
 	```  
 	* Make changes to the new files as needed to fit your system.  
 	* Please read rspec tests under ./spec for examples on usage.  
+
+  setup of libraries, mappings, rules, harvests & vocabularies are made within app, 
+  but for convenience we have added our current setup in the following gist:
+  https://gist.github.com/anonymous/6206748
+
+### Binary MARC
+  
+Usage of binary MARC is generally not recommended, and only supported in single batch conversion. But you'll need to:
 
 1. Install Perl and MARC::Record  
 	On Debian and Ubuntu these are installed with apt:  
