@@ -9,10 +9,11 @@ class APP < Sinatra::Base
   configure do
   # Sinatra configs
     set :app_file, __FILE__
-    set :port, 3000
+    set :bind, ENV['HOST'] #SETTINGS["app"]["host"]
+    set :port, ENV['PORT'] #SETTINGS["app"]["port"].to_i
     set :server, 'thin'
-    set :username, SETTINGS["repository"]["username"]
-    set :password, SETTINGS["repository"]["password"]
+    set :username, SETTINGS["login"]["username"]
+    set :password, SETTINGS["login"]["password"]
     set :token, 'schabogaijk13@[]5fukkksiur!&&%&%'
     set :session_secret, 'supersecrettokeepsessionsconsistent!' #needed for keeping session
     enable :logging, :dump_errors, :raise_errors

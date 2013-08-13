@@ -39,7 +39,7 @@ based on OAI harvested content or existing RDF.
 A typical setup would be:
 
 * Setup a RDF store and edit settings.json to reflect admin rights
-* start app: `foreman start`
+* start app: `foreman start` (will default to 'development' mode, reading 'Procfile')
 * Create a `Library` and fill in settings such as OAI endpoint, tag and resource and default graph
 * Validate OAI, choose specific set if wanted
 * Create a `Mapping` either from scratch or clone existing
@@ -103,17 +103,34 @@ Here is a short walk-trough on how to install the needed tools and libraries.
 
 ### Configuration
 
-  Most configurations are made within app, but for startup repository connection, copy configuration file  :
+  Most configurations are made within app, but for startup repository connection and login settings, 
+  copy configuration file  :
 	```
 	cp ./config/example.settings.json ./config/settings.json
 	```  
-	* Make changes to the new files as needed to fit your system.  
-	* Please read rspec tests under ./spec for examples on usage.  
+	* Make changes to the new files as needed to fit your system
+  * Set login username and password 
+  * Port and host settings are in Procfile (development) and Procfile.production (production)
 
   setup of libraries, mappings, rules, harvests & vocabularies are made within app, 
   but for convenience we have added our current setup in the following gist:
   https://gist.github.com/anonymous/6206748
 
+### Production
+
+  When ready for production mode, the included Procfile.production can be used as an example:
+  
+  `foreman start -f Procfile.production`
+  
+  Webapp should then run blazingly fast, as pages are no longer reloaded each load. (Development
+  mode reloads app on each page load).
+  
+  Foreman can also be used to create upstart jobs easily (managed by linux system and respawned if down):
+  
+  `rvmsudo foreman export upstart /etc/init -p Procfile.production -a marc2rdf`
+  
+  Read more about foreman at: http://ddollar.github.io/foreman/
+  
 ### Binary MARC
   
 Usage of binary MARC is generally not recommended, and only supported in single batch conversion. But you'll need to:

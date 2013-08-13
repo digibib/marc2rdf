@@ -21,7 +21,7 @@ module Sinatra
       app.helpers SessionAuth::Helpers
 
       app.set :username, 'user'
-      app.set :password, 'secret'
+      app.set :password, 'pass'
 
       app.get '/login' do
         slim :login
