@@ -36,6 +36,7 @@ class Vocabulary
   def update(params={})
     self.members.each {|name| self[name] = params[name] unless params[name].nil? }
     save
+    self
   end
   
   def save
@@ -49,7 +50,7 @@ class Vocabulary
       # new vocab if no match
       vocabularies << self
     end 
-    open(File.join(File.dirname(__FILE__), '../db/', 'vocabularies.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(vocabularies.to_json))) } 
+    open(File.join(File.dirname(__FILE__), '..', 'db', 'vocabularies.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(vocabularies.to_json))) } 
     self.set
     self
   end
@@ -57,12 +58,12 @@ class Vocabulary
   def delete
     vocabularies = Vocabulary.all
     vocabularies.delete_if {|vocab| vocab.prefix == self.prefix }
-    open(File.join(File.dirname(__FILE__), '../db/', 'vocabularies.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(vocabularies.to_json))) } 
+    open(File.join(File.dirname(__FILE__), '..', 'db', 'vocabularies.json'), 'w') {|f| f.write(JSON.pretty_generate(JSON.parse(vocabularies.to_json))) } 
     self.unset
     vocabularies
   end
   
-  # imports RDF Vocabulary
+  # defines RDF Vocabulary
   def set
     RDF.const_set(self.prefix.upcase, RDF::Vocabulary.new("#{self.uri}"))
   end  

@@ -44,10 +44,7 @@ module API
       end
       
       desc "delete a vocabulary"
-        params do
-          requires :prefix, type: String, desc: "Prefix of vocabulary"
-        end
-      delete "/" do
+      delete "/:prefix" do
         content_type 'json'
         vocabulary = Vocabulary.find(:prefix => params[:prefix])
         vocabulary.delete
