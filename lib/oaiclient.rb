@@ -44,7 +44,7 @@ class OAIClient
       end
     rescue TimeoutError => e # Connection timed out
       puts "TimeoutError in OAI query:\n#{e}"
-      if (attempts += 1) >= retries
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
@@ -54,7 +54,7 @@ class OAIClient
       end
     rescue Errno::ECONNRESET => e # Connection reset by peer 
       puts "Connection reset in OAI query:\n#{e}"
-      if (attempts += 1) >= retries
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
@@ -64,7 +64,7 @@ class OAIClient
       end
     rescue Errno::ECONNREFUSED => e # Connection refused 
       puts "Connection refused in OAI query:\n#{e}"
-      if (attempts += 1) >= retries
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
@@ -74,7 +74,7 @@ class OAIClient
       end
     rescue REXML::ParseException => e # xml parsing error
       puts "XML parsing error in response:\n#{e}"
-      if (attempts += 1) >= retries
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
@@ -84,7 +84,7 @@ class OAIClient
       end
     rescue StandardError => e # StandardError
       puts "StandardError in OAI query:\n#{e}"
-      if (attempts += 1) >= retries
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
@@ -94,7 +94,7 @@ class OAIClient
       end
     rescue Exception => e # Any other Exception
       puts "StandardError in OAI query:\n#{e}"
-      if (attempts += 1) >= retries
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry

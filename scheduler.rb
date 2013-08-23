@@ -382,7 +382,8 @@ class Scheduler
       params[:delete] ? s.delete_record : s.modify_record
     rescue TimeoutError => e # Connection timed out
       puts "TimeoutError in Sparql Update:\n#{e}"
-      if (attempts += 1) >= retries
+      attempts += 1
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
@@ -393,7 +394,7 @@ class Scheduler
       logger.error "Sparql update error on library OAI update:\nLibrary: #{library.name}\nRecord: #{s.record}"
     rescue Exception => e
       puts "Error in Sparql Update:\n#{e}"
-      if (attempts += 1) >= retries
+      if (attempts += 1) <= retries
         puts "retry...#{attempts}"
         sleep(5 * attempts)
         retry
