@@ -102,7 +102,7 @@ class SparqlUpdate
   # insert new harvested triples
   def self.insert_harvested_triples(graph, statements)
     query = QUERY.insert_data(statements)
-    query.graph(graph)
+    query.graph(RDF::URI(graph))
     query.define('sql:log-enable 3')  # neccessary for concurrent writes
     ENV['RACK_ENV'] == 'test' ?
       response = query.to_s : 
