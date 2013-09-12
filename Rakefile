@@ -1,4 +1,6 @@
 require 'rspec/core/rake_task'
+require 'ci/reporter/rake/rspec'
+
 $stdout.sync = true # gives foreman full stdout
 task :default => :help
 

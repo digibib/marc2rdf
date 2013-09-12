@@ -4,14 +4,16 @@ describe SparqlUpdate do
   context "when doing a SPARQL UPDATE from converted MARC" do
     before(:each) do
       @reader = MARC::ForgivingReader.new("./spec/example.binary.normarc.mrc")
+      @default_graph = 'http://example.com'
+      @default_prefix = 'http://example.com/'
+      l = {'id'=>1, 'name'=>'test', 'mapping'=>'dummy', 'oai'=>{'preserve_on_update'=>['FOAF.depiction']}, 
+          'config'=>{'resource'=>{'default_graph'=> @default_graph, 'base' => @default_graph, 'prefix' => '/id_', 'identifier_tag' => '001'}}}
+      library = l.to_struct("Library")
+
       record = @reader.first
-      rdf = RDFModeler.new(1, record)
+      rdf = RDFModeler.new(library, record)
       rdf.set_type("BIBO.Document")
       rdf.convert
-      @default_graph = 'http://example.com'
-      l = {'id'=>1, 'name'=>'test', 'mapping'=>'dummy', 'oai'=>{'preserve_on_update'=>['FOAF.depiction']}, 
-          'config'=>{'resource'=>{'default_graph'=> @default_graph}}}
-      library = l.to_struct("Library")
       @sparql = SparqlUpdate.new(rdf,library)
     end
     

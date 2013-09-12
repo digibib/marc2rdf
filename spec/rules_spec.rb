@@ -64,15 +64,16 @@ describe Rule do
     it "runs a Rule job" do
       job_id = @scheduler.run_isql_rule(@rule)
       job_id.trigger_block
-      @rule.last_result.should match(/10 Rows/)
+      job_id.should be_a Rufus::Scheduler::AtJob
     end   
     
     it "schedules a Rule" do
       cron_id = @scheduler.schedule_isql_rule(@rule)
       cron_id.should be_a(Rufus::Scheduler::CronJob)
       cron_id.cron_line.original.should == @rule.frequency
-      cron_id.trigger_block
-      @rule.last_result.should match(/10 Rows/)
+      id = cron_id.trigger_block
+      cron_id.should be_a Rufus::Scheduler::CronJob
+      @scheduler.scheduler.cron_jobs.should_not be_nil
     end   
     
     it "finds job by tags" do

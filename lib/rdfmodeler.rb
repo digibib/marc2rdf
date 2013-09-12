@@ -6,10 +6,11 @@ RDFModeler = Struct.new(:library_id, :record, :uri, :tags, :statements, :rdf)
 class RDFModeler
 
   ## Instance Methods
-  def initialize(library_id, record, params={})
-    # populate reocord
-    library = Library.find(:id => library_id)
-    self.library_id = library_id
+  def initialize(library, record, params={})
+    # lookup library by id unless given as param
+    library = Library.find(:id => library) unless library.is_a? Library
+      
+    self.library_id = library.id
     self.record  = record
     id           = self.record[library.config["resource"]["identifier_tag"]]
     self.uri     = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{id.value}")

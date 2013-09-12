@@ -57,7 +57,12 @@ describe OAIClient do
       record = @marcxml.first
       rdf = RDF::Writer.for(:ntriples).buffer do |writer|
         RDFModeler.class_variable_set(:@@writer, writer)
-        r = RDFModeler.new(1, record)
+        default_graph = 'http://example.com'
+        default_prefix = 'http://example.com/'
+        l = {'id'=>1, 'name'=>'test', 'mapping'=>'dummy', 'oai'=>{'preserve_on_update'=>['FOAF.depiction']}, 
+          'config'=>{'resource'=>{'default_graph'=> default_graph, 'base' => default_graph, 'prefix' => '/id_', 'identifier_tag' => '001'}}}
+        library = l.to_struct("Library")
+        r = RDFModeler.new(library, record)
         r.set_type("BIBO.Document")        
         r.convert
         nt = RDFModeler.write_ntriples(r.statements)

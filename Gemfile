@@ -21,6 +21,7 @@ gem "tilt"
 gem "thin"
 gem "foreman"
 gem "json"
+gem "ci_reporter"
 
 group :development, :test do
   gem "sinatra-reloader"
