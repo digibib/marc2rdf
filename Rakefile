@@ -18,6 +18,9 @@ task :spec do
   end
 end
 
+desc "Run CI rspec"
+task "ci_rspec" => ["ci:setup:rspec", "^spec"]
+
 desc "Run IRB console with app environment"
 task :console do
   puts "Loading development console..."
