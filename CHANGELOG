@@ -1,4 +1,7 @@
 = marc2rdf CHANGELOG
+1.0.0
+  Minor bugfixes only
+  Bumped gems, rspec and vocabularies
 0.1.9
   Vocabularies can be edited in settings
   Preparing for 1.0.0 release

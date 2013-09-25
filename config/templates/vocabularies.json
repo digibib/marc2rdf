@@ -12,10 +12,6 @@
     "uri": "http://www.foafrealm.org/xfoaf/0.1/"
   },
   {
-    "prefix": "lexvo",
-    "uri": "http://lexvo.org/ontology#"
-  },
-  {
     "prefix": "deich",
     "uri": "http://data.deichman.no/"
   },
@@ -90,5 +86,9 @@
   {
     "prefix": "dc",
     "uri": "http://purl.org/dc/terms/"
+  },
+  {
+    "prefix": "lvont",
+    "uri": "http://lexvo.org/ontology#"
   }
 ]

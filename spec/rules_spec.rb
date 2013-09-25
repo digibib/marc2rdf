@@ -29,7 +29,7 @@ describe Rule do
     end    
   end
   
-  context ": when activating rules" do
+  context "when activating rules" do
     before(:each) do
       @time = Time.now + 60*10 # now + 10mins
       @script = "SPARQL SELECT * WHERE {[] a ?Concept} LIMIT 10 ;"
