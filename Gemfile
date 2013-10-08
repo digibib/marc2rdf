@@ -8,7 +8,8 @@ gem "rdf"
 gem "rdf-rdfxml", :require => 'rdf/rdfxml'
 gem "rdf-n3", :require => 'rdf/n3'
 gem "rdf-virtuoso", :require => 'rdf/virtuoso'
-gem "oai", :git => 'https://github.com/code4lib/ruby-oai.git'
+#gem "oai", :git => 'https://github.com/code4lib/ruby-oai.git'
+gem "oai"
 gem "libxml-ruby" # seems broken!! test before using. (faster OAI processing)
 gem "rest-client"
 gem "rake"
