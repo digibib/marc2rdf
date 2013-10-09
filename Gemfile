@@ -36,4 +36,6 @@ group :test do
   gem "rack-test"
   gem "webmock"
   gem "minitest"
+  gem "guard"
+  gem "guard-rspec"
 end

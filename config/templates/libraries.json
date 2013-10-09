@@ -4,7 +4,7 @@
         "name": "Test Library",
         "config": {
             "resource": {
-                "base": "http://example.com",
+                "base": "http://example.com/",
                 "prefix": "id_",
                 "identifier_tag": "001",
                 "type": "BIBO.Document",
