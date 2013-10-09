@@ -25,6 +25,8 @@ class MARCModeler
       [:creatorURI, RDF::DC.identifier, :creatorID]
     )
     query.optional([self.uri, RDF::FABIO.hasSubtitle, :subtitle])
+    query.optional([self.uri, RDF::BIBO.isbn, :isbn])
+    query.optional([self.uri, RDF::BIBO.issn, :issn])
     query.from(RDF::URI(self.library.config['resource']['default_graph']))
     #puts query
     
@@ -40,6 +42,8 @@ class MARCModeler
     record = rdf2map
     marc = MARC::Record.new()
     marc.append(MARC::ControlField.new('001', record[:id][0].to_s))
+    marc.append(MARC::DataField.new('020', ' ',  ' ', ['a', record[:isbn][0]])) if record[:isbn]
+    marc.append(MARC::DataField.new('021', ' ',  ' ', ['a', record[:issn][0]])) if record[:issn]
     field100 = MARC::DataField.new('100', ' ',  ' ')
       field100.append( MARC::Subfield.new('3', record[:creatorID][0])) if record[:creatorID]
       field100.append( MARC::Subfield.new('a', record[:creatorName][0])) if record[:creatorName]
