@@ -66,7 +66,23 @@ class Conversion < Grape::API
       file.write(RDFModeler.write_ntriples(rdfrecords)) if file
       { :resource => rdfrecords[0..2], :filename => filename }
     end
-        
+
+    desc "return marcxml from resource"
+      params do
+        requires :id, type: Integer, desc: "ID of library"
+        requires :uri, type: String, desc: "URI of resource"
+      end
+    get "/marcxml" do
+      content_type 'xml'
+      library = Library.find(:id => params[:id])
+      marc = MARCModeler.new(library)
+      marc.get_manifestation(params[:uri])
+      marc.convert
+      error!("Resource not found: #{params[:uri]}", 404) unless marc.marc
+      marc.write_xml
+      marc.marcxml
+    end    
+
   end # end convert namespace
 end
 end

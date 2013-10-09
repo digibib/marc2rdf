@@ -28,7 +28,7 @@ class MARCModeler
     query.optional([self.uri, RDF::BIBO.isbn, :isbn])
     query.optional([self.uri, RDF::BIBO.issn, :issn])
     query.from(RDF::URI(self.library.config['resource']['default_graph']))
-    #puts query
+    puts query
     
     response = REPO.select(query)
     response.empty? ?
@@ -40,6 +40,29 @@ class MARCModeler
   def convert
     return nil unless self.manifestation # don't convert empty responses
     record = rdf2map
+    marc = generate_marc(record)
+    self.marc = marc
+  end
+
+  def write_xml
+    return nil unless self.marc # dont try to convert nil
+    self.marcxml = self.marc.to_xml
+  end
+
+  protected
+  # this method takes RDF::Solutions and generates a map from manifestation 
+  # in the form {:property => ["value1", "value2"]}
+  def rdf2map
+    map = {}
+    self.manifestation.each do |solution|
+      solution.each_binding do | name,value |
+        ( map[name] ||= []) << solution[name].to_s
+      end
+    end
+    map
+  end
+
+  def generate_marc(record)
     marc = MARC::Record.new()
     marc.append(MARC::ControlField.new('001', record[:id][0].to_s))
     marc.append(MARC::DataField.new('020', ' ',  ' ', ['a', record[:isbn][0]])) if record[:isbn]
@@ -51,21 +74,7 @@ class MARCModeler
     field245 = MARC::DataField.new('245', ' ',  ' ')
       field245.append( MARC::Subfield.new('a', record[:title][0])) if record[:title]
       field245.append( MARC::Subfield.new('c', record[:responsible][0])) if record[:responsible]
-      marc.append(field245)
-    self.marc = marc
-  end
-
-  protected
-
-  # this method takes RDF::Solutions and generates a map from manifestation 
-  # in the form {:property => ["value1", "value2"]}
-  def rdf2map
-    map = {}
-    self.manifestation.each do |solution|
-      solution.each_binding do | name,value |
-        ( map[name] ||= []) << solution[name].to_s
-      end
-    end
-    map
+      marc.append(field245) 
+    marc
   end
 end
