@@ -16,7 +16,18 @@ class MARCModeler
   
   def get_manifestation(uri)
     self.uri = RDF::URI(uri)
-    query = QUERY.select.where([self.uri, :p, :o]).from(RDF::URI(self.library.config['resource']['default_graph']))
+    query = QUERY.select.where(
+      [self.uri, RDF::DC.identifier, :id],
+      [self.uri, RDF::DC.title, :title],
+      [self.uri, RDF::RDA.statementOfResponsibility, :responsible],
+      [self.uri, RDF::DC.creator, :creatorURI],
+      [:creatorURI, RDF::RADATANA.catalogueName, :creatorName],
+      [:creatorURI, RDF::DC.identifier, :creatorID]
+    )
+    query.optional([self.uri, RDF::FABIO.hasSubtitle, :subtitle])
+    query.from(RDF::URI(self.library.config['resource']['default_graph']))
+    #puts query
+    
     response = REPO.select(query)
     response.empty? ?
       self.manifestation = nil :
@@ -28,19 +39,28 @@ class MARCModeler
     return nil unless self.manifestation # don't convert empty responses
     record = rdf2map
     marc = MARC::Record.new()
-    marc.append(MARC::ControlField.new('001', record[RDF::DC.identifier][0].to_s))
-    marc.append(MARC::DataField.new('100', '0',  ' ', ['a', record[RDF::DC.title][0]]))
+    marc.append(MARC::ControlField.new('001', record[:id][0].to_s))
+    field100 = MARC::DataField.new('100', ' ',  ' ')
+      field100.append( MARC::Subfield.new('3', record[:creatorID][0])) if record[:creatorID]
+      field100.append( MARC::Subfield.new('a', record[:creatorName][0])) if record[:creatorName]
+      marc.append(field100)
+    field245 = MARC::DataField.new('245', ' ',  ' ')
+      field245.append( MARC::Subfield.new('a', record[:title][0])) if record[:title]
+      field245.append( MARC::Subfield.new('c', record[:responsible][0])) if record[:responsible]
+      marc.append(field245)
     self.marc = marc
   end
 
   protected
 
-  # this method takes rdf and generates a map from manifestation 
+  # this method takes RDF::Solutions and generates a map from manifestation 
   # in the form {:property => ["value1", "value2"]}
   def rdf2map
     map = {}
     self.manifestation.each do |solution|
-      ( map[solution[:p]] ||= []) << solution[:o].to_s
+      solution.each_binding do | name,value |
+        ( map[name] ||= []) << solution[name].to_s
+      end
     end
     map
   end

@@ -11,7 +11,7 @@ describe MARCModeler do
       @library = l.to_struct("Library")
       @json = IO.read('./spec/example.sparqlresponse_manifestation.json')
       @emptyjson = IO.read('./spec/example.sparqlresponse_empty.json')
-      stub_request(:get, @endpoint + "?format=application/sparql-results%2Bjson&query=SELECT%20*%20FROM%20%3Chttp://data.deichman.no/books%3E%20WHERE%20%7B%20%3Chttp://data.deichman.no/resource/tnr_583095%3E%20?p%20?o%20.%20%7D").
+      stub_request(:get, /tnr_583095/).
          with(:headers => {'Accept'=>'application/sparql-results+json, application/sparql-results+xml'}).
          to_return(:status => 200, :body => @json, :headers => {'Content-Length' => 7038, 'Content-Type' => 'application/sparql-results+json'})
       @modeler = MARCModeler.new(@library)
@@ -25,7 +25,7 @@ describe MARCModeler do
       end
 
       it "should return nil when using an uri of non-existing resource" do
-        stub_request(:get, @endpoint + "?format=application/sparql-results%2Bjson&query=SELECT%20*%20FROM%20%3Chttp://data.deichman.no/books%3E%20WHERE%20%7B%20%3Chttp://data.deichman.no/resource/tnr_dummy%3E%20?p%20?o%20.%20%7D").
+        stub_request(:get, /tnr_dummy/).
           with(:headers => {'Accept'=>'application/sparql-results+json, application/sparql-results+xml'}).
           to_return(:status => 200, :body => @emptyjson, :headers => {'Content-Length' => 7038, 'Content-Type' => 'application/sparql-results+json'})
         @modeler.get_manifestation("http://data.deichman.no/resource/tnr_dummy")
@@ -38,7 +38,7 @@ describe MARCModeler do
 
     end
 
-    describe "converting" do
+    describe "converting to MARC" do
       it "should support creating a MARC record from an RDF Manifestation" do
         @modeler.convert
         @modeler.marc.should be_a(MARC::Record)
@@ -48,12 +48,26 @@ describe MARCModeler do
         @modeler.convert
         @modeler.marc['001'].value.should == '583095'
       end
-
-      it "MARC record should have title in field 100a" do
+      
+      it "MARC record should have inversed creator in 100$a" do
         @modeler.convert
-        @modeler.marc['100']['a'].should == 'Det aller fineste'
+        @modeler.marc['100']['a'].should == 'Bache-Wiig, Anna'
       end
 
+      it "MARC record should have creator ID in 100$3" do
+        @modeler.convert
+        @modeler.marc['100']['3'].should == '32026400'
+      end
+
+      it "MARC record should have title in field 245$a" do
+        @modeler.convert
+        @modeler.marc['245']['a'].should == 'Det aller fineste'
+      end
+
+      it "MARC record should have responsible in field 245$c" do
+        @modeler.convert
+        @modeler.marc['245']['c'].should == 'Anna Bache-Wiig'
+      end
 
     end
         
