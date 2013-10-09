@@ -15,34 +15,46 @@ describe MARCModeler do
          with(:headers => {'Accept'=>'application/sparql-results+json, application/sparql-results+xml'}).
          to_return(:status => 200, :body => @json, :headers => {'Content-Length' => 7038, 'Content-Type' => 'application/sparql-results+json'})
       @modeler = MARCModeler.new(@library)
+      @modeler.get_manifestation("http://data.deichman.no/resource/tnr_583095")
     end
     
-    describe "" do
-      before(:each) do
-        @modeler.get_manifestation("http://data.deichman.no/resource/tnr_583095")
-      end
+    describe "creating manifestation" do
 
       it "should accept an uri" do
         @modeler.uri.should be_a(RDF::URI)
       end
 
-      it "should not fail when using an uri of non-existing resource" do
+      it "should return nil when using an uri of non-existing resource" do
         stub_request(:get, @endpoint + "?format=application/sparql-results%2Bjson&query=SELECT%20*%20FROM%20%3Chttp://data.deichman.no/books%3E%20WHERE%20%7B%20%3Chttp://data.deichman.no/resource/tnr_dummy%3E%20?p%20?o%20.%20%7D").
           with(:headers => {'Accept'=>'application/sparql-results+json, application/sparql-results+xml'}).
           to_return(:status => 200, :body => @emptyjson, :headers => {'Content-Length' => 7038, 'Content-Type' => 'application/sparql-results+json'})
         @modeler.get_manifestation("http://data.deichman.no/resource/tnr_dummy")
-        @modeler.manifestation.should be_empty
+        @modeler.manifestation.should be_nil
       end
 
       it "should read create RDF::Query::Solutions from uri" do
         @modeler.manifestation.should be_a(RDF::Query::Solutions)
       end
 
+    end
+
+    describe "converting" do
       it "should support creating a MARC record from an RDF Manifestation" do
-        @modeler.manifestation.each do |solution|
-          #puts solution.inspect
-        end
+        @modeler.convert
+        @modeler.marc.should be_a(MARC::Record)
       end
+      
+      it "MARC record should have an identifier" do
+        @modeler.convert
+        @modeler.marc['001'].value.should == '583095'
+      end
+
+      it "MARC record should have title in field 100a" do
+        @modeler.convert
+        @modeler.marc['100']['a'].should == 'Det aller fineste'
+      end
+
+
     end
         
   end

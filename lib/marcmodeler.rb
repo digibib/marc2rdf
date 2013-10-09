@@ -3,7 +3,7 @@
 
 require 'rdf/ntriples'
 
-MARCModeler = Struct.new(:library, :uri, :manifestation, :marcxml)
+MARCModeler = Struct.new(:library, :uri, :manifestation, :marc, :marcxml)
 class MARCModeler
 
   ## Constructor
@@ -18,12 +18,30 @@ class MARCModeler
     self.uri = RDF::URI(uri)
     query = QUERY.select.where([self.uri, :p, :o]).from(RDF::URI(self.library.config['resource']['default_graph']))
     response = REPO.select(query)
-    self.manifestation = response
+    response.empty? ?
+      self.manifestation = nil :
+      self.manifestation = response
   end
 
-  ## Class Methods
+  # create marc record from rdf
+  def convert
+    return nil unless self.manifestation # don't convert empty responses
+    record = rdf2map
+    marc = MARC::Record.new()
+    marc.append(MARC::ControlField.new('001', record[RDF::DC.identifier][0].to_s))
+    marc.append(MARC::DataField.new('100', '0',  ' ', ['a', record[RDF::DC.title][0]]))
+    self.marc = marc
+  end
 
-  # method to output marc xml
-  def self.write_marcxml(record)
+  protected
+
+  # this method takes rdf and generates a map from manifestation 
+  # in the form {:property => ["value1", "value2"]}
+  def rdf2map
+    map = {}
+    self.manifestation.each do |solution|
+      ( map[solution[:p]] ||= []) << solution[:o].to_s
+    end
+    map
   end
 end
