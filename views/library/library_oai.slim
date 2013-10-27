@@ -43,6 +43,7 @@ h3 OAI harvester settings
           td
             select[id="oai_format"]
               option[selected=("selected" if library.oai['format'] == "marcxchange")] marcxchange
+              option[selected=("selected" if library.oai['format'] == "marcxml")] marcxml
               option[selected=("selected" if library.oai['format'] == "bibliofilmarc")] bibliofilmarc         
           td format for OAI response (bibliofilmarc for bibliofil libraries)
 

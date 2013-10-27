@@ -144,7 +144,7 @@ class APP < Sinatra::Base
   
   get '/about' do
     # Front page
-    slim :about, :locals => {:library => session[:library]}
+    slim :about, :locals => {:library => session[:library], :session_key => session[:secret_key]}
   end
   
   # start the server if ruby file executed directly
