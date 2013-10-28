@@ -1,0 +1,4 @@
+
+{ "head": { "link": [], "vars": ["id", "title", "responsible", "creatorURI", "creatorName", "creatorID", "subtitle", "ageLimit", "isbn", "issn"] },
+  "results": { "distinct": false, "ordered": true, "bindings": [
+    { "id": { "type": "literal", "value": "583095" }    , "title": { "type": "literal", "value": "Det aller fineste" }  , "responsible": { "type": "literal", "value": "Anna Bache-Wiig" }  , "creatorURI": { "type": "uri", "value": "http://data.deichman.no/person/x32026400" }  , "creatorName": { "type": "literal", "value": "Bache-Wiig, Anna" } , "creatorID": { "type": "literal", "value": "32026400" }   , "isbn": { "type": "literal", "value": "8210047981" }} ] } }

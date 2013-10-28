@@ -1,4 +1,7 @@
 = marc2rdf CHANGELOG
+1.0.1
+  Some bugfixes
+  Added MARCXML export route
 1.0.0
   Minor bugfixes only
   Bumped gems, rspec and vocabularies
