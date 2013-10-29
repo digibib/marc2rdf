@@ -73,14 +73,13 @@ class Conversion < Grape::API
         requires :uri, type: String, desc: "URI of resource"
       end
     get "/marcxml" do
-      content_type 'xml'
+      content_type 'text/xml'
       library = Library.find(:id => params[:id])
       marc = MARCModeler.new(library)
       marc.get_manifestation(params[:uri])
       marc.convert
       error!("Resource not found: #{params[:uri]}", 404) unless marc.marc
-      marc.write_xml
-      marc.marcxml
+      marc
     end    
 
   end # end convert namespace

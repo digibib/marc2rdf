@@ -3,7 +3,7 @@
 
 require 'rdf/ntriples'
 
-MARCModeler = Struct.new(:library, :uri, :manifestation, :marc, :marcxml)
+MARCModeler = Struct.new(:library, :uri, :manifestation, :marc)
 class MARCModeler
 
   ## Constructor
@@ -47,9 +47,9 @@ class MARCModeler
     self.marc = marc
   end
 
-  def write_xml
+  def to_xml
     return nil unless self.marc # dont try to convert nil
-    self.marcxml = self.marc.to_xml
+    marc.to_xml
   end
 
   protected

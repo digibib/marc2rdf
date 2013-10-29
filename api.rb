@@ -63,7 +63,10 @@ module API
     prefix 'api'
     format :json
     default_format :json
+    content_type :xml, "text/xml"
+    content_type :json, "application/json"
     content_type :jpeg, "image/jpeg"
+
     use ApiErrorHandler
     
     mount API::Settings
