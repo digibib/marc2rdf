@@ -79,8 +79,7 @@ describe MARCModeler do
 
     describe "outputting XML" do 
       it "should return MARCXML from record" do
-        @modeler.write_xml
-        @modeler.marcxml.should be_a(REXML::Element || LIBXML::Node)
+        @modeler.to_xml.should be_a(REXML::Element || LIBXML::Node)
       end
     end
   end
