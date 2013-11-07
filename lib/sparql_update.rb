@@ -67,10 +67,10 @@ class SparqlUpdate
     
     authority_ids.each do | auth |
       deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(self.graph).where([auth[:id], :p, :o])
-      deleteauthquery.minus([auth[:id], RDF::SKOS.narrower, :o])
+      deleteauthquery.minus([auth[:id], RDF::SKOS.broader, :o])
       deleteauthquery.minus([auth[:id], RDF::OWL.sameAs, :o])
       deleteauthquery.define('sql:log-enable 3')  # neccessary for concurrent writes
-      #puts "Delete authorities:\n #{deleteauthquery}" if ENV['RACK_ENV'] == 'development'
+      puts "Delete authorities:\n #{deleteauthquery}" if ENV['RACK_ENV'] == 'development'
       REPO.delete(deleteauthquery) unless ENV['RACK_ENV'] == 'test'
     end
     authority_ids
@@ -80,7 +80,7 @@ class SparqlUpdate
     ## insert new triples
     query = QUERY.insert_data(self.record.statements).graph(self.graph)
     query.define('sql:log-enable 3')  # neccessary for concurrent writes
-    #puts "INSERT query:\n #{query}" if ENV['RACK_ENV'] == 'development'
+    puts "INSERT query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ? 
       response = query.to_s : 
       response = REPO.insert_data(query)
@@ -91,7 +91,7 @@ class SparqlUpdate
     query = QUERY.delete([self.uri, :p, :o],[:x, :y, self.uri])
     query.graph(self.graph).where([self.uri, :p, :o],[:x, :y, self.uri])
     query.define('sql:log-enable 3')  # neccessary for concurrent writes
-    #puts "PURGE query:\n #{query}" if ENV['RACK_ENV'] == 'development'
+    puts "PURGE query:\n #{query}" if ENV['RACK_ENV'] == 'development'
     ENV['RACK_ENV'] == 'test' ?
       response = query.to_s : 
       response = REPO.delete(query)
