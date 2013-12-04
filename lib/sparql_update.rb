@@ -68,6 +68,7 @@ class SparqlUpdate
     authority_ids.each do | auth |
       deleteauthquery = QUERY.delete([auth[:id], :p, :o]).graph(self.graph).where([auth[:id], :p, :o])
       deleteauthquery.minus([auth[:id], RDF::SKOS.broader, :o])
+      deleteauthquery.minus([auth[:id], RDF::SKOS.narrower, :o])
       deleteauthquery.minus([auth[:id], RDF::OWL.sameAs, :o])
       deleteauthquery.define('sql:log-enable 3')  # neccessary for concurrent writes
       puts "Delete authorities:\n #{deleteauthquery}" if ENV['RACK_ENV'] == 'development'
