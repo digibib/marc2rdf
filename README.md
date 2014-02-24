@@ -1,7 +1,7 @@
 # MARC bibliographic record to RDF converter
 
     MARC2RDF - a ruby toolkit to convert bibliographic MARC to RDF by YAML mapping
-    Copyright (C) 2012 Benjamin Rokseth
+    Copyright (C) 2014 Benjamin Rokseth
     Purpose: Convert binary/xml marc to semantic markup using yaml mapping file
              Import into RDF triplestore and maintain via OAI-PMH harvesting
 
@@ -21,7 +21,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
 ### Architecture
-![API architecture](https://github.com/digibib/marc2rdf/raw/sinatra_app/doc/schematics.png)
+![API architecture](https://github.com/digibib/marc2rdf/raw/master/doc/schematics.png)
 
 ## HOW IT WORKS
 
