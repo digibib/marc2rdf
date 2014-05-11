@@ -3,5 +3,7 @@ config/settings.json
 config/repository.yml
 config/harvesting.yml
 oai_updates/*
+coverage
+spec/reports
 # keep empty directories with .gitignore in them
 #!.gitignore

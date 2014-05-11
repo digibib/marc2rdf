@@ -9,15 +9,19 @@ require 'webmock/rspec'
 
 ENV['RACK_ENV'] = 'test'
 
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter '/spec'
+  end
+end
+
+# code init
 require File.join(File.dirname(__FILE__), '..', 'config', 'init.rb')
 require File.join(File.dirname(__FILE__), '..', 'app.rb')
 require File.join(File.dirname(__FILE__), '..', 'api.rb')
 require File.join(File.dirname(__FILE__), '..', 'scheduler.rb')
 
-if ENV['COVERAGE']
-  require 'simplecov'
-  SimpleCov.start
-end
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods

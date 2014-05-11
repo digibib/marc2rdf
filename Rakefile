@@ -18,6 +18,11 @@ task :spec do
   end
 end
 
+task :coverage do
+    ENV['COVERAGE'] = 'true'
+    Rake::Task["spec"].execute
+end
+
 desc "Run CI rspec"
 task "ci_rspec" => ["ci:setup:rspec", "^spec"]
 

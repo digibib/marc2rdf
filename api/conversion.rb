@@ -73,6 +73,8 @@ class Conversion < Grape::API
         requires :uri, type: String, desc: "URI of resource"
       end
     get "/marcxml" do
+      #format :xml
+      #content_type :xml, 'text/xml'
       content_type 'text/xml'
       library = Library.find(:id => params[:id])
       marc = MARCModeler.new(library)

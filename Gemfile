@@ -38,4 +38,5 @@ group :test do
   gem "minitest"
   gem "guard"
   gem "guard-rspec"
+  gem 'simplecov', '~> 0.7.1'
 end

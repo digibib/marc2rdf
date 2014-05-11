@@ -2,21 +2,27 @@
 # Struct for RDFModeler
 require 'rdf/ntriples'
 
-RDFModeler = Struct.new(:library_id, :record, :uri, :tags, :statements, :rdf)
+RDFModeler = Struct.new(:library_id, :record, :uri, :map, :statements, :rdf)
 class RDFModeler
 
   ## Instance Methods
   def initialize(library, record, params={})
     # lookup library by id unless given as param
-    library = Library.find(:id => library) unless library.is_a? Library
+    library = Library.find(:id => library) unless library.is_a?(Library)
       
     self.library_id = library.id
     self.record  = record
     id           = self.record[library.config["resource"]["identifier_tag"]]
     self.uri     = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{id.value}")
-    # choose library's selected mapping if not given as parameter
-    params[:mapping] ? mapping = Mapping.find(:id => params[:mapping]) : mapping = Mapping.find(:id => library.mapping)
-    self.tags    = mapping.mapping["tags"] if mapping
+    # mapping is either passed as param (full mapping or id) or selected from library
+    if params[:mapping]
+      params[:mapping].is_a?(Mapping) ? self.map = params[:mapping] :
+        self.map = Mapping.find(:id => params[:mapping]) 
+    else
+      self.map = Mapping.find(:id => library.mapping)
+    end
+    return nil unless self.map
+    #self.tags    = mapping.mapping["tags"] if mapping
     self.statements = []
   end
   
@@ -143,8 +149,8 @@ class RDFModeler
     self.record.tags.each do | marctag | 
       # put all marc tag fields into array object 'marcfields' for later use
       marcfields = self.record.find_all { |field| field.tag == marctag }
-      # start matching MARC tags against @tags from mapping, put results in match array
-      match = self.tags.select { |k,v| marctag  =~ /#{k}/ }
+      # start matching MARC tags against tags from mapping, put results in match array
+      match = self.map.mapping["tags"].select { |k,v| marctag  =~ /#{k}/ }
       match.each do |yamlkey,yamlvalue|
       # iterate each marc tag array object to catch multiple marc fields 
         marcfields.each do | marcfield | 
