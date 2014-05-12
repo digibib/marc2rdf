@@ -44,7 +44,7 @@ class SparqlUpdate
   def delete_old_authorities
     ## done by making temporary graph with converted record
     ## and do queries on this to find authorities to delete
-    tempgraph = RDF::Graph.new('temp')
+    tempgraph = RDF::Graph.new()
     self.record.statements.each {|s| tempgraph << s }
     
     ## NB: OPTIONAL is not implemented on RDF::Query yet, so we need to do nested queries

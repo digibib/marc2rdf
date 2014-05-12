@@ -16,7 +16,7 @@ gem "rake"
 gem "grape"#, "0.2.4" # json parameter parse broken after 0.2.4
 gem "sinatra"
 gem "sinatra-contrib", :require => 'sinatra/contrib'
-gem "rufus-scheduler", :require => 'rufus/scheduler'
+gem "rufus-scheduler", "~> 2.0.24", :require => 'rufus/scheduler'
 gem "slim"
 gem "tilt"
 gem "thin"

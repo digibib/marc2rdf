@@ -53,6 +53,34 @@ describe RDFModeler do
       r.convert
       r.statements.to_s.should include("http://purl.org/ontology/bibo/isbn")
     end
-  end
+    
 
+  end
+  context "generating RDF objects" do
+    before(:each) do
+      @reader     = MARC::ForgivingReader.new("./spec/example.binary.normarc.mrc")
+      @rdfmodeler = RDFModeler.new(1, @reader.first)
+      @str = "abcdef"
+    end
+    it "should support substring offset and substring length" do
+      obj = @rdfmodeler.generate_objects(@str, {:substr_offset => 2, :substr_length => 4})
+      obj.first.should == "cdef"
+    end
+
+    it "should return empty object when :substr_length and :substr_offset exceeds length of string" do
+      obj = @rdfmodeler.generate_objects(@str, {:substr_offset => 11, :substr_length => 1})
+      obj.should be_empty
+    end
+    it "should regex_split and then regex_substitute" do
+      obj = @rdfmodeler.generate_objects(@str, {:regex_split => "(\\w{2})", :regex_substitute => {
+              "orig" => "ab|cd|ef", 
+              "subs" => {"ab" => "AA", "cd" => "BB", "ef" => "CC"}, 
+              "default" => "ZERO"
+            } 
+          })
+      obj.should == ["AA","BB","CC"]
+    end
+    it "should combine fields with chosen combinestring" do
+    end
+  end
 end

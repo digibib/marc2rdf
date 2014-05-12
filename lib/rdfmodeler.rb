@@ -90,7 +90,6 @@ class RDFModeler
       generated_objects << o
     end
     
-    
     if options.has_key?(:regex_substitute) and not generated_objects.empty?
       generated_objects.collect! do |obj|
         obj = obj.gsub(/[\W]+/, '').downcase
