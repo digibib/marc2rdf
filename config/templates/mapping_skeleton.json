@@ -2024,7 +2024,7 @@
           "substr_offset": 35
         }, 
         "relation": {
-          "class": "LEXVO.Language"
+          "class": "LVONT.Language"
         }
       }, 
       "biocontent": {
@@ -2158,7 +2158,7 @@
             "regex_split": "(\\w{3})"
           },
             "relation": {
-              "class": "LEXVO.Language"
+              "class": "LVONT.Language"
           }
         }, 
         "h": {

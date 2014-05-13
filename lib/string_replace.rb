@@ -62,8 +62,8 @@ class String
   # * :convert_spaces => Convert space to underscore (defaults to true)
   # * :regexp => The regexp matching characters that will be converting to an empty string (defaults to /[^-_A-Za-z0-9]/)
   def urlize(options = {})
-    downcase = options[:downcase] || true
-    convert_spaces = options[:convert_spaces] || true
+    downcase = options[:downcase]
+    convert_spaces = options[:convert_spaces]
     regexp = options[:regexp] || /[^-_A-Za-z0-9]/
     
     str = self.strip.replacecharacters

@@ -9,7 +9,6 @@ class RDFModeler
   def initialize(library, record, params={})
     # lookup library by id unless given as param
     library = Library.find(:id => library) unless library.is_a?(Library)
-      
     self.library_id = library.id
     self.record  = record
     id           = self.record[library.config["resource"]["identifier_tag"]]
@@ -36,7 +35,7 @@ class RDFModeler
   
   def generate_uri(s, prefix=nil)
     begin
-      uri = URI.escape("#{prefix}#{s}")
+      uri = URI.parse("#{prefix}#{s}")
       u = RDF::URI(uri)
     rescue
       u = RDF::Literal("#{prefix}#{s}")
@@ -118,9 +117,9 @@ class RDFModeler
     end
     
     if options.has_key?(:urlize) and not generated_objects.empty?
-      downcase = options[:downcase] || false
-      convert_spaces = options[:convert_spaces] || true
-      regexp = options[:regexp] || /[^-_A-Za-z0-9]/
+      downcase       = true unless options[:no_downcase]
+      convert_spaces = true unless options[:no_convert_spaces]
+      regexp         = options[:regexp] || /[^-_A-Za-z0-9]/
   
       generated_objects.collect! do |obj| 
         obj.urlize({:downcase => downcase, :convert_spaces => convert_spaces, :regexp => regexp})
@@ -153,7 +152,6 @@ class RDFModeler
       match.each do |yamlkey,yamlvalue|
       # iterate each marc tag array object to catch multiple marc fields 
         marcfields.each do | marcfield | 
-  
           # controlfields 001-009 don't have subfields
           unless yamlvalue.has_key?('subfield')
             # do controlfields here 

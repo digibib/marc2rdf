@@ -63,22 +63,96 @@
     <subfield code="a">fbje</subfield>
   </datafield>
   <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">fbjo</subfield>
+    <subfield code="a">hutl</subfield>
+  </datafield>
+</record>
+<record>
+  <leader>00916nam  2200337   4500</leader>
+  <controlfield tag="001">1271676</controlfield>
+  <controlfield tag="008">120515                a          10nob 2</controlfield>
+  <datafield tag="015" ind1=" " ind2=" ">
+    <subfield code="a">0278628</subfield>
+    <subfield code="b">BIBBI</subfield>
+  </datafield>
+  <datafield tag="019" ind1=" " ind2=" ">
+    <subfield code="b">l</subfield>
+    <subfield code="d">R</subfield>
+  </datafield>
+  <datafield tag="020" ind1=" " ind2=" ">
+    <subfield code="a">978-82-02-37410-5</subfield>
+    <subfield code="b">ib.</subfield>
+    <subfield code="c">Nkr 339.00</subfield>
+  </datafield>
+  <datafield tag="041" ind1=" " ind2=" ">
+    <subfield code="h">swe</subfield>
+  </datafield>
+  <datafield tag="090" ind1=" " ind2=" ">
+    <subfield code="d">Lee</subfield>
+  </datafield>
+  <datafield tag="100" ind1=" " ind2="0">
+    <subfield code="a">Lee, Mara</subfield>
+    <subfield code="d">1972-</subfield>
+    <subfield code="j">sv.</subfield>
+    <subfield code="3">33330200</subfield>
+  </datafield>
+  <datafield tag="240" ind1="1" ind2="0">
+    <subfield code="a">Salome</subfield>
+  </datafield>
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Salome</subfield>
+    <subfield code="c">Mara Lee ; oversatt av Pernille Rygg</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">[Oslo]</subfield>
+    <subfield code="b">Cappelen Damm</subfield>
+    <subfield code="c">2012</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">249 s.</subfield>
+  </datafield>
+  <datafield tag="574" ind1=" " ind2=" ">
+    <subfield code="a">Originaltittel: Salome</subfield>
+  </datafield>
+  <datafield tag="590" ind1=" " ind2=" ">
+    <subfield code="a">12-uke20a</subfield>
+  </datafield>
+  <datafield tag="599" ind1=" " ind2=" ">
+    <subfield code="a">12x0515gb</subfield>
+  </datafield>
+  <datafield tag="653" ind1=" " ind2="2">
+    <subfield code="a">1980-tallet</subfield>
+    <subfield code="1">db</subfield>
+    <subfield code="3">34222700</subfield>
+  </datafield>
+  <datafield tag="691" ind1=" " ind2="2">
+    <subfield code="a">Oppvekst</subfield>
+    <subfield code="x">Fortellinger</subfield>
+    <subfield code="3">2045801100</subfield>
+  </datafield>
+  <datafield tag="691" ind1=" " ind2="2">
+    <subfield code="a">Ungdom</subfield>
+    <subfield code="x">Fortellinger</subfield>
+    <subfield code="3">10237900</subfield>
+  </datafield>
+  <datafield tag="699" ind1=" " ind2="2">
+    <subfield code="a">Oppvekst</subfield>
+    <subfield code="2">BS</subfield>
+  </datafield>
+  <datafield tag="699" ind1=" " ind2="2">
+    <subfield code="a">Ungdom</subfield>
+    <subfield code="x">Fortellinger</subfield>
+    <subfield code="1">305.235</subfield>
+    <subfield code="2">BS</subfield>
+  </datafield>
+  <datafield tag="700" ind1=" " ind2="0">
+    <subfield code="a">Rygg, Pernille</subfield>
+    <subfield code="d">1963-</subfield>
+    <subfield code="j">n.</subfield>
+    <subfield code="e">overs.</subfield>
+    <subfield code="3">10374800</subfield>
   </datafield>
   <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">fbjo</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">fbjo</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">fbjo</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">fbju</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">fbol</subfield>
+    <subfield code="a">flam</subfield>
   </datafield>
   <datafield tag="850" ind1=" " ind2=" ">
     <subfield code="a">hutl</subfield>
@@ -272,107 +346,6 @@
   </datafield>
   <datafield tag="850" ind1=" " ind2=" ">
     <subfield code="a">hsko</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">hutl</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">hutl</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">hutl</subfield>
-  </datafield>
-</record>
-<record>
-  <leader>00916nam  2200337   4500</leader>
-  <controlfield tag="001">1271676</controlfield>
-  <controlfield tag="008">120515                a          10nob 2</controlfield>
-  <datafield tag="015" ind1=" " ind2=" ">
-    <subfield code="a">0278628</subfield>
-    <subfield code="b">BIBBI</subfield>
-  </datafield>
-  <datafield tag="019" ind1=" " ind2=" ">
-    <subfield code="b">l</subfield>
-    <subfield code="d">R</subfield>
-  </datafield>
-  <datafield tag="020" ind1=" " ind2=" ">
-    <subfield code="a">978-82-02-37410-5</subfield>
-    <subfield code="b">ib.</subfield>
-    <subfield code="c">Nkr 339.00</subfield>
-  </datafield>
-  <datafield tag="041" ind1=" " ind2=" ">
-    <subfield code="h">swe</subfield>
-  </datafield>
-  <datafield tag="090" ind1=" " ind2=" ">
-    <subfield code="d">Lee</subfield>
-  </datafield>
-  <datafield tag="100" ind1=" " ind2="0">
-    <subfield code="a">Lee, Mara</subfield>
-    <subfield code="d">1972-</subfield>
-    <subfield code="j">sv.</subfield>
-    <subfield code="3">33330200</subfield>
-  </datafield>
-  <datafield tag="240" ind1="1" ind2="0">
-    <subfield code="a">Salome</subfield>
-  </datafield>
-  <datafield tag="245" ind1="1" ind2="0">
-    <subfield code="a">Salome</subfield>
-    <subfield code="c">Mara Lee ; oversatt av Pernille Rygg</subfield>
-  </datafield>
-  <datafield tag="260" ind1=" " ind2=" ">
-    <subfield code="a">[Oslo]</subfield>
-    <subfield code="b">Cappelen Damm</subfield>
-    <subfield code="c">2012</subfield>
-  </datafield>
-  <datafield tag="300" ind1=" " ind2=" ">
-    <subfield code="a">249 s.</subfield>
-  </datafield>
-  <datafield tag="574" ind1=" " ind2=" ">
-    <subfield code="a">Originaltittel: Salome</subfield>
-  </datafield>
-  <datafield tag="590" ind1=" " ind2=" ">
-    <subfield code="a">12-uke20a</subfield>
-  </datafield>
-  <datafield tag="599" ind1=" " ind2=" ">
-    <subfield code="a">12x0515gb</subfield>
-  </datafield>
-  <datafield tag="653" ind1=" " ind2="2">
-    <subfield code="a">1980-tallet</subfield>
-    <subfield code="1">db</subfield>
-    <subfield code="3">34222700</subfield>
-  </datafield>
-  <datafield tag="691" ind1=" " ind2="2">
-    <subfield code="a">Oppvekst</subfield>
-    <subfield code="x">Fortellinger</subfield>
-    <subfield code="3">2045801100</subfield>
-  </datafield>
-  <datafield tag="691" ind1=" " ind2="2">
-    <subfield code="a">Ungdom</subfield>
-    <subfield code="x">Fortellinger</subfield>
-    <subfield code="3">10237900</subfield>
-  </datafield>
-  <datafield tag="699" ind1=" " ind2="2">
-    <subfield code="a">Oppvekst</subfield>
-    <subfield code="2">BS</subfield>
-  </datafield>
-  <datafield tag="699" ind1=" " ind2="2">
-    <subfield code="a">Ungdom</subfield>
-    <subfield code="x">Fortellinger</subfield>
-    <subfield code="1">305.235</subfield>
-    <subfield code="2">BS</subfield>
-  </datafield>
-  <datafield tag="700" ind1=" " ind2="0">
-    <subfield code="a">Rygg, Pernille</subfield>
-    <subfield code="d">1963-</subfield>
-    <subfield code="j">n.</subfield>
-    <subfield code="e">overs.</subfield>
-    <subfield code="3">10374800</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">flam</subfield>
-  </datafield>
-  <datafield tag="850" ind1=" " ind2=" ">
-    <subfield code="a">fsto</subfield>
   </datafield>
   <datafield tag="850" ind1=" " ind2=" ">
     <subfield code="a">hutl</subfield>
