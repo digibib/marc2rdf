@@ -65,7 +65,7 @@ class Conversion < Grape::API
         rdf.statements.each {|s| rdfrecords.push(s)}
       end
       file.write(RDFModeler.write_ntriples(rdfrecords)) if file
-      file.close unless file == ni
+      file.close if file
       { :resource => rdfrecords, :filename => filename }
     end
 

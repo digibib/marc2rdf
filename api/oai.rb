@@ -54,6 +54,7 @@ class Oai < Grape::API
         rdf.statements.each {|s| rdfrecords.push(s)}
       end
       file.write(RDFModeler.write_ntriples(rdfrecords)) if file
+      file.close if file
       { :resource => rdfrecords }
     end 
             
@@ -145,6 +146,7 @@ class Oai < Grape::API
           logger.info "deleted record: #{record.header.identifier.split(':').last}"
         end
       end
+      file.close if file
       { :result => "saved!" }
     end
     
