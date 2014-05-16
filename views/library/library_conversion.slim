@@ -23,13 +23,21 @@ table id="single_conversion" class="libraries active tablesorter"
         span[id="conversion_info" class="info" style="margin-left:48px"]
         span[id="conversion_error" class="error" style="margin-left:48px"]
 
-h3 Convert from file
+h3 Convert from file (XML or Binary) or from URL
 div class="divdot inputf"
   form id="upload_file_form" enctype="multipart/form-data"
-    input[type="file" name="file" id="filename" class="gen"]
+    table
+      tr
+        td File
+        td: input[type="file" name="file" id="filename" class="gen"]
+      tr
+        td URL
+        td: input[size="100" type="text" id="url" class="gen"]
+    br
     span[style="margin-left:12px"]
-      button[type="button" id="uploadtest" class="gen"] = "upload test"
-      button[type="button" id="upload" class="gen"] = "upload and convert!"
+      button[type="button" id="uploadclear" class="gen"] = "clear"
+      button[type="button" id="uploadtest" class="gen"] = "test"
+      button[type="button" id="upload" class="gen"] = "convert!"
 
 h3 Manual update from OAI
 p[style="margin-left:24px"] default: from yesterday until today
@@ -39,7 +47,7 @@ table id="oai_harvest" class="libraries active tablesorter"
       th
       th[style="width:180px"] from date<br/>(yyyy-mm-dd)
       th[style="width:180px"] to date<br/>(yyyy-mm-dd)
-      th[style="width:80px" title="Write converted records to file"] write file
+      th[style="width:80px" title="Write converted records to file"] write2file
       th[style="width:80px" title="Insert (Sparql Update) records directly into Repository"] update repository
   tbody
     tr

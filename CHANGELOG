@@ -1,4 +1,9 @@
 = marc2rdf CHANGELOG
+1.0.2
+  Bumped gems
+  Added test, 100% coverage on RDFModeler
+  Added support for conversion of MARCXML and Binary MARC
+  Added support for testing conversion live on MARCXML from URL 
 1.0.1
   Some bugfixes
   Added MARCXML export route

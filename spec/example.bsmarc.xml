@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"
+  xmlns="http://www.loc.gov/MARC21/slim">
+<record>
+  <leader>01130nam a22002891  450 </leader>
+  <controlfield tag="001">000295206</controlfield>
+  <controlfield tag="005">20130207070000.0</controlfield>
+  <controlfield tag="008">       2012           a          00eng 2</controlfield>
+  <datafield tag="015" ind1=" " ind2=" ">
+    <subfield code="a">0295206</subfield>
+    <subfield code="b">BIBBI</subfield>
+  </datafield>
+  <datafield tag="019" ind1=" " ind2=" ">
+    <subfield code="b">l</subfield>
+  </datafield>
+  <datafield tag="020" ind1=" " ind2=" ">
+    <subfield code="a">978-178-005-109-3</subfield>
+    <subfield code="b">h.</subfield>
+    <subfield code="c">Nkr 200.00</subfield>
+  </datafield>
+  <datafield tag="082" ind1="3" ind2="1">
+    <subfield code="a">917.2</subfield>
+    <subfield code="2">5</subfield>
+  </datafield>
+  <datafield tag="082" ind1="3" ind2="1">
+    <subfield code="a">917.28104</subfield>
+    <subfield code="z">h</subfield>
+    <subfield code="2">5</subfield>
+  </datafield>
+  <datafield tag="082" ind1="3" ind2="1">
+    <subfield code="a">917.28204</subfield>
+    <subfield code="2">5</subfield>
+  </datafield>
+  <datafield tag="090" ind1=" " ind2=" ">
+    <subfield code="c">917.28104</subfield>
+    <subfield code="d">G</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">Guatemala, Belize &amp; the Yucatán</subfield>
+    <subfield code="c">[project editor Catherine Dreghorn]</subfield>
+  </datafield>
+  <datafield tag="250" ind1=" " ind2=" ">
+    <subfield code="a">3rd ed.</subfield>
+  </datafield>
+  <datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a">Singapore</subfield>
+    <subfield code="b">Apa Publ.</subfield>
+    <subfield code="c">2012</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+    <subfield code="a">400 s.</subfield>
+    <subfield code="b">kol. ill., kart</subfield>
+  </datafield>
+  <datafield tag="440" ind1=" " ind2="0">
+    <subfield code="a">Insight guides</subfield>
+  </datafield>
+  <datafield tag="520" ind1=" " ind2=" ">
+    <subfield code="a">Insight guides" er reisehåndbøker som skal gi historisk og kulturell forståelse for stedene som skal besøkes. De er kjent for dyptpløyende artikler om kultur, religion, mat, severdigheter osv., og er illustrert med flotte fargefotografier.</subfield>
+  </datafield>
+  <datafield tag="546" ind1=" " ind2=" ">
+    <subfield code="a">Engelsk tekst</subfield>
+  </datafield>
+  <datafield tag="651" ind1=" " ind2="1">
+    <subfield code="a">Guatemala</subfield>
+    <subfield code="x">Reisehåndbøker</subfield>
+    <subfield code="1">917.28104</subfield>
+    <subfield code="2">BS</subfield>
+    <subfield code="9">nob</subfield>
+  </datafield>
+  <datafield tag="651" ind1=" " ind2="2">
+    <subfield code="a">Belize</subfield>
+    <subfield code="x">Reisehåndbøker</subfield>
+    <subfield code="1">917.28204</subfield>
+    <subfield code="2">BS</subfield>
+    <subfield code="9">nob</subfield>
+  </datafield>
+  <datafield tag="651" ind1=" " ind2="2">
+    <subfield code="a">Mexico</subfield>
+    <subfield code="z">Yucatán</subfield>
+    <subfield code="x">Reisehåndbøker</subfield>
+    <subfield code="1">917.2</subfield>
+    <subfield code="2">BS</subfield>
+    <subfield code="9">nob</subfield>
+  </datafield>
+  <datafield tag="700" ind1=" " ind2="0">
+    <subfield code="a">Dreghorn, Catherine</subfield>
+    <subfield code="e">red.</subfield>
+  </datafield>
+  <datafield tag="740" ind1="0" ind2="0">
+    <subfield code="a">Guatemala, Belize and the Yucatán</subfield>
+  </datafield>
+</record>
+</collection>

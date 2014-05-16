@@ -13,15 +13,14 @@ class RDFModeler
     self.record  = record
     id           = self.record[library.config["resource"]["identifier_tag"]]
     self.uri     = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{id.value}")
-    # mapping is either passed as param (full mapping or id) or selected from library
+    # mapping is either passed as param (full mapping or id to existing) or selected from library
     if params[:mapping]
       params[:mapping].is_a?(Mapping) ? self.map = params[:mapping] :
         self.map = Mapping.find(:id => params[:mapping]) 
     else
       self.map = Mapping.find(:id => library.mapping)
     end
-    return nil unless self.map
-    #self.tags    = mapping.mapping["tags"] if mapping
+    return nil unless self.map # you DO need a mapping
     self.statements = []
   end
   

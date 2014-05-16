@@ -18,45 +18,46 @@ class Conversion < Grape::API
       { :resource => rdf.statements }
     end
     
-    desc "test: uploads a file, converts first 20 records"
+    desc "uploads a file to convert or grabs from URL"
       params do
         requires :id, type: Integer, desc: "ID of library"
-        requires :file,  desc: "File to convert"
-      end    
-    post "/uploadtest" do
-      puts request.body
-      filename = File.join(File.dirname(__FILE__), '../db/uploads', params[:file][:filename])
-      FileUtils.cp(params[:file][:tempfile], filename) 
-      logger.info "Success: #{params[:file][:filename]} uploaded."
-      # converting ...
-      library = Library.find(:id => params[:id])
-      reader = MARC::ForgivingReader.new(filename)
-      rdfrecords = []
-      reader.first(20).each do |record|
-        rdf = RDFModeler.new(library.id, record)
-        rdf.set_type(library.config["resource"]["type"])
-        rdf.convert
-        rdf.statements.each {|s| rdfrecords.push(s)}
-      end
-      { :resource => rdfrecords }
-    end
-
-    desc "uploads a file to convert"
-      params do
-        requires :id, type: Integer, desc: "ID of library"
-        requires :file,  desc: "File to convert"
+        optional :file,  desc: "File to convert"
+        optional :url, type: String, desc: "URL to XML Resource or API"
+        optional :test, type: Boolean, desc: "true|false"
+        optional :save, type: Boolean, desc: "true|false"
       end    
     post "/upload" do
-      upload = File.join(File.dirname(__FILE__), '../db/uploads', params[:file][:filename])
-      FileUtils.cp(params[:file][:tempfile], upload) 
-      logger.info "Success: #{params[:file][:filename]} uploaded."
-      # converting ...
+      logger.info params
+      error!("Need file upload or URL to test!", 400) unless params[:file] or params[:url]
       library = Library.find(:id => params[:id])
-      reader = MARC::ForgivingReader.new(upload)
+      if params[:file]
+        unless ["text/xml", "application/xml", "application/octet-stream"].include? params[:file][:type]
+          error!("Only MARCXML or Binary MARC supported!", 400)
+        end
+        upload = File.join(File.dirname(__FILE__), '../db/uploads', params[:file][:filename])
+        FileUtils.cp(params[:file][:tempfile], upload) 
+        logger.info "Success: #{params[:file][:filename]} of filetype #{params[:file][:type]} uploaded."
+        # choose MARC reader by mime-type
+        params[:file][:type] == "application/octet-stream" ? reader = MARC::ForgivingReader.new(upload) :
+          reader = MARC::XMLReader.new(upload)
+      else
+        uri = URI.parse(params[:url])
+        response = Net::HTTP.get_response(uri)
+        reader = MARC::XMLReader.new(StringIO.new(response.body))
+      end
+      # converting ...
+      if params[:save]
+        if params[:file]
+          filename = "#{params[:file][:filename]}.nt"
+        else
+          filename = "#{Time.now.strftime('%Y-%m-%d-%H%M%S')}-from-URL.nt"
+        end
+        savefile = File.join(File.dirname(__FILE__), '../db/converted/', filename)
+        file = File.open(savefile, 'a+') 
+      end
+      reader = reader.entries.take(3) if params[:test]
+      
       rdfrecords = []
-      filename = "#{params[:file][:filename]}.nt"
-      savefile = File.join(File.dirname(__FILE__), '../db/converted/', filename)
-      file = File.open(savefile, 'a+') if params[:file][:filename]
       reader.each do |record|
         rdf = RDFModeler.new(library.id, record)
         rdf.set_type(library.config["resource"]["type"])
@@ -64,7 +65,7 @@ class Conversion < Grape::API
         rdf.statements.each {|s| rdfrecords.push(s)}
       end
       file.write(RDFModeler.write_ntriples(rdfrecords)) if file
-      { :resource => rdfrecords[0..2], :filename => filename }
+      { :resource => rdfrecords, :filename => filename }
     end
 
     desc "return marcxml from resource"

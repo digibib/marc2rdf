@@ -399,11 +399,16 @@ $(document).ready(function () {
   // test upload and convert only first 20
   $("#uploadtest").live("click", function() {
     var file_data = $("#filename").prop("files")[0]; // Getting the properties of file from file field
-    var form_data = new FormData();                  // Creating object of FormData class
-    form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
-    form_data.append("id", id)                       // Adding extra parameters to form_data
+    var form_data = new FormData();
+    if(file_data) {
+      form_data.append("file", file_data);
+    }
+    form_data.append("url", $('input#url').val() );
+    form_data.append("test", true );
+    form_data.append("id", id);
+    console.log(form_data);
     var request = $.ajax({
-      url: "/api/conversion/uploadtest",
+      url: "/api/conversion/upload",
       dataType: 'json',
       cache: false,
       contentType: false,
@@ -426,14 +431,18 @@ $(document).ready(function () {
       $("#uploadtest").removeClass('loading');
       $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
-  })
+  });
   
   // upload and convert
   $("#upload").live("click", function() {
-    var file_data = $("#filename").prop("files")[0]; // Getting the properties of file from file field
-    var form_data = new FormData();                 // Creating object of FormData class
-    form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
-    form_data.append("id", id)                       // Adding extra parameters to form_data
+    var file_data = $("#filename").prop("files")[0]; 
+    var form_data = new FormData();                 
+    if(file_data) {
+      form_data.append("file", file_data);
+    }
+    form_data.append("save", true );
+    form_data.append("url", $('input#url').val() );
+    form_data.append("id", id);
     var request = $.ajax({
       url: "/api/conversion/upload",
       dataType: 'json',
@@ -460,7 +469,12 @@ $(document).ready(function () {
       $("#upload").removeClass('loading');
       $('span#conversion_error').html(jqXHR.responseText).show().fadeOut(5000);
     });
-  })
+  });
+
+  $("#uploadclear").live("click", function() {
+    document.getElementById("upload_file_form").reset();
+  });
+  
   // ** end CONVERSION
   
   // ** LOCAL RULES
