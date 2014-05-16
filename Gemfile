@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 gem "builder"
-gem "bundler", "~> 1.3.5"
+gem "bundler"
 gem "nokogiri"
 gem "net-http-persistent", :require => 'net/http/persistent'
 gem "marc"

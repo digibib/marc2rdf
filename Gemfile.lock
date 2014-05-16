@@ -201,7 +201,7 @@ PLATFORMS
 
 DEPENDENCIES
   builder
-  bundler (~> 1.3.5)
+  bundler
   ci_reporter
   foreman
   grape
