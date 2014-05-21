@@ -15,7 +15,7 @@ class Oai < Grape::API
         :format => library.oai["format"], 
         :parser => library.oai["parser"], 
         :timeout => library.oai["timeout"],
-        :redirects => library.oai["timeout"],
+        :redirects => library.oai["redirects"],
         :set => library.oai["set"])
       oai.validate
       return  { :result => "not validated!" } unless oai.identify_response
@@ -35,7 +35,7 @@ class Oai < Grape::API
         :format => library.oai["format"], 
         :parser => library.oai["parser"], 
         :timeout => library.oai["timeout"],
-        :redirects => library.oai["timeout"])
+        :redirects => library.oai["redirects"])
       unless params[:record].empty?
         oai.get_record :identifier => params[:record], :metadata_prefix => library.oai["format"]
       else

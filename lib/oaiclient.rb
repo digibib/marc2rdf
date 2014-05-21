@@ -9,12 +9,7 @@ class OAIClient
   # initialize OAI client with optional parameters. 
   # faraday connection can be overridden by passing a faraday object as :http arg
   def initialize(repo, params={}) 
-    faraday = Faraday.new do | conn |
-      conn.request :retry, 
-                :max => 3
-      conn.options[:timeout]      = params[:timeout].to_i
-      conn.options[:open_timeout] = 20
-    end
+    faraday = Faraday.new :request => {:open_timeout => 20, :timeout => params[:timeout].to_i}
     self.format = params[:format] ||= 'bibliofilmarc'
     self.parser = params[:parser] ||= 'rexml'
     self.http   = params[:http]   ||= faraday
@@ -159,8 +154,9 @@ class OAIClient
     begin
       self.identify_response = self.client.identify
       self.identify_response.is_a?(OAI::IdentifyResponse)
-      get_oai_id
+      #get_oai_id
       get_available_sets
+      puts self.client.inspect
     rescue ArgumentError => e
       puts "#{e}" if ENV['RACK_ENV'] == "development"
       self.identify_response = nil

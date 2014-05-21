@@ -203,6 +203,7 @@ DEPENDENCIES
   builder
   bundler
   ci_reporter
+  faraday
   foreman
   grape
   guard
