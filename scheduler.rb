@@ -415,7 +415,7 @@ class Scheduler
       return nil unless harvester
       # need to query converted records through temporary graph to make RDF::Query::Solutions for batch harvesting
       # make temporary graph with converted record
-      tempgraph = RDF::Graph.new('temp')
+      tempgraph = RDF::Graph.new()
       rdf.statements.each {|s| tempgraph << s }
       # query for :edition and :object
       types = library.config['resource']['type'].delete(' ').split(',') # types can be comma-separated
