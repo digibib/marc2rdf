@@ -41,6 +41,9 @@ class Oai < Grape::API
       else
         oai.get_record :metadata_prefix => library.oai["format"]
       end
+      unless oai.records.is_a?(OAI::GetRecordResponse)
+        error!("Invalid or non-existent resource ID: #{params[:record]}", 404) 
+      end
       logger.info "GetRecord result: identifier #{params[:record]}\n #{oai.records.record.metadata.to_s}"
       xmlreader = MARC::XMLReader.new(StringIO.new(oai.records.record.metadata.to_s)) 
       logger.info "Marc response: #{xmlreader.inspect}"

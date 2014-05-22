@@ -129,6 +129,7 @@ class OAIClient
     begin
       self.records = self.client.get_record :identifier => params[:identifier], :metadata_prefix => self.format
     rescue Exception => e
+      self.records = nil
       puts "Error in OAI query: #{e}"
     end
   end
