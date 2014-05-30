@@ -131,13 +131,13 @@ module API
           results.each do |result|
             statements << RDF::Statement.new(
               uri, 
-              RDF.module_eval("#{harvester.local['predicate']}"), 
+              RDF.module_eval("#{harvester.remote['predicate']}"), 
               RDF::URI(result)
             )
           end
           #SparqlUpdate.insert_harvested_triples(statements)            
           
-          { :statemets => statements.inspect }
+          { :results => results.inspect, :statements => statements.inspect }
       end
 
     end # end harvester namespace    
