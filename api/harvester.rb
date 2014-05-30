@@ -126,7 +126,8 @@ module API
             end
           end
           error!("No results!", 404) if statements.empty?
-          sparqlresult = SparqlUpdate.insert_harvested_triples(statements)            
+          graph = library.config["resource"]["default_graph"]
+          sparqlresult = SparqlUpdate.insert_harvested_triples(graph, statements)            
           
           { :statements => statements.inspect, :result => sparqlresult }
       end                
