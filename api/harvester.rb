@@ -125,19 +125,21 @@ module API
           response = Net::HTTP.get_response URI.parse url
           results = []
           harvester.remote['predicates'].each do | predicate, opts |
-            results << { predicate => BatchHarvest.parse_xml(response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => harvester.remote["namespaces"] ) }
+            results = BatchHarvest.parse_xml(response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => harvester.remote["namespaces"] )
+            unless results.empty?
+              results.each do | result |
+                statements << RDF::Statement.new(
+                  uri, 
+                  RDF.module_eval("#{harvester.remote['predicate']}"), 
+                  RDF::URI(result)
+                )
+              end
+            end
           end
-          error!("No results!", 404) if results.empty?
-          results.each do |result|
-            statements << RDF::Statement.new(
-              uri, 
-              RDF.module_eval("#{harvester.remote['predicate']}"), 
-              RDF::URI(result)
-            )
-          end
+          error!("No results!", 404) if statements.empty?
           #SparqlUpdate.insert_harvested_triples(statements)            
           
-          { :results => results.inspect, :statements => statements.inspect }
+          { :statements => statements.inspect }
       end
 
     end # end harvester namespace    
