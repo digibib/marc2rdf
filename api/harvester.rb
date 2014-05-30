@@ -138,7 +138,6 @@ module API
             # dummy work = edition
             batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:edition => uri))}
           end
-          puts batchsolutions.inspect
           bh = BatchHarvest.new harvester, batchsolutions
           bh.start_harvest
           error!("No results!", 404) if bh.statements.empty?
