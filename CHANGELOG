@@ -1,4 +1,6 @@
 = marc2rdf CHANGELOG
+1.0.3
+  Added possibility for single record harvest by id from Library > Harvester
 1.0.2
   Bumped gems
   Added test, 100% coverage on RDFModeler

@@ -580,9 +580,35 @@ $(document).ready(function () {
   // ** END LOCAL RULES
   
   // ** HARVESTERS
-  // test harvester
-  $('button#test_harvester').on('click', function() {
-    alert("not implemented yet!\nWhat should it do, anyway?");
+  // harvest single record directly
+  $('button#harvest_record').on('click', function() {
+    var row = $(this).closest('tr');
+    var request = $.ajax({
+      url: '/api/harvester/harvest',
+      type: 'POST',
+      cache: false,
+      data: { 
+            id: row.find(".harvest_record_id").val(),
+            harvester: row.attr('id'),
+            library: id,
+            },
+      dataType: 'json'
+    });
+
+    $(this).addClass('loading');
+    request.done(function ( data ) {
+      $('button#harvest_record').removeClass('loading');
+      if( console && console.log ) {
+        console.log("Sample of data:", JSON.stringify(data).slice(0, 300));
+      }
+      var result = JSON.stringify(data, null, "  ").replace(/\</gi,"&lt;")
+      $("#harvester_test").html('<br/><pre>' + result + '</pre>');
+    });
+      
+    request.fail(function(jqXHR, textStatus, errorThrown) {
+      $('button#harvest_record').removeClass('loading');
+      $('#harvester_test').html(jqXHR.responseText).show().fadeOut(5000);
+    });
   }); 
   
   // activate harvester rule
