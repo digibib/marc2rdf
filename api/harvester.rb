@@ -58,7 +58,7 @@ module API
         end
       end
       
-      desc "delete a harvest"
+      desc "delete a harvester"
         params do
           requires :id, type: String, desc: "ID of harvester"
         end
@@ -72,22 +72,74 @@ module API
       
       desc "test a harvester by some string lookup"
         params do
-          requires :id, type: String, desc: "ID of harvester"
-          requires :teststring, type: String, desc: "String to send to external API"
+          requires :id, type: String, desc: "ID of record"
+          requires :library, type: String, desc: "ID of library"
+          requires :harvester, type: String, desc: "ID of harvester"
         end
       get "/test" do
         content_type 'json'
           logger.info params
-          harvester = Harvest.find(:id => params[:id])
-          error!("No harvester rule with id: #{params[:id]}", 404) unless harvester
-          url = harvester.url['prefix'] + params[:teststring].to_s + harvester.url['suffix']
+          library = Library.find(:id => params[:library].to_i)
+          harvester = Harvest.find(:id => params[:harvester])
+          error!("No library with id: #{params[:library]}", 404) unless library
+          error!("No harvester rule with id: #{params[:harvester]}", 404) unless harvester
+          error!("Need a test string/ID!", 404) if params[:id].empty?
+          # get id of resource
+          uri = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{params[:id]}")
+          solutions = SparqlUpdate.find_resource_by_subject(uri)
+          # get local predicate
+          teststring = solutions.filter(:p => RDF.module_eval("#{harvester.local['predicate']}"))
+          error!("resource with id #{params[:id]} not found!", 404) unless teststring.count > 0
+          statements = []
+          url = harvester.url['prefix'] + teststring.to_s + harvester.url['suffix']
           response = Net::HTTP.get_response URI.parse url
           results = []
           harvester.remote['predicates'].each do | predicate, opts |
             results << { predicate => BatchHarvest.parse_xml(response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => harvester.remote["namespaces"] ) }
           end
-          { :harvester => harvester, :response => response.body, :results => results }        
+          { :harvester => harvester, :response => response.body, :results => results }
       end            
+      desc "harvest single record directly to rdfstore"
+        params do
+          requires :id, type: String, desc: "ID of resource"
+          requires :library, type: String, desc: "ID of library"
+          requires :harvester, type: String, desc: "ID of harvester"
+        end
+      post "/harvest" do
+        content_type 'json'
+          logger.info params
+          library = Library.find(:id => params[:library].to_i)
+          harvester = Harvest.find(:id => params[:harvester])
+          error!("No library with id: #{params[:library]}", 404) unless library
+          error!("No harvester rule with id: #{params[:harvester]}", 404) unless harvester
+          error!("Need a test string/ID!", 404) if params[:id].empty?
+          # get id of resource
+          uri = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{params[:id]}")
+          solutions = SparqlUpdate.find_resource_by_subject(uri)
+          # get local predicate
+          teststring = solutions.filter(:p => RDF.module_eval("#{harvester.local['predicate']}"))
+          
+          error!("resource with id #{params[:id]} not found!", 404) unless teststring.count > 0
+          statements = []
+          url = harvester.url['prefix'] + teststring.to_s + harvester.url['suffix']
+          response = Net::HTTP.get_response URI.parse url
+          results = []
+          harvester.remote['predicates'].each do | predicate, opts |
+            results << { predicate => BatchHarvest.parse_xml(response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => harvester.remote["namespaces"] ) }
+          end
+          error!("No results!", 404) if results.empty?
+          results.each do |result|
+            statements << RDF::Statement.new(
+              uri, 
+              RDF.module_eval("#{harvester.local['predicate']}"), 
+              RDF::URI(result)
+            )
+          end
+          #SparqlUpdate.insert_harvested_triples(statements)            
+          
+          { :statemets => statements.inspect }
+      end
+
     end # end harvester namespace    
   end
 end

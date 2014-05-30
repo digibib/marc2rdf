@@ -100,6 +100,13 @@ class SparqlUpdate
   
   ## Class methods
   
+  def self.find_resource_by_subject(uri)
+    return nil unless uri
+    query = QUERY.select.where([uri, :p, :o])
+    puts "SELECT query:\n #{query.to_s}" if ENV['RACK_ENV'] == 'development'
+    response = REPO.select(query)
+  end
+  
   # insert new harvested triples
   def self.insert_harvested_triples(graph, statements)
     query = QUERY.insert_data(statements)
@@ -109,5 +116,4 @@ class SparqlUpdate
       response = query.to_s : 
       response = REPO.insert_data(query)
   end
-
 end
