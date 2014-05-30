@@ -130,7 +130,7 @@ module API
               results.each do | result |
                 statements << RDF::Statement.new(
                   uri, 
-                  RDF.module_eval("#{harvester.remote['predicate']}"), 
+                  RDF.module_eval(predicate), 
                   RDF::URI(result)
                 )
               end
