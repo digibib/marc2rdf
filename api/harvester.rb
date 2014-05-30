@@ -121,7 +121,7 @@ module API
           
           error!("resource with id #{params[:id]} not found!", 404) unless teststring.count > 0
           statements = []
-          url = harvester.url['prefix'] + teststring.to_s + harvester.url['suffix']
+          url = harvester.url['prefix'] + teststring.first[:o].to_s + harvester.url['suffix']
           response = Net::HTTP.get_response URI.parse url
           results = []
           harvester.remote['predicates'].each do | predicate, opts |
