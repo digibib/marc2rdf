@@ -100,9 +100,10 @@ class SparqlUpdate
   
   ## Class methods
   
-  def self.find_resource_by_subject(uri)
+  def self.find_resource_by_subject(graph, uri)
     return nil unless uri
-    query = QUERY.select.where([uri, :p, :o])
+    return nil unless graph
+    query = QUERY.select.from(RDF::URI(graph)).where([uri, :predicate, :object])
     puts "SELECT query:\n #{query.to_s}" if ENV['RACK_ENV'] == 'development'
     response = REPO.select(query)
   end

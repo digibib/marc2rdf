@@ -104,32 +104,47 @@ module API
           error!("No harvester rule with id: #{params[:harvester]}", 404) unless harvester
           error!("Need a test string/ID!", 404) if params[:id].empty?
           # get id of resource
-          uri = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{params[:id]}")
-          solutions = SparqlUpdate.find_resource_by_subject(uri)
+          uri   = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{params[:id]}")
+          graph = library.config['resource']['default_graph']
+          result = SparqlUpdate.find_resource_by_subject(graph, uri)
           # get local predicate
-          teststring = solutions.filter(:p => RDF.module_eval("#{harvester.local['predicate']}"))
-          error!("resource with id #{params[:id]} not found!", 404) unless teststring.count > 0
-          statements = []
-          url = harvester.url['prefix'] + teststring.first[:o].to_s + harvester.url['suffix']
-          response = Net::HTTP.get_response URI.parse url
-          results = []
-          harvester.remote['predicates'].each do | predicate, opts |
-            results = BatchHarvest.parse_xml(response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => harvester.remote["namespaces"] )
-            unless results.empty?
-              results.each do | result |
-                statements << RDF::Statement.new(
-                  uri, 
-                  RDF.module_eval(predicate), 
-                  RDF::URI(result)
-                )
-              end
-            end
+          batchsolutions = result.filter(:predicate => RDF.module_eval("#{harvester.local['predicate']}"))
+          error!("resource with id #{params[:id]} not found!", 404) unless batchsolutions.count > 0
+          # statements = []
+          # url = harvester.url['prefix'] + teststring.first[:o].to_s + harvester.url['suffix']
+          # response = Net::HTTP.get_response URI.parse url
+          # results = []
+          # harvester.remote['predicates'].each do | predicate, opts |
+          #   results = BatchHarvest.parse_xml(response, :xpath => opts["xpath"], :regexp_strip => opts["regex_strip"], :namespaces => harvester.remote["namespaces"] )
+          #   unless results.empty?
+          #     results.each do | result |
+          #       statements << RDF::Statement.new(
+          #         uri, 
+          #         RDF.module_eval(predicate), 
+          #         RDF::URI(result)
+          #       )
+          #     end
+          #   end
+          # end
+          if harvester.local['subject'] == 'work'
+            # RDFstore lookup to find work URI
+            query = QUERY.select(:work).from(graph)
+              query.where([:work, RDF::FABIO.hasManifestation, uri])
+              query.limit(1)
+            results = REPO.select(query)
+            next if results.empty?
+            batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:work => results.first.work))}
+          else
+            # dummy work = edition
+            batchsolutions.each{|s| s.merge!(RDF::Query::Solution.new(:edition => uri))}
           end
-          error!("No results!", 404) if statements.empty?
-          graph = library.config["resource"]["default_graph"]
-          sparqlresult = SparqlUpdate.insert_harvested_triples(graph, statements)            
+          puts batchsolutions.inspect
+          bh = BatchHarvest.new harvester, batchsolutions
+          bh.start_harvest
+          error!("No results!", 404) if bh.statements.empty?
+          sparqlresult = SparqlUpdate.insert_harvested_triples(library.config['resource']['default_graph'], bh.statements)
           
-          { :statements => statements.inspect, :result => sparqlresult }
+          { :statements => bh.statements.inspect, :result => sparqlresult }
       end                
     end # end harvester namespace    
   end
