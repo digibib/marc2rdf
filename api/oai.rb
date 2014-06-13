@@ -96,6 +96,7 @@ class Oai < Grape::API
       { :result => result }
     end 
 
+    # TODO: deprecated - /harvest_full will do both harvest and convert
     desc "convert a harvested full set from file"
       params do
         requires :id,            type: Integer,  desc: "ID of library"

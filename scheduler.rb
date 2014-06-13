@@ -379,8 +379,9 @@ class Scheduler
   
   # 2a) write converted records to ntriples file if chosen
   def write_converted_record_to_file(rdf, library, params={})
-    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+')
-    file.write(RDFModeler.write_ntriples(rdf.statements)) if file
+    File.open(File.join(File.dirname(__FILE__), "db", "converted", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+') do |f|
+      f.write(RDFModeler.write_ntriples(rdf.statements))
+    end
   end
 
   # 2b) update RDF store directly through SPARQL Update, deleting deleted records and updates records not touching preserved attributes
@@ -459,8 +460,9 @@ class Scheduler
       @harvestcount += bh.statements.count
       # write harvested ntriples to file if chosen
       if params[:write_records]
-        file = File.open(File.join(File.dirname(__FILE__), "./db/harvested", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+')
-        file.write(RDFModeler.write_ntriples(bh.statements)) if file
+        File.open(File.join(File.dirname(__FILE__), "db", "harvested", "#{params[:from]}_to_#{params[:until]}_#{library.name}.nt"), 'a+') do |f|
+          f.write(RDFModeler.write_ntriples(bh.statements))
+        end
       end
     end
   end
@@ -469,8 +471,11 @@ class Scheduler
   def write_oairesponse_to_file(oairesponse, library, params={})
     file_id = "%04d" % @querycounter += 1
     params[:full] ? subdir = "full" : subdir = ''
-    File.open(File.join(File.dirname(__FILE__), "db", "converted", subdir, "#{file_id}_#{library.name}.xml"), 'a+')
-    file.write(oairesponse.doc)
+    dir = File.join(File.dirname(__FILE__), "db", "converted", subdir)
+    Dir.mkdir(dir) unless File.exists?(dir)
+    File.open(File.join(dir, "#{file_id}_#{library.name}.xml"), 'a+') do |f|
+      f.write(oairesponse.doc)
+    end
   end
   
   # 4) run rules on library graph
