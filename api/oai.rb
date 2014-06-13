@@ -79,6 +79,7 @@ class Oai < Grape::API
       { :result => result }
     end 
 
+    # harvest_full will do both harvest and convert
     desc "harvest a full set to file"
       params do
         requires :id,            type: Integer,  desc: "ID of library"
@@ -96,7 +97,7 @@ class Oai < Grape::API
       { :result => result }
     end 
 
-    # TODO: deprecated - /harvest_full will do both harvest and convert
+    # convert_full converts all saved OAI responses from './db/converted/full'
     desc "convert a harvested full set from file"
       params do
         requires :id,            type: Integer,  desc: "ID of library"

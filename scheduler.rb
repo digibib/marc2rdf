@@ -274,9 +274,9 @@ class Scheduler
   # convert a previously full harvest to file
   def convert_full_oai_set_from_file(params={})
     start_time = Time.parse("#{params[:start_time]}") rescue Time.now
-    params[:tags]          ||= "oaiharvest"
+    params[:tags]          ||= "oaiharvest-full-convert"
     library = Library.find(:id => params[:id].to_i)
-    logger.info "Scheduled params: #{params}"
+    logger.info "Full conversion initiated! Scheduled params: #{params}"
     job_id = self.scheduler.at start_time, :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
       # result counters
