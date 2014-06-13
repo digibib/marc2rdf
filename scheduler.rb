@@ -217,6 +217,13 @@ class Scheduler
     params[:tags]          ||= "oaiharvest"
     library = Library.find(:id => params[:id].to_i)
     logger.info "Scheduled params: #{params}"
+    if params[:full]
+      logger.info "Full harvest scheduled! deleting previous full harvest"
+      Dir[File.join(File.dirname(__FILE__), "db", "converted", "full", "*.xml")].each do |file|
+        File.delete(file)
+      end
+    end
+
     job_id = self.scheduler.at start_time, :tags => [{:library => library.id, :tags => params[:tags]}] do |job|
       timing_start = Time.now
       # result counters
@@ -244,6 +251,15 @@ class Scheduler
                    :result => "Total records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"}
         write_history(logline)
         logger.info "Time to complete oai harvest: #{length} s.\n-------\nTotal records modified: #{@countrecords}.\nRecords deleted: #{@deletecount}\nRecords modified: #{@modifycount}\nTriples harvested: #{@harvestcount}"
+        # Full harvest is best done in two steps:
+        # First harvest all records to file,
+        # THEN do conversion and sparql update on saved response
+        if params[:full]
+          params[:write_records] = true
+          params[:sparql_update] = true
+          params[:tags] = "oaiharvest-full-convert"
+          convert_full_oai_set_from_file(params)
+        end
       rescue Exception => e
         length = Time.now - timing_start
         logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
@@ -255,9 +271,8 @@ class Scheduler
     end
   end
   
-  # convert a previously harvested set
-  # NOTE: for now, only converts from previosly saved oai response
-  def convert_full_oai_set(params={})
+  # convert a previously full harvest to file
+  def convert_full_oai_set_from_file(params={})
     start_time = Time.parse("#{params[:start_time]}") rescue Time.now
     params[:tags]          ||= "oaiharvest"
     library = Library.find(:id => params[:id].to_i)
@@ -285,10 +300,6 @@ class Scheduler
           oai.query_from_file(file)
           convert_oai_records(oai.records, library, params)
         end
-        # impossibly slow, convert from saved files instead
-        #oai.client.list_records.full.each do |record|
-        #  convert_record(record, library, params={})
-        #end
       
         length = Time.now - timing_start
         logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
@@ -457,7 +468,8 @@ class Scheduler
   # 2d) dump oai records to file if chosen
   def write_oairesponse_to_file(oairesponse, library, params={})
     file_id = "%04d" % @querycounter += 1
-    file = File.open(File.join(File.dirname(__FILE__), "./db/converted", "#{file_id}_#{params[:from]}_to_#{params[:until]}_#{library.name}.xml"), 'a+')
+    params[:full] ? subdir = "full" : subdir = ''
+    File.open(File.join(File.dirname(__FILE__), "db", "converted", subdir, "#{file_id}_#{library.name}.xml"), 'a+')
     file.write(oairesponse.doc)
   end
   

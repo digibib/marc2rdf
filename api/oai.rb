@@ -79,22 +79,38 @@ class Oai < Grape::API
       { :result => result }
     end 
 
-    desc "harvest a full set"
+    desc "harvest a full set to file"
+      params do
+        requires :id,            type: Integer,  desc: "ID of library"
+        optional :tags,          type: String,   desc: "Tags"
+      end
+    put "/harvest_full" do
+      content_type 'json'
+      # Schedule full harvest of set
+      params[:from] = "1970-01-01"
+      params[:full] = true
+      params[:tags] = "oaiharvest-full"
+      params[:save_oairesponse] = true
+      logger.info "OAI full harvest to file, params: #{params}"
+      result = Scheduler.start_oai_harvest(params)
+      { :result => result }
+    end 
+
+    desc "convert a harvested full set from file"
       params do
         requires :id,            type: Integer,  desc: "ID of library"
         optional :tags,          type: String,   desc: "Tags"
         optional :write_records, type: Boolean,  desc: "Write converted records to file"
         optional :sparql_update, type: Boolean,  desc: "Update Repository directly"
-        optional :save_oairesponse, type: Boolean,  desc: "Dump oai response to file"
       end
-    put "/harvest_full" do
+    put "/convert_full" do
       content_type 'json'
       # Schedule full harvest of set
-      logger.info "OAI full harvest params: #{params}"
-      result = Scheduler.convert_full_oai_set(params)
+      logger.info "OAI full conversion from file,  params: #{params}"
+      result = Scheduler.convert_full_oai_set_from_file(params)
       { :result => result }
     end 
-    
+
     desc "schedule an OAI harvest"
       params do
         requires :id,            type: Integer,  desc: "ID of library"
@@ -111,6 +127,7 @@ class Oai < Grape::API
       test = Scheduler.find_jobs_by_library(params[:id])
       puts test.inspect
       error!("Library already scheduled for harvest!", 400) unless test.empty?
+      params[:tags] = "oaiharvest-full-convert"
       result = Scheduler.schedule_oai_harvest(params)
       error!("Missing schedule frequency in library or supplied params!", 400) unless result
       { :result => result }
