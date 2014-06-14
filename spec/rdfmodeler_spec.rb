@@ -44,8 +44,13 @@ describe RDFModeler do
       uri.should be_a RDF::URI
     end
 
-    it "trying to generate URI object with invalid prefix should result in RDF::Literal" do
+    it "trying to generate URI object with invalid characters should result in RDF::Literal" do
       uri = @rdfmodeler.generate_uri(@str, "http:||example.com")
+      uri.should be_a RDF::Literal
+    end
+
+    it "trying to generate URI object with missing prefix should result in RDF::Literal" do
+      uri = @rdfmodeler.generate_uri(@str, "www.example.com")
       puts uri.inspect
       uri.should be_a RDF::Literal
     end

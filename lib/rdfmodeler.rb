@@ -35,7 +35,12 @@ class RDFModeler
   def generate_uri(s, prefix=nil)
     begin
       uri = URI.parse("#{prefix}#{s}")
-      u = RDF::URI(uri)
+      # need to be strict on URIs - scheme and host are mandatory 
+      if uri.scheme && uri.host 
+        u = RDF::URI(uri)
+      else
+        u = RDF::Literal(uri)
+      end
     rescue
       u = RDF::Literal("#{prefix}#{s}")
     end
@@ -308,7 +313,13 @@ class RDFModeler
   # method to output array of statements as triples
   def self.write_ntriples(statements)
     ntriples = RDF::Writer.for(:ntriples).buffer do |writer|
-      Array(statements).each { | statement | writer << statement }
+      Array(statements).each do |statement| 
+        begin
+          writer << statement
+        rescue => e
+          puts "RDF Statement invalid:\n#{e}"
+        end
+      end
     end
   end
 end
