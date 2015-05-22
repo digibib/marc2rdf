@@ -105,7 +105,7 @@ module API
           error!("Need a test string/ID!", 404) if params[:id].empty?
           # get id of resource
           uri   = RDF::URI(library.config["resource"]["base"] + library.config["resource"]["prefix"] + "#{params[:id]}")
-          graph = library.config['resource']['default_graph']
+          graph = RDF::URI(library.config['resource']['default_graph'])
           result = SparqlUpdate.find_resource_by_subject(graph, uri)
           # get local predicate
           batchsolutions = result.filter(:predicate => RDF.module_eval("#{harvester.local['predicate']}"))
