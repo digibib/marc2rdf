@@ -439,7 +439,7 @@ class Scheduler
       #logger.info "Batch Harvest solutions #{batchsolutions.inspect}"
       if harvester.local['subject'] == 'work'
         # RDFstore lookup to find work URI
-        query = QUERY.select(:work).from(library.config['resource']['default_graph'])
+        query = QUERY.select(:work).from(RDF::URI(library.config['resource']['default_graph']))
           query.where([:work, RDF::FABIO.hasManifestation, batchsolutions.first.edition])
           query.limit(1)
         results = REPO.select(query)
