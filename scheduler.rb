@@ -166,7 +166,8 @@ class Scheduler
   end
   
   ### History 
-  def read_history(limit=20)
+  def read_history(limit)
+    limit = limit ? limit : "#{SETTINGS['global']['history_length']}"
     logfile = File.join(File.dirname(__FILE__), 'logs', 'history.json')
     open(logfile, 'w') {|f| f.write(JSON.pretty_generate(JSON.parse({"history"=>[]}.to_json)))} unless File.exist?(logfile)
     log = JSON.parse(IO.read(logfile))

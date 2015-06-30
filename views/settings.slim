@@ -57,6 +57,10 @@ div class="divdot inputf"
         td: input[type="text" id="default_prefix" value=(settings['global']['default_prefix'])]
         td default prefix used in Rules to generate URIs
       tr
+        td history_length
+        td: input[type="text" id="history_length" value=(settings['global']['history_length'])]
+        td number of log entries to keep
+      tr
         td: button[type="button" id="global_settings_save" class="gen"]  = "Save"
         td
           span[id="global_settings_info" class="info" style="margin-left:48px"]
@@ -131,7 +135,8 @@ javascript:
         cache: false,
         data: JSON.stringify({
             default_graph: $('input#default_graph').val(),
-            default_prefix: $('input#default_prefix').val()
+            default_prefix: $('input#default_prefix').val(),
+            history_length: $('input#history_length').val()
             }),
         dataType: 'json'
       });

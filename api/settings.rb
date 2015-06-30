@@ -38,10 +38,11 @@ module API
         params do
           requires :default_graph,  type: String, desc: "Default graph used in global Rules"
           requires :default_prefix, type: String, desc: "Default prefix used in Mapping and Rules"
+          requires :history_length, type: String, desc: "Number of log entries to keep"
         end
       post "/global" do
         content_type 'json'
-        valid_params = ['default_graph','default_prefix']
+        valid_params = ['default_graph','default_prefix', 'history_length']
         settings = params.to_hash.reject { |key,_| !valid_params.include? key }
         SETTINGS["global"] = settings
         File.open(CONFIG_FILE, 'w') do |f|
