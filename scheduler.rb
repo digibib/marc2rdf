@@ -256,10 +256,9 @@ class Scheduler
         # First harvest all records to file,
         # THEN do conversion and sparql update on saved response
         if params[:full]
-          params[:write_records] = true
-          params[:sparql_update] = true
-          params[:tags] = "oaiharvest-full-convert"
-          convert_full_oai_set_from_file(params)
+          params[:write_records] = false
+          params[:sparql_update] = false
+          #convert_full_oai_set_from_file(params)
         end
       rescue Exception => e
         length = Time.now - timing_start
@@ -300,6 +299,7 @@ class Scheduler
         files.each do |file|
           oai.query_from_file(file)
           convert_oai_records(oai.records, library, params)
+          run_rules_engine(library) if library.rules.any?
         end
       
         length = Time.now - timing_start
@@ -328,7 +328,7 @@ class Scheduler
     write_oairesponse_to_file(oai.response, library, params) if params[:save_oairesponse] # 2d)
     @countrecords += oai.records.count  
     # 2)
-    convert_oai_records(oai.records, library, params)
+    convert_oai_records(oai.records, library, params) unless params[:full]
     # 3) do the resumption loop...
     until oai.response.resumption_token.nil? or oai.response.resumption_token.empty?
       # fetch remainder if resumption token
@@ -337,11 +337,13 @@ class Scheduler
       write_oairesponse_to_file(oai.response, library, params) if params[:save_oairesponse] # 2d)
       @countrecords += oai.records.count
       # 2)
-      convert_oai_records(oai.records, library, params)
+      convert_oai_records(oai.records, library, params) unless params[:full]
     end
     # 4) Finally run activated rules on updated RDFstore
     logger.info "Running rules on updated set..."
-    run_rules_engine(library) if library.rules.any?
+    unless params[:full]
+      run_rules_engine(library) if library.rules.any?
+    end
   end
   
   def convert_oai_records(oairecords, library, params={})
