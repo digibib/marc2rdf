@@ -299,9 +299,11 @@ class Scheduler
         files.each do |file|
           oai.query_from_file(file)
           convert_oai_records(oai.records, library, params)
-          run_rules_engine(library) if library.rules.any?
         end
-      
+        
+        # Run rules AFTER all records are converted
+        run_rules_engine(library) if library.rules.any?      
+        
         length = Time.now - timing_start
         logline = {:time => Time.now, :job_id => job.job_id, :cron_id => nil, :library => library.id, :start_time => start_time, 
                    :length => "#{length} s.", :tags => params[:tags], 
