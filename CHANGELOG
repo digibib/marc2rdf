@@ -1,4 +1,8 @@
 = marc2rdf CHANGELOG
+1.0.4
+  Minor bugfixes.
+  Disabled automatic run of rules, convert and harvest when doing full OAI harvest
+  Add history limit setting
 1.0.3
   Added possibility for single record harvest by id from Library > Harvester
 1.0.2

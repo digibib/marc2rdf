@@ -107,7 +107,7 @@ class Oai < Grape::API
       end
     put "/convert_full" do
       content_type 'json'
-      # Schedule full harvest of set
+      # Schedule conversion of full harvest of set
       logger.info "OAI full conversion from file,  params: #{params}"
       result = Scheduler.convert_full_oai_set_from_file(params)
       { :result => result }

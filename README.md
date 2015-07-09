@@ -59,11 +59,27 @@ The marc2rdf toolkit consists of a web frontend and three parts:
 * scheduler.rb - Rufus Scheduler to manage job/cron queues
 
 Scheduler takes these job types:
+
 * Single oai harvest (job)
 * Recurring oai harvest (cronjob)
 * Single SPARQL job (isql job) 
 * Recurring SPARQL job (isql cronjob)
 
+Full harvest is generally recommended done in two steps and not enabled in web frontend.
+To do this you need to fire two RESTful requests
+
+* Full OAI harvest. This will harvest entire repo from beginning of time to XML dumps
+(all saved OAI responses will end up in './db/converted/full')
+
+    http PUT http://localhost:3000/api/oai/harvest_full \
+      SECRET_SESSION_KEY:'secretsessionkey' id=<id of library>
+
+* Full OAI conversion. This will use full XML dumps harvested in above step.
+It will also run any rules and harvester rules activated on library
+
+    http PUT http://localhost:3000/api/oai/convert_full \
+      SECRET_SESSION_KEY:'secretsessionkey' id=<id of library>
+      sparql_update=bool write_records=bool
 
 ### REQUIREMENTS
 
