@@ -104,6 +104,7 @@ class Oai < Grape::API
         optional :tags,          type: String,   desc: "Tags"
         optional :write_records, type: Boolean,  desc: "Write converted records to file"
         optional :sparql_update, type: Boolean,  desc: "Update Repository directly"
+        optional :run_ext_harvester, type: Boolean, desc: "Run external harvester(s)"
       end
     put "/convert_full" do
       content_type 'json'

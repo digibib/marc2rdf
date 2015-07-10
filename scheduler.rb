@@ -258,6 +258,7 @@ class Scheduler
         if params[:full]
           params[:write_records] = false
           params[:sparql_update] = false
+          params[:run_ext_harvester] = false
           #convert_full_oai_set_from_file(params)
         end
       rescue Exception => e
@@ -368,9 +369,9 @@ class Scheduler
         rdf.set_type(library.config['resource']['type'])
         rdf.convert
         # the conversion, rules, harvesting and updating
-        write_converted_record_to_file(rdf, library, params)     if params[:write_records]    # a)
-        update_record(rdf, library, params)                      if params[:sparql_update]    # b)
-        run_external_harvester(rdf, library, params)                                          # c)
+        write_converted_record_to_file(rdf, library, params)     if params[:write_records]     # a)
+        update_record(rdf, library, params)                      if params[:sparql_update]     # b)
+        run_external_harvester(rdf, library, params)             if params[:run_ext_harvester] # c)
         @rdfrecords << rdf.statements
         @modifycount += 1
       end
